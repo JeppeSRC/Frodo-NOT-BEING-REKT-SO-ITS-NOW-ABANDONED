@@ -8,6 +8,14 @@ private:
 	List<D> data;
 	List<K> keys;
 
+	inline D& Add(K key) {
+		keys.Push_back(key);
+
+		size_t size = keys.GetSize();
+		data.Resize(size);
+
+		return data[size - 1];
+	}
 
 public:
 	Map(unsigned int size = 0) {
@@ -17,6 +25,15 @@ public:
 
 	~Map() {
 		
+	}
+
+	__forceinline D& operator[](K key) {
+		size_t loc = keys.Contains(key);
+		if (loc != (size_t)-1) {
+			return data[loc];
+		}
+
+		return Add(key);
 	}
 
 	__forceinline void Add(D item, K key) {

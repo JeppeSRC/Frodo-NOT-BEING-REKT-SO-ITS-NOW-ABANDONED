@@ -85,8 +85,15 @@ public:
 		data[size++] = item;
 	}
 
-	inline void operator<<(T item) {
+	__forceinline void operator<<(T item) {
 		Push_back(item);
+	}
+
+	inline size_t Contains(T item) {
+		for (size_t i = 0; i < size; i++)
+			if (data[i] == item) return i;
+
+		return (size_t)-1;
 	}
 
 	inline void Reserve(size_t count) {
@@ -128,6 +135,7 @@ public:
 
 	inline void Clear() {
 		memset(data, 0, GetSizeInBytes());
+		size = 0;
 	}
 
 	inline void Free(bool isArray) {
@@ -145,6 +153,8 @@ public:
 
 	inline const size_t GetSize() const { return size; }
 	inline const size_t GetSizeInBytes() const { return size * sizeof(T); }
+	inline const size_t GetAllocated() const { return allocated; }
+	inline const size_t GetAllocatedInBytes() const { return allocated * sizeof(T); }
 
 	inline const size_t GetExtraReserve() const { return extraReserve; }
 };
