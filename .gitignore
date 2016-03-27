@@ -20,9 +20,14 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
+#visual studio
+bin/
+*.vs
+*.sdf
+*.opendb
