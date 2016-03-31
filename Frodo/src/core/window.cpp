@@ -47,61 +47,7 @@ Window::Window(const String& title, int width, int height) : title(title), width
 		return;
 	}
 
-	DXGI_SWAP_CHAIN_DESC scd;
-	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
-
-	scd.BufferCount = 1;
-	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	scd.BufferDesc.Width = width;
-	scd.BufferDesc.Height = height;
-	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-	scd.OutputWindow = hwnd;
-	scd.SampleDesc.Count = 1;
-	scd.Windowed = true;
-	#ifdef _DEBUG
-	if (FAILED(D3D11CreateDeviceAndSwapChain(0, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, &scd, &swapChain, &device, 0, &context))) {
-		#else
-	if (FAILED(D3D11CreateDeviceAndSwapChain(0, D3D_DRIVER_TYPE_HARDWARE, 0, 0, 0, 0, D3D11_SDK_VERSION, &scd, &swapChain, &device, 0, &context))) {
-		#endif
-		FD_FATAL("Direct3D Error: Failed to create device(ID3D11Device) and context(ID3D11DeviceContext)");
-		return;
-	}
-
-	ID3D11Texture2D* tmp;
-	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&tmp);
-
-	device->CreateRenderTargetView(tmp, 0, &renderTarget);
-
-	tmp->Release();
-
-	D3D11_TEXTURE2D_DESC td;
-	ZeroMemory(&td, sizeof(D3D11_TEXTURE2D_DESC));
-	td.ArraySize = 1;
-	td.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	td.Format = DXGI_FORMAT_D32_FLOAT;
-	td.Width = width;
-	td.Height = height;
-	td.SampleDesc.Count = 1;
-	td.Usage = D3D11_USAGE_DEFAULT;
-
-	device->CreateTexture2D(&td, 0, &tmp);
-
-	D3D11_DEPTH_STENCIL_VIEW_DESC dsd;
-	ZeroMemory(&dsd, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
-
-	dsd.Format = DXGI_FORMAT_D32_FLOAT;
-	dsd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-
-	device->CreateDepthStencilView(tmp, &dsd, &depthStencilView);
-
-	tmp->Release();
-
-	if (depthStencilView == nullptr) {
-		FD_FATAL("Direct3D Error: Failed to create depth buffer(ID3D11DepthStencilView)");
-	}
-
-	context->OMSetRenderTargets(1, &renderTarget, depthStencilView);
+	D3DContext::CreateContext(this);
 
 	isOpen = true;
 	isVisible = false;
@@ -114,11 +60,7 @@ Window::Window(const String& title, int width, int height) : title(title), width
 
 Window::~Window() {
 	FD_DEBUG("Closing window");
-	depthStencilView->Release();
-	renderTarget->Release();
-	context->Release();
-	device->Release();
-	swapChain->Release();
+	D3DContext::Dispose();
 }
 
 void Window::SwapBuffers() {
@@ -129,12 +71,11 @@ void Window::SwapBuffers() {
 		DispatchMessage(&msg);
 	}
 
-	swapChain->Present(0, 0);
+	D3DContext::Present();
 }
 
 void Window::Clear() {
-	context->ClearRenderTargetView(renderTarget, clearColor);
-	context->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	D3DContext::Clear();
 }
 
 void Window::SetVisible(bool visible) {

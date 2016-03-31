@@ -3,11 +3,7 @@
 #include <util/string.h>
 #include <util/map.h>
 
-#include <d3d11.h>
-#include <d3d10.h>
-#include <dxgi.h>
-
-#include <Windows.h>
+#include <graphics/d3dcontext.h>
 
 class FDAPI Window {
 private:
@@ -22,12 +18,6 @@ private:
 	String title;
 
 	HWND hwnd;
-
-	ID3D11Device* device;
-	ID3D11DeviceContext* context;
-	ID3D11RenderTargetView* renderTarget;
-	ID3D11DepthStencilView* depthStencilView;
-	IDXGISwapChain* swapChain;
 
 	float clearColor[4];
 
@@ -48,4 +38,5 @@ public:
 	inline float GetAspectRation() const { return float(width) / height; }
 	inline const String& GetTitle() const { return title; }
 	inline bool IsVisible() const { return isVisible; }
+	inline HWND GetHWND() const { return hwnd; }
 };

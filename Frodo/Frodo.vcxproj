@@ -166,6 +166,7 @@
     <ClCompile Include="src\fd.cpp" />
     <ClCompile Include="src\frodo.cpp" />
     <ClCompile Include="src\graphics\buffer\vertexbuffer.cpp" />
+    <ClCompile Include="src\graphics\d3dcontext.cpp" />
     <ClCompile Include="src\util\string.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     <ClInclude Include="src\frodo.h" />
     <ClInclude Include="src\graphics\buffer\buffer.h" />
     <ClInclude Include="src\graphics\buffer\vertexbuffer.h" />
+    <ClInclude Include="src\graphics\d3dcontext.h" />
     <ClInclude Include="src\util\list.h" />
     <ClInclude Include="src\util\map.h" />
     <ClInclude Include="src\util\string.h" />
