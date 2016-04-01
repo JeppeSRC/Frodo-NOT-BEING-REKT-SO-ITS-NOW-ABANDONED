@@ -32,9 +32,9 @@ public:
 
 	static void SetRenderTargets(ID3D11RenderTargetView* target, ID3D11DepthStencilView* depthView);
 
-	inline static D3DContext* GetD3DContext() { return pContext; }
+	inline static D3DContext* GetContext() { return pContext; }
 	inline static ID3D11Device* GetDevice() {return pContext->device;}
-	inline static ID3D11DeviceContext* GetContext() { return pContext->context; }
+	inline static ID3D11DeviceContext* GetDeviceContext() { return pContext->context; }
 	inline static IDXGISwapChain* GetSwapChain() { return  pContext->swapChain; }
 
 

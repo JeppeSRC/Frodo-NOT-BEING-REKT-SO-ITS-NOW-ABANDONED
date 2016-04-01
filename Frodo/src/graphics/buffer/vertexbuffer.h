@@ -1,7 +1,7 @@
 #pragma once
 #include "buffer.h"
 
-class FDVertexBuffer : public FDBuffer {
+class FDAPI FDVertexBuffer : public FDBuffer {
 private:
 	unsigned int stride;
 	

@@ -1,7 +1,6 @@
 #pragma once
 #include <fd.h>
-#include <d3d11.h>
-#include <d3d10.h>
+#include <graphics/d3dcontext.h>
 
 class FDAPI FDBuffer {
 protected:
