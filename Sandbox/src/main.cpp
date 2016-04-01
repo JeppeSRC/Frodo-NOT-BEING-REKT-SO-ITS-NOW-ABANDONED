@@ -7,6 +7,9 @@
 #include <graphics/buffer/vertexbuffer.h>
 
 int main() {
+	FD_WARNING("sd");
+
+	FD_ASSERT(false);
 
 	Window w("Title", 600, 400);
 	w.SetVisible(true);
