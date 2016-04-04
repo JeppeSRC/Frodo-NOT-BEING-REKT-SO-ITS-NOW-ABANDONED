@@ -5,12 +5,9 @@
 #include <core/log.h>
 #include <core/window.h>
 #include <graphics/buffer/vertexbuffer.h>
+#include <graphics/buffer/indexbuffer.h>
 
 int main() {
-	FD_WARNING("sd");
-
-	FD_ASSERT(false);
-
 	Window w("Title", 600, 400);
 	w.SetVisible(true);
 	
@@ -21,9 +18,16 @@ int main() {
 
 	FD_DEBUG("%f %f", map["Hello"], map["World"]);
 
-	float a[3]{0, 2, 3};
+	float a[]{
+		0, 1, 0,
+		1, -1, 0,
+		-1, -1, 0
+	};
 
-	FDVertexBuffer b(&a, sizeof(a), 12);
+	unsigned int indices[] = {0, 1, 2};
+
+	FDVertexBuffer v(&a, sizeof(a), 12);
+	FDIndexBuffer i(indices, 3);
 
 	while (w.IsOpen()) {
 		w.Clear();

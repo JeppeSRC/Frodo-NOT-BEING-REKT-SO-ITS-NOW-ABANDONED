@@ -92,7 +92,7 @@ float col[4]{0, 0, 0, 1};
 
 void D3DContext::Clear() {
 	GetDeviceContext()->ClearRenderTargetView(GetContext()->renderTarget, col);
-	GetDeviceContext()->ClearDepthStencilView(GetContext()->depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0.0f);
+	GetDeviceContext()->ClearDepthStencilView(GetContext()->depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void D3DContext::SetRenderTargets(ID3D11RenderTargetView* target, ID3D11DepthStencilView* depthView) {

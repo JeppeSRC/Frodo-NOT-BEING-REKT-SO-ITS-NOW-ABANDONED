@@ -1,4 +1,5 @@
 #include "vertexbuffer.h"
+#include <core/log.h>
 
 FDVertexBuffer::FDVertexBuffer(void* data, size_t size, unsigned int stride) : FDBuffer(), stride(stride) {
 
@@ -21,7 +22,7 @@ FDVertexBuffer::FDVertexBuffer(void* data, size_t size, unsigned int stride) : F
 	srd.SysMemSlicePitch = 0;
 
 	D3DContext::GetDevice()->CreateBuffer(&bd, &srd, &buffer);
-
+	FD_ASSERT(buffer, "vertexbuffer creation failed");
 }
 
 void FDVertexBuffer::Bind() {

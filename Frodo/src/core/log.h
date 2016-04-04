@@ -14,20 +14,22 @@
 #if defined(_DEBUG) || defined(FD_LOG_DISPLAY_DEBUG)
 #define FD_DEBUG(msg, ...) FDLog(FD_LOG_LEVEL_DEBUG, msg, __VA_ARGS__)
 #define FD_WARNING(msg, ...) FDLog(FD_LOG_LEVEL_WARNING, msg, __VA_ARGS__)
+#define FD_FATAL(msg, ...) FDLog(FD_LOG_LEVEL_FATAL, msg, __VA_ARGS__)
 
-#define FD_ASSERT(x) \
+#define FD_ASSERT(x, msg) \
 if (!x) { \
-	FD_FATAL("ASSERTION FAILED: \"%s\"", #x); \
+	FD_FATAL("ASSERTION FAILED: \"%s\" \n\tMessage: %s", #x, msg); \
 	int* abcdefghijklmnopqrstuvwxyz123456789 = nullptr; \
 	*abcdefghijklmnopqrstuvwxyz123456789 = 1; \
 }
 #else
 #define FD_DEBUG(msg, ...)
 #define FD_WARNING(msg, ...)
-#define FD_ASSERT(x)
+#define FD_ASSERT(x, msg)
+#define FD_FATAL(msg, ...) 
 #endif
 
-#define FD_FATAL(msg, ...) FDLog(FD_LOG_LEVEL_FATAL, msg, __VA_ARGS__)
+
 
 
 
