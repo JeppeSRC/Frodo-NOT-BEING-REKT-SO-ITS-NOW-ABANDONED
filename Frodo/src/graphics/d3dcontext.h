@@ -29,7 +29,7 @@ public:
 	static void CreateContext(Window* window);
 	static void Dispose();
 
-	static void Present();
+	static void Present(unsigned int syncInterval, unsigned int flags);
 	static void Clear();
 
 	static void SetRenderTargets(ID3D11RenderTargetView* target, ID3D11DepthStencilView* depthView);

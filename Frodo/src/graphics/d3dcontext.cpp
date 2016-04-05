@@ -82,8 +82,9 @@ void D3DContext::Dispose() {
 	delete pContext;
 }
 
-void D3DContext::Present() {
-	GetSwapChain()->Present(0, 0);
+void D3DContext::Present(unsigned int syncInterval, unsigned int flags) {
+	GetSwapChain()->Present(syncInterval, flags);
+	
 }
 
 float col[4]{0, 0, 0, 1};

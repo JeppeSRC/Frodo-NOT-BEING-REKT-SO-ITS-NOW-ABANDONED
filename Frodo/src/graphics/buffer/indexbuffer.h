@@ -3,13 +3,6 @@
 #include <fd.h>
 #include <graphics/d3dcontext.h>
 
-enum FD_INDEXBUFFER_FORMAT {
-	FD_INDEXBUFFER_FORMAT_UNKNOWN,
-	FD_INDEXBUFFER_FORMAT_UINT32,
-	FD_INDEXBUFFER_FORMAT_INT32,
-	FD_INDEXBUFFER_FORMAT_UINT16,
-	FD_INDEXBUFFER_FORMAT_INT16,
-};
 
 class FDAPI FDIndexBuffer : public FDBuffer {
 private:

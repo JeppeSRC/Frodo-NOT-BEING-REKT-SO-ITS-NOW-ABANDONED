@@ -20,7 +20,7 @@ inline static DXGI_FORMAT get_buffer_format(FD_INDEXBUFFER_FORMAT format) {
 }
 
 FDIndexBuffer::FDIndexBuffer(void* data, size_t size, FD_INDEXBUFFER_FORMAT format) : FDBuffer() {
-
+	FD_DEBUG("Creating indexbuffer <%u> Format: %s", numBuffers++, get_format_string(format));
 	this->format = get_buffer_format(format);
 
 	D3D11_BUFFER_DESC bd;

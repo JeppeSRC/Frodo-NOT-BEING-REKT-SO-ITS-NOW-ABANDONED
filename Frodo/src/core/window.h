@@ -15,6 +15,7 @@ private:
 	int width, height;
 	bool isOpen;
 	bool isVisible;
+	bool vSync;
 	String title;
 
 	HWND hwnd;
@@ -39,4 +40,5 @@ public:
 	inline const String& GetTitle() const { return title; }
 	inline bool IsVisible() const { return isVisible; }
 	inline HWND GetHWND() const { return hwnd; }
+	inline void SetVSync(bool status) { vSync = status; }
 };

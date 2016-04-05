@@ -2,6 +2,7 @@
 
 #include <fd.h>
 #include <graphics/d3dcontext.h>
+#include <common.h>
 
 class FDAPI FDTexture {
 protected:

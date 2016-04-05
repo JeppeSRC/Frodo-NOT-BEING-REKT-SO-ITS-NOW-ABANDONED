@@ -2,12 +2,6 @@
 #include "texture.h"
 #include <util/string.h>
 
-enum FD_TEXTURE2D_FORMAT {
-	FD_TEXTURE2D_FORMAT_UNKNOWN,
-	FD_TEXTURE2D_FORMAT_UINT_8_8_8_8,
-	FD_TEXTURE2D_FORMAT_FLOAT_32_32_32_32
-};
-
 class FDAPI FDTexture2D : public FDTexture {
 private:
 	ID3D11ShaderResourceView* resourceView;

@@ -51,6 +51,7 @@ Window::Window(const String& title, int width, int height) : title(title), width
 
 	isOpen = true;
 	isVisible = false;
+	vSync = true;
 
 	window_handels.Add(this, hwnd);
 
@@ -71,7 +72,7 @@ void Window::SwapBuffers() {
 		DispatchMessage(&msg);
 	}
 
-	D3DContext::Present();
+	D3DContext::Present(vSync, 0);
 }
 
 void Window::Clear() {

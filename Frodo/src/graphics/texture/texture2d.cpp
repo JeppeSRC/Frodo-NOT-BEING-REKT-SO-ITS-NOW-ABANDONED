@@ -5,7 +5,7 @@
 using namespace DirectX;
 
 FDTexture2D::FDTexture2D(const String& filename) : FDTexture2D() {
-	
+	FD_DEBUG("Creating texture2d from file <%s>", *filename);
 	CreateWICTextureFromFile(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), filename.GetWCHAR(), (ID3D11Resource**)&resource, &resourceView);
 	
 	FD_ASSERT(resource && resourceView);
@@ -19,6 +19,8 @@ FDTexture2D::FDTexture2D(const String& filename) : FDTexture2D() {
 }
 
 FDTexture2D::FDTexture2D(void* data, unsigned int width, unsigned int height, FD_TEXTURE2D_FORMAT format) : FDTexture2D() {
+	FD_DEBUG("Creating texture2d from memory <width:%u | height:%u | Format: %s>", width, height, get_format_string(format));
+
 	this->width = width;
 	this->height = height;
 	D3D11_TEXTURE2D_DESC d;
