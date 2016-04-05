@@ -168,6 +168,7 @@
     <ClCompile Include="src\graphics\buffer\indexbuffer.cpp" />
     <ClCompile Include="src\graphics\buffer\vertexbuffer.cpp" />
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
+    <ClCompile Include="src\graphics\texture\texture2d.cpp" />
     <ClCompile Include="src\util\string.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +180,8 @@
     <ClInclude Include="src\graphics\buffer\indexbuffer.h" />
     <ClInclude Include="src\graphics\buffer\vertexbuffer.h" />
     <ClInclude Include="src\graphics\d3dcontext.h" />
+    <ClInclude Include="src\graphics\texture\texture.h" />
+    <ClInclude Include="src\graphics\texture\texture2d.h" />
     <ClInclude Include="src\util\list.h" />
     <ClInclude Include="src\util\map.h" />
     <ClInclude Include="src\util\string.h" />

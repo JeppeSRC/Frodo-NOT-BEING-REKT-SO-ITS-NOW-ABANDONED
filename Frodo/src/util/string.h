@@ -1,5 +1,6 @@
 #pragma once
 #include <fd.h>
+#include <stdio.h>
  
 class FDAPI String {
 private:
@@ -35,5 +36,12 @@ public:
 	void Split(const char delimiter, List<String*>& list);
 
 	inline char* operator*() const { return str; }
+
+	inline wchar_t* GetWCHAR() const {
+		wchar_t* tmp = new wchar_t[length + 1];
+		swprintf(tmp, L"%S", str);
+		tmp[length] = '\0';
+		return tmp;
+	}
 };
  
