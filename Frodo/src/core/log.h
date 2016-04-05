@@ -16,16 +16,16 @@
 #define FD_WARNING(msg, ...) FDLog(FD_LOG_LEVEL_WARNING, msg, __VA_ARGS__)
 #define FD_FATAL(msg, ...) FDLog(FD_LOG_LEVEL_FATAL, msg, __VA_ARGS__)
 
-#define FD_ASSERT(x, msg) \
+#define FD_ASSERT(x) \
 if (!x) { \
-	FD_FATAL("ASSERTION FAILED: \"%s\" \n\tMessage: %s", #x, msg); \
+	FD_FATAL("ASSERTION FAILED: File: \"%s\" Func: \"%s\" Line: %u \"%s\"", #x, __FILE__, __FUNCSIG__, __LINE__); \
 	int* abcdefghijklmnopqrstuvwxyz123456789 = nullptr; \
 	*abcdefghijklmnopqrstuvwxyz123456789 = 1; \
 }
 #else
 #define FD_DEBUG(msg, ...)
 #define FD_WARNING(msg, ...)
-#define FD_ASSERT(x, msg)
+#define FD_ASSERT(x)
 #define FD_FATAL(msg, ...) 
 #endif
 

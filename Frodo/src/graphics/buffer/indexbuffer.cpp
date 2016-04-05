@@ -4,7 +4,7 @@
 inline static DXGI_FORMAT get_buffer_format(FD_INDEXBUFFER_FORMAT format) {
 	switch (format) {
 		case UNKNOWN:
-			FD_ASSERT(UNKNOWN, "Unknown indexbuffer format");
+			FD_ASSERT(UNKNOWN);
 			break;
 		case FD_INDEXBUFFER_FORMAT_UINT32:
 			return DXGI_FORMAT_R32_UINT;
@@ -41,7 +41,7 @@ FDIndexBuffer::FDIndexBuffer(void* data, size_t size, FD_INDEXBUFFER_FORMAT form
 	srd.SysMemSlicePitch = 0;
 
 	D3DContext::GetDevice()->CreateBuffer(&bd, &srd, &buffer);
-	FD_ASSERT(buffer, "indexbuffer creation failed");
+	FD_ASSERT(buffer);
 }
 
 FDIndexBuffer::FDIndexBuffer(unsigned int* data, size_t count) : FDIndexBuffer(data, count * sizeof(unsigned int), FD_INDEXBUFFER_FORMAT_UINT32) {}
