@@ -39,7 +39,7 @@ public:
 
 	inline wchar_t* GetWCHAR() const {
 		wchar_t* tmp = new wchar_t[length + 1];
-		swprintf(tmp, L"%S", str);
+		swprintf_s(tmp,length+1,  L"%S", str);
 		tmp[length] = '\0';
 		return tmp;
 	}

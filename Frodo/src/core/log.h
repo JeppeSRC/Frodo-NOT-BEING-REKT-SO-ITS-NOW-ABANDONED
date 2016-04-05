@@ -18,7 +18,7 @@
 
 #define FD_ASSERT(x) \
 if (!x) { \
-	FD_FATAL("ASSERTION FAILED: File: \"%s\" Func: \"%s\" Line: %u \"%s\"", #x, __FILE__, __FUNCSIG__, __LINE__); \
+	FD_FATAL("ASSERTION FAILED: File: \"%s\" Func: \"%s\" Line: %u \"%s\"", __FILE__, __FUNCSIG__, __LINE__, #x); \
 	int* abcdefghijklmnopqrstuvwxyz123456789 = nullptr; \
 	*abcdefghijklmnopqrstuvwxyz123456789 = 1; \
 }

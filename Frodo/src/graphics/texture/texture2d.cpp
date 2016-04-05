@@ -8,6 +8,8 @@ FDTexture2D::FDTexture2D(const String& filename) : FDTexture2D() {
 	
 	CreateWICTextureFromFile(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), filename.GetWCHAR(), (ID3D11Resource**)&resource, &resourceView);
 	
+	FD_ASSERT(resource && resourceView);
+
 	D3D11_TEXTURE2D_DESC d;
 
 	resource->GetDesc(&d);
@@ -23,22 +25,26 @@ FDTexture2D::FDTexture2D(void* data, unsigned int width, unsigned int height, FD
 	ZeroMemory(&d, sizeof(D3D11_TEXTURE2D_DESC));
 
 	d.ArraySize = 1;
+	d.MipLevels = 1;
 	d.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	d.Width = width;
 	d.Height = height;
 	d.SampleDesc.Count = 1;
 	d.Usage = D3D11_USAGE_DEFAULT;
 	
+	unsigned int size = 0;
+
 	switch (format) {
-		case UNKNOWN:
-			FD_FATAL("Texture2D UNKNWON format");
-			FD_ASSERT(false);
+		case FD_TEXTURE2D_FORMAT_UNKNOWN:
+			FD_ASSERT(FD_TEXTURE2D_FORMAT_UNKNOWN);
 			break;
 		case FD_TEXTURE2D_FORMAT_UINT_8_8_8_8:
 			d.Format = DXGI_FORMAT_R8G8B8A8_UINT;
+			size = 4;
 			break;
 		case FD_TEXTURE2D_FORMAT_FLOAT_32_32_32_32:
 			d.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			size = 32;
 			break;
 	}
 
@@ -46,6 +52,7 @@ FDTexture2D::FDTexture2D(void* data, unsigned int width, unsigned int height, FD
 	ZeroMemory(&s, sizeof(D3D11_SUBRESOURCE_DATA));
 
 	s.pSysMem = data;
+	s.SysMemPitch = width * size;
 
 	D3DContext::GetDevice()->CreateTexture2D(&d, &s, &resource);
 

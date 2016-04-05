@@ -3,8 +3,8 @@
 
 inline static DXGI_FORMAT get_buffer_format(FD_INDEXBUFFER_FORMAT format) {
 	switch (format) {
-		case UNKNOWN:
-			FD_ASSERT(UNKNOWN);
+		case FD_INDEXBUFFER_FORMAT_UNKNOWN:
+			FD_ASSERT(FD_INDEXBUFFER_FORMAT_UNKNOWN);
 			break;
 		case FD_INDEXBUFFER_FORMAT_UINT32:
 			return DXGI_FORMAT_R32_UINT;
