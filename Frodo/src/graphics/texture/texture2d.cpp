@@ -64,8 +64,8 @@ FDTexture2D::FDTexture2D(void* data, unsigned int width, unsigned int height, FD
 }
 
 FDTexture2D::~FDTexture2D() {
-	resource->Release();
-	resourceView->Release();
+	DX_FREE(resource)
+	DX_FREE(resourceView)
 }
 
 void FDTexture2D::Bind() {

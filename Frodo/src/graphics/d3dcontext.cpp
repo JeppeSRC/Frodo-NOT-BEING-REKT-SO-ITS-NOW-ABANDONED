@@ -7,11 +7,11 @@ D3DContext* D3DContext::pContext = nullptr;
 D3DContext::D3DContext() { }
 
 D3DContext::~D3DContext() {
-	depthStencilView->Release();
-	renderTarget->Release();
-	context->Release();
-	device->Release();
-	swapChain->Release();
+	DX_FREE(depthStencilView)
+	DX_FREE(renderTarget)
+	DX_FREE(context)
+	DX_FREE(device)
+	DX_FREE(swapChain)
 }
 
 void D3DContext::CreateContext(Window* window) {
@@ -49,8 +49,7 @@ void D3DContext::CreateContext(Window* window) {
 
 	pContext->device->CreateRenderTargetView(tmp, 0, &pContext->renderTarget);
 
-	tmp->Release();
-	tmp = nullptr;
+	DX_FREE(tmp)
 
 	D3D11_TEXTURE2D_DESC td;
 	ZeroMemory(&td, sizeof(D3D11_TEXTURE2D_DESC));
@@ -73,8 +72,7 @@ void D3DContext::CreateContext(Window* window) {
 
 	pContext->device->CreateDepthStencilView(tmp, &dsd, &pContext->depthStencilView);
 	
-	tmp->Release();
-	tmp = nullptr;
+	DX_FREE(tmp)
 
 	SetRenderTargets(pContext->renderTarget, pContext->depthStencilView);
 }

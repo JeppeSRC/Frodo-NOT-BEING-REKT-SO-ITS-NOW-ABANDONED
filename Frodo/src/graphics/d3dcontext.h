@@ -7,6 +7,8 @@
 
 #include <Windows.h>
 
+#define DX_FREE(x) if (x != nullptr) { x->Release(); x = nullptr;}
+
 class FDAPI D3DContext {
 private:
 	friend class Window;

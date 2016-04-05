@@ -10,7 +10,7 @@ protected:
 	FDBuffer() { buffer = nullptr; }
 
 public:
-	virtual ~FDBuffer() { buffer->Release(); }
+	virtual ~FDBuffer() { DX_FREE(buffer) }
 
 	virtual void Bind() = 0;
 
