@@ -51,7 +51,7 @@ Window::Window(const String& title, int width, int height) : title(title), width
 
 	isOpen = true;
 	isVisible = false;
-	vSync = true;
+	vSync = 1;
 
 	window_handels.Add(this, hwnd);
 
