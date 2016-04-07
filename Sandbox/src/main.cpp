@@ -8,7 +8,12 @@
 #include <graphics/buffer/indexbuffer.h>
 #include <graphics/texture/texture2d.h>
 
+#include <math/math.h>
+
+#include <ctime>
+
 int main() {
+
 	Window w("Title", 600, 400);
 	w.SetVisible(true);
 
