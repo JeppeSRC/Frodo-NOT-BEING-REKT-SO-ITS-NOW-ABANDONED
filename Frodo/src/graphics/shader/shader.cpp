@@ -32,8 +32,10 @@ FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
 		FD_ASSERT(pByteCode && "PixelShader failed to compile");
 	}
 
-	DX_FREE(error);
+	FD_DEBUG("Shaders compiled");
 
+	DX_FREE(error);
+	
 
 	D3DContext::GetDevice()->CreateVertexShader(vByteCode->GetBufferPointer(), vByteCode->GetBufferSize(), 0, &vertexShader);
 
@@ -49,4 +51,9 @@ FDShader::~FDShader() {
 	DX_FREE(pixelShader);
 	DX_FREE(vByteCode);
 	DX_FREE(pByteCode);
+}
+
+void FDShader::Bind() {
+	D3DContext::GetDeviceContext()->VSSetShader(vertexShader, 0, 0);
+	D3DContext::GetDeviceContext()->PSSetShader(pixelShader, 0, 0);
 }

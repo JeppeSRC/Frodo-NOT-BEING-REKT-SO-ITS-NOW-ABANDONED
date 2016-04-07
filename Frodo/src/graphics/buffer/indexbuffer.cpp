@@ -44,13 +44,13 @@ FDIndexBuffer::FDIndexBuffer(void* data, size_t size, FD_INDEXBUFFER_FORMAT form
 	FD_ASSERT(buffer);
 }
 
-FDIndexBuffer::FDIndexBuffer(unsigned int* data, size_t count) : FDIndexBuffer(data, count * sizeof(unsigned int), FD_INDEXBUFFER_FORMAT_UINT32) {}
+FDIndexBuffer::FDIndexBuffer(unsigned int* data, unsigned int count) : FDIndexBuffer(data, count * sizeof(unsigned int), FD_INDEXBUFFER_FORMAT_UINT32) { this->count = count; }
 
-FDIndexBuffer::FDIndexBuffer(int* data, size_t count) : FDIndexBuffer(data, count * sizeof(int), FD_INDEXBUFFER_FORMAT_INT32) {}
+FDIndexBuffer::FDIndexBuffer(int* data, unsigned int count) : FDIndexBuffer(data, count * sizeof(int), FD_INDEXBUFFER_FORMAT_INT32) { this->count = count; }
 
-FDIndexBuffer::FDIndexBuffer(unsigned short* data, size_t count) : FDIndexBuffer(data, count * sizeof(unsigned short), FD_INDEXBUFFER_FORMAT_UINT16) {}
+FDIndexBuffer::FDIndexBuffer(unsigned short* data, unsigned int count) : FDIndexBuffer(data, count * sizeof(unsigned short), FD_INDEXBUFFER_FORMAT_UINT16) { this->count = count; }
 
-FDIndexBuffer::FDIndexBuffer(short* data, size_t count) : FDIndexBuffer(data, count * sizeof(short), FD_INDEXBUFFER_FORMAT_INT16) {}
+FDIndexBuffer::FDIndexBuffer(short* data, unsigned int count) : FDIndexBuffer(data, count * sizeof(short), FD_INDEXBUFFER_FORMAT_INT16) { this->count = count; }
 
 
 void FDIndexBuffer::Bind() {

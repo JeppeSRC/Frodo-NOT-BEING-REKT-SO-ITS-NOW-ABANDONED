@@ -75,6 +75,16 @@ void D3DContext::CreateContext(Window* window) {
 	DX_FREE(tmp)
 
 	SetRenderTargets(pContext->renderTarget, pContext->depthStencilView);
+
+	D3D11_VIEWPORT view;
+	view.TopLeftX = 0;
+	view.TopLeftY = 0;
+	view.Width = window->GetWidth();
+	view.Height = window->GetHeight();
+	view.MaxDepth = 1.0f;
+	view.MinDepth = 0.0f;
+
+	pContext->GetDeviceContext()->RSSetViewports(1, &view);
 }
 
 void D3DContext::Dispose() {
