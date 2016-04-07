@@ -24,10 +24,10 @@ private:
 
 	unsigned int offset;
 
-	void Push(const char* name, DXGI_FORMAT format);
+	void Push(const String& name, DXGI_FORMAT format);
 
 public:
-	FDBufferLayout() { offset = 0; }
+	FDBufferLayout() { offset = 0; elements.Reserve(32); }
 	~FDBufferLayout();
 
 	void CreateInputLayout(FDShader* shader);

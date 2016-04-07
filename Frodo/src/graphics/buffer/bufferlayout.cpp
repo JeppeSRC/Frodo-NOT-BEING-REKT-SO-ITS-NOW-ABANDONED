@@ -17,10 +17,10 @@ FDBufferLayout::~FDBufferLayout() {
 	DX_FREE(layout);
 }
 
-void FDBufferLayout::Push(const char* name, DXGI_FORMAT format) {
+void FDBufferLayout::Push(const String& name, DXGI_FORMAT format) {
 	unsigned int size = get_size_from_format(format);
 	FD_ASSERT(size);
-	elements.Push_back({String(name), format, size, offset});
+	elements.Push_back({name, format, size, offset});
 	offset += size;
 }
 

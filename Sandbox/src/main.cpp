@@ -19,35 +19,32 @@ int main() {
 	w.SetVisible(true);
 	w.SetVSync(1);
 
-	float a[]{
-		0, 1, 0,
-		1, -1, 0,
-		-1, -1, 0
+	struct Vertex {
+		vec4 position;
+		vec4 color;
 	};
-
+	
 	unsigned int indices[] = {0, 1, 2};
 
-	FDVertexBuffer v(&a, sizeof(a), 12);
-	FDIndexBuffer i(indices, 3);
-
-	vec4 pix[4]{
-		{1, 0, 1, 1},
-		{1, 0, 1, 1},
-		{1, 0, 1, 1},
-		{1, 0, 1, 1}
+	Vertex a[4]{
+		{vec4(0, 1, 0, 1), vec4(1, 0, 0, 1)},
+		{vec4(1, -1, 0, 1), vec4(0, 1, 0, 1)},
+		{vec4(-1, -1, 0, 1), vec4(0, 0, 1, 1)}
 	};
 
-	FDTexture2D texture(pix, 2, 2, FD_TEXTURE2D_FORMAT_FLOAT_32_32_32_32);
+	FDVertexBuffer v(&a, sizeof(a), sizeof(Vertex));
+	FDIndexBuffer i(indices, 3);
 
 	FDShader shader("res/vertex.hlsl", "res/pixel.hlsl");
 	FDBufferLayout layout;
 
-	layout.Push<vec3>("POSITION");
+	layout.Push<vec4>("POSITION");
+	layout.Push<vec4>("COLOR");
 
 	layout.CreateInputLayout(&shader);
 
-	layout.Bind();
 	shader.Bind();
+	layout.Bind();
 
 	v.Bind();
 	i.Bind();
