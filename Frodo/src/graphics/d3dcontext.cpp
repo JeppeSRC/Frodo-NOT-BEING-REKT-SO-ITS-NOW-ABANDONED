@@ -14,6 +14,8 @@ D3DContext::~D3DContext() {
 	DX_FREE(swapChain)
 }
 
+
+
 void D3DContext::CreateContext(Window* window) {
 	if (pContext != nullptr) {
 		FD_DEBUG("Deleting previous context");
@@ -76,15 +78,7 @@ void D3DContext::CreateContext(Window* window) {
 
 	SetRenderTargets(pContext->renderTarget, pContext->depthStencilView);
 
-	D3D11_VIEWPORT view;
-	view.TopLeftX = 0;
-	view.TopLeftY = 0;
-	view.Width = window->GetWidth();
-	view.Height = window->GetHeight();
-	view.MaxDepth = 1.0f;
-	view.MinDepth = 0.0f;
-
-	pContext->GetDeviceContext()->RSSetViewports(1, &view);
+	SetViewPort(0.0f, 0.0f, (float)window->GetWidth(), (float)window->GetHeight());
 }
 
 void D3DContext::Dispose() {
@@ -106,4 +100,17 @@ void D3DContext::Clear() {
 
 void D3DContext::SetRenderTargets(ID3D11RenderTargetView* target, ID3D11DepthStencilView* depthView) {
 	GetDeviceContext()->OMSetRenderTargets(1, &target, depthView);
+}
+
+void D3DContext::SetViewPort(float topLeftX, float topLeftY, float width, float height) {
+	D3D11_VIEWPORT v;
+	v.TopLeftX = topLeftX;
+	v.TopLeftY = topLeftY;
+	v.Width = width;
+	v.Height = height;
+	v.MinDepth = 0.0f;
+	v.MaxDepth = 1.0f;
+
+	
+	GetDeviceContext()->RSSetViewports(1, &v);
 }

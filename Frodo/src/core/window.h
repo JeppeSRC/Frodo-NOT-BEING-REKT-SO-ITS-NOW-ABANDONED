@@ -2,6 +2,7 @@
 #include <fd.h>
 #include <util/string.h>
 #include <util/map.h>
+#include "log.h"
 
 #include <graphics/d3dcontext.h>
 
@@ -40,5 +41,5 @@ public:
 	inline const String& GetTitle() const { return title; }
 	inline bool IsVisible() const { return isVisible; }
 	inline HWND GetHWND() const { return hwnd; }
-	inline void SetVSync(unsigned int status) { vSync = status; }
+	inline void SetVSync(unsigned int status) { vSync = status; FD_DEBUG("Vsync set to: %u", vSync); }
 };
