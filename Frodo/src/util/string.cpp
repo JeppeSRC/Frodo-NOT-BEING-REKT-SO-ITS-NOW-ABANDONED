@@ -1,6 +1,7 @@
 #include "string.h"
 #include "list.h"
 #include <string>
+#include <core/log.h>
 
 String::String(const char* string) {
 	if (!string) {
@@ -70,7 +71,7 @@ String& String::operator=(String&& string) {
 	return *this;
 }
 
-String& String::operator<<(const String& string) {
+String& String::Append(const String& string) {
 	size_t newlen = length + string.length;
 	char* tmpstr = str;
 	str = new char[newlen + 1];
@@ -81,6 +82,26 @@ String& String::operator<<(const String& string) {
 
 	delete[] tmpstr;
 			
+	return *this;
+}
+
+String& String::Remove(const String& string) {
+	FD_ASSERT(length > string.length);
+
+	size_t index = Contains(string);
+	size_t newlen = length - string.length;
+
+	char* tmp = str;
+
+	str = new char[newlen + 1];
+	memcpy(str, tmp, index);
+	memcpy(str + index, tmp + index + string.length, newlen - index);
+
+	length = newlen;
+	str[length] = '\0';
+
+	delete[] tmp;
+
 	return *this;
 }
 
@@ -143,34 +164,34 @@ size_t String::Contains(const String& string) {
 		if (match) {
 			return i;
 		}
-		}
-
-		return (size_t)-1;
 	}
 
-	List<String*> String::Split(const char delimiter) {
+	return (size_t)-1;
+}
 
-		List<String*> list(128, 32);
+List<String*> String::Split(const char delimiter) {
+
+	List<String*> list(128, 32);
 		
-		Split(delimiter, list);
+	Split(delimiter, list);
 
-		return list;
-	}
+	return list;
+}
 
-	void String::Split(const char delimiter, List<String*>& list) {
-		size_t lastindex = 0;
+void String::Split(const char delimiter, List<String*>& list) {
+	size_t lastindex = 0;
 
-		for (size_t i = 0; i < length; i++) {
-			if (str[i] == delimiter) {
+	for (size_t i = 0; i < length; i++) {
+		if (str[i] == delimiter) {
 				
-				list << new String(str + lastindex, i - lastindex);
-				lastindex = i + 1;
-			}
+			list << new String(str + lastindex, i - lastindex);
+			lastindex = i + 1;
 		}
-
-		if (lastindex < length)
-			list << new String(str + lastindex, length - lastindex);
-
 	}
+
+	if (lastindex < length)
+		list << new String(str + lastindex, length - lastindex);
+
+}
 
  

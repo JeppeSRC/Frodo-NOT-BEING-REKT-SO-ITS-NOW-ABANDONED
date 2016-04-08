@@ -21,7 +21,10 @@ public:
 	String& operator=(const String& string);
 	String& operator=(String&& string);
 
-	String& operator<<(const String& string);
+	String& Append(const String& string);
+	__forceinline String& operator<<(const String& string) { return Append(string); }
+
+	String& Remove(const String& string);
 
 	char operator[](size_t index);
 
