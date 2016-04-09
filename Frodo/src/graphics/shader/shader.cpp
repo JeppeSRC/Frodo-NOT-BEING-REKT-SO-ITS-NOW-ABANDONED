@@ -1,6 +1,37 @@
 #include "shader.h"
 #include <d3dcompiler.h>
 #include <core/log.h>
+#include <util/fileutils.h>
+
+
+void FDShader::RemoveComments(String& source) {
+
+	while (true) {
+		size_t start = source.Contains("/*");
+
+		if (start == -1) break;
+
+		size_t end = source.Contains("*/", start);
+
+		source.Remove(start, end);
+	}
+
+	while (true) {
+		size_t start = source.Contains("//");
+
+		if (start == -1) break;
+
+		size_t end = source.Contains("\n", start);
+		if (end == -1) end = source.length;
+
+		source.Remove(start, end);
+	}
+
+}
+
+void FDShader::ParseStructs(const String& vSource, const String& pSource) {
+
+}
 
 FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
 	vByteCode = nullptr;
@@ -8,11 +39,14 @@ FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
 	vertexShader = nullptr;
 	pixelShader = nullptr;
 
+	String vSource = FDReadTextFile(vertexFilename);
+	String pSource = FDReadTextFile(pixelFilename);
+
 	ID3DBlob* error = nullptr;
 
 	FD_DEBUG("Compiling vertexshader \"%s\"", *vertexFilename);
 
-	D3DCompileFromFile(vertexFilename.GetWCHAR(), 0, 0, "vsMain", "vs_5_0", 0, 0, &vByteCode, &error);
+	D3DCompile(*vSource, vSource.length, 0, 0, 0, "vsMain", "vs_5_0", 0, 0, &vByteCode, &error);
 
 	if (error) {
 		FD_FATAL("VertexShader ERROR: %s", error->GetBufferPointer());
@@ -24,7 +58,7 @@ FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
 
 	FD_DEBUG("Compiling pixelshader \"%s\"", *pixelFilename);
 
-	D3DCompileFromFile(pixelFilename.GetWCHAR(), 0, 0, "psMain", "ps_5_0", 0, 0, &pByteCode, &error);
+	D3DCompile(*pSource, pSource.length, 0, 0, 0, "psMain", "ps_5_0", 0, 0, &pByteCode, &error);
 
 	if (error) {
 		FD_FATAL("PixelShader ERROR: %s", error->GetBufferPointer());
@@ -44,6 +78,13 @@ FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
 	D3DContext::GetDevice()->CreatePixelShader(pByteCode->GetBufferPointer(), pByteCode->GetBufferSize(), 0, &pixelShader);
 
 	FD_ASSERT(pixelShader && "Failed to create pixelshader");
+
+
+	RemoveComments(vSource);
+	RemoveComments(pSource);
+
+	ParseStructs(vSource, pSource);
+
 }
 
 FDShader::~FDShader() {

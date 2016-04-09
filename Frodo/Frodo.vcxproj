@@ -182,6 +182,7 @@
     <ClCompile Include="src\math\vec2.cpp" />
     <ClCompile Include="src\math\vec3.cpp" />
     <ClCompile Include="src\math\vec4.cpp" />
+    <ClCompile Include="src\util\fileutils.cpp" />
     <ClCompile Include="src\util\string.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +206,7 @@
     <ClInclude Include="src\math\vec2.h" />
     <ClInclude Include="src\math\vec3.h" />
     <ClInclude Include="src\math\vec4.h" />
+    <ClInclude Include="src\util\fileutils.h" />
     <ClInclude Include="src\util\list.h" />
     <ClInclude Include="src\util\map.h" />
     <ClInclude Include="src\util\string.h" />

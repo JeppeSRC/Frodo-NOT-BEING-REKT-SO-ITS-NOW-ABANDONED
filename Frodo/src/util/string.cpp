@@ -3,6 +3,7 @@
 #include <string>
 #include <core/log.h>
 
+
 String::String(const char* string) {
 	if (!string) {
 		length = 0;
@@ -15,16 +16,21 @@ String::String(const char* string) {
 	memcpy(str, string, length);
 }
 
-String::String(const char* string, size_t length) {
+String::String(char* string, size_t length, bool noCopy) {
 	if (!string) {
 		this->length = 0;
 		str = nullptr;
 		return;
 	}
-	this->length = length;
-	str = new char[length + 1];
-	str[length] = 0;
-	memcpy(str, string, length);
+	if (noCopy) {
+		this->length = length;
+		str = string;
+	} else {
+		this->length = length;
+		str = new char[length + 1];
+		str[length] = '\0';
+		memcpy(str, string, length);
+	}
 }
 
 String::String(const String& string) {
@@ -86,16 +92,20 @@ String& String::Append(const String& string) {
 }
 
 String& String::Remove(const String& string) {
-	FD_ASSERT(length > string.length);
-
 	size_t index = Contains(string);
-	size_t newlen = length - string.length;
+	return Remove(index, index + string.length);
+}
+
+String& String::Remove(size_t start, size_t end) {
+	size_t len = end - start;
+	FD_ASSERT(length > len);
+	size_t newlen = length - len;
 
 	char* tmp = str;
 
 	str = new char[newlen + 1];
-	memcpy(str, tmp, index);
-	memcpy(str + index, tmp + index + string.length, newlen - index);
+	memcpy(str, tmp, start);
+	memcpy(str + start, tmp + start + len, newlen - start);
 
 	length = newlen;
 	str[length] = '\0';
@@ -147,10 +157,10 @@ bool String::EndsWith(const String& string) {
 	return true;
 }
 
-size_t String::Contains(const String& string) {
-	if (length < string.length) return (size_t)-1;
+size_t String::Contains(const String& string, size_t offset) {
+	if (length+offset < string.length) return (size_t)-1;
 
-	for (size_t i = 0; i < length; i++) {
+	for (size_t i = offset; i < length; i++) {
 		bool match = true;
 		if (i + string.length > length) return (size_t)-1;
 		for (size_t j = 0; j < string.length; j++) {
