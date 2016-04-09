@@ -7,21 +7,21 @@
 void FDShader::RemoveComments(String& source) {
 
 	while (true) {
-		size_t start = source.Contains("/*");
+		size_t start = source.Find("/*");
 
 		if (start == -1) break;
 
-		size_t end = source.Contains("*/", start);
+		size_t end = source.Find("*/", start);
 
-		source.Remove(start, end);
+		source.Remove(start, end+2);
 	}
 
 	while (true) {
-		size_t start = source.Contains("//");
+		size_t start = source.Find("//");
 
 		if (start == -1) break;
 
-		size_t end = source.Contains("\n", start);
+		size_t end = source.Find("\n", start);
 		if (end == -1) end = source.length;
 
 		source.Remove(start, end);
@@ -29,7 +29,24 @@ void FDShader::RemoveComments(String& source) {
 
 }
 
-void FDShader::ParseStructs(const String& vSource, const String& pSource) {
+void FDShader::ParseStructs(String vSource, String pSource) {
+
+	List<String*> lines = vSource.Split('\n');
+
+	for (size_t i = 0; i < lines.GetSize(); i++) {
+		String& line = *lines[i];
+
+		size_t start = line.Find("cbuffer");
+
+		if (start) {
+
+			size_t colon = line.Find(":");
+
+
+		} else {
+			continue;
+		}
+	}
 
 }
 
@@ -78,7 +95,6 @@ FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
 	D3DContext::GetDevice()->CreatePixelShader(pByteCode->GetBufferPointer(), pByteCode->GetBufferSize(), 0, &pixelShader);
 
 	FD_ASSERT(pixelShader && "Failed to create pixelshader");
-
 
 	RemoveComments(vSource);
 	RemoveComments(pSource);

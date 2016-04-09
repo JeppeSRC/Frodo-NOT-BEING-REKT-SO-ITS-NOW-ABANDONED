@@ -89,7 +89,7 @@ public:
 		Push_back(item);
 	}
 
-	inline size_t Contains(T item) {
+	inline size_t Find(T item) {
 		for (size_t i = 0; i < size; i++)
 			if (data[i] == item) return i;
 

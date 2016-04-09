@@ -28,7 +28,7 @@ public:
 	}
 
 	__forceinline D& operator[](K key) {
-		size_t loc = keys.Contains(key);
+		size_t loc = keys.Find(key);
 		if (loc != (size_t)-1) {
 			return data[loc];
 		}

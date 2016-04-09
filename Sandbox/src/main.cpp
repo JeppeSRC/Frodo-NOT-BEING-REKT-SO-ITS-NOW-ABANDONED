@@ -14,6 +14,8 @@
 
 #include <ctime>
 
+#define PRINT(str) FD_INFO("%s", *str)
+
 int main() {
 	Window w("Title", 600, 400);
 	w.SetVisible(true);

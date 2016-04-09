@@ -26,6 +26,7 @@ public:
 
 	String& Remove(const String& string);
 	String& Remove(size_t start, size_t end);
+	String& RemoveBlankspace();
 
 	char operator[](size_t index);
 
@@ -34,7 +35,7 @@ public:
 
 	bool StartsWith(const String& string);
 	bool EndsWith(const String& string);
-	size_t Contains(const String& string, size_t offset = 0);
+	size_t Find(const String& string, size_t offset = 0);
 
 	List<String*> Split(const char delimiter);
 	void Split(const char delimiter, List<String*>& list);

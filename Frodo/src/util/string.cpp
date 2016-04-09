@@ -92,7 +92,7 @@ String& String::Append(const String& string) {
 }
 
 String& String::Remove(const String& string) {
-	size_t index = Contains(string);
+	size_t index = Find(string);
 	return Remove(index, index + string.length);
 }
 
@@ -111,6 +111,17 @@ String& String::Remove(size_t start, size_t end) {
 	str[length] = '\0';
 
 	delete[] tmp;
+
+	return *this;
+}
+
+String& String::RemoveBlankspace() {
+	
+	size_t start = Find(" ");
+	while (start != -1) {
+		Remove(start, start + 1);
+		start = Find(" ", start);
+	}
 
 	return *this;
 }
@@ -157,7 +168,7 @@ bool String::EndsWith(const String& string) {
 	return true;
 }
 
-size_t String::Contains(const String& string, size_t offset) {
+size_t String::Find(const String& string, size_t offset) {
 	if (length+offset < string.length) return (size_t)-1;
 
 	for (size_t i = offset; i < length; i++) {

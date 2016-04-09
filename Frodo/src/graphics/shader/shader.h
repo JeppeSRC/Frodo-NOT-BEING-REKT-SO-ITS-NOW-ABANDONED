@@ -23,7 +23,7 @@ private:
 	};
 
 	void RemoveComments(String& source);
-	void ParseStructs(const String& vSource, const String& pSource);
+	void ParseStructs(String vSource, String pSource);
 	
 
 private:
