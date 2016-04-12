@@ -23,7 +23,7 @@ private:
 	};
 
 	void RemoveComments(String& source);
-	void ParseStructs(String vSource, String pSource);
+	void ParseStructs(String source, FD_SHADER_TYPE type);
 	
 
 private:

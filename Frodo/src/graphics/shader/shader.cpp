@@ -29,19 +29,24 @@ void FDShader::RemoveComments(String& source) {
 
 }
 
-void FDShader::ParseStructs(String vSource, String pSource) {
+void FDShader::ParseStructs(String source, FD_SHADER_TYPE type) {
 
-	List<String*> lines = vSource.Split('\n');
+	List<String*> lines = source.Split('\n');
 
 	for (size_t i = 0; i < lines.GetSize(); i++) {
 		String& line = *lines[i];
+		
 
 		size_t start = line.Find("cbuffer");
 
-		if (start) {
-
-			size_t colon = line.Find(":");
-
+		if (start != -1) {
+			start += 7;
+			size_t colon = line.Find(":", start);
+	
+			String name(line.str + start, colon - start);
+			name.RemoveBlankspace();
+			
+			
 
 		} else {
 			continue;
@@ -99,7 +104,8 @@ FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
 	RemoveComments(vSource);
 	RemoveComments(pSource);
 
-	ParseStructs(vSource, pSource);
+	ParseStructs(vSource, FD_SHADER_TYPE_VERTEXSHADER);
+	ParseStructs(pSource, FD_SHADER_TYPE_PIXELSHADER);
 
 }
 
