@@ -28,17 +28,19 @@ public:
 	String& Remove(size_t start, size_t end);
 	String& RemoveBlankspace();
 
-	char operator[](size_t index);
+	size_t Count(const String& string, size_t offset = 0) const;
+
+	char operator[](size_t index) const;
 
 	bool operator==(const String& string);
 	bool operator!=(const String& string);
 
-	bool StartsWith(const String& string);
-	bool EndsWith(const String& string);
-	size_t Find(const String& string, size_t offset = 0);
+	bool StartsWith(const String& string) const;
+	bool EndsWith(const String& string) const;
+	size_t Find(const String& string, size_t offset = 0) const;
 
-	List<String*> Split(const char delimiter);
-	void Split(const char delimiter, List<String*>& list);
+	List<String*> Split(const char delimiter) const;
+	void Split(const char delimiter, List<String*>& list) const;
 
 	inline char* operator*() const { return str; }
 

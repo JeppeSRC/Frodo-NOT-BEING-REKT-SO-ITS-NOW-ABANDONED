@@ -126,7 +126,21 @@ String& String::RemoveBlankspace() {
 	return *this;
 }
 
-char String::operator[](size_t index) {
+size_t String::Count(const String& string, size_t offset) const {
+	size_t total = length - string.length;
+	if (total <= 0) return 0;
+	size_t res = 0;
+	for (size_t i = offset; i < total; i++) {
+		for (size_t j = 0; j < string.length; j++) {
+			if (str[i + j] != string[i]) continue;
+		}
+		res++;
+	}
+
+	return res;
+}
+
+char String::operator[](size_t index) const {
 	return str[index];
 }
 
@@ -150,7 +164,7 @@ bool String::operator!=(const String& string) {
 	return true;
 }
 
-bool String::StartsWith(const String& string) {
+bool String::StartsWith(const String& string) const {
 	if (length < string.length) return false;
 
 	for (size_t i = 0; i < string.length; i++)
@@ -159,7 +173,7 @@ bool String::StartsWith(const String& string) {
 	return true;
 }
 
-bool String::EndsWith(const String& string) {
+bool String::EndsWith(const String& string) const {
 	if (length < string.length) return false;
 
 	for (size_t i = 0; i < string.length; i++)
@@ -168,7 +182,7 @@ bool String::EndsWith(const String& string) {
 	return true;
 }
 
-size_t String::Find(const String& string, size_t offset) {
+size_t String::Find(const String& string, size_t offset) const {
 	if (length+offset < string.length) return (size_t)-1;
 
 	for (size_t i = offset; i < length; i++) {
@@ -190,7 +204,7 @@ size_t String::Find(const String& string, size_t offset) {
 	return (size_t)-1;
 }
 
-List<String*> String::Split(const char delimiter) {
+List<String*> String::Split(const char delimiter) const {
 
 	List<String*> list(128, 32);
 		
@@ -199,7 +213,7 @@ List<String*> String::Split(const char delimiter) {
 	return list;
 }
 
-void String::Split(const char delimiter, List<String*>& list) {
+void String::Split(const char delimiter, List<String*>& list) const {
 	size_t lastindex = 0;
 
 	for (size_t i = 0; i < length; i++) {
