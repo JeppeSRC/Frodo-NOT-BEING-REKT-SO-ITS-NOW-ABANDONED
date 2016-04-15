@@ -5,7 +5,7 @@
 #include <util/list.h>
 #include <common.h>
 
-class FDAPI FDShader {
+class FDAPI Shader {
 private:
 	struct ShaderFieldInfo {
 		String name;
@@ -24,6 +24,7 @@ private:
 
 	void RemoveComments(String& source);
 	void ParseStructs(String source, FD_SHADER_TYPE type);
+	void ParseFields(String structSource, ShaderStructInfo* cbuffer);
 	
 
 private:
@@ -35,8 +36,8 @@ private:
 	List<ShaderStructInfo*> cBuffers;
 	
 public:
-	FDShader(const String& vertexFilename, const String& pixelFilename);
-	~FDShader();
+	Shader(const String& vertexFilename, const String& pixelFilename);
+	~Shader();
 
 	void Bind();
 

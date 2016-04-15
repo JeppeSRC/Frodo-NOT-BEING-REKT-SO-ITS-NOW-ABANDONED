@@ -1,7 +1,7 @@
 #include "vertexbuffer.h"
 #include <core/log.h>
 
-FDVertexBuffer::FDVertexBuffer(void* data, size_t size, unsigned int stride) : FDBuffer(), stride(stride) {
+VertexBuffer::VertexBuffer(void* data, size_t size, unsigned int stride) : Buffer(), stride(stride) {
 	FD_DEBUG("Creating vertexbuffer <%u>", numBuffers++);
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
@@ -25,7 +25,7 @@ FDVertexBuffer::FDVertexBuffer(void* data, size_t size, unsigned int stride) : F
 	FD_ASSERT(buffer);
 }
 
-void FDVertexBuffer::Bind() {
+void VertexBuffer::Bind() {
 	unsigned int offset = 0;
 	D3DContext::GetDeviceContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 }

@@ -19,7 +19,7 @@ inline static DXGI_FORMAT get_buffer_format(FD_INDEXBUFFER_FORMAT format) {
 	return DXGI_FORMAT_UNKNOWN;
 }
 
-FDIndexBuffer::FDIndexBuffer(void* data, size_t size, FD_INDEXBUFFER_FORMAT format) : FDBuffer() {
+IndexBuffer::IndexBuffer(void* data, size_t size, FD_INDEXBUFFER_FORMAT format) : Buffer() {
 	FD_DEBUG("Creating indexbuffer <%u> Format: %s", numBuffers++, get_format_string(format));
 	this->format = get_buffer_format(format);
 
@@ -44,15 +44,15 @@ FDIndexBuffer::FDIndexBuffer(void* data, size_t size, FD_INDEXBUFFER_FORMAT form
 	FD_ASSERT(buffer);
 }
 
-FDIndexBuffer::FDIndexBuffer(unsigned int* data, unsigned int count) : FDIndexBuffer(data, count * sizeof(unsigned int), FD_INDEXBUFFER_FORMAT_UINT32) { this->count = count; }
+IndexBuffer::IndexBuffer(unsigned int* data, unsigned int count) : IndexBuffer(data, count * sizeof(unsigned int), FD_INDEXBUFFER_FORMAT_UINT32) { this->count = count; }
 
-FDIndexBuffer::FDIndexBuffer(int* data, unsigned int count) : FDIndexBuffer(data, count * sizeof(int), FD_INDEXBUFFER_FORMAT_INT32) { this->count = count; }
+IndexBuffer::IndexBuffer(int* data, unsigned int count) : IndexBuffer(data, count * sizeof(int), FD_INDEXBUFFER_FORMAT_INT32) { this->count = count; }
 
-FDIndexBuffer::FDIndexBuffer(unsigned short* data, unsigned int count) : FDIndexBuffer(data, count * sizeof(unsigned short), FD_INDEXBUFFER_FORMAT_UINT16) { this->count = count; }
+IndexBuffer::IndexBuffer(unsigned short* data, unsigned int count) : IndexBuffer(data, count * sizeof(unsigned short), FD_INDEXBUFFER_FORMAT_UINT16) { this->count = count; }
 
-FDIndexBuffer::FDIndexBuffer(short* data, unsigned int count) : FDIndexBuffer(data, count * sizeof(short), FD_INDEXBUFFER_FORMAT_INT16) { this->count = count; }
+IndexBuffer::IndexBuffer(short* data, unsigned int count) : IndexBuffer(data, count * sizeof(short), FD_INDEXBUFFER_FORMAT_INT16) { this->count = count; }
 
 
-void FDIndexBuffer::Bind() {
+void IndexBuffer::Bind() {
 	D3DContext::GetDeviceContext()->IASetIndexBuffer(buffer, format, 0);
 }

@@ -14,7 +14,7 @@
 
 #include <ctime>
 
-#define PRINT(str) FD_INFO("%s", *str)
+#define PRINT(str) _INFO("%s", *str)
 
 int main() {
 	Window w("Title", 600, 400);
@@ -34,11 +34,11 @@ int main() {
 		{vec4(-1, -1, 0, 1), vec4(0, 0, 1, 1)}
 	};
 
-	FDVertexBuffer v(&a, sizeof(a), sizeof(Vertex));
-	FDIndexBuffer i(indices, 3);
+	VertexBuffer v(&a, sizeof(a), sizeof(Vertex));
+	IndexBuffer i(indices, 3);
 
-	FDShader shader("res/vertex.hlsl", "res/pixel.hlsl");
-	FDBufferLayout layout;
+	Shader shader("res/vertex.hlsl", "res/pixel.hlsl");
+	BufferLayout layout;
 
 	layout.Push<vec4>("POSITION");
 	layout.Push<vec4>("COLOR");

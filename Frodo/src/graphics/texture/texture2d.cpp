@@ -4,7 +4,7 @@
 
 using namespace DirectX;
 
-FDTexture2D::FDTexture2D(const String& filename) : FDTexture2D() {
+Texture2D::Texture2D(const String& filename) : Texture2D() {
 	FD_DEBUG("Creating texture2d from file <%s>", *filename);
 	CreateWICTextureFromFile(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), filename.GetWCHAR(), (ID3D11Resource**)&resource, &resourceView);
 	
@@ -18,7 +18,7 @@ FDTexture2D::FDTexture2D(const String& filename) : FDTexture2D() {
 	this->height = d.Height;
 }
 
-FDTexture2D::FDTexture2D(void* data, unsigned int width, unsigned int height, FD_TEXTURE2D_FORMAT format) : FDTexture2D() {
+Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEXTURE2D_FORMAT format) : Texture2D() {
 	FD_DEBUG("Creating texture2d from memory <width:%u | height:%u | Format: %s>", width, height, get_format_string(format));
 
 	this->width = width;
@@ -65,11 +65,11 @@ FDTexture2D::FDTexture2D(void* data, unsigned int width, unsigned int height, FD
 	FD_ASSERT(resourceView);
 }
 
-FDTexture2D::~FDTexture2D() {
+Texture2D::~Texture2D() {
 	DX_FREE(resource)
 	DX_FREE(resourceView)
 }
 
-void FDTexture2D::Bind() {
+void Texture2D::Bind() {
 	D3DContext::GetDeviceContext()->PSSetShaderResources(0, 1, &resourceView);
 }

@@ -3,8 +3,7 @@
 #include <core/log.h>
 #include <util/fileutils.h>
 
-
-void FDShader::RemoveComments(String& source) {
+void Shader::RemoveComments(String& source) {
 
 	while (true) {
 		size_t start = source.Find("/*");
@@ -29,7 +28,7 @@ void FDShader::RemoveComments(String& source) {
 
 }
 
-void FDShader::ParseStructs(String source, FD_SHADER_TYPE type) {
+void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 
 	List<String*> lines = source.Split('\n');
 
@@ -45,6 +44,17 @@ void FDShader::ParseStructs(String source, FD_SHADER_TYPE type) {
 	
 			String name(line.str + start, colon - start);
 			name.RemoveBlankspace();
+
+			size_t regIndex = line.Find("register", colon) + 10;
+
+			int reg = atoi(line.str + regIndex);
+			
+			ShaderStructInfo* cbuffer = new ShaderStructInfo;
+			
+			cbuffer->name = name;
+			cbuffer->semRegister = reg;
+
+
 			
 			
 
@@ -55,7 +65,7 @@ void FDShader::ParseStructs(String source, FD_SHADER_TYPE type) {
 
 }
 
-FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
+Shader::Shader(const String& vertexFilename, const String& pixelFilename) {
 	vByteCode = nullptr;
 	pByteCode = nullptr;
 	vertexShader = nullptr;
@@ -109,14 +119,14 @@ FDShader::FDShader(const String& vertexFilename, const String& pixelFilename) {
 
 }
 
-FDShader::~FDShader() {
+Shader::~Shader() {
 	DX_FREE(vertexShader);
 	DX_FREE(pixelShader);
 	DX_FREE(vByteCode);
 	DX_FREE(pByteCode);
 }
 
-void FDShader::Bind() {
+void Shader::Bind() {
 	D3DContext::GetDeviceContext()->VSSetShader(vertexShader, 0, 0);
 	D3DContext::GetDeviceContext()->PSSetShader(pixelShader, 0, 0);
 }

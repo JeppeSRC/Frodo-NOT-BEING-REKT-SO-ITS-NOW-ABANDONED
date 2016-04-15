@@ -4,7 +4,7 @@ struct Out {
 	float4 color : COLOR;
 };
 
-cbuffer buffer : register(b0) {
+cbuffer buffer : register(b12) {
 	float4 model;
 	float4 view;
 	float4 projection;

@@ -6,9 +6,9 @@
 #include <util/string.h>
 #include <math/math.h>
 
-class FDAPI FDBufferLayout {
+class FDAPI BufferLayout {
 private:
-	friend class FDShader;
+	friend class Shader;
 private:
 	struct BufferLayoutAttrib {
 		String name;
@@ -27,10 +27,10 @@ private:
 	void Push(const String& name, DXGI_FORMAT format);
 
 public:
-	FDBufferLayout() { offset = 0; elements.Reserve(32); }
-	~FDBufferLayout();
+	BufferLayout() { offset = 0; elements.Reserve(32); }
+	~BufferLayout();
 
-	void CreateInputLayout(FDShader* shader);
+	void CreateInputLayout(Shader* shader);
 	void Bind();
 
 	template<typename T>

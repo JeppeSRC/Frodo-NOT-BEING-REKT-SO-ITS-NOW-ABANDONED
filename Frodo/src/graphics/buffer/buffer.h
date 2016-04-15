@@ -5,15 +5,15 @@
 
 static unsigned int numBuffers = 0;
 
-class FDAPI FDBuffer {
+class FDAPI Buffer {
 protected:
 	ID3D11Buffer* buffer;
 	size_t size;
 
-	FDBuffer() { buffer = nullptr; }
+	Buffer() { buffer = nullptr; }
 
 public:
-	virtual ~FDBuffer() { DX_FREE(buffer) }
+	virtual ~Buffer() { DX_FREE(buffer) }
 
 	virtual void Bind() = 0;
 

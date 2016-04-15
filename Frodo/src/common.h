@@ -53,3 +53,16 @@ inline static String get_format_string(FD_INDEXBUFFER_FORMAT format) {
 	return ("ERROR");
 }
 
+inline static String get_shader_field_type_string(FD_SHADER_FIELD_TYPE type) {
+	switch (type) {
+		case FD_SHADER_FIELD_TYPE_UNKOWN: return ("FD_SHADER_FIELD_TYPE_UNKOWN");
+		case FD_SHADER_FIELD_TYPE_MAT4: return ("FD_SHADER_FIELD_TYPE_MAT4");
+		case FD_SHADER_FIELD_TYPE_MAT3: return ("FD_SHADER_FIELD_TYPE_MAT3");
+		case FD_SHADER_FIELD_TYPE_VEC4: return ("FD_SHADER_FIELD_TYPE_VEC4");
+		case FD_SHADER_FIELD_TYPE_VEC3: return ("FD_SHADER_FIELD_TYPE_VEC3");
+		case FD_SHADER_FIELD_TYPE_VEC2: return ("FD_SHADER_FIELD_TYPE_VEC2");
+		case FD_SHADER_FIELD_TYPE_FLOAT: return ("FD_SHADER_FIELD_TYPE_FLOAT");
+	}
+	return ("ERROR");
+}
+

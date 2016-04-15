@@ -13,18 +13,18 @@ static unsigned int get_size_from_format(DXGI_FORMAT format) {
 	return 0;
 }
 
-FDBufferLayout::~FDBufferLayout() {
+BufferLayout::~BufferLayout() {
 	DX_FREE(layout);
 }
 
-void FDBufferLayout::Push(const String& name, DXGI_FORMAT format) {
+void BufferLayout::Push(const String& name, DXGI_FORMAT format) {
 	unsigned int size = get_size_from_format(format);
 	FD_ASSERT(size);
 	elements.Push_back({name, format, size, offset});
 	offset += size;
 }
 
-void FDBufferLayout::CreateInputLayout(FDShader* shader) {
+void BufferLayout::CreateInputLayout(Shader* shader) {
 	D3D11_INPUT_ELEMENT_DESC* desc = new D3D11_INPUT_ELEMENT_DESC[elements.GetSize()];
 
 	for (size_t i = 0; i < elements.GetSize(); i++) {
@@ -37,6 +37,6 @@ void FDBufferLayout::CreateInputLayout(FDShader* shader) {
 	delete[] desc;
 }
 
-void FDBufferLayout::Bind() {
+void BufferLayout::Bind() {
 	D3DContext::GetDeviceContext()->IASetInputLayout(layout);
 }

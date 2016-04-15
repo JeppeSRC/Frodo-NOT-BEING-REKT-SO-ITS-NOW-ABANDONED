@@ -4,7 +4,7 @@
 #include <graphics/d3dcontext.h>
 #include <common.h>
 
-class FDAPI FDTexture {
+class FDAPI Texture {
 protected:
 	unsigned int width;
 	unsigned int height;
