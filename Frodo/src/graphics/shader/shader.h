@@ -10,8 +10,6 @@ private:
 	struct ShaderFieldInfo {
 		String name;
 		FD_SHADER_FIELD_TYPE type;
-
-		ShaderFieldInfo(String name, FD_SHADER_FIELD_TYPE type) : name(name), type(type) { }
 	};
 
 	struct ShaderStructInfo {
@@ -19,12 +17,12 @@ private:
 		FD_SHADER_TYPE shaderType;
 		unsigned int semRegister;
 		unsigned int numFields;
-		ShaderFieldInfo** fields;
+		ShaderFieldInfo* fields;
 	};
 
 	void RemoveComments(String& source);
 	void ParseStructs(String source, FD_SHADER_TYPE type);
-	void ParseFields(String structSource, ShaderStructInfo* cbuffer);
+	void ParseFields(String& structSource, size_t offset, ShaderStructInfo* cbuffer);
 	
 
 private:
@@ -33,7 +31,7 @@ private:
 	ID3D11VertexShader* vertexShader;
 	ID3D11PixelShader* pixelShader;
 
-	List<ShaderStructInfo*> cBuffers;
+	List<ShaderStructInfo*> cbuffers;
 	
 public:
 	Shader(const String& vertexFilename, const String& pixelFilename);

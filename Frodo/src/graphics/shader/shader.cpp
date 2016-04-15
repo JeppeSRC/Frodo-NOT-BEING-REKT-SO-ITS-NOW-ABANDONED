@@ -3,6 +3,19 @@
 #include <core/log.h>
 #include <util/fileutils.h>
 
+inline static String get_field_type_as_string(FD_SHADER_FIELD_TYPE type) {
+	switch (type) {
+		case FD_SHADER_FIELD_TYPE_UNKOWN: return ("UNKOWN");
+		case FD_SHADER_FIELD_TYPE_MAT4: return ("float4x4");
+		case FD_SHADER_FIELD_TYPE_MAT3: return ("float3x3");
+		case FD_SHADER_FIELD_TYPE_VEC4: return ("float4");
+		case FD_SHADER_FIELD_TYPE_VEC3: return ("float3");
+		case FD_SHADER_FIELD_TYPE_VEC2: return ("float2");
+		case FD_SHADER_FIELD_TYPE_FLOAT: return ("float");
+	}
+	return ("ERROR");
+}
+
 void Shader::RemoveComments(String& source) {
 
 	while (true) {
@@ -30,39 +43,74 @@ void Shader::RemoveComments(String& source) {
 
 void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 
-	List<String*> lines = source.Split('\n');
+	while(true) {
+		size_t cbufferStart = source.Find("cbuffer") + 7;
+		FD_DEBUG("%u", cbufferStart);
+		if (cbufferStart < 7) break;
 
-	for (size_t i = 0; i < lines.GetSize(); i++) {
-		String& line = *lines[i];
-		
+		size_t colon = source.Find(":", cbufferStart);
 
-		size_t start = line.Find("cbuffer");
+		String name(source.str + cbufferStart, colon - cbufferStart);
+		name.RemoveBlankspace();
 
-		if (start != -1) {
-			start += 7;
-			size_t colon = line.Find(":", start);
+		size_t regIndex = source.Find("register", colon) + 10;
+
+		ShaderStructInfo* cbuffer = new ShaderStructInfo;
+
+		cbuffer->name = name;
+		cbuffer->semRegister = atoi(*source + regIndex);
+		cbuffer->shaderType = type;
+
+		ParseFields(source, cbufferStart-7, cbuffer);
+
+		cbuffers.Push_back(cbuffer);
+	}
+
 	
-			String name(line.str + start, colon - start);
+}
+
+void Shader::ParseFields(String& structSource, size_t offset, ShaderStructInfo* cbuffer) {
+
+	FD_SHADER_FIELD_TYPE types[6]{
+		FD_SHADER_FIELD_TYPE_MAT4,
+		FD_SHADER_FIELD_TYPE_MAT3,
+		FD_SHADER_FIELD_TYPE_VEC4,
+		FD_SHADER_FIELD_TYPE_VEC3,
+		FD_SHADER_FIELD_TYPE_VEC2,
+		FD_SHADER_FIELD_TYPE_FLOAT};
+
+	size_t end = structSource.Find("};", offset);
+
+	String fields(*structSource + offset, end - offset);
+
+	cbuffer->numFields = fields.Count(";");
+	cbuffer->fields = new ShaderFieldInfo[cbuffer->numFields];
+
+	size_t currSemicolon = fields.Find(";");
+	size_t fieldOffset = 0;
+
+	for (size_t num = 0; num < cbuffer->numFields; num++) {
+		for (size_t i = 0; i < 6; i++) {
+			size_t index = fields.Find(get_field_type_as_string(types[i]), fieldOffset);
+
+			if (index > currSemicolon || index == -1) continue;
+
+			size_t nameStart = fields.Find(" ", index);
+
+			String name(*fields + nameStart, currSemicolon - nameStart);
 			name.RemoveBlankspace();
 
-			size_t regIndex = line.Find("register", colon) + 10;
+			cbuffer->fields[num].name = name;
+			cbuffer->fields[num].type = types[i];
 
-			int reg = atoi(line.str + regIndex);
-			
-			ShaderStructInfo* cbuffer = new ShaderStructInfo;
-			
-			cbuffer->name = name;
-			cbuffer->semRegister = reg;
+			fieldOffset = currSemicolon;
+			currSemicolon = fields.Find(";", currSemicolon + 1);
 
-
-			
-			
-
-		} else {
-			continue;
+			i = 6;
 		}
 	}
 
+	structSource.Remove(offset, end+2);
 }
 
 Shader::Shader(const String& vertexFilename, const String& pixelFilename) {

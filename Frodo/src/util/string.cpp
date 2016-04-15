@@ -131,10 +131,12 @@ size_t String::Count(const String& string, size_t offset) const {
 	if (total <= 0) return 0;
 	size_t res = 0;
 	for (size_t i = offset; i < total; i++) {
+		bool match = true;
 		for (size_t j = 0; j < string.length; j++) {
-			if (str[i + j] != string[i]) continue;
+			if (str[i + j] != string[j]) match = false;
 		}
-		res++;
+		
+		if (match)res++;
 	}
 
 	return res;
@@ -184,10 +186,9 @@ bool String::EndsWith(const String& string) const {
 
 size_t String::Find(const String& string, size_t offset) const {
 	if (length+offset < string.length) return (size_t)-1;
-
-	for (size_t i = offset; i < length; i++) {
+	size_t total = length - string.length;
+	for (size_t i = offset; i < total; i++) {
 		bool match = true;
-		if (i + string.length > length) return (size_t)-1;
 		for (size_t j = 0; j < string.length; j++) {
 					
 			if (str[i + j] != string.str[j]) {
