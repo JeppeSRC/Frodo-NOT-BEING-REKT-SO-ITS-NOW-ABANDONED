@@ -133,7 +133,10 @@ size_t String::Count(const String& string, size_t offset) const {
 	for (size_t i = offset; i < total; i++) {
 		bool match = true;
 		for (size_t j = 0; j < string.length; j++) {
-			if (str[i + j] != string[j]) match = false;
+			if (str[i + j] != string[j]) {
+				match = false;
+				break;
+			}
 		}
 		
 		if (match)res++;
