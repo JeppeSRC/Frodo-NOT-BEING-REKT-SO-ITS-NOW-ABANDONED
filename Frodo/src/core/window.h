@@ -37,7 +37,7 @@ public:
 	inline bool IsOpen() const { return isOpen; }
 	inline int GetWidth() const { return width; }
 	inline int GetHeight() const { return height; }
-	inline float GetAspectRation() const { return float(width) / height; }
+	inline float GetAspectRatio() const { return float(width) / height; }
 	inline const String& GetTitle() const { return title; }
 	inline bool IsVisible() const { return isVisible; }
 	inline HWND GetHWND() const { return hwnd; }
