@@ -6,9 +6,11 @@ private:
 	friend class vec3;
 private:
 	union {
-		__m128 row[3];
-		float m[12];
+		float m[9];
 	};
+
+	void LoadRows(__m128* xmm) const;
+	void LoadColumns(__m128* xmm) const;
 
 public:
 	mat3();

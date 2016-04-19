@@ -8,9 +8,11 @@ private:
 	friend class vec4;
 private:
 	union {
-		__m128 row[4];
 		float m[16];
 	};
+
+	void LoadRows(__m128* xmm) const;
+	void LoadColumns(__m128* xmm) const;
 
 public:
 	mat4();
