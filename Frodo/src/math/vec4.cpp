@@ -7,9 +7,9 @@ vec4::vec4() {
 	memset(&_xmm, 0, sizeof(__m128));
 }
 
-vec4::vec4(const vec2& v) : _x(v.x()), _y(v.y()) { }
+vec4::vec4(const vec2& v, float z, float w) : _x(v.x()), _y(v.y()), _z(z), _w(w) { }
 
-vec4::vec4(const vec3& v) : _x(v.x()), _y(v.y()), _z(v.z()) {}
+vec4::vec4(const vec3& v, float w) : _x(v.x()), _y(v.y()), _z(v.z()), _w(w) {}
 
 vec4::vec4(float x, float y, float z, float w) : _x(x), _y(y), _z(z), _w(w) { }
 

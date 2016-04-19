@@ -21,8 +21,8 @@ private:
 public:
 	vec4();
 	vec4(__m128 xmm);
-	vec4(const vec2& v);
-	vec4(const vec3& v);
+	vec4(const vec2& v, float z = 0, float w = 0);
+	vec4(const vec3& v, float w = 0);
 	vec4(float x, float y, float z, float w);
 
 	vec4& Add(const vec4& v);
