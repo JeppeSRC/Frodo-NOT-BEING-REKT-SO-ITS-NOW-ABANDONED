@@ -50,7 +50,7 @@ Window::Window(const String& title, int width, int height) : title(title), width
 	D3DContext::CreateContext(this);
 
 	isOpen = true;
-	isVisible = false;
+	SetVisible(true);
 	SetVSync(0);
 
 	window_handels.Add(this, hwnd);
