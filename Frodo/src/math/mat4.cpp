@@ -53,6 +53,38 @@ mat4 mat4::Scale(const vec3& v) {
 	return tmp;
 }
 
+mat4 mat4::Perspective(float fov, float aspect, float zNear, float zFar) {
+	mat4 r(1);
+	
+	float* m = r.m;
+
+	const float tanHalf = tanh(fov / 2);
+
+	m[0 + 0 * 4] = 1.0f / (tanHalf * aspect);
+	m[1 + 1 * 4] = 1.0f / tanHalf;
+	m[2 + 2 * 4] = -(zFar + zNear) / (zFar - zNear);
+	m[3 + 2 * 4] = -1;
+	m[2 + 3 * 4] = -(2 * zFar * zNear) / (zFar - zNear);
+	m[3 + 3 * 4] = 0;
+
+	return r;
+}
+
+mat4 mat4::Orthographic(float left, float right, float top, float bottom, float zNear, float zFar) {
+	mat4 r(1);
+	
+	float* m = r.m;
+
+	m[0 + 0 * 4] = 2.0f / (right - left);
+	m[1 + 1 * 4] = 2.0f / (top - bottom);
+	m[2 + 2 * 4] = 2.0f / (zFar - zNear);
+	m[0 + 3 * 4] = -(right + left) / (right - left);
+	m[1 + 3 * 4] = -(top + bottom) / (top - bottom);
+	m[2 + 3 * 4] = -(zFar + zNear) / (zFar - zNear);
+
+	return r;
+}
+
 mat4 mat4::operator*(const mat4& r) {
 	mat4 tmp;
 	__m128 col[4];
