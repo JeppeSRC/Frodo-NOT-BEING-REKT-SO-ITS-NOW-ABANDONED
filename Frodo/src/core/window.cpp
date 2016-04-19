@@ -42,7 +42,7 @@ Window::Window(const String& title, int width, int height) : title(title), width
 
 	AdjustWindowRect(&r, WS_OVERLAPPEDWINDOW, FALSE);
 
-	if (!(hwnd = CreateWindow("Frodo Window", *title, WS_OVERLAPPEDWINDOW, GetSystemMetrics(SM_CXSCREEN) >> 1, GetSystemMetrics(SM_CYSCREEN) >> 1, r.right - r.left, r.bottom - r.top, 0, 0, 0, 0))) {
+	if (!(hwnd = CreateWindow("Frodo Window", *title, WS_OVERLAPPEDWINDOW, (GetSystemMetrics(SM_CXSCREEN) >> 1) - (width >> 1), (GetSystemMetrics(SM_CYSCREEN) >> 1) - (height >> 1), r.right - r.left, r.bottom - r.top, 0, 0, 0, 0))) {
 		FD_FATAL("Failed to create window (HWND)");
 		return;
 	}
