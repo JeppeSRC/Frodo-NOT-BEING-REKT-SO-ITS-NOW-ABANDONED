@@ -96,7 +96,7 @@ mat4 mat4::operator*(const mat4& r) {
 
 	for (int y = 0; y < 4; y++) {
 		for (int x = 0; x < 4; x++) {
-			__m128 res = _mm_mul_ps(row[x], col[y]);
+			__m128 res = _mm_mul_ps(row[y], col[x]);
 			tmp.m[x + y * 4] = res.m128_f32[0] + res.m128_f32[1] + res.m128_f32[2] + res.m128_f32[3];
 		}
 	}
