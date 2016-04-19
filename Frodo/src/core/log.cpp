@@ -4,9 +4,9 @@
 #include <Windows.h>
 
 #define FD_LOG_COLOR_INFO 0b00001111
-#define FD_LOG_COLOR_DEBUG 0b00101111
+#define FD_LOG_COLOR_DEBUG 0b00001010
 #define FD_LOG_COLOR_WARNING 0b00001110
-#define FD_LOG_COLOR_FATAL 0b11101100
+#define FD_LOG_COLOR_FATAL 0b00001100
 
 void FDLog(unsigned char level, const char* message...) {
 
