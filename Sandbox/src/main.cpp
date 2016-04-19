@@ -17,8 +17,8 @@
 #define PRINT(str) _INFO("%s", *str)
 
 int main() {
-	Window w("Title", 600, 400);
-	w.SetVisible(true);
+	Window w("Title", 1000, 600);
+//	w.SetVisible(true);
 	w.SetVSync(1);
 
 	struct Vertex {
@@ -45,16 +45,35 @@ int main() {
 
 	layout.CreateInputLayout(&shader);
 
+	mat4 proj = mat4::Translate(vec3(0.5, 0, 0));
+
+
 	shader.Bind();
 	layout.Bind();
 
 	v.Bind();
 	i.Bind();
-
+	
 	D3DContext::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);	
+	
+	float temp = 0;
+
+	struct Mod {
+		mat4 translation;
+		mat4 roation;
+	} mod;
+
+
 
 	while (w.IsOpen()) {
+		temp += 0.01f;
 		w.Clear();
+
+		mod.translation = mat4::Translate(vec3(cosf(temp), 0, 0));
+		mod.roation = mat4::Rotate(vec3(0, 0, sinf(temp) * 90));
+
+		shader.SetVSConstantBuffer(0, &mod);
+
 
 		D3DContext::GetDeviceContext()->DrawIndexed(i.GetCount(), 0, 0);
 
