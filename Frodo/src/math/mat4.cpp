@@ -138,7 +138,7 @@ vec4 mat4::operator*(const vec4& v) {
 	__m128 res = _mm_mul_ps(vec[0], col[0]);
 
 	for (int i = 1; i < 4; i++)
-		res = _mm_add_ps(res, _mm_mul_ps(vec[i], col[i]));
+		res = _mm_fmadd_ps(vec[i], col[i], res);
 
 	return vec4(res);
 }
@@ -157,7 +157,7 @@ vec3 mat4::operator*(const vec3& v) {
 	__m128 res = _mm_mul_ps(vec[0], col[0]);
 
 	for (int i = 1; i < 4; i++)
-		res = _mm_add_ps(res, _mm_mul_ps(vec[i], col[i]));
+		res = _mm_fmadd_ps(vec[i], col[i], res);
 
 	return vec3(res);
 }
