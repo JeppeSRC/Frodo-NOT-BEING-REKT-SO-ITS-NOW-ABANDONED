@@ -2,7 +2,6 @@
 #include <core/log.h>
 
 VertexBuffer::VertexBuffer(void* data, size_t size, unsigned int stride) : Buffer(), stride(stride) {
-	FD_DEBUG("Creating vertexbuffer <%u>", numBuffers++);
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 

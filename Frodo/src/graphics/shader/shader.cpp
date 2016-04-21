@@ -76,7 +76,6 @@ void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 		cbuffer->semRegister = atoi(*source + regIndex);
 
 		CalcStructSize(source, cbufferStart-7, cbuffer);
-		FD_DEBUG("Struct %s %u", *cbuffer->name, cbuffer->structSize);
 		
 		switch (type) {
 			case FD_SHADER_TYPE_VERTEXSHADER:
@@ -176,8 +175,6 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename) {
 
 	ID3DBlob* error = nullptr;
 
-	FD_DEBUG("Compiling vertexshader \"%s\"", *vertexFilename);
-
 	D3DCompile(*vSource, vSource.length, 0, 0, 0, "vsMain", "vs_5_0", 0, 0, &vByteCode, &error);
 
 	if (error) {
@@ -188,8 +185,6 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename) {
 
 	DX_FREE(error);
 
-	FD_DEBUG("Compiling pixelshader \"%s\"", *pixelFilename);
-
 	D3DCompile(*pSource, pSource.length, 0, 0, 0, "psMain", "ps_5_0", 0, 0, &pByteCode, &error);
 
 	if (error) {
@@ -197,8 +192,6 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename) {
 		DX_FREE(error);
 		FD_ASSERT(pByteCode && "PixelShader failed to compile");
 	}
-
-	FD_DEBUG("Shaders compiled");
 
 	DX_FREE(error);
 	
