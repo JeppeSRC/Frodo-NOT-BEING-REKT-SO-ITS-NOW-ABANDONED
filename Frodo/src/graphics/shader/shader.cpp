@@ -271,3 +271,8 @@ void Shader::SetPSConstantBuffer(unsigned int slot, void* data) {
 		}
 	}
 }
+
+void Shader::SetPSResourceView(unsigned int slot, const Texture* tex) {
+	ID3D11ShaderResourceView* view = tex->GetResourceView();
+	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &view);
+}

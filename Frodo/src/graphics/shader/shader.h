@@ -1,6 +1,7 @@
 #pragma once
 #include <fd.h>
 #include <graphics/d3dcontext.h>
+#include <graphics/texture/texture.h>
 #include <util/string.h>
 #include <util/list.h>
 #include <common.h>
@@ -40,6 +41,7 @@ public:
 
 	void SetVSConstantBuffer(unsigned int slot, void* data);
 	void SetPSConstantBuffer(unsigned int slot, void* data);
+	void SetPSResourceView(unsigned int slot, const Texture* tex);
 
 	inline const void* GetVSBufferPointer() const { return vByteCode->GetBufferPointer(); }
 	inline size_t GetVSBufferSize() const { return vByteCode->GetBufferSize(); }
