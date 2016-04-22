@@ -4,7 +4,6 @@
 
 class FDAPI Texture2D : public Texture {
 private:
-	ID3D11ShaderResourceView* resourceView;
 	ID3D11Texture2D* resource;
 
 	Texture2D() { resource = nullptr;resourceView = nullptr; }

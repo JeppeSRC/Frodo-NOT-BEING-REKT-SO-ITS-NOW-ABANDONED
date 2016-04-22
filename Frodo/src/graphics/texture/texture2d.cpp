@@ -63,8 +63,7 @@ Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEX
 }
 
 Texture2D::~Texture2D() {
-	DX_FREE(resource)
-	DX_FREE(resourceView)
+	DX_FREE(resource);
 }
 
 void Texture2D::Bind() {
