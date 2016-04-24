@@ -34,7 +34,7 @@ public:
 
 	static void SetRenderTargets(ID3D11RenderTargetView* target, ID3D11DepthStencilView* depthView);
 	static void SetViewPort(float topLeftX, float topLeftY, float width, float height);
-
+	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
 
 	inline static D3DContext* GetContext() { return pContext; }
 	inline static ID3D11Device* GetDevice() {return pContext->device;}

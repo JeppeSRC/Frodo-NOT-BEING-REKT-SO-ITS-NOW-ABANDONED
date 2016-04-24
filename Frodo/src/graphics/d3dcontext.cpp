@@ -114,3 +114,7 @@ void D3DContext::SetViewPort(float topLeftX, float topLeftY, float width, float 
 	
 	GetDeviceContext()->RSSetViewports(1, &v);
 }
+
+void D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology) {
+	GetDeviceContext()->IASetPrimitiveTopology(topology);
+}
