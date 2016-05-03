@@ -1,7 +1,7 @@
 
 struct Out {
 	float4 position : SV_POSITION;
-	float4 color : COLOR;
+	float2 texCoords : TEXCOORDS;
 };
 
 cbuffer buffer : register(b0) {
@@ -9,11 +9,11 @@ cbuffer buffer : register(b0) {
 	float4x4 cb_model;
 };
 
-Out vsMain(float4 position : POSITION, float4 color : COLOR) {
+Out vsMain(float4 position : POSITION, float2 texCoords : TEXCOORDS) {
 	Out o;
 
 	o.position = mul(cb_projection, mul(cb_model, position));
-	o.color = color;
+	o.texCoords = texCoords;
 
 	return o;
 }

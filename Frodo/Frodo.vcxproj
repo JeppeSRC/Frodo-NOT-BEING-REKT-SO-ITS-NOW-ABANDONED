@@ -95,6 +95,7 @@
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
       <StructMemberAlignment>Default</StructMemberAlignment>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>dependencies\D3D\Lib\$(Configuration)\$(Platform)\</AdditionalLibraryDirectories>
@@ -134,6 +135,7 @@
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
       <StructMemberAlignment>Default</StructMemberAlignment>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

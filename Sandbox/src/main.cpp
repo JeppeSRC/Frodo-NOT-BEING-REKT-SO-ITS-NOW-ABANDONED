@@ -17,41 +17,41 @@
 #define PRINT(str) FD_INFO("%s", *str)
 
 int main() {
-	FD_INFO("INFO");
-	FD_DEBUG("DEBUG");
-	FD_WARNING("WARNING");
-	FD_FATAL("FATAL");
 	Window w("Title", 1000, 600);
-//	w.SetVisible(true);
+
 	w.SetVSync(1);
 
 	struct Vertex {
 		vec4 position;
-		vec4 color;
+		vec2 color;
 	};
 	
 	unsigned int indices[] = {0, 1, 2};
 
 	Vertex a[3]{
-		{vec4(0, 1, 0, 1), vec4(1, 0, 0, 1)},
-		{vec4(1, -1, 0, 1), vec4(0, 1, 0, 1)},
-		{vec4(-1, -1, 0, 1), vec4(0, 0, 1, 1)}
+		{vec4(0, 1, 0, 1), vec2(0.5, 0)},
+		{vec4(1, -1, 0, 1), vec2(1, 1)},
+		{vec4(-1, -1, 0, 1), vec2(0, 1)}
 	};
 
-	a[0].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(0, 1, 0, 1);
+/*	a[0].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(0, 1, 0, 1);
 	a[1].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(1, -1, 0, 1);
-	a[2].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(-1, -1, 0, 1);
+	a[2].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(-1, -1, 0, 1);*/
 
 	VertexBuffer v(&a, sizeof(a), sizeof(Vertex));
 	IndexBuffer i(indices, 3);
+
+	Texture2D tex("./res/mountains.jpg");
 
 	Shader shader("res/vertex.hlsl", "res/pixel.hlsl");
 	BufferLayout layout;
 
 	layout.Push<vec4>("POSITION");
-	layout.Push<vec4>("COLOR");
+	layout.Push<vec2>("TEXCOORDS");
 
 	layout.CreateInputLayout(&shader);
+
+	shader.SetTexture(0, &tex);
 
 	shader.Bind();
 	layout.Bind();
@@ -59,7 +59,7 @@ int main() {
 	v.Bind();
 	i.Bind();
 
-	D3DContext::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);	
+	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);	
 	
 	float temp = 0;
 	struct Mod {
@@ -76,7 +76,7 @@ int main() {
 		temp += 0.1f;
 		w.Clear();
 
-		//mod.model = mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, temp));
+		mod.model = mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, temp));
 
 		shader.SetVSConstantBuffer(0, &mod);
 
