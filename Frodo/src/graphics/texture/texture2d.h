@@ -10,8 +10,8 @@ private:
 
 public:
 	Texture2D(const String& filename);
-	Texture2D(void* data, unsigned int width, unsigned int height, FD_TEXTURE2D_FORMAT format);
+	Texture2D(void* data, unsigned int width, unsigned int height, FD_TEXTURE_FORMAT format);
 	~Texture2D();
 
-	void Bind() override;
+	void Bind(unsigned int slot = 0) override;
 };

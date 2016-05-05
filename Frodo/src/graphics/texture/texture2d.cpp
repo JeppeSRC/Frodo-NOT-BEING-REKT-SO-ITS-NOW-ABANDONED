@@ -17,7 +17,7 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 	this->height = d.Height;
 }
 
-Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEXTURE2D_FORMAT format) : Texture2D() {
+Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEXTURE_FORMAT format) : Texture2D() {
 	this->width = width;
 	this->height = height;
 	D3D11_TEXTURE2D_DESC d;
@@ -34,14 +34,14 @@ Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEX
 	unsigned int size = 0;
 
 	switch (format) {
-		case FD_TEXTURE2D_FORMAT_UNKNOWN:
-			FD_ASSERT(FD_TEXTURE2D_FORMAT_UNKNOWN);
+		case FD_TEXTURE_FORMAT_UNKNOWN:
+			FD_ASSERT(FD_TEXTURE_FORMAT_UNKNOWN);
 			break;
-		case FD_TEXTURE2D_FORMAT_UINT_8_8_8_8:
+		case FD_TEXTURE_FORMAT_UINT_8_8_8_8:
 			d.Format = DXGI_FORMAT_R8G8B8A8_UINT;
 			size = 4;
 			break;
-		case FD_TEXTURE2D_FORMAT_FLOAT_32_32_32_32:
+		case FD_TEXTURE_FORMAT_FLOAT_32_32_32_32:
 			d.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 			size = 32;
 			break;
@@ -66,6 +66,6 @@ Texture2D::~Texture2D() {
 	DX_FREE(resource);
 }
 
-void Texture2D::Bind() {
-	D3DContext::GetDeviceContext()->PSSetShaderResources(0, 1, &resourceView);
+void Texture2D::Bind(unsigned int slot) {
+	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &resourceView);
 }

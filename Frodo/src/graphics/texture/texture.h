@@ -12,10 +12,10 @@ protected:
 	ID3D11ShaderResourceView* resourceView;
 
 public:
-
+	Texture() { resourceView = nullptr; }
 	virtual ~Texture() { DX_FREE(resourceView); }
 
-	virtual void Bind() = 0;
+	virtual void Bind(unsigned int slot = 0) = 0;
 
 	inline unsigned int GetWidth() const { return width; }
 	inline unsigned int GetHeight() const { return height; }
