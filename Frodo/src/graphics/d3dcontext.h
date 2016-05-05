@@ -42,10 +42,10 @@ public:
 	static void SetViewPort(float topLeftX, float topLeftY, float width, float height);
 	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
 
-	inline static D3DContext* GetContext() { return pContext; }
-	inline static ID3D11Device* GetDevice() {return pContext->device;}
-	inline static ID3D11DeviceContext* GetDeviceContext() { return pContext->context; }
-	inline static IDXGISwapChain* GetSwapChain() { return  pContext->swapChain; }
+	__forceinline static D3DContext* GetContext() { return pContext; }
+	__forceinline static ID3D11Device* GetDevice() {return pContext->device;}
+	__forceinline static ID3D11DeviceContext* GetDeviceContext() { return pContext->context; }
+	__forceinline static IDXGISwapChain* GetSwapChain() { return  pContext->swapChain; }
 
 
 };
