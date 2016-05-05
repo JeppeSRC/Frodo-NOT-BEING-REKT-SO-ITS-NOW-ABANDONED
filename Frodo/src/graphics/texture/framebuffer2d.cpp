@@ -53,5 +53,5 @@ void Framebuffer2D::Bind(unsigned int slot) {
 
 void Framebuffer2D::BindAsRenderTarget() {
 	D3DContext::SetRenderTarget(renderTargetView);
-	D3DContext::SetViewPort(0, 0, width, height);
+	D3DContext::SetViewPort(0, 0, (float)width, (float)height);
 }

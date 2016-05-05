@@ -107,7 +107,7 @@ void D3DContext::SetRenderTarget(ID3D11RenderTargetView* target) {
 	} else {
 		GetDeviceContext()->OMSetRenderTargets(1, &c.renderTarget, c.depthStencilView);
 
-		c.SetViewPort(0, 0, c.window->GetWidth(), c.window->GetHeight());
+		c.SetViewPort(0, 0, (float)c.window->GetWidth(), (float)c.window->GetHeight());
 	}
 }
 

@@ -98,7 +98,7 @@ String& String::Remove(const String& string) {
 
 String& String::Remove(size_t start, size_t end) {
 	size_t len = end - start;
-	FD_ASSERT(length > len);
+	FD_ASSERT((bool)(length > len));
 	size_t newlen = length - len;
 
 	char* tmp = str;
