@@ -79,6 +79,8 @@ void D3DContext::CreateContext(Window* window) {
 	SetRenderTargets(pContext->renderTarget, pContext->depthStencilView);
 
 	SetViewPort(0.0f, 0.0f, (float)window->GetWidth(), (float)window->GetHeight());
+
+	pContext->window = window;
 }
 
 void D3DContext::Dispose() {
@@ -96,6 +98,17 @@ float col[4]{0, 0, 0, 1};
 void D3DContext::Clear() {
 	GetDeviceContext()->ClearRenderTargetView(GetContext()->renderTarget, col);
 	GetDeviceContext()->ClearDepthStencilView(GetContext()->depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+void D3DContext::SetRenderTarget(ID3D11RenderTargetView* target) {
+	D3DContext& c = *GetContext();
+	if (target) {
+		GetDeviceContext()->OMSetRenderTargets(1, &target, c.depthStencilView);
+	} else {
+		GetDeviceContext()->OMSetRenderTargets(1, &c.renderTarget, c.depthStencilView);
+
+		c.SetViewPort(0, 0, c.window->GetWidth(), c.window->GetHeight());
+	}
 }
 
 void D3DContext::SetRenderTargets(ID3D11RenderTargetView* target, ID3D11DepthStencilView* depthView) {

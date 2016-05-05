@@ -22,6 +22,8 @@ private:
 	ID3D11DepthStencilView* depthStencilView;
 	IDXGISwapChain* swapChain;
 
+	Window* window;
+
 	D3DContext();
 	~D3DContext();
 public:
@@ -32,6 +34,7 @@ public:
 	static void Present(unsigned int syncInterval, unsigned int flags);
 	static void Clear();
 
+	static void SetRenderTarget(ID3D11RenderTargetView* target);
 	static void SetRenderTargets(ID3D11RenderTargetView* target, ID3D11DepthStencilView* depthView);
 	static void SetViewPort(float topLeftX, float topLeftY, float width, float height);
 	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);

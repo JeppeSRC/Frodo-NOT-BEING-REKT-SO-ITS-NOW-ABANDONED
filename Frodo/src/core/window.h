@@ -32,7 +32,6 @@ public:
 
 	void SetVisible(bool visible);
 
-
 	inline void SetClearColor(float r, float g, float b) { clearColor[0] = r;clearColor[1] = g;clearColor[2] = b;}
 	inline bool IsOpen() const { return isOpen; }
 	inline int GetWidth() const { return width; }
