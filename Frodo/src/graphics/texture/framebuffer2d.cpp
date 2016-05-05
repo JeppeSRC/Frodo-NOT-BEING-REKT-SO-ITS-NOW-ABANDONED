@@ -42,6 +42,16 @@ Framebuffer2D::Framebuffer2D(unsigned int width, unsigned int height, FD_TEXTURE
 
 	FD_ASSERT(resourceView);
 
+	D3D11_RENDER_TARGET_VIEW_DESC rd;
+	ZeroMemory(&rd, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+
+	rd.Format = td.Format;
+	rd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+
+	D3DContext::GetDevice()->CreateRenderTargetView(resource, &rd, &renderTargetView);
+
+	FD_ASSERT(renderTargetView);
+
 }
 
 Framebuffer2D::~Framebuffer2D() {

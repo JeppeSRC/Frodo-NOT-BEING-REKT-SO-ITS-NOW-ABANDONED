@@ -16,6 +16,9 @@ private:
 	static D3DContext* pContext;
 
 private:
+	ID3D11RenderTargetView* activeRenderTarget;
+	ID3D11DepthStencilView* activeDepthStencilView;
+
 	ID3D11Device* device;
 	ID3D11DeviceContext* context;
 	ID3D11RenderTargetView* renderTarget;
