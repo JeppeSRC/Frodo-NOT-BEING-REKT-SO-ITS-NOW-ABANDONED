@@ -46,7 +46,7 @@ int main() {
 /*	a[0].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(0, 1, 0, 1);
 	a[1].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(1, -1, 0, 1);
 	a[2].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(-1, -1, 0, 1);*/
-
+	
 	VertexBuffer v(&a, sizeof(a), sizeof(Vertex));
 	IndexBuffer i(indices, 3);
 
@@ -54,7 +54,7 @@ int main() {
 	IndexBuffer i2(indices2, 6);
 
 	Texture2D tex("./res/mountains.jpg");
-	Framebuffer2D framebuffer(100 * w.GetAspectRatio(), 100, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32);
+	Framebuffer2D framebuffer(5000 * w.GetAspectRatio(), 5000, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32);
 
 	Shader shader("res/vertex.hlsl", "res/pixel.hlsl");
 	Shader shader2("res/displayVertex.hlsl", "res/pixel.hlsl");
