@@ -12,6 +12,7 @@ Framebuffer2D::Framebuffer2D(unsigned int width, unsigned int height, FD_TEXTURE
 	td.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
 	td.Width = width;
 	td.Height = height;
+	td.SampleDesc.Count = 1;
 	td.MipLevels = 1;
 	td.Usage = D3D11_USAGE_DEFAULT;
 	
