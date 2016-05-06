@@ -1,23 +1,10 @@
 #include <stdio.h>
-#include <util/list.h>
-#include <util/map.h>
-#include <util/string.h>
-#include <core/log.h>
-#include <core/window.h>
-#include <graphics/buffer/bufferlayout.h>
-#include <graphics/buffer/vertexbuffer.h>
-#include <graphics/buffer/indexbuffer.h>
-#include <graphics/texture/texture2d.h>
-#include <graphics/texture/framebuffer2d.h>
-#include <graphics/shader/shader.h>
-
-#include <math/math.h>
-
-#include <ctime>
-
+#include "game.h"
 #define PRINT(str) FD_INFO("%s", *str)
 
+
 int main() {
+	/*printf("%08x\n", 12);
 	Window w("Title", 1000, 600);
 
 	w.SetVSync(1);
@@ -45,7 +32,7 @@ int main() {
 
 /*	a[0].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(0, 1, 0, 1);
 	a[1].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(1, -1, 0, 1);
-	a[2].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(-1, -1, 0, 1);*/
+	a[2].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(-1, -1, 0, 1);
 	
 	VertexBuffer v(&a, sizeof(a), sizeof(Vertex));
 	IndexBuffer i(indices, 3);
@@ -68,8 +55,6 @@ int main() {
 
 	layout.Bind();
 
-	v.Bind();
-	i.Bind();
 
 	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);	
 	
@@ -113,6 +98,10 @@ int main() {
 
 		w.SwapBuffers();
 	}
+	*/
+
+	Game g;
+	g.start();
 
 	return 0;
 }
