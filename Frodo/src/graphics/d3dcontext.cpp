@@ -31,7 +31,7 @@ void D3DContext::CreateContext(Window* window) {
 	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	scd.BufferDesc.Width = window->GetWidth();
 	scd.BufferDesc.Height = window->GetHeight();
-	scd.BufferDesc.RefreshRate.Denominator = 60;
+	scd.BufferDesc.RefreshRate.Denominator = 144;
 	scd.BufferDesc.RefreshRate.Numerator = 1;
 	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
