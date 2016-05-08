@@ -3,7 +3,8 @@
 
 FDApplication::FDApplication(const char* title, unsigned int width, unsigned int height) {
 	window = new Window(title, width, height);
-	capUpdate = 1;
+	SetUPS(60.0f);
+	
 }
 
 FDApplication::~FDApplication() {
@@ -12,6 +13,8 @@ FDApplication::~FDApplication() {
 }
 
 void FDApplication::OnInit() { }
+
+void FDApplication::OnTick() { }
 
 void FDApplication::OnUpdate(float delta) { }
 
@@ -23,17 +26,30 @@ void FDApplication::Run() {
 	OnInit();
 	Window& w = *window;
 	unsigned int lastTime = clock();
+	unsigned int lastTime2 = clock();
+	unsigned int lastTime3 = clock();
 
+	float delta = 0;
 
 	while (w.IsOpen()) {
 		D3DContext::Clear();
 
 		unsigned int now = clock();
-		float delta = float(now - lastTime);
-		lastTime = now;
 
-		OnUpdate(delta);
+		if ((delta = float(now - lastTime)) > ups) {
+			lastTime += (unsigned int)ups;
+			OnUpdate(delta);
+			lastTime = now;
+		}
+
+
+
 		OnRender();
+
+		if (clock() - lastTime2 >= 1000) {
+			lastTime2 += 1000;
+			OnTick();
+		}
 
 		w.SwapBuffers();
 	}

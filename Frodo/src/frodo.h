@@ -24,12 +24,14 @@
 class FDAPI FDApplication {
 private:
 	void Run();
-	float capUpdate;
+
+	float ups;
 
 protected:
 	Window* window;
 
 	virtual void OnInit();
+	virtual void OnTick();
 	virtual void OnUpdate(float delta);
 	virtual void OnRender();
 	virtual void OnExit();
@@ -40,4 +42,6 @@ public:
 
 
 	inline void start() { Run(); }
+
+	inline void SetUPS(float timesPerSec) { this->ups = 1000.0f / timesPerSec; }
 };
