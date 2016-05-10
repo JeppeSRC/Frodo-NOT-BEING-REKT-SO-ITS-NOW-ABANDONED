@@ -169,6 +169,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\input.cpp" />
     <ClCompile Include="src\core\log.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\fd.cpp" />

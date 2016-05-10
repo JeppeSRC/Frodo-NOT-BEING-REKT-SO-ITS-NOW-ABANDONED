@@ -2,6 +2,8 @@
 
 
 void Game::OnInit() {
+	window->SetVSync(1);
+
 	struct Vertex {
 		vec4 position;
 		vec2 color;
@@ -34,7 +36,7 @@ void Game::OnInit() {
 	i2 = new IndexBuffer(indices2, 6);
 
 	tex = new Texture2D("./res/mountains.jpg");
-	framebuffer = new Framebuffer2D(300 * window->GetAspectRatio(), 300, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32);
+	framebuffer = new Framebuffer2D(window->GetWidth(), window->GetHeight(), FD_TEXTURE_FORMAT_FLOAT_32_32_32_32);
 
 	shader = new Shader("res/vertex.hlsl", "res/pixel.hlsl");
 	shader2 = new Shader("res/displayVertex.hlsl", "res/pixel.hlsl");
@@ -56,10 +58,14 @@ void Game::OnInit() {
 }
 
 void Game::OnUpdate(float delta) {
-
 	tmp += 0.1f * delta;
 
 	mod.model = mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, tmp));
+}
+
+void Game::OnTick() {
+	FD_INFO("FPS: %u", fps);
+	fps = 0;
 }
 
 void Game::OnRender() {
@@ -85,6 +91,8 @@ void Game::OnRender() {
 	i2->Bind();
 
 	D3DContext::GetDeviceContext()->DrawIndexed(i2->GetCount(), 0, 0);
+
+	fps++;
 }
 
 void Game::OnExit() {

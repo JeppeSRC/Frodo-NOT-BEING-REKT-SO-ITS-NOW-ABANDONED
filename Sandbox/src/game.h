@@ -5,6 +5,7 @@ class Game : public FDApplication {
 protected:
 
 	void OnInit() override;
+	void OnTick() override;
 	void OnUpdate(float delta) override;
 	void OnRender() override;
 	void OnExit() override;
@@ -19,6 +20,8 @@ public:
 	Shader* shader2;
 	Texture* tex;
 	Framebuffer2D* framebuffer;
+
+	unsigned int fps;
 
 	struct Mod {
 		mat4 projection;
