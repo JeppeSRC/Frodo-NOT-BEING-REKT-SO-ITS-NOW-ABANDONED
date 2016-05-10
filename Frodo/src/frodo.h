@@ -2,6 +2,7 @@
 
 #include <core/log.h>
 #include <core/window.h>
+#include <core/input.h>
 
 #include <graphics/d3dcontext.h>
 #include <graphics/buffer/bufferlayout.h>

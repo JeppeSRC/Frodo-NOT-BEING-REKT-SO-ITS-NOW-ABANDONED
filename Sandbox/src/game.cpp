@@ -59,7 +59,6 @@ void Game::OnInit() {
 
 void Game::OnUpdate(float delta) {
 	tmp += 0.1f * delta;
-
 	mod.model = mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, tmp));
 }
 

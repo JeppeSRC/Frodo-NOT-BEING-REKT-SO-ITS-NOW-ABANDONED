@@ -1,5 +1,6 @@
 #include "window.h"
 #include "log.h"
+#include "input.h"
 
 Map<HWND, Window*> Window::window_handels;
 
@@ -10,6 +11,17 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 		case WM_CLOSE:
 			window->isOpen = false;
 			break;
+		case WM_MOUSEMOVE:
+			Input::mouseX = LOWORD(l);
+			Input::mouseY = HIWORD(l);
+			break;
+		case WM_KEYDOWN:
+			Input::keys[(unsigned char)w] = true;
+			break;
+		case WM_KEYUP:
+			Input::keys[(unsigned char)w] = false;
+			Input::prevKeys[(unsigned char)w] = false;
+			break;
 	}
 
 	return DefWindowProc(hwnd, msg, w, l);
@@ -17,7 +29,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 
 Window::Window(const String& title, int width, int height) : title(title), width(width), height(height) {
 	FD_DEBUG("Creating window Title<%s> Width<%d> Height<%d>!", *title, width, height);
-
+	
 	WNDCLASSEX ws;
 
 	ws.cbClsExtra = 0;
@@ -52,6 +64,7 @@ Window::Window(const String& title, int width, int height) : title(title), width
 	isOpen = true;
 	SetVisible(true);
 	SetVSync(0);
+	Input::Init(this);
 
 	window_handels.Add(this, hwnd);
 

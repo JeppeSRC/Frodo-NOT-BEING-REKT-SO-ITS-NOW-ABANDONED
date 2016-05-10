@@ -4,7 +4,6 @@
 FDApplication::FDApplication(const char* title, unsigned int width, unsigned int height) {
 	window = new Window(title, width, height);
 	SetUPS(60.0f);
-	
 }
 
 FDApplication::~FDApplication() {
@@ -39,6 +38,7 @@ void FDApplication::Run() {
 		if ((delta = float(now - lastTime)) > ups) {
 			lastTime += (unsigned int)ups;
 			OnUpdate(delta);
+			Input::Update();
 			lastTime = now;
 		}
 
