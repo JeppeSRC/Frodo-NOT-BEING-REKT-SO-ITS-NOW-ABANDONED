@@ -152,5 +152,8 @@
     <ClInclude Include="src\core\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\render\renderable\renderable2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -89,19 +89,19 @@ mat4 mat4::Perspective(float fov, float aspect, float zNear, float zFar) {
 
 //TODO: fix
 mat4 mat4::Orthographic(float left, float right, float top, float bottom, float zNear, float zFar) {
-	mat4 r(1);
+	mat4 r;
 	
 	float* m = r.m;
 
 	m[0 + 0 * 4] = 2.0f / (right - left);
 	m[1 + 1 * 4] = 2.0f / (top - bottom);
 	m[2 + 2 * 4] = -2.0f / (zFar - zNear);
-	m[0 + 3 * 4] = -(right + left) / (right - left);
-	m[1 + 3 * 4] = -(top + bottom) / (top - bottom);
-	m[2 + 3 * 4] = -(zFar + zNear) / (zFar - zNear);
 
-	//m[3 + 3 * 4] = 0;
-
+	m[0 + 3 * 4] = -((right + left) / (right - left));
+	m[1 + 3 * 4] = -((top + bottom) / (top - bottom));
+	m[2 + 3 * 4] = -((zFar + zNear) / (zNear - zFar));
+	m[3 + 3 * 4] = 1;
+	
 	return r;
 }
 
