@@ -1,7 +1,7 @@
 #pragma once
 #include <frodo.h>
 
-class Game : public FDApplication {
+class Test : public FDApplication {
 protected:
 
 	void OnInit() override;
@@ -30,7 +30,7 @@ public:
 
 	float tmp;
 
-	Game() : FDApplication("Title", 1000, 600) { tmp = 0; }
+	Test() : FDApplication("Title", 1000, 600) { tmp = 0; }
 
 
 

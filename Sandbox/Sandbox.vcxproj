@@ -145,8 +145,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\test.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\test2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Frodo\Frodo.vcxproj">
@@ -154,7 +155,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\test.h" />
+    <ClInclude Include="src\test2d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,7 @@
-#include "game.h"
+#include "test.h"
 
 
-void Game::OnInit() {
+void Test::OnInit() {
 	window->SetVSync(1);
 
 	struct Vertex {
@@ -53,21 +53,22 @@ void Game::OnInit() {
 	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	mod.projection = mat4::Perspective(70.0f, window->GetAspectRatio(), 0.001f, 100.0f);
+	mod.projection = mat4::Orthographic(-1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f);
 	mod.model = mat4::Identity();
-	mod.model = mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 0));
+	//mod.model = mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 0));
 }
 
-void Game::OnUpdate(float delta) {
+void Test::OnUpdate(float delta) {
 	tmp += 0.1f * delta;
-	mod.model = mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, tmp));
+	mod.model = mat4::Translate(vec3(0, 0, -0.2)) * mat4::Rotate(vec3(0, 0, tmp));
 }
 
-void Game::OnTick() {
+void Test::OnTick() {
 	FD_INFO("FPS: %u", fps);
 	fps = 0;
 }
 
-void Game::OnRender() {
+void Test::OnRender() {
 	framebuffer->BindAsRenderTarget();
 	D3DContext::Clear();
 
@@ -94,7 +95,7 @@ void Game::OnRender() {
 	fps++;
 }
 
-void Game::OnExit() {
+void Test::OnExit() {
 	delete i, i2;
 	delete v, v2;
 	delete shader, shader2;
