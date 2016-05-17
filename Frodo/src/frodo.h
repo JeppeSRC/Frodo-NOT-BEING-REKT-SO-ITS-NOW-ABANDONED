@@ -39,7 +39,7 @@ protected:
 
 public:
 	FDApplication(const char* title, unsigned int width, unsigned int height);
-	~FDApplication();
+	virtual ~FDApplication();
 
 
 	inline void start() { Run(); }

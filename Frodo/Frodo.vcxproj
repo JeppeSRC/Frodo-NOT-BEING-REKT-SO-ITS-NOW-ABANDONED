@@ -178,6 +178,7 @@
     <ClCompile Include="src\graphics\buffer\indexbuffer.cpp" />
     <ClCompile Include="src\graphics\buffer\vertexbuffer.cpp" />
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
+    <ClCompile Include="src\graphics\render\renderable\renderable2d.cpp" />
     <ClCompile Include="src\graphics\shader\shader.cpp" />
     <ClCompile Include="src\graphics\texture\framebuffer2d.cpp" />
     <ClCompile Include="src\graphics\texture\texture2d.cpp" />
