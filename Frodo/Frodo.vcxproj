@@ -203,6 +203,7 @@
     <ClInclude Include="src\graphics\buffer\vertexbuffer.h" />
     <ClInclude Include="src\graphics\d3dcontext.h" />
     <ClInclude Include="src\graphics\render\renderable\renderable2d.h" />
+    <ClInclude Include="src\graphics\render\renderer\renderer2d.h" />
     <ClInclude Include="src\graphics\shader\shader.h" />
     <ClInclude Include="src\graphics\texture\framebuffer2d.h" />
     <ClInclude Include="src\graphics\texture\texture.h" />
