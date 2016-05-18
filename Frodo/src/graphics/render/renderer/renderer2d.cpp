@@ -1,8 +1,15 @@
 #include "renderer2d.h"
 #include <core/log.h>
 
-Renderer2D::Renderer2D(unsigned int maxRenderables) {
+Renderer2D::Renderer2D(unsigned int maxRenderables, Shader* shader) {
+	FD_DEBUG("Creating 2D renderer! Max renderables: %u", maxRenderables);
 	this->maxRenderables = maxRenderables;
+
+	inputLayout.Push<vec2>("POSITION");
+	inputLayout.Push<vec2>("TEXCOORDS");
+	inputLayout.Push<unsigned int>("COLOR");
+
+	SetShader(shader);
 
 	D3D11_BUFFER_DESC d;
 	ZeroMemory(&d, sizeof(D3D11_BUFFER_DESC));
@@ -49,15 +56,41 @@ Renderer2D::~Renderer2D() {
 }
 
 void Renderer2D::Begin() {
-	numVertices = 0;
+	indicesToRender = 0;
 
-	D3DContext::GetDeviceContext()->Map(buffer, 0, D3D11_MAP_WRITE, 0, &mapResource);
+	D3DContext::GetDeviceContext()->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapResource);
 
 	vBuffer = (VertexData*)mapResource.pData;
 }
 
 void Renderer2D::Submit(Renderable2D& renderable) {
 
+	const unsigned int color = renderable.GetColor();
+	const vec2& position = renderable.GetPosition();
+	const vec2 size = renderable.GetSize() / 2;
+	const float rotation = renderable.GetRotation();
+
+	vBuffer->position = vec2(-size.GetX(), size.GetY()) + position;
+	vBuffer->color = color;							  
+	vBuffer->texCoords = vec2(0, 0);				  
+	vBuffer++;										  
+													  
+	vBuffer->position = vec2(size.GetX(), size.GetY()) + position;
+	vBuffer->color = color;							
+	vBuffer->texCoords = vec2(1, 0);				
+	vBuffer++;										
+													
+	vBuffer->position = vec2(size.GetX(), -size.GetY()) + position;
+	vBuffer->color = color;							
+	vBuffer->texCoords = vec2(1, 1);				
+	vBuffer++;										
+													
+	vBuffer->position = vec2(-size.GetX(), -size.GetY()) + position;
+	vBuffer->color = color;
+	vBuffer->texCoords = vec2(0, 1);
+	vBuffer++;
+
+	indicesToRender += 6;
 }
 
 void Renderer2D::End() {
@@ -66,6 +99,9 @@ void Renderer2D::End() {
 }
 
 void Renderer2D::Present() {
+	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	shader->Bind();
+
 
 	unsigned int stride = sizeof(VertexData);
 	unsigned int offset = 0;
@@ -73,11 +109,14 @@ void Renderer2D::Present() {
 	D3DContext::GetDeviceContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 	
 	indexBuffer->Bind();
+
+	D3DContext::GetDeviceContext()->DrawIndexed(indicesToRender, 0, 0);
 }
 
 void Renderer2D::SetShader(Shader* shader) {
 	if (shader != nullptr) {
 		this->shader = shader;
+		inputLayout.CreateInputLayout(shader);
 		return;
 	}
 }

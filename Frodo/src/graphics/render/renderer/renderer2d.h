@@ -2,6 +2,7 @@
 
 #include <fd.h>
 #include <graphics/d3dcontext.h>
+#include <graphics/buffer/bufferlayout.h>
 #include <graphics/buffer/indexbuffer.h>
 #include <graphics/render/renderable/renderable2d.h>
 #include <graphics/shader/shader.h>
@@ -9,6 +10,7 @@
 struct VertexData {
 	vec2 position;
 	vec2 texCoords;
+	//vec4 color;
 	unsigned int color;
 
 };
@@ -23,12 +25,13 @@ private:
 	Shader* shader;
 
 	unsigned int maxRenderables;
-	unsigned int numVertices;
+	unsigned int indicesToRender;
 
 	VertexData* vBuffer;
+	BufferLayout inputLayout;
 
 public:
-	Renderer2D(unsigned int maxRenderables);
+	Renderer2D(unsigned int maxRenderables, Shader* shader = nullptr);
 	~Renderer2D();
 
 
@@ -41,5 +44,4 @@ public:
 
 	inline Shader* GetShader() const { return shader; }
 	inline unsigned int GetMaxRenderables() const { return maxRenderables; }
-	inline unsigned int GetNumVertices() const { return numVertices; }
 };

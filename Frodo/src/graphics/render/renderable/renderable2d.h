@@ -24,7 +24,7 @@ public:
 
 
 	inline vec2& GetPosition() { return position; }
-	inline vec2& GetScale() { return size; }
+	inline vec2& GetSize() { return size; }
 	inline float& GetRotation() { return rotation; }
 	inline unsigned int& GetColor() { return color; }
 	inline Texture2D* GetTexture() { return texture; }
