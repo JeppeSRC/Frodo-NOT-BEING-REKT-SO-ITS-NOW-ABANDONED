@@ -2,7 +2,7 @@
 
 
 void Test::OnInit() {
-	window->SetVSync(1);
+	window->SetVSync(0);
 
 	struct Vertex {
 		vec4 position;
@@ -47,8 +47,7 @@ void Test::OnInit() {
 	layout.Push<vec2>("TEXCOORDS");
 
 	layout.CreateInputLayout(shader);
-
-	layout.Bind();
+	layout.CreateInputLayout(shader2);
 
 	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

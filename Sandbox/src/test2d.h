@@ -11,6 +11,12 @@ protected:
 	void OnRender() override;
 	void OnExit() override;
 
+private:
+	Renderer2D* renderer;
+	List<Renderable2D*> renderables;
+
+	unsigned int fps;
+
 public:
 	Test2D();
 
