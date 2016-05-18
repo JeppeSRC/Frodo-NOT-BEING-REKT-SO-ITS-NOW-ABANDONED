@@ -27,12 +27,12 @@ mat3::mat3(float diagonal) {
 mat3 mat3::Rotate(const vec3& v) {
 	mat3 x(1), y(1), z(1);
 
-	float xcos = cosf((float)FD_TO_RADIANS(v.x()));
-	float xsin = sinf((float)FD_TO_RADIANS(v.x()));
-	float ycos = cosf((float)FD_TO_RADIANS(v.y()));
-	float ysin = sinf((float)FD_TO_RADIANS(v.y()));
-	float zcos = cosf((float)FD_TO_RADIANS(v.z()));
-	float zsin = sinf((float)FD_TO_RADIANS(v.z()));
+	float xcos = cosf((float)FD_TO_RADIANS(v.GetX()));
+	float xsin = sinf((float)FD_TO_RADIANS(v.GetX()));
+	float ycos = cosf((float)FD_TO_RADIANS(v.GetY()));
+	float ysin = sinf((float)FD_TO_RADIANS(v.GetY()));
+	float zcos = cosf((float)FD_TO_RADIANS(v.GetZ()));
+	float zsin = sinf((float)FD_TO_RADIANS(v.GetZ()));
 
 	x.m[1 + 1 * 3] = xcos;x.m[1 + 2 * 3] = -xsin;
 	x.m[2 + 1 * 3] = xsin;x.m[2 + 2 * 3] = xcos;
@@ -49,9 +49,9 @@ mat3 mat3::Rotate(const vec3& v) {
 mat3 mat3::Scale(const vec3& v) {
 	mat3 tmp(1);
 
-	tmp.m[0 + 0 * 3] = v.x();
-	tmp.m[1 + 1 * 3] = v.y();
-	tmp.m[2 + 2 * 3] = v.z();
+	tmp.m[0 + 0 * 3] = v.GetX();
+	tmp.m[1 + 1 * 3] = v.GetY();
+	tmp.m[2 + 2 * 3] = v.GetZ();
 
 	return tmp;
 }
@@ -78,9 +78,9 @@ vec3 mat3::operator*(const vec3& v) {
 	__m128 vec[3];
 	__m128 col[3];
 
-	vec[0] = _mm_set_ps(0, v.x(), v.x(), v.x());
-	vec[1] = _mm_set_ps(0, v.y(), v.y(), v.y());
-	vec[2] = _mm_set_ps(0, v.z(), v.z(), v.z());
+	vec[0] = _mm_set_ps(0, v.GetX(), v.GetX(), v.GetX());
+	vec[1] = _mm_set_ps(0, v.GetY(), v.GetY(), v.GetY());
+	vec[2] = _mm_set_ps(0, v.GetZ(), v.GetZ(), v.GetZ());
 
 	LoadColumns(col);
 

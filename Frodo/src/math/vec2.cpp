@@ -15,7 +15,7 @@ vec2& vec2::Add(const vec2& v) {
 }
 
 vec2& vec2::Add(float v) {
-	_xmm = _mm_add_ps(_xmm, _mm_set_ps(v, v, 0, 0));
+	_xmm = _mm_add_ps(_xmm, _mm_set_ps(0, 0, v, v));
 	return *this;
 }
 
@@ -25,7 +25,7 @@ vec2& vec2::Subtract(const vec2& v) {
 }
 
 vec2& vec2::Subtract(float v) {
-	_xmm = _mm_sub_ps(_xmm, _mm_set_ps(v, v, 0, 0));
+	_xmm = _mm_sub_ps(_xmm, _mm_set_ps(0, 0, v, v));
 	return *this;
 }
 
@@ -35,7 +35,7 @@ vec2& vec2::Multiply(const vec2& v) {
 }
 
 vec2& vec2::Multiply(float v) {
-	_xmm = _mm_mul_ps(_xmm, _mm_set_ps(v, v, 0, 0));
+	_xmm = _mm_mul_ps(_xmm, _mm_set_ps(0, 0, v, v));
 	return *this;
 }
 
@@ -45,6 +45,6 @@ vec2& vec2::Divide(const vec2& v) {
 }
 
 vec2& vec2::Divide(float v) {
-	_xmm = _mm_div_ps(_xmm, _mm_set_ps(v, v, 0, 0));
+	_xmm = _mm_div_ps(_xmm, _mm_set_ps(0, 0, v, v));
 	return *this;
 }

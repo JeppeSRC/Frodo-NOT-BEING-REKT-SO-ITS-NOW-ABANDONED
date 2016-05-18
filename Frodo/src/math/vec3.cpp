@@ -7,7 +7,7 @@ vec3::vec3() {
 	memset(&_xmm, 0, sizeof(__m128));
 }
 
-vec3::vec3(const vec2& v) : _x(v.x()), _y(v.y()), _z(0) { }
+vec3::vec3(const vec2& v) : _x(v.GetX()), _y(v.GetY()), _z(0) { }
 
 vec3::vec3(float x, float y, float z) : _x(x), _y(y), _z(z) { }
 
