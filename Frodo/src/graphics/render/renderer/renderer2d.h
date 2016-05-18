@@ -41,6 +41,7 @@ public:
 	void Present();
 
 	void SetShader(Shader* shader);
+	void SetProjectionMatrix(const mat4 matrix);
 
 	inline Shader* GetShader() const { return shader; }
 	inline unsigned int GetMaxRenderables() const { return maxRenderables; }

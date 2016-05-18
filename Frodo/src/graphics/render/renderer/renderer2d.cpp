@@ -67,7 +67,7 @@ void Renderer2D::Submit(Renderable2D& renderable) {
 
 	const unsigned int color = renderable.GetColor();
 	const vec2& position = renderable.GetPosition();
-	const vec2 size = renderable.GetSize() / 2;
+	vec2 size = renderable.GetSize() / 2.0f;
 	const float rotation = renderable.GetRotation();
 
 	vBuffer->position = vec2(-size.GetX(), size.GetY()) + position;
@@ -75,7 +75,7 @@ void Renderer2D::Submit(Renderable2D& renderable) {
 	vBuffer->texCoords = vec2(0, 0);				  
 	vBuffer++;										  
 													  
-	vBuffer->position = vec2(size.GetX(), size.GetY()) + position;
+	vBuffer->position = size + position;
 	vBuffer->color = color;							
 	vBuffer->texCoords = vec2(1, 0);				
 	vBuffer++;										
@@ -85,7 +85,7 @@ void Renderer2D::Submit(Renderable2D& renderable) {
 	vBuffer->texCoords = vec2(1, 1);				
 	vBuffer++;										
 													
-	vBuffer->position = vec2(-size.GetX(), -size.GetY()) + position;
+	vBuffer->position = -size + position;
 	vBuffer->color = color;
 	vBuffer->texCoords = vec2(0, 1);
 	vBuffer++;
@@ -119,4 +119,8 @@ void Renderer2D::SetShader(Shader* shader) {
 		inputLayout.CreateInputLayout(shader);
 		return;
 	}
+}
+
+void Renderer2D::SetProjectionMatrix(const mat4 matrix) {
+	shader->SetVSConstantBuffer("projection_buffer", (void*)matrix.GetData());
 }
