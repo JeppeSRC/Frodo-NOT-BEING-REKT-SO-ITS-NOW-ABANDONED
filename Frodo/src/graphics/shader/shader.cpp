@@ -215,6 +215,8 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename) {
 }
 
 Shader::~Shader() {
+	DX_FREE(inputLayout);
+
 	DX_FREE(vertexShader);
 	DX_FREE(pixelShader);
 	DX_FREE(vByteCode);
@@ -229,6 +231,8 @@ Shader::~Shader() {
 }
 
 void Shader::Bind() {
+	D3DContext::GetDeviceContext()->IASetInputLayout(inputLayout);
+
 	D3DContext::GetDeviceContext()->VSSetShader(vertexShader, 0, 0);
 	D3DContext::GetDeviceContext()->PSSetShader(pixelShader, 0, 0);
 

@@ -14,7 +14,7 @@ static unsigned int get_size_from_format(DXGI_FORMAT format) {
 }
 
 BufferLayout::~BufferLayout() {
-	DX_FREE(layout);
+	
 }
 
 void BufferLayout::Push(const String& name, DXGI_FORMAT format) {
@@ -32,11 +32,10 @@ void BufferLayout::CreateInputLayout(Shader* shader) {
 		desc[i] = {*a.name, 0, a.format, 0, a.offset,D3D11_INPUT_PER_VERTEX_DATA, 0};
 	}
 
-	D3DContext::GetDevice()->CreateInputLayout(desc, elements.GetSize(), shader->GetVSBufferPointer(), shader->GetVSBufferSize(), &layout);
+	ID3D11InputLayout* tmp = nullptr;
+	D3DContext::GetDevice()->CreateInputLayout(desc, elements.GetSize(), shader->GetVSBufferPointer(), shader->GetVSBufferSize(), &tmp);
+
+	shader->SetInputLayout(tmp);
 
 	delete[] desc;
-}
-
-void BufferLayout::Bind() {
-	D3DContext::GetDeviceContext()->IASetInputLayout(layout);
 }

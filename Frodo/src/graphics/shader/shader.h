@@ -33,6 +33,8 @@ private:
 	List<ShaderStructInfo*> vCBuffers;
 	List<ShaderStructInfo*> pCBuffers;
 	
+	ID3D11InputLayout* inputLayout;
+
 public:
 	Shader(const String& vertexFilename, const String& pixelFilename);
 	~Shader();
@@ -45,4 +47,7 @@ public:
 
 	inline const void* GetVSBufferPointer() const { return vByteCode->GetBufferPointer(); }
 	inline size_t GetVSBufferSize() const { return vByteCode->GetBufferSize(); }
+	inline ID3D11InputLayout* GetInputLayout() { return inputLayout; }
+	
+	inline void SetInputLayout(ID3D11InputLayout* layout) { inputLayout = layout; }
 };

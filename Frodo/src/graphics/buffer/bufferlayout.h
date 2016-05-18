@@ -18,8 +18,6 @@ private:
 	};
 
 private:
-	ID3D11InputLayout* layout;
-
 	List<BufferLayoutAttrib> elements;
 
 	unsigned int offset;
@@ -31,7 +29,6 @@ public:
 	~BufferLayout();
 
 	void CreateInputLayout(Shader* shader);
-	void Bind();
 
 	template<typename T>
 	inline void Push(const char* name) { FD_FATAL("Unsupported format"); }
