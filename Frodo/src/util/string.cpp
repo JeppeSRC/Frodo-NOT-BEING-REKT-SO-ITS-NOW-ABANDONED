@@ -189,8 +189,7 @@ bool String::EndsWith(const String& string) const {
 
 size_t String::Find(const String& string, size_t offset) const {
 	if (length+offset < string.length) return (size_t)-1;
-	size_t total = length - string.length;
-	for (size_t i = offset; i < total; i++) {
+	for (size_t i = offset; i < length; i++) {
 		bool match = true;
 		for (size_t j = 0; j < string.length; j++) {
 					
