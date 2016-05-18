@@ -165,6 +165,7 @@ void Shader::CreateBuffers() {
 }
 
 Shader::Shader(const String& vertexFilename, const String& pixelFilename) {
+	inputLayout = nullptr;
 	vByteCode = nullptr;
 	pByteCode = nullptr;
 	vertexShader = nullptr;
@@ -248,16 +249,42 @@ void Shader::Bind() {
 	}
 }
 
+void Shader::SetVSConstantBufferInternalSlot(unsigned int slot, void* data) {
+	ShaderStructInfo& cb = *vCBuffers[slot];
+	D3D11_MAPPED_SUBRESOURCE sub;
+	ZeroMemory(&sub, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+	D3DContext::GetDeviceContext()->Map((ID3D11Resource*)cb.buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &sub);
+	memcpy(sub.pData, data, cb.structSize);
+	D3DContext::GetDeviceContext()->Unmap((ID3D11Resource*)cb.buffer, 0);
+}
+
+void Shader::SetPSConstantBufferInternalSlot(unsigned int slot, void* data) {
+	ShaderStructInfo& cb = *pCBuffers[slot];
+	D3D11_MAPPED_SUBRESOURCE sub;
+	ZeroMemory(&sub, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+	D3DContext::GetDeviceContext()->Map((ID3D11Resource*)cb.buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &sub);
+	memcpy(sub.pData, data, cb.structSize);
+	D3DContext::GetDeviceContext()->Unmap((ID3D11Resource*)cb.buffer, 0);
+}
+
+void Shader::SetVSConstantBuffer(const String& bufferName, void* data) {
+	for (size_t i = 0; i < vCBuffers.GetSize(); i++) {
+		if (vCBuffers[i]->name == bufferName) SetVSConstantBufferInternalSlot(i, data);
+	}
+}
+
+void Shader::SetPSConstantBuffer(const String& bufferName, void* data) {
+	for (size_t i = 0; i < pCBuffers.GetSize(); i++) {
+		if (pCBuffers[i]->name == bufferName) SetPSConstantBufferInternalSlot(i, data);
+	}
+}
+
 void Shader::SetVSConstantBuffer(unsigned int slot, void* data) {
 	for (size_t i = 0; i < vCBuffers.GetSize(); i++) {
 		if (vCBuffers[i]->semRegister == slot) {
-			ShaderStructInfo& cb = *vCBuffers[i];
-			D3D11_MAPPED_SUBRESOURCE sub;
-			ZeroMemory(&sub, sizeof(D3D11_MAPPED_SUBRESOURCE));
-			
-			D3DContext::GetDeviceContext()->Map((ID3D11Resource*)cb.buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &sub);
-			memcpy(sub.pData, data, cb.structSize);
-			D3DContext::GetDeviceContext()->Unmap((ID3D11Resource*)cb.buffer, 0);
+			SetVSConstantBufferInternalSlot(slot, data);
 		}
 	}
 }
@@ -265,13 +292,7 @@ void Shader::SetVSConstantBuffer(unsigned int slot, void* data) {
 void Shader::SetPSConstantBuffer(unsigned int slot, void* data) {
 	for (size_t i = 0; i < pCBuffers.GetSize(); i++) {
 		if (pCBuffers[i]->semRegister == slot) {
-			ShaderStructInfo& cb = *pCBuffers[i];
-			D3D11_MAPPED_SUBRESOURCE sub;
-			ZeroMemory(&sub, sizeof(D3D11_MAPPED_SUBRESOURCE));
-
-			D3DContext::GetDeviceContext()->Map((ID3D11Resource*)cb.buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &sub);
-			memcpy(sub.pData, data, cb.structSize);
-			D3DContext::GetDeviceContext()->Unmap((ID3D11Resource*)cb.buffer, 0);
+			SetPSConstantBufferInternalSlot(i, data);
 		}
 	}
 }
