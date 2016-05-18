@@ -140,7 +140,7 @@ vec4 mat4::operator*(const vec4& v) {
 	for (int i = 1; i < 4; i++)
 		res = _mm_fmadd_ps(vec[i], col[i], res);
 
-	return vec4(res);
+	return vec4(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2], res.m128_f32[3]);
 }
 
 vec3 mat4::operator*(const vec3& v) {
@@ -159,5 +159,5 @@ vec3 mat4::operator*(const vec3& v) {
 	for (int i = 1; i < 4; i++)
 		res = _mm_fmadd_ps(vec[i], col[i], res);
 
-	return vec3(res);
+	return vec3(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2]);
 }

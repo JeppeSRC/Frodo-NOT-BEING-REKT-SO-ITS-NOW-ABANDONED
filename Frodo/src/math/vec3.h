@@ -5,9 +5,9 @@ class FDAPI vec3 {
 private:
 	friend class vec2;
 private:
-	__declspec(align(16)) union {
-		__m128 _xmm;
-		struct {
+	 union {
+		 float fdata[4];
+		 struct {
 			float _x;
 			float _y;
 			float _z;
@@ -19,8 +19,8 @@ private:
 
 public:
 	vec3();
-	vec3(__m128 xmm);
-	vec3(const vec2& v);
+	//vec3(__m128 xmm);
+	vec3(const vec2& v, float z);
 	vec3(float x, float y, float z);
 
 	vec3& Add(const vec3& v);
@@ -32,15 +32,15 @@ public:
 	vec3& Divide(const vec3& v);
 	vec3& Divide(float v);
 
-	__forceinline friend vec3 operator+(const vec3& l, const vec3& r) { return vec3(l._xmm).Add(r); }
-	__forceinline friend vec3 operator-(const vec3& l, const vec3& r) { return vec3(l._xmm).Subtract(r); }
-	__forceinline friend vec3 operator*(const vec3& l, const vec3& r) { return vec3(l._xmm).Multiply(r); }
-	__forceinline friend vec3 operator/(const vec3& l, const vec3& r) { return vec3(l._xmm).Divide(r); }
+	__forceinline friend vec3 operator+(const vec3& l, const vec3& r) { return vec3(l).Add(r); }
+	__forceinline friend vec3 operator-(const vec3& l, const vec3& r) { return vec3(l).Subtract(r); }
+	__forceinline friend vec3 operator*(const vec3& l, const vec3& r) { return vec3(l).Multiply(r); }
+	__forceinline friend vec3 operator/(const vec3& l, const vec3& r) { return vec3(l).Divide(r); }
 
-	__forceinline friend vec3 operator+(const vec3& l, float r) { return vec3(l._xmm).Add(r); }
-	__forceinline friend vec3 operator-(const vec3& l, float r) { return vec3(l._xmm).Subtract(r); }
-	__forceinline friend vec3 operator*(const vec3& l, float r) { return vec3(l._xmm).Multiply(r); }
-	__forceinline friend vec3 operator/(const vec3& l, float r) { return vec3(l._xmm).Divide(r); }
+	__forceinline friend vec3 operator+(const vec3& l, float r) { return vec3(l).Add(r); }
+	__forceinline friend vec3 operator-(const vec3& l, float r) { return vec3(l).Subtract(r); }
+	__forceinline friend vec3 operator*(const vec3& l, float r) { return vec3(l).Multiply(r); }
+	__forceinline friend vec3 operator/(const vec3& l, float r) { return vec3(l).Divide(r); }
 
 	__forceinline void operator+=(const vec3& v) { Add(v); }
 	__forceinline void operator-=(const vec3& v) { Subtract(v); }

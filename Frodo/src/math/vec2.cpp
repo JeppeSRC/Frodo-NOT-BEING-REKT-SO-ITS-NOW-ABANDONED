@@ -1,50 +1,68 @@
 #include "math.h"
 #include <memory>
 
-vec2::vec2(__m128 xmm) : _xmm(xmm) { }
+//vec2::vec2(__m128 xmm) : _xmm(xmm) { }
 
-vec2::vec2() {
-	memset(&_xmm, 0, sizeof(__m128));
-}
+vec2::vec2() : vec2(0, 0) {}
 
-vec2::vec2(float x, float y) : _x(x), _y(y) { }
+vec2::vec2(float x, float y) : _x(x), _y(y), _z(0.0f), _w(0.0f) { }
 
 vec2& vec2::Add(const vec2& v) {
-	_xmm = _mm_add_ps(_xmm, v._xmm);
+	__m128 vxmm = _mm_set_ps(0, 0, v._y, v._x);
+	__m128 xmm = _mm_set_ps(0, 0, _y, _x);
+	xmm = _mm_add_ps(xmm, vxmm);
+	_mm_storeu_ps(fdata, xmm);
 	return *this;
 }
 
 vec2& vec2::Add(float v) {
-	_xmm = _mm_add_ps(_xmm, _mm_set_ps(0, 0, v, v));
+	__m128 xmm = _mm_set_ps(0, 0, _y, _x);
+	xmm = _mm_add_ps(xmm, _mm_set_ps(0, 0, v, v));
+	_mm_storeu_ps(fdata, xmm);
 	return *this;
 }
 
 vec2& vec2::Subtract(const vec2& v) {
-	_xmm = _mm_sub_ps(_xmm, v._xmm);
+	__m128 vxmm = _mm_set_ps(0, 0, v._y, v._x);
+	__m128 xmm = _mm_set_ps(0, 0, _y, _x);
+	xmm = _mm_sub_ps(xmm, vxmm);
+	_mm_storeu_ps(fdata, xmm);
 	return *this;
 }
 
 vec2& vec2::Subtract(float v) {
-	_xmm = _mm_sub_ps(_xmm, _mm_set_ps(0, 0, v, v));
+	__m128 xmm = _mm_set_ps(0, 0, _y, _x);
+	xmm = _mm_sub_ps(xmm, _mm_set_ps(0, 0, v, v));
+	_mm_storeu_ps(fdata, xmm);
 	return *this;
 }
 
 vec2& vec2::Multiply(const vec2& v) {
-	_xmm = _mm_mul_ps(_xmm, v._xmm);
+	__m128 vxmm = _mm_set_ps(0, 0, v._y, v._x);
+	__m128 xmm = _mm_set_ps(0, 0, _y, _x);
+	xmm = _mm_mul_ps(xmm, vxmm);
+	_mm_storeu_ps(fdata, xmm);
 	return *this;
 }
 
 vec2& vec2::Multiply(float v) {
-	_xmm = _mm_mul_ps(_xmm, _mm_set_ps(0, 0, v, v));
+	__m128 xmm = _mm_set_ps(0, 0, _y, _x);
+	xmm = _mm_mul_ps(xmm, _mm_set_ps(0, 0, v, v));
+	_mm_storeu_ps(fdata, xmm);
 	return *this;
 }
 
 vec2& vec2::Divide(const vec2& v) {
-	_xmm = _mm_div_ps(_xmm, v._xmm);
+	__m128 vxmm = _mm_set_ps(0, 0, v._y, v._x);
+	__m128 xmm = _mm_set_ps(0, 0, _y, _x);
+	xmm = _mm_div_ps(xmm, vxmm);
+	_mm_storeu_ps(fdata, xmm);
 	return *this;
 }
 
 vec2& vec2::Divide(float v) {
-	_xmm = _mm_div_ps(_xmm, _mm_set_ps(0, 0, v, v));
+	__m128 xmm = _mm_set_ps(0, 0, _y, _x);
+	xmm = _mm_div_ps(xmm, _mm_set_ps(1, 1, v, v));
+	_mm_storeu_ps(fdata, xmm);
 	return *this;
 }

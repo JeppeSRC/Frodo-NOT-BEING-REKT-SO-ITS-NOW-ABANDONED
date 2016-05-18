@@ -89,5 +89,5 @@ vec3 mat3::operator*(const vec3& v) {
 	for (int i = 1; i < 3; i++)
 		res = _mm_fmadd_ps(vec[i], col[i], res);
 
-	return vec3(res);
+	return vec3(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2]);
 }
