@@ -7,7 +7,7 @@
 
 int main() {
 
-	Test2D g;
+	Test g;
 	g.start();
 
 	return 0;

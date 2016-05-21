@@ -7,6 +7,7 @@ Renderer2D::Renderer2D(unsigned int maxRenderables, Shader* shader) {
 
 	inputLayout.Push<vec2>("POSITION");
 	inputLayout.Push<vec2>("TEXCOORDS");
+	inputLayout.Push<float>("TID");
 	inputLayout.Push<unsigned int>("COLOR");
 
 	SetShader(shader);
@@ -41,6 +42,8 @@ Renderer2D::Renderer2D(unsigned int maxRenderables, Shader* shader) {
 	delete[] indices;
 
 	FD_ASSERT(indexBuffer);
+
+	textureIds.Reserve(32);
 
 	ZeroMemory(&mapResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	mapResource.RowPitch = d.ByteWidth;

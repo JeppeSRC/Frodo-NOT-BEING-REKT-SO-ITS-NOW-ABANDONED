@@ -3,6 +3,7 @@
 
 static unsigned int get_size_from_format(DXGI_FORMAT format) {
 	switch (format) {
+		case DXGI_FORMAT_R32_FLOAT: return sizeof(float);
 		case DXGI_FORMAT_R32G32_FLOAT: return sizeof(vec2);
 		case DXGI_FORMAT_R32G32B32_FLOAT: return sizeof(vec3);
 		case DXGI_FORMAT_R32G32B32A32_FLOAT: return sizeof(vec4);

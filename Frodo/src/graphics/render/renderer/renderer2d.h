@@ -10,7 +10,7 @@
 struct VertexData {
 	vec2 position;
 	vec2 texCoords;
-	//vec4 color;
+	float tid;
 	unsigned int color;
 
 };
@@ -29,6 +29,8 @@ private:
 
 	VertexData* vBuffer;
 	BufferLayout inputLayout;
+
+	List<Texture*> textureIds;
 
 public:
 	Renderer2D(unsigned int maxRenderables, Shader* shader = nullptr);
