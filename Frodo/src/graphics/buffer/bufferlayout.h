@@ -34,7 +34,7 @@ public:
 	inline void Push(const char* name) { FD_FATAL("Unsupported format"); }
 
 	template<> inline void Push<float>(const char* name) { Push(name, DXGI_FORMAT_R32_FLOAT); }
-	template<> inline void Push<int>(const char* name) { Push(name, DXGI_FORMAT_R8G8B8A8_UNORM); }
+	template<> inline void Push<int>(const char* name) { Push(name, DXGI_FORMAT_R8G8B8A8_SNORM); }
 	template<> inline void Push<unsigned int>(const char* name) { Push(name, DXGI_FORMAT_R8G8B8A8_UNORM); }
 	template<> inline void Push<vec2>(const char* name) { Push(name, DXGI_FORMAT_R32G32_FLOAT); }
 	template<> inline void Push<vec3>(const char* name) { Push(name, DXGI_FORMAT_R32G32B32_FLOAT); }
