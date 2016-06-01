@@ -7,6 +7,8 @@
 #include <graphics/render/renderable/renderable2d.h>
 #include <graphics/shader/shader.h>
 
+#define FD_RENDERER2D_MAX_TEXTURES 0x20
+
 struct VertexData {
 	vec2 position;
 	vec2 texCoords;

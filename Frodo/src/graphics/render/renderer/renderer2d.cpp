@@ -43,7 +43,7 @@ Renderer2D::Renderer2D(unsigned int maxRenderables, Shader* shader) {
 
 	FD_ASSERT(indexBuffer);
 
-	textureIds.Reserve(32);
+	textureIds.Reserve(FD_RENDERER2D_MAX_TEXTURES);
 
 	ZeroMemory(&mapResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	mapResource.RowPitch = d.ByteWidth;
@@ -60,6 +60,7 @@ Renderer2D::~Renderer2D() {
 
 void Renderer2D::Begin() {
 	indicesToRender = 0;
+	textureIds.Clear();
 
 	D3DContext::GetDeviceContext()->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapResource);
 
@@ -73,24 +74,50 @@ void Renderer2D::Submit(Renderable2D& renderable) {
 	vec2 size = renderable.GetSize() / 2.0f;
 	const float rotation = renderable.GetRotation();
 
+	Texture2D* texture = renderable.GetTexture();
+
+	float tid = 0.0f;
+
+	if (texture != nullptr) {
+		size_t t = textureIds.Find(texture);
+		if (t == (size_t)-1) {
+
+			if (textureIds.GetSize() >= FD_RENDERER2D_MAX_TEXTURES) {
+				End();
+				Present();
+				Begin();
+			}
+
+			textureIds.Push_back(texture);
+			tid = (float)textureIds.GetSize();
+		} else {
+			tid = (float)t + 1.0f;
+		}
+
+	}
+
 	vBuffer->position = vec2(-size.GetX(), size.GetY()) + position;
-	vBuffer->color = color;							  
 	vBuffer->texCoords = vec2(0, 0);				  
+	vBuffer->tid = tid;
+	vBuffer->color = color;							  
 	vBuffer++;										  
 													  
 	vBuffer->position = size + position;
-	vBuffer->color = color;							
 	vBuffer->texCoords = vec2(1, 0);				
+	vBuffer->tid = tid;
+	vBuffer->color = color;							
 	vBuffer++;										
 													
 	vBuffer->position = vec2(size.GetX(), -size.GetY()) + position;
-	vBuffer->color = color;							
 	vBuffer->texCoords = vec2(1, 1);				
+	vBuffer->tid = tid;
+	vBuffer->color = color;							
 	vBuffer++;										
 													
 	vBuffer->position = -size + position;
-	vBuffer->color = color;
 	vBuffer->texCoords = vec2(0, 1);
+	vBuffer->tid = tid;
+	vBuffer->color = color;
 	vBuffer++;
 
 	indicesToRender += 6;
@@ -105,6 +132,9 @@ void Renderer2D::Present() {
 	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	shader->Bind();
 
+	for (size_t i = 0; i < textureIds.GetSize(); i++) {
+		shader->SetTexture(i, textureIds[i]);
+	}
 
 	unsigned int stride = sizeof(VertexData);
 	unsigned int offset = 0;
