@@ -17,6 +17,8 @@ private:
 
 	unsigned int fps;
 
+	Texture2D* texture;
+
 public:
 	Test2D();
 

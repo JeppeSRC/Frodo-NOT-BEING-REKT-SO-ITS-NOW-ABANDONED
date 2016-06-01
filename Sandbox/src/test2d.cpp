@@ -9,14 +9,18 @@ void Test2D::OnInit() {
 
 	renderer->SetProjectionMatrix(mat4::Orthographic(-16, 16, 9, -9, -1, 1));
 	
+	texture = new Texture2D("res/mountains.jpg");
+
+	renderables.Push_back(new Renderable2D(vec2(0, 0), vec2(2, 2), texture));
 	
-	for (float x = -16; x < 16; x+=0.25f) {
-		for (float y = 10; y > -10; y-=0.25f) {
+	for (float x = -16; x < 16; x++) {
+		for (float y = 10; y > -10; y--) {
 			unsigned int tmp = 0;
 			_rdrand32_step(&tmp);
-			renderables.Push_back(new Renderable2D(vec2(x, y), vec2(0.25f, 0.25f), (tmp | ((0xFF) << 24)) & 0xFFFF00FF));
+			renderables.Push_back(new Renderable2D(vec2(x + 0.5f, y - 0.5f), vec2(0.75f, 0.75f), (tmp | ((0xFF) << 24)) & 0xFFFF00FF));
 		}
 	}
+
 
 	FD_INFO("Rendering: %u", renderables.GetSize());
 
@@ -47,5 +51,6 @@ void Test2D::OnRender() {
 
 void Test2D::OnExit() {
 	delete renderer;
+	delete texture;
 }
 

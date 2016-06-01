@@ -1,4 +1,4 @@
-Texture2D tex[1] : register(t0);
+Texture2D tex : register(t0);
 
 SamplerState sampState {
 	AddressU = Wrap;
@@ -10,5 +10,5 @@ SamplerState sampState {
 
 float4 psMain(float4 position : SV_POSITION, float2 texCoords : TEXCOORDS) : SV_TARGET{
 
-	return tex[0].Sample(sampState, texCoords);
+	return tex.Sample(sampState, texCoords);
 }
