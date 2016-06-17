@@ -40,7 +40,7 @@ void Test::OnInit() {
 
 	shader = new Shader("res/vertex.hlsl", "res/pixel.hlsl");
 	shader2 = new Shader("res/displayVertex.hlsl", "res/pixel.hlsl");
-
+	
 	BufferLayout layout;
 
 	layout.Push<vec4>("POSITION");

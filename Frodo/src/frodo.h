@@ -11,7 +11,6 @@
 #include <graphics/shader/shader.h>
 #include <graphics/texture/texture2d.h>
 #include <graphics/texture/framebuffer2d.h>
-#include <graphics/render/renderer/renderer2d.h>
 
 #include <math/math.h>
 #include <math/mathcommon.h>
