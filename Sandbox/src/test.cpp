@@ -29,17 +29,20 @@ void Test::OnInit() {
 	a[1].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(1, -1, 0, 1);
 	a[2].position = (mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 45))) * vec4(-1, -1, 0, 1);*/
 
+	VFS::Get()->Mount("textures", "res/");
+	VFS::Get()->Mount("shaders", "res/");
+
 	v = new VertexBuffer(&a, sizeof(a), sizeof(Vertex));
 	i = new IndexBuffer(indices, 3);
 
 	v2 = new VertexBuffer(&b, sizeof(b), sizeof(Vertex));
 	i2 = new IndexBuffer(indices2, 6);
 
-	tex = new Texture2D("./res/mountains.jpg");
+	tex = new Texture2D("/textures/mountains.jpg");
 	framebuffer = new Framebuffer2D(window->GetWidth(), window->GetHeight(), FD_TEXTURE_FORMAT_FLOAT_32_32_32_32);
 
-	shader = new Shader("res/vertex.hlsl", "res/pixel.hlsl");
-	shader2 = new Shader("res/displayVertex.hlsl", "res/pixel.hlsl");
+	shader = new Shader("/shaders/vertex.hlsl", "/shaders/pixel.hlsl");
+	shader2 = new Shader("/shaders/displayVertex.hlsl", "/shaders/pixel.hlsl");
 	
 	BufferLayout layout;
 
