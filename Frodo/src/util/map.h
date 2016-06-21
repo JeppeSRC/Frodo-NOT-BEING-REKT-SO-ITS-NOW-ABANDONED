@@ -27,6 +27,19 @@ public:
 		
 	}
 
+	inline void Reserve(unsigned int size) {
+		data.Reserve(size);
+		keys.Reserve(size);
+	}
+
+	inline void Remove(K key) {
+		size_t index = keys.Find(key);
+		if (index == (size_t)-1) return;
+
+		keys.RemoveIndex(index);
+		data.RemoveIndex(index);
+	}
+
 	__forceinline D& operator[](K key) {
 		size_t loc = keys.Find(key);
 		if (loc != (size_t)-1) {
@@ -43,12 +56,11 @@ public:
 	}
 
 	__forceinline D Retrieve(K key) {
-		size_t items = keys.GetSize();
-		for (size_t i = 0; i < items; i++) {
-			if (keys[i] == key) return data[i];
-		}
+		size_t index = keys.Find(key);
+		
+		if (index == (size_t)-1) return D();
 
-		return (D)-1;
+		return data[index];
 	}
 
 

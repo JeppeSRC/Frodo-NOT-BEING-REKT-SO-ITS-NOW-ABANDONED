@@ -14,6 +14,8 @@ String::String(const char* string) {
 	str = new char[length + 1];
 	str[length] = '\0';
 	memcpy(str, string, length);
+
+	noDelete = false;
 }
 
 String::String(char* string, size_t length, bool noCopy) {
@@ -25,11 +27,14 @@ String::String(char* string, size_t length, bool noCopy) {
 	if (noCopy) {
 		this->length = length;
 		str = string;
+		noDelete = true;
 	} else {
 		this->length = length;
 		str = new char[length + 1];
 		str[length] = '\0';
 		memcpy(str, string, length);
+
+		noDelete = false;
 	}
 }
 
@@ -39,16 +44,30 @@ String::String(const String& string) {
 	str = new char[length + 1];
 	str[length] = 0;
 	memcpy(str, string.str, length);
+
+	noDelete = false;
+}
+
+String::String(const String* string) {
+	this->length = string->length;
+
+	str = new char[length + 1];
+	str[length] = 0;
+	memcpy(str, string->str, length);
+
+	noDelete = false;
 }
 
 String::String(String&& string) {
 	this->length = 0;
 	this->str = nullptr;
 	*this = std::move(string);
+
+	noDelete = false;
 }
 
 String::~String() {
-	delete[] str;
+	if (!noDelete) delete[] str;
 	str = nullptr;
 }
 
@@ -61,6 +80,9 @@ String& String::operator=(const String& string) {
 		str[length] = 0;
 		memcpy(str, string.str, length);
 	}
+
+	noDelete = false;
+
 	return *this;
 }
 
@@ -74,6 +96,9 @@ String& String::operator=(String&& string) {
 		string.length = 0;
 		string.str = nullptr;
 	}
+
+	noDelete = false;
+
 	return *this;
 }
 
@@ -167,6 +192,10 @@ bool String::operator!=(const String& string) {
 	}
 
 	return true;
+}
+
+String String::operator+(const String& string) {
+	return String(this).Append(string);
 }
 
 bool String::StartsWith(const String& string) const {

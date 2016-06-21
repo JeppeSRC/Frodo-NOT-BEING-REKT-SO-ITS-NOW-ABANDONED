@@ -4,11 +4,15 @@
 FDApplication::FDApplication(const char* title, unsigned int width, unsigned int height) {
 	window = new Window(title, width, height);
 	SetUPS(60.0f);
+
+	
 }
 
 FDApplication::~FDApplication() {
 	OnExit();
 	delete window;
+
+	VFS::Dispose();
 }
 
 void FDApplication::OnInit() { }
@@ -22,6 +26,8 @@ void FDApplication::OnRender() { }
 void FDApplication::OnExit() { }
 
 void FDApplication::Run() {
+	VFS::Init();
+
 	OnInit();
 	Window& w = *window;
 	unsigned int lastTime = clock();

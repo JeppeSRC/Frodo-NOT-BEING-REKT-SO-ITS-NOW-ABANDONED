@@ -119,12 +119,11 @@ public:
 	inline T Remove(T item) {
 		for (size_t i = 0; i < size; i++)
 			if (data[i] == item) {
-				return Remove(i);
-				break;
+				return RemoveIndex(i);
 			}
 	}
 
-	inline T Remove(size_t index) {
+	inline T RemoveIndex(size_t index) {
 		T tmp = data[index];
 
 		size--;
@@ -138,7 +137,7 @@ public:
 		size = 0;
 	}
 
-	inline void Free(bool isArray) {
+	inline void Free(bool isArray = false) {
 		if (isArray)
 			for (size_t i = 0; i < size; i++) {
 				delete[] data[i];
