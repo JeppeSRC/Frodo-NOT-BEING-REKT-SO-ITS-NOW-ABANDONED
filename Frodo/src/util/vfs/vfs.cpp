@@ -13,6 +13,10 @@ VFS::~VFS() {
 
 String VFS::ResolvePath(const String& vpath) {
 
+	if (!vpath.StartsWith("/")) {
+		return vpath;
+	}
+
 	List<String*> list = vpath.Split('/');
 
 	String vmountPath = list[1];
@@ -32,13 +36,10 @@ void VFS::UnMount(const String& name) {
 }
 
 unsigned char* VFS::ReadFile(const String& filename, size_t* fileSize) {
-	String path;
-	if (filename.StartsWith("/")) { 
-		path = ResolvePath(filename);
-	} else {
-		path = filename;
-	}
-
 	size_t* fsize = fileSize != nullptr ? fileSize : new size_t(0);
-	return FDReadBinaryFile(path, fsize);
+	return FDReadBinaryFile(ResolvePath(filename), fsize);
+}
+
+String VFS::ReadTextFile(const String& filename) {
+	return FDReadTextFile(ResolvePath(filename));
 }
