@@ -96,6 +96,6 @@ void Framebuffer2D::Bind(unsigned int slot) {
 }
 
 void Framebuffer2D::BindAsRenderTarget() {
-	D3DContext::SetRenderTargets(renderTargetView, depthStencilView);
+	D3DContext::SetRenderTargets(1, &renderTargetView, depthStencilView);
 	D3DContext::SetViewPort(0, 0, (float)width, (float)height);
 }

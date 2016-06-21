@@ -16,7 +16,7 @@ private:
 	static D3DContext* pContext;
 
 private:
-	ID3D11RenderTargetView* activeRenderTarget;
+	ID3D11RenderTargetView* activeRenderTargets[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT];
 	ID3D11DepthStencilView* activeDepthStencilView;
 
 	ID3D11Device* device;
@@ -35,10 +35,11 @@ public:
 	static void Dispose();
 
 	static void Present(unsigned int syncInterval, unsigned int flags);
-	static void Clear();
+	static void Clear(unsigned short numRenderTargets = 1);
 
 	static void SetRenderTarget(ID3D11RenderTargetView* target);
-	static void SetRenderTargets(ID3D11RenderTargetView* target, ID3D11DepthStencilView* depthView);
+	static void SetRenderTargets(unsigned short numRenderTargets, ID3D11RenderTargetView** target, ID3D11DepthStencilView* depthView);
+	static void SetRenderTargets(unsigned short numRenderTargets, ID3D11RenderTargetView** target);
 	static void SetViewPort(float topLeftX, float topLeftY, float width, float height);
 	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
 
