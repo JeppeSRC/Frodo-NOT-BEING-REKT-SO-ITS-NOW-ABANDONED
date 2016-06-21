@@ -1,11 +1,17 @@
 #include "texture2d.h"
 #include <D3D/Include/WICTextureLoader.h>
 #include <core/log.h>
+#include <util/vfs/vfs.h>
 
 using namespace DirectX;
 
 Texture2D::Texture2D(const String& filename) : Texture2D() {
-	CreateWICTextureFromFile(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), filename.GetWCHAR(), (ID3D11Resource**)&resource, &resourceView);
+
+	size_t size = 0;
+	unsigned char* data = VFS::Get()->ReadFile(filename, &size);
+
+	CreateWICTextureFromMemory(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), data, size, (ID3D11Resource**)&resource, &resourceView);
+	//CreateWICTextureFromFile(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), filename.GetWCHAR(), (ID3D11Resource**)&resource, &resourceView);
 	
 	FD_ASSERT(resource && resourceView);
 
