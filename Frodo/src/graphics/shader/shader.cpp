@@ -1,7 +1,7 @@
 #include "shader.h"
 #include <d3dcompiler.h>
 #include <core/log.h>
-#include <util/fileutils.h>
+#include <util/vfs/vfs.h>
 #include <math/math.h>
 
 inline static String get_field_type_as_string(FD_SHADER_FIELD_TYPE type) {
@@ -171,8 +171,8 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename) {
 	vertexShader = nullptr;
 	pixelShader = nullptr;
 
-	String vSource = FDReadTextFile(vertexFilename);
-	String pSource = FDReadTextFile(pixelFilename);
+	String vSource = VFS::Get()->ReadTextFile(vertexFilename);
+	String pSource = VFS::Get()->ReadTextFile(pixelFilename);
 
 	ID3DBlob* error = nullptr;
 
