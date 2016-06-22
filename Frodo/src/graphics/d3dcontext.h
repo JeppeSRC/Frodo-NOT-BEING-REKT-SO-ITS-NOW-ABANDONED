@@ -43,6 +43,9 @@ public:
 	static void SetViewPort(float topLeftX, float topLeftY, float width, float height);
 	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
 
+	static inline ID3D11DepthStencilView* GetDefaultDepthStencilView() { return D3DContext::GetContext()->depthStencilView; }
+	static inline ID3D11RenderTargetView* GetDefaultRenderTarget() { return D3DContext::GetContext()->renderTarget; }
+
 	__forceinline static D3DContext* GetContext() { return pContext; }
 	__forceinline static ID3D11Device* GetDevice() {return pContext->device;}
 	__forceinline static ID3D11DeviceContext* GetDeviceContext() { return pContext->context; }
