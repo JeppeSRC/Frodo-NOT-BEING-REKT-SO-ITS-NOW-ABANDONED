@@ -164,15 +164,23 @@ void Shader::CreateBuffers() {
 	}
 }
 
-Shader::Shader(const String& vertexFilename, const String& pixelFilename) {
+Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool src) {
 	inputLayout = nullptr;
 	vByteCode = nullptr;
 	pByteCode = nullptr;
 	vertexShader = nullptr;
 	pixelShader = nullptr;
 
-	String vSource = VFS::Get()->ReadTextFile(vertexFilename);
-	String pSource = VFS::Get()->ReadTextFile(pixelFilename);
+	String vSource;
+	String pSource;
+
+	if (src) {
+		vSource = vertexFilename;
+		pSource = pixelFilename;
+	} else {
+		vSource = VFS::Get()->ReadTextFile(vertexFilename);
+		pSource = VFS::Get()->ReadTextFile(pixelFilename);
+	}
 
 	ID3DBlob* error = nullptr;
 

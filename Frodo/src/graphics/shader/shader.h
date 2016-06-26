@@ -39,7 +39,7 @@ private:
 	void SetPSConstantBufferInternalSlot(unsigned int slot, void* data);
 
 public:
-	Shader(const String& vertexFilename, const String& pixelFilename);
+	Shader(const String& vertexFilename, const String& pixelFilename, bool src = false);
 	~Shader();
 
 	void Bind();

@@ -31,20 +31,25 @@ private:
 	Framebuffer2D* renderTargets[C];
 
 public:
+	FramebufferMRT() { }
 	FramebufferMRT(unsigned int width, unsigned int height, FD_TEXTURE_FORMAT format, bool createDepthStencil = true) {
-		numRenderTargets = C;
-
-		renderTargets[0] = new Framebuffer2D(width, height, format, createDepthStencil);
-
-		for (unsigned int i = 1; i < numRenderTargets; i++) {
-			renderTargets[i] = new Framebuffer2D(width, height, format, false);
-		}
+		Init(width, height, format, createDepthStencil);
 	}
 
 
 	~FramebufferMRT() {
 		for (unsigned int i = 0; i < numRenderTargets; i++) {
 			delete renderTargets[i];
+		}
+	}
+
+	inline void Init(unsigned int width, unsigned int height, FD_TEXTURE_FORMAT format, bool createDepthStencil = true) {
+		numRenderTargets = C;
+
+		renderTargets[0] = new Framebuffer2D(width, height, format, createDepthStencil);
+
+		for (unsigned int i = 1; i < numRenderTargets; i++) {
+			renderTargets[i] = new Framebuffer2D(width, height, format, false);
 		}
 	}
 

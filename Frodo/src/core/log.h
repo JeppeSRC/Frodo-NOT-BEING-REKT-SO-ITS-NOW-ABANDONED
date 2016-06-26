@@ -10,11 +10,11 @@
 #define FD_LOG_LEVEL_FATAL   0x04
 
 #define FD_INFO(msg, ...) FDLog(FD_LOG_LEVEL_INFO, msg, __VA_ARGS__)
+#define FD_WARNING(msg, ...) FDLog(FD_LOG_LEVEL_WARNING, msg, __VA_ARGS__)
+#define FD_FATAL(msg, ...) FDLog(FD_LOG_LEVEL_FATAL, msg, __VA_ARGS__)
 
 #if defined(_DEBUG) || defined(FD_LOG_DISPLAY_DEBUG)
 #define FD_DEBUG(msg, ...) FDLog(FD_LOG_LEVEL_DEBUG, msg, __VA_ARGS__)
-#define FD_WARNING(msg, ...) FDLog(FD_LOG_LEVEL_WARNING, msg, __VA_ARGS__)
-#define FD_FATAL(msg, ...) FDLog(FD_LOG_LEVEL_FATAL, msg, __VA_ARGS__)
 
 #define FD_ASSERT(x) \
 if (!x) { \
@@ -24,9 +24,7 @@ if (!x) { \
 }
 #else
 #define FD_DEBUG(msg, ...)
-#define FD_WARNING(msg, ...)
 #define FD_ASSERT(x)
-#define FD_FATAL(msg, ...) 
 #endif
 
 

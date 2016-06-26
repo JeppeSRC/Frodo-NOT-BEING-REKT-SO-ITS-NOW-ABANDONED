@@ -44,7 +44,7 @@ Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEX
 			FD_ASSERT(FD_TEXTURE_FORMAT_UNKNOWN);
 			break;
 		case FD_TEXTURE_FORMAT_UINT_8_8_8_8:
-			d.Format = DXGI_FORMAT_R8G8B8A8_UINT;
+			d.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 			size = 4;
 			break;
 		case FD_TEXTURE_FORMAT_FLOAT_32_32_32_32:

@@ -2,7 +2,7 @@
 
 
 void Test::OnInit() {
-	window->SetVSync(0);
+	window->SetVSync(1);
 
 	struct Vertex {
 		vec4 position;
@@ -38,7 +38,9 @@ void Test::OnInit() {
 	v2 = new VertexBuffer(&b, sizeof(b), sizeof(Vertex));
 	i2 = new IndexBuffer(indices2, 6);
 
-	tex = new Texture2D("/textures/mountains.jpg");
+	
+	TextureManager::Add("mountain", new Texture2D("/textures/mountains.jpg"));
+
 	framebuffer = new Framebuffer2D(window->GetWidth(), window->GetHeight(), FD_TEXTURE_FORMAT_FLOAT_32_32_32_32);
 
 	shader = new Shader("/shaders/vertex.hlsl", "/shaders/pixel.hlsl");
@@ -55,14 +57,16 @@ void Test::OnInit() {
 	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	mod.projection = mat4::Perspective(70.0f, window->GetAspectRatio(), 0.001f, 100.0f);
-	mod.projection = mat4::Orthographic(-1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f);
+//	mod.projection = mat4::Orthographic(-1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f);
 	mod.model = mat4::Identity();
 	//mod.model = mat4::Translate(vec3(0, 0, -2)) * mat4::Rotate(vec3(0, 0, 0));
+
+	tex = TextureManager::Get("mountain");
 }
 
 void Test::OnUpdate(float delta) {
 	tmp += 0.1f * delta;
-	mod.model = mat4::Translate(vec3(0, 0, -0.2)) * mat4::Rotate(vec3(0, 0, tmp));
+	mod.model = mat4::Translate(vec3(0, 0, -1.2)) * mat4::Rotate(vec3(0, 0, tmp));
 }
 
 void Test::OnTick() {
@@ -94,6 +98,8 @@ void Test::OnRender() {
 
 	D3DContext::GetDeviceContext()->DrawIndexed(i2->GetCount(), 0, 0);
 
+	shader2->SetTexture(0, nullptr);
+
 	fps++;
 }
 
@@ -101,6 +107,5 @@ void Test::OnExit() {
 	delete i, i2;
 	delete v, v2;
 	delete shader, shader2;
-	delete tex;
 	delete framebuffer;
 }

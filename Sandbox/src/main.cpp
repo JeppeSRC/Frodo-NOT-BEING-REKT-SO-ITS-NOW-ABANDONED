@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "test.h"
+#include "deferredtest.h"
 #include <core/log.h>
 #include <string>
 #include <util/vfs/vfs.h>
@@ -9,7 +10,7 @@
 int main() {
 
 
-	Test g;
+	DeferredTest g;
 	g.start();
 
 	return 0;

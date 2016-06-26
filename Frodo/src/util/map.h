@@ -65,4 +65,7 @@ public:
 
 
 	inline size_t GetItems() const { return keys.GetSize(); }
+
+	inline List<K> GetKeyList() const { return keys; }
+	inline List<D> GetDataList() const { return data; }
 };

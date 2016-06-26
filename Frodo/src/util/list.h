@@ -121,6 +121,8 @@ public:
 			if (data[i] == item) {
 				return RemoveIndex(i);
 			}
+
+		return T();
 	}
 
 	inline T RemoveIndex(size_t index) {

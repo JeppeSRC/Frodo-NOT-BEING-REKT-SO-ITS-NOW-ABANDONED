@@ -8,9 +8,21 @@
 #include <graphics/buffer/bufferlayout.h>
 #include <graphics/buffer/vertexbuffer.h>
 #include <graphics/buffer/indexbuffer.h>
+
 #include <graphics/shader/shader.h>
+#include <graphics/shader/shaderfactory.h>
+
 #include <graphics/texture/texture2d.h>
 #include <graphics/texture/framebuffer2d.h>
+#include <graphics/texture/texturemanager.h>
+
+#include <graphics/render/deferredrenderer.h>
+
+#include <graphics/render/material.h>
+#include <graphics/render/model.h>
+#include <graphics/render/meshfactory.h>
+
+#include <entity/entity.h>
 
 #include <math/math.h>
 #include <math/mathcommon.h>
