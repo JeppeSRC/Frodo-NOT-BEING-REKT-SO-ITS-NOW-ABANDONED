@@ -6,7 +6,9 @@ struct Out {
 	float3 normal : NORMALS;
 };
 
-cbuffer proj : register(b0) { float4x4 projection; }
+cbuffer proj : register(b0) {
+	float4x4 projection; 
+};
 
 cbuffer modelData : register(b1) {
 	float4x4 translation;
@@ -17,7 +19,7 @@ cbuffer modelData : register(b1) {
 Out vsMain(float3 position : POSITION, float2 texCoords : TEXCOORDS, float3 normals : NORMALS) {
 	Out o;
 
-	o.position = mul(projection, mul(translation, mul(rotation, float4(position, 1))));
+	o.position =  mul(projection, mul(translation, mul(rotation, float4(position, 1))));
 	o.color = color;
 	o.texCoord = texCoords;
 	o.normal = normals;

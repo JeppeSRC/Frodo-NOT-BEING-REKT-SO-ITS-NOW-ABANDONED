@@ -17,7 +17,9 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 
 	render.CreateInputLayout(renderShader);
 
-	renderShader->SetVSConstantBuffer(0, (void*)&mat4::Perspective(70.0f, (float)width / height, 0.0001f, 1000.0f));
+	mat4 proj = mat4::Perspective(70.0f, (float)width / height, 0.0001f, 1000.0f);
+
+	renderShader->SetVSConstantBuffer(0, (void*)&proj);
 
 }
 
@@ -50,7 +52,7 @@ void DeferredRenderer::Render() {
 		} t;
 
 		t.translation = mat4::Translate(e.GetPosition());
-		t.rotation = mat4::Identity();//mat4::Rotate(e.GetRotation());
+		t.rotation = mat4::Rotate(e.GetRotation());
 		t.color = mat->GetDiffuseColor();
 
 		renderShader->SetVSConstantBuffer(1, &t);

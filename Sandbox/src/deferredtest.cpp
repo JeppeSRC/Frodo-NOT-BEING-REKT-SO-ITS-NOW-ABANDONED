@@ -11,7 +11,7 @@ void DeferredTest::OnInit() {
 	Material* material = new Material(vec4(1, 1, 1, 1));
 
 
-	Entity* e = new Entity({0, 0, -2}, { 0, 0, 45});
+	Entity* e = new Entity({0, 0, -1}, { 0, 0, 45});
 
 	e->SetModel(model);
 	e->SetMaterial(material);
