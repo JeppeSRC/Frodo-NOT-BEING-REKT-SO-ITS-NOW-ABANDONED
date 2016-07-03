@@ -43,19 +43,13 @@ void DeferredRenderer::Render() {
 
 		e.GetModel()->Bind();
 
-		Material* mat = e.GetMaterial();
+		Material& mat = *e.GetMaterial();
 
-		struct data {
-			mat4 translation;
-			mat4 rotation;
-			vec4 color;
-		} t;
+		rData.translation = mat4::Translate(e.GetPosition());
+		rData.rotation = mat4::Rotate(e.GetRotation());
+		rData.color = mat.GetDiffuseColor();
 
-		t.translation = mat4::Translate(e.GetPosition());
-		t.rotation = mat4::Rotate(e.GetRotation());
-		t.color = mat->GetDiffuseColor();
-
-		renderShader->SetVSConstantBuffer(1, &t);
+		renderShader->SetVSConstantBuffer(1, &rData);
 
 		D3DContext::GetDeviceContext()->DrawIndexed(e.GetModel()->GetIndexBuffer()->GetCount(), 0, 0);
 	}

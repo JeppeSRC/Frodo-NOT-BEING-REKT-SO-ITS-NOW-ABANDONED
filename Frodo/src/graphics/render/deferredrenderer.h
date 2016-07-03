@@ -14,6 +14,19 @@
 
 class FDAPI DeferredRenderer {
 private:
+
+	struct RenderData {
+		mat4 translation;
+		mat4 rotation;
+		vec4 color;
+	} rData;
+
+
+	struct CompositionData {
+		
+	}cData;
+
+private:
 	FramebufferMRT<4> mrt;
 
 	Shader* renderShader;
