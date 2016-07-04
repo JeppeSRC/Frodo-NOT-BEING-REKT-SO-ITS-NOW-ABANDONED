@@ -6,11 +6,10 @@
 #include <graphics/texture/framebuffer2d.h>
 #include <entity/entity.h>
 
-#define FD_RENDERER_MRT_INDEX_POSITIONS 0x0
-#define FD_RENDERER_MRT_INDEX_COLORS	0x1
-#define FD_RENDERER_MRT_INDEX_TEXCOORDS 0x2
-#define FD_RENDERER_MRT_INDEX_NORMALS	0x3
-#define FD_RENDERER_MRT_INDEX_DEPTH		0x4
+#define FD_RENDERER_MRT_INDEX_POSITIONS		0x0
+#define FD_RENDERER_MRT_INDEX_DIFFUSE		0x1
+#define FD_RENDERER_MRT_INDEX_NORMALS		0x2 
+#define FD_RENDERER_MRT_INDEX_SHADOWMAP		0x3
 
 class FDAPI DeferredRenderer {
 private:
@@ -18,13 +17,15 @@ private:
 	struct RenderData {
 		mat4 translation;
 		mat4 rotation;
-		vec4 color;
 	} rData;
 
 
 	struct CompositionData {
-		
+		vec4 color;
 	}cData;
+
+	VertexBuffer* vertexBufferPlane;
+	IndexBuffer* indexBufferPlane;
 
 private:
 	FramebufferMRT<4> mrt;

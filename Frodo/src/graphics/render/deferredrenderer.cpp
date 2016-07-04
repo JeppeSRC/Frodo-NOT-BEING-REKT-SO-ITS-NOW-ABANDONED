@@ -7,7 +7,7 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 
 	mrt.Init(width, height, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32, true);
 
-	BufferLayout render;
+	BufferLayout render, composit;
 
 	render.Push<vec3>("POSITION");
 	render.Push<vec2>("TEXCOORDS");
@@ -21,10 +21,36 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 
 	renderShader->SetVSConstantBuffer(0, (void*)&proj);
 
+
+	composit.Push<vec3>("POSITION");
+	composit.Push<vec2>("TEXCOORDS");
+
+	compositionShader = ShaderFactory::GetDeferredCompositionShader();
+
+	composit.CreateInputLayout(compositionShader);
+
+
+	struct PlaneVertex {
+		vec3 position;
+		vec2 texCoords;
+	};
+
+	PlaneVertex vertices[4]{
+		{vec3(-1, 1, 0), vec2(0, 0)},
+		{vec3(1, 1, 0), vec2(1, 0)},
+		{vec3(1, -1, 0), vec2(1, 1)},
+		{vec3(-1, -1, 0), vec2(0, 1)},
+	};
+
+	unsigned int indices[6]{0, 1, 2, 2, 3, 0};
+
+	vertexBufferPlane = new VertexBuffer(vertices, sizeof(vertices), sizeof(PlaneVertex));
+	indexBufferPlane = new IndexBuffer(indices, 6);
 }
 
 DeferredRenderer::~DeferredRenderer() {
 	delete renderShader;
+	delete compositionShader;
 }
 
 void DeferredRenderer::AddEntity(Entity* e) {
@@ -38,6 +64,9 @@ void DeferredRenderer::RemoveEntity(Entity* e) {
 void DeferredRenderer::Render() {
 	renderShader->Bind();
 	
+	mrt.BindAsRenderTarget();
+	D3DContext::Clear(4);
+
 	for (size_t i = 0; i < entities.GetSize(); i++) {
 		Entity& e = *entities[i];
 
@@ -47,11 +76,27 @@ void DeferredRenderer::Render() {
 
 		rData.translation = mat4::Translate(e.GetPosition());
 		rData.rotation = mat4::Rotate(e.GetRotation());
-		rData.color = mat.GetDiffuseColor();
+
+		cData.color = mat.GetDiffuseColor();
 
 		renderShader->SetVSConstantBuffer(1, &rData);
+		renderShader->SetPSConstantBuffer(0, &cData);
+		renderShader->SetTexture(0, TextureManager::Get("default"));
 
 		D3DContext::GetDeviceContext()->DrawIndexed(e.GetModel()->GetIndexBuffer()->GetCount(), 0, 0);
 	}
+
+	D3DContext::SetRenderTarget(nullptr);
+
+	compositionShader->Bind();
+
+	vertexBufferPlane->Bind();
+	indexBufferPlane->Bind();
+
+	compositionShader->SetTexture(0, (Texture2D*)mrt[0]);
+	compositionShader->SetTexture(1, (Texture2D*)mrt[1]);
+	compositionShader->SetTexture(2, (Texture2D*)mrt[2]);
+
+	D3DContext::GetDeviceContext()->DrawIndexed(indexBufferPlane->GetCount(), 0, 0);
 
 }
