@@ -11,6 +11,10 @@ protected:
 	void OnRender() override;
 	void OnExit() override;
 
+private:
+
+	unsigned int fps;
+
 public:
 
 	DeferredRenderer* renderer;

@@ -2,7 +2,7 @@
 
 
 void DeferredTest::OnInit() {
-	window->SetVSync(1);
+	window->SetVSync(0);
 
  
 	renderer = new DeferredRenderer(window->GetWidth(), window->GetHeight());
@@ -24,11 +24,14 @@ void DeferredTest::OnUpdate(float delta) {
 }
 
 void DeferredTest::OnTick() {
-
+	FD_INFO("FPS: %u", fps);
+	fps = 0;
 }
 
 void DeferredTest::OnRender() {
 	renderer->Render();
+
+	fps++;
 }
 
 void DeferredTest::OnExit() {

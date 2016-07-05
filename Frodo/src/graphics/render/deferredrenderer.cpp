@@ -5,6 +5,24 @@
 
 DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 
+	IDXGIDevice* dev;
+	D3DContext::GetDevice()->QueryInterface(__uuidof(IDXGIDevice), (void**)&dev);
+	
+	IDXGIAdapter* ad;
+	dev->GetAdapter(&ad);
+
+	DXGI_ADAPTER_DESC desc;
+	ad->GetDesc(&desc);
+
+	FD_INFO("GPU Info: ");
+
+	char string[128];
+
+	wcstombs(string, desc.Description, 128);
+
+	FD_INFO("\t Description: \t %s", string);
+	FD_INFO("\t VRAM: \t\t %u", desc.DedicatedVideoMemory);
+
 	mrt.Init(width, height, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32, true);
 
 	BufferLayout render, composit;

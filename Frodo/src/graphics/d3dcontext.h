@@ -12,6 +12,7 @@
 class FDAPI D3DContext {
 private:
 	friend class Window;
+	friend class String;
 private:
 	static D3DContext* pContext;
 
