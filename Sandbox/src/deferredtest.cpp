@@ -2,7 +2,7 @@
 
 
 void DeferredTest::OnInit() {
-	window->SetVSync(0);
+	window->SetVSync(1);
 
  
 	renderer = new DeferredRenderer(window->GetWidth(), window->GetHeight());

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <fd.h>
-#include <graphics/render/model.h>
-#include <graphics/render/material.h>
+#include <graphics/render/model/model.h>
+#include <graphics/render/material/material.h>
 
 class FDAPI Entity {
 protected:

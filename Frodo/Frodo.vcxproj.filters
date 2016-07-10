@@ -84,7 +84,7 @@
     <ClCompile Include="src\graphics\shader\shaderfactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\render\meshfactory.cpp">
+    <ClCompile Include="src\graphics\render\model\meshfactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,22 +173,25 @@
     <ClInclude Include="src\graphics\render\deferredrenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\render\material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\texture\texturemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\entity\entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\render\model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\shader\shaderfactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\render\meshfactory.h">
+    <ClInclude Include="src\graphics\render\model\model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\render\model\meshfactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\render\material\material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\render\light\light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

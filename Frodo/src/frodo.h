@@ -18,9 +18,9 @@
 
 #include <graphics/render/deferredrenderer.h>
 
-#include <graphics/render/material.h>
-#include <graphics/render/model.h>
-#include <graphics/render/meshfactory.h>
+#include <graphics/render/material/material.h>
+#include <graphics/render/model/model.h>
+#include <graphics/render/model/meshfactory.h>
 
 #include <entity/entity.h>
 

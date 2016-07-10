@@ -185,7 +185,7 @@
     <ClCompile Include="src\graphics\buffer\vertexbuffer.cpp" />
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
     <ClCompile Include="src\graphics\render\deferredrenderer.cpp" />
-    <ClCompile Include="src\graphics\render\meshfactory.cpp" />
+    <ClCompile Include="src\graphics\render\model\meshfactory.cpp" />
     <ClCompile Include="src\graphics\shader\shader.cpp" />
     <ClCompile Include="src\graphics\shader\shaderfactory.cpp" />
     <ClCompile Include="src\graphics\texture\framebuffer2d.cpp" />
@@ -214,9 +214,10 @@
     <ClInclude Include="src\graphics\buffer\vertexbuffer.h" />
     <ClInclude Include="src\graphics\d3dcontext.h" />
     <ClInclude Include="src\graphics\render\deferredrenderer.h" />
-    <ClInclude Include="src\graphics\render\material.h" />
-    <ClInclude Include="src\graphics\render\meshfactory.h" />
-    <ClInclude Include="src\graphics\render\model.h" />
+    <ClInclude Include="src\graphics\render\light\light.h" />
+    <ClInclude Include="src\graphics\render\material\material.h" />
+    <ClInclude Include="src\graphics\render\model\meshfactory.h" />
+    <ClInclude Include="src\graphics\render\model\model.h" />
     <ClInclude Include="src\graphics\shader\shader.h" />
     <ClInclude Include="src\graphics\shader\shaderfactory.h" />
     <ClInclude Include="src\graphics\texture\framebuffer2d.h" />
