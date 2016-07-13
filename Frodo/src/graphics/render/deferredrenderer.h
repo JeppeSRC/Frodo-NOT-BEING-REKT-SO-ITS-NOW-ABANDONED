@@ -4,6 +4,7 @@
 #include <graphics/d3dcontext.h>
 #include <graphics/shader/shader.h>
 #include <graphics/texture/framebuffer2d.h>
+#include <graphics/render/light/light.h>
 #include <entity/entity.h>
 
 #define FD_RENDERER_MRT_INDEX_POSITIONS		0x0
@@ -30,17 +31,46 @@ private:
 private:
 	FramebufferMRT<4> mrt;
 
-	Shader* renderShader;
+	Shader* geometryShader;
 	Shader* directionalpass;
 
+	enum {
+		FD_DEFERRED_SHADER_SLOT_GEOMETRY_PROJECTION,
+		FD_DEFERRED_SHADER_SLOT_GEOMETRY_MODELDATA,
+		FD_DEFERRED_SHADER_SLOT_GEOMETRY_MATERIALDATA,
+		FD_DEFERRED_SHADER_SLOT_DIRECTIONAL_DATA,
+		FD_DEFERRED_SHADER_SLOT_POINT_DATA,
+		FD_DEFERRED_SHADER_SLOT_NUM
+	};
+
+	unsigned int constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_NUM];
+
+	ID3D11DepthStencilState* depthState[2];
+	ID3D11BlendState* blendState[2];
+
 	List<Entity*> entities;
+	List<DirectionalLight*> directionalLights;
+	List<PointLight*> pointLights;
+
+	void SetBlendingInternal(bool blending);
+	void SetDepthInternal(bool depth);
+
+	void CreateBlendStates();
+	void CreateDepthStates();
+
+	void CreateShaders();
 
 public:
 	DeferredRenderer(unsigned int width, unsigned int height);
 	~DeferredRenderer();
 
+	void SetProjectionMatrix(const mat4& matrix);
+
 	void AddEntity(Entity* e);
 	void RemoveEntity(Entity* e);
+
+	void AddLight(DirectionalLight* light);
+	void AddLight(PointLight* light);
 
 	void Render();
 };

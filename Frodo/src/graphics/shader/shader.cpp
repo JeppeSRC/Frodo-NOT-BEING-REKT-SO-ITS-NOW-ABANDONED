@@ -257,7 +257,7 @@ void Shader::Bind() {
 	}
 }
 
-void Shader::SetVSConstantBufferInternalSlot(unsigned int slot, void* data) {
+void Shader::SetVSConstantBufferSlotInternal(unsigned int slot, void* data) {
 	ShaderStructInfo& cb = *vCBuffers[slot];
 	D3D11_MAPPED_SUBRESOURCE sub;
 	ZeroMemory(&sub, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -267,7 +267,7 @@ void Shader::SetVSConstantBufferInternalSlot(unsigned int slot, void* data) {
 	D3DContext::GetDeviceContext()->Unmap((ID3D11Resource*)cb.buffer, 0);
 }
 
-void Shader::SetPSConstantBufferInternalSlot(unsigned int slot, void* data) {
+void Shader::SetPSConstantBufferSlotInternal(unsigned int slot, void* data) {
 	ShaderStructInfo& cb = *pCBuffers[slot];
 	D3D11_MAPPED_SUBRESOURCE sub;
 	ZeroMemory(&sub, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -278,34 +278,70 @@ void Shader::SetPSConstantBufferInternalSlot(unsigned int slot, void* data) {
 }
 
 void Shader::SetVSConstantBuffer(const String& bufferName, void* data) {
-	for (size_t i = 0; i < vCBuffers.GetSize(); i++) {
-		if (vCBuffers[i]->name == bufferName) SetVSConstantBufferInternalSlot(i, data);
+	size_t size = vCBuffers.GetSize();
+	for (size_t i = 0; i < size; i++) {
+		if (vCBuffers[i]->name == bufferName) SetVSConstantBufferSlotInternal(i, data);
+		return;
 	}
+
+	FD_WARNING("Buffer not found \"%s\"", *bufferName);
 }
 
 void Shader::SetPSConstantBuffer(const String& bufferName, void* data) {
-	for (size_t i = 0; i < pCBuffers.GetSize(); i++) {
-		if (pCBuffers[i]->name == bufferName) SetPSConstantBufferInternalSlot(i, data);
+	size_t size = pCBuffers.GetSize();
+	for (size_t i = 0; i < size; i++) {
+		if (pCBuffers[i]->name == bufferName) SetPSConstantBufferSlotInternal(i, data);
+		return;
 	}
+
+	FD_WARNING("Buffer not found \"%s\"", *bufferName);
 }
 
 void Shader::SetVSConstantBuffer(unsigned int slot, void* data) {
-	for (size_t i = 0; i < vCBuffers.GetSize(); i++) {
+	size_t size = vCBuffers.GetSize();
+	for (size_t i = 0; i < size; i++) {
 		if (vCBuffers[i]->semRegister == slot) {
-			SetVSConstantBufferInternalSlot(slot, data);
+			SetVSConstantBufferSlotInternal(slot, data);
+			return;
 		}
 	}
+
+	FD_WARNING("No buffer at slot %u", slot);
 }
 
 void Shader::SetPSConstantBuffer(unsigned int slot, void* data) {
-	for (size_t i = 0; i < pCBuffers.GetSize(); i++) {
+	size_t size = pCBuffers.GetSize();
+	for (size_t i = 0; i < size; i++) {
 		if (pCBuffers[i]->semRegister == slot) {
-			SetPSConstantBufferInternalSlot(i, data);
+			SetPSConstantBufferSlotInternal(i, data);
+			return;
 		}
 	}
+
+	FD_WARNING("No buffer at slot %u", slot);
 }
 
 void Shader::SetTexture(unsigned int slot, const Texture* tex) {
 	ID3D11ShaderResourceView* view = tex == nullptr ? nullptr : tex->GetResourceView();
 	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &view);
+}
+
+unsigned int Shader::GetVSConstantBufferSlotByName(const String& bufferName) {
+	size_t size = vCBuffers.GetSize();
+	for (size_t i = 0; i < size; i++) {
+		if (vCBuffers[i]->name == bufferName) return vCBuffers[i]->semRegister;
+	}
+
+	FD_FATAL("Buffer not found \"%s\"", *bufferName);
+	return -1;
+}
+
+unsigned int Shader::GetPSConstantBufferSlotByName(const String& bufferName) {
+	size_t size = pCBuffers.GetSize();
+	for (size_t i = 0; i < size; i++) {
+		if (pCBuffers[i]->name == bufferName) return pCBuffers[i]->semRegister;
+	}
+
+	FD_FATAL("Buffer not found \"%s\"", *bufferName);
+	return -1;
 }

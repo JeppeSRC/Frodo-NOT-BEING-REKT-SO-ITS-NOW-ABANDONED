@@ -35,8 +35,8 @@ private:
 	
 	ID3D11InputLayout* inputLayout;
 
-	void SetVSConstantBufferInternalSlot(unsigned int slot, void* data);
-	void SetPSConstantBufferInternalSlot(unsigned int slot, void* data);
+	void SetVSConstantBufferSlotInternal(unsigned int slot, void* data);
+	void SetPSConstantBufferSlotInternal(unsigned int slot, void* data);
 
 public:
 	Shader(const String& vertexFilename, const String& pixelFilename, bool src = false);
@@ -49,6 +49,9 @@ public:
 	void SetVSConstantBuffer(unsigned int slot, void* data);
 	void SetPSConstantBuffer(unsigned int slot, void* data);
 	void SetTexture(unsigned int slot, const Texture* tex);
+
+	unsigned int GetVSConstantBufferSlotByName(const String& bufferName);
+	unsigned int GetPSConstantBufferSlotByName(const String& bufferName);
 
 	inline const void* GetVSBufferPointer() const { return vByteCode->GetBufferPointer(); }
 	inline size_t GetVSBufferSize() const { return vByteCode->GetBufferSize(); }

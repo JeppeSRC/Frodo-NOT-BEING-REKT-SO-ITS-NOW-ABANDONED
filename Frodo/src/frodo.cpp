@@ -43,10 +43,9 @@ void FDApplication::Run() {
 		unsigned int now = clock();
 
 		if ((delta = float(now - lastTime)) > ups) {
-			lastTime += (unsigned int)ups;
-			OnUpdate(delta);
-			Input::Update();
 			lastTime = now;
+			OnUpdate(delta / 1000.0f);
+			Input::Update();
 		}
 
 

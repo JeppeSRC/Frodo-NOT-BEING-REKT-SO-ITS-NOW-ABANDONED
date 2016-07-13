@@ -26,10 +26,10 @@ Model* MeshFactory::CreatePlane(float width, float height) {
 	};
 
 	vec3 normals[12]{
-		{0, 0, 1},
-		{0, 0, 1},
-		{0, 0, 1},
-		{0, 0, 1 }
+		{0, 0, -1},
+		{0, 0, -1},
+		{0, 0, -1},
+		{0, 0, -1}
 	};
 
 	Vertex v[4];

@@ -12,7 +12,7 @@ protected:
 	void OnExit() override;
 
 private:
-
+	Entity* e;
 	unsigned int fps;
 
 public:

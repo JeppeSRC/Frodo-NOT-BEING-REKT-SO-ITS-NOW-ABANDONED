@@ -22,6 +22,8 @@
 #include <graphics/render/model/model.h>
 #include <graphics/render/model/meshfactory.h>
 
+#include <graphics/render/light/light.h>
+
 #include <entity/entity.h>
 
 #include <math/math.h>

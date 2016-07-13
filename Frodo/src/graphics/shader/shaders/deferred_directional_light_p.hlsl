@@ -12,13 +12,17 @@ Texture2D texNormals : register(t2);
 //Texture2D shadowMap : register(t3);
 
 
+cbuffer lightData : register(b0) {
+	float3 color;
+	float3 direction;
+};
+
 float4 psMain(float4 pos : SV_POSITION, float2 texCoords : TEXCOORDS) : SV_TARGET {
 	
 	float3 diffuse = texDiffuse.Sample(samp, texCoords).xyz;
 	float3 normal = texNormals.Sample(samp, texCoords).xyz;
 
-	
-	return float4(diffuse, 1);
+	return float4((color * diffuse) * dot(-direction, normal), 1);
 }
 
 )"
