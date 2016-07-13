@@ -4,25 +4,6 @@
 #include <graphics/buffer/bufferlayout.h>
 
 DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
-
-	IDXGIDevice* dev;
-	D3DContext::GetDevice()->QueryInterface(__uuidof(IDXGIDevice), (void**)&dev);
-	
-	IDXGIAdapter* ad;
-	dev->GetAdapter(&ad);
-
-	DXGI_ADAPTER_DESC desc;
-	ad->GetDesc(&desc);
-
-	FD_INFO("GPU Info: ");
-
-	char string[128];
-
-	wcstombs(string, desc.Description, 128);
-
-	FD_INFO("\t Description: \t %s", string);
-	FD_INFO("\t VRAM: \t\t %u", desc.DedicatedVideoMemory);
-
 	mrt.Init(width, height, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32, true);
 
 	BufferLayout render, composit;
@@ -31,7 +12,7 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 	render.Push<vec2>("TEXCOORDS");
 	render.Push<vec3>("NORMALS");
 
-	renderShader = ShaderFactory::GetDeferredRenderShader();
+	renderShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_GEOMETRY);
 
 	render.CreateInputLayout(renderShader);
 
@@ -43,9 +24,9 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 	composit.Push<vec3>("POSITION");
 	composit.Push<vec2>("TEXCOORDS");
 
-	compositionShader = ShaderFactory::GetDeferredCompositionShader();
+	directionalpass = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_DIRECTIONAL_LIGHT);
 
-	composit.CreateInputLayout(compositionShader);
+	composit.CreateInputLayout(directionalpass);
 
 
 	struct PlaneVertex {
@@ -68,7 +49,7 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 
 DeferredRenderer::~DeferredRenderer() {
 	delete renderShader;
-	delete compositionShader;
+	delete directionalpass;
 }
 
 void DeferredRenderer::AddEntity(Entity* e) {
@@ -106,14 +87,14 @@ void DeferredRenderer::Render() {
 
 	D3DContext::SetRenderTarget(nullptr);
 
-	compositionShader->Bind();
+	directionalpass->Bind();
 
 	vertexBufferPlane->Bind();
 	indexBufferPlane->Bind();
 
-	compositionShader->SetTexture(0, (Texture2D*)mrt[0]);
-	compositionShader->SetTexture(1, (Texture2D*)mrt[1]);
-	compositionShader->SetTexture(2, (Texture2D*)mrt[2]);
+	directionalpass->SetTexture(0, (Texture2D*)mrt[0]);
+	directionalpass->SetTexture(1, (Texture2D*)mrt[1]);
+	directionalpass->SetTexture(2, (Texture2D*)mrt[2]);
 
 	D3DContext::GetDeviceContext()->DrawIndexed(indexBufferPlane->GetCount(), 0, 0);
 

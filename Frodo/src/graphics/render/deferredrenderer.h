@@ -31,7 +31,7 @@ private:
 	FramebufferMRT<4> mrt;
 
 	Shader* renderShader;
-	Shader* compositionShader;
+	Shader* directionalpass;
 
 	List<Entity*> entities;
 

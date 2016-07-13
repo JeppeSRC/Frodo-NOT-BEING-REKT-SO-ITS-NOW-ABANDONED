@@ -3,9 +3,16 @@
 #include <fd.h>
 #include "shader.h"
 
+enum FD_DEFERRED_SHADER_TYPE {
+	FD_DEFERRED_SHADER_TYPE_UNKNOWN,
+	FD_DEFERRED_SHADER_TYPE_GEOMETRY,
+	FD_DEFERRED_SHADER_TYPE_DIRECTIONAL_LIGHT,
+	FD_DEFERRED_SHADER_TYPE_POINT_LIGHT,
+	FD_DEFERRED_SHADER_TYPE_SPOT_LIGHT
+};
+
 class FDAPI ShaderFactory {
 public:
 
-	static Shader* GetDeferredRenderShader();
-	static Shader* GetDeferredCompositionShader();
+	static Shader* GetShader(FD_DEFERRED_SHADER_TYPE shader);
 };
