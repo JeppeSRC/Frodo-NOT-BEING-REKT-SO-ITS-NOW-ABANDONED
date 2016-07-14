@@ -32,18 +32,21 @@ private:
 	FramebufferMRT<4> mrt;
 
 	Shader* geometryShader;
-	Shader* directionalpass;
+	Shader* directionalLightShader;
+	Shader* pointLightShader;
+	Shader* spotLightShader;
 
 	enum {
-		FD_DEFERRED_SHADER_SLOT_GEOMETRY_PROJECTION,
-		FD_DEFERRED_SHADER_SLOT_GEOMETRY_MODELDATA,
-		FD_DEFERRED_SHADER_SLOT_GEOMETRY_MATERIALDATA,
-		FD_DEFERRED_SHADER_SLOT_DIRECTIONAL_DATA,
-		FD_DEFERRED_SHADER_SLOT_POINT_DATA,
-		FD_DEFERRED_SHADER_SLOT_NUM
+		FD_SLOT_GEOMETRY_PROJECTION,
+		FD_SLOT_GEOMETRY_MODELDATA,
+		FD_SLOT_GEOMETRY_MATERIALDATA,
+		FD_SLOT_DIRECTIONAL_DATA,
+		FD_SLOT_POINT_DATA,
+		FD_SLOT_SPOT_DATA,
+		FD_SLOT_NUM
 	};
 
-	unsigned int constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_NUM];
+	unsigned int constantBufferSlotCache[FD_SLOT_NUM];
 
 	ID3D11DepthStencilState* depthState[2];
 	ID3D11BlendState* blendState[2];

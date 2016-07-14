@@ -22,7 +22,7 @@ Out vsMain(float3 position : POSITION, float2 texCoords : TEXCOORDS, float3 norm
 	o.position =  mul(projection, mul(translation, mul(rotation, float4(position, 1))));
 	o.pos = position;
 	o.texCoord = texCoords;
-	o.normal = mul(float4(normals, 0), rotation).xyz;
+	o.normal = mul(rotation, float4(normals, 0)).xyz;
 
 	return o;
 }

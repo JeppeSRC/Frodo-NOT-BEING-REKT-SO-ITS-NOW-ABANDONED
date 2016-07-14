@@ -78,9 +78,9 @@ mat4 mat4::Perspective(float fov, float aspect, float zNear, float zFar) {
 
 	m[0 + 0 * 4] = 1.0f / (tanHalf * aspect);
 	m[1 + 1 * 4] = 1.0f / tanHalf;
-	m[2 + 2 * 4] = -(zFar + zNear) / (zFar - zNear);
-	m[3 + 2 * 4] = -1;
-	m[2 + 3 * 4] = -(2 * zFar * zNear) / (zFar - zNear);
+	m[2 + 2 * 4] = zFar / (zFar - zNear);
+	m[3 + 2 * 4] = 1;
+	m[2 + 3 * 4] = -zNear * (zFar / (zFar - zNear));
 	m[3 + 3 * 4] = 0;
 
 	return r;

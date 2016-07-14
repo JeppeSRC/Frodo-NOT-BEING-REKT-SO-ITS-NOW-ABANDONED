@@ -12,19 +12,20 @@ void DeferredTest::OnInit() {
 	Material* material = new Material(vec4(1, 1, 1, 1));
 
 
-	e = new Entity({0, 0, -1}, { 0, 0, 0});
+	e = new Entity({0, 0, 1}, { 0, 0, 0});
 
 	e->SetModel(model);
 	e->SetMaterial(material);
 
 	renderer->AddEntity(e);
 	renderer->AddLight(new DirectionalLight(vec3(1, 1, 1), vec3(0, -1, 0)));
-	renderer->AddLight(new DirectionalLight(vec3(1, 1, 1), vec3(0, 0, 1)));
+	//renderer->AddLight(new DirectionalLight(vec3(1, 1, 1), vec3(-1, 0, 0)));
+	//renderer->AddLight(new PointLight(vec3(0, 0, -1), vec3(1, 1, 1), vec3(1, 2, 10.010)));
 	
 }
 
 void DeferredTest::OnUpdate(float delta) {
-	e->GetRotation() += (vec3(-10, 0, 0) * delta);
+	e->GetRotation() += (vec3(10, 0, 0) * delta);
 }
 
 void DeferredTest::OnTick() {

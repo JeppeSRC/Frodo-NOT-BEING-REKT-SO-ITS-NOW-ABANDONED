@@ -20,7 +20,7 @@ void DeferredRenderer::CreateDepthStates() {
 
 	desc.DepthEnable = true;
 	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	desc.DepthFunc = D3D11_COMPARISON_LESS;
+	desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
 	desc.StencilEnable = false;
 
@@ -34,7 +34,7 @@ void DeferredRenderer::CreateDepthStates() {
 	ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 
 	desc.DepthEnable = false;
-	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	desc.DepthFunc = D3D11_COMPARISON_EQUAL;
 
 	desc.StencilEnable = false;
@@ -87,16 +87,18 @@ void DeferredRenderer::CreateShaders() {
 	composit.Push<vec3>("POSITION");
 	composit.Push<vec2>("TEXCOORDS");
 
-	directionalpass = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_DIRECTIONAL_LIGHT);
+	directionalLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_DIRECTIONAL_LIGHT);
+	pointLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_POINT_LIGHT);
 
-	composit.CreateInputLayout(directionalpass);
+	composit.CreateInputLayout(directionalLightShader);
+	composit.CreateInputLayout(pointLightShader);
+	
 
-
-	constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_GEOMETRY_PROJECTION] = geometryShader->GetVSConstantBufferSlotByName("proj");
-	constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_GEOMETRY_MODELDATA] = geometryShader->GetVSConstantBufferSlotByName("modelData");
-	constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_GEOMETRY_MATERIALDATA] = geometryShader->GetPSConstantBufferSlotByName("materialData");
-	constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_DIRECTIONAL_DATA] = directionalpass->GetPSConstantBufferSlotByName("lightData");
-	//constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_POINT_DATA] = geometryShader->GetVSConstantBufferSlotByName("lightData");
+	constantBufferSlotCache[FD_SLOT_GEOMETRY_PROJECTION] = geometryShader->GetVSConstantBufferSlotByName("proj");
+	constantBufferSlotCache[FD_SLOT_GEOMETRY_MODELDATA] = geometryShader->GetVSConstantBufferSlotByName("modelData");
+	constantBufferSlotCache[FD_SLOT_GEOMETRY_MATERIALDATA] = geometryShader->GetPSConstantBufferSlotByName("materialData");
+	constantBufferSlotCache[FD_SLOT_DIRECTIONAL_DATA] = directionalLightShader->GetPSConstantBufferSlotByName("lightData");
+	constantBufferSlotCache[FD_SLOT_POINT_DATA] = pointLightShader->GetPSConstantBufferSlotByName("lightData");
 
 }
 
@@ -131,7 +133,7 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 
 DeferredRenderer::~DeferredRenderer() {
 	delete geometryShader;
-	delete directionalpass;
+	delete directionalLightShader;
 
 	DX_FREE(depthState[0]);
 	DX_FREE(blendState[0]);
@@ -140,7 +142,7 @@ DeferredRenderer::~DeferredRenderer() {
 }
 
 void DeferredRenderer::SetProjectionMatrix(const mat4& matrix) {
-	geometryShader->SetVSConstantBuffer(constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_GEOMETRY_PROJECTION], (void*)&matrix);
+	geometryShader->SetVSConstantBuffer(constantBufferSlotCache[FD_SLOT_GEOMETRY_PROJECTION], (void*)&matrix);
 }
 
 void DeferredRenderer::AddEntity(Entity* e) {
@@ -180,8 +182,8 @@ void DeferredRenderer::Render() {
 
 		cData.color = mat->GetDiffuseColor();
 
-		geometryShader->SetVSConstantBuffer(constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_GEOMETRY_MODELDATA], &rData);
-		geometryShader->SetPSConstantBuffer(constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_GEOMETRY_MATERIALDATA], &cData);
+		geometryShader->SetVSConstantBuffer(constantBufferSlotCache[FD_SLOT_GEOMETRY_MODELDATA], &rData);
+		geometryShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_GEOMETRY_MATERIALDATA], &cData);
 		geometryShader->SetTexture(0, mat->GetDiffuseTexture());
 
 		D3DContext::GetDeviceContext()->DrawIndexed(e.GetModel()->GetIndexBuffer()->GetCount(), 0, 0);
@@ -200,27 +202,27 @@ void DeferredRenderer::Render() {
 	
 	unsigned int indexCount = indexBufferPlane->GetCount();
 
-	directionalpass->Bind();
-
-	DirectionalLight* light = directionalLights[0];
-
-	directionalpass->SetPSConstantBuffer(constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_DIRECTIONAL_DATA], (void*)light);
-
-	D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
-
 	SetBlendingInternal(true);
 	SetDepthInternal(false);
 
+	directionalLightShader->Bind();
+
+
 	size_t num = directionalLights.GetSize();
 
-	for (size_t i = 1; i < num; i++) {
-		DirectionalLight* light = directionalLights[i];
-
-		directionalpass->SetPSConstantBuffer(constantBufferSlotCache[FD_DEFERRED_SHADER_SLOT_DIRECTIONAL_DATA], (void*)light);
+	for (size_t i = 0; i < num; i++) {
+		directionalLightShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_DIRECTIONAL_DATA], (void*)directionalLights[i]);
 
 		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 	}
 	
-	
+	pointLightShader->Bind();
 
+	num = pointLights.GetSize();
+	
+	for (size_t i = 0; i < num; i++) {
+		pointLightShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_POINT_DATA], (void*)pointLights[i]);
+
+		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
+	}
 }
