@@ -54,6 +54,8 @@ public:
 	__forceinline void operator*=(float v) { Multiply(v); }
 	__forceinline void operator/=(float v) { Divide(v); }
 
+	__forceinline vec4 operator-() { return vec4(-_x, -_y, -_z, -_w); }
+
 	__forceinline float GetX() const { return _x; }
 	__forceinline float GetY() const { return _y; }
 	__forceinline float GetZ() const { return _z; }

@@ -94,7 +94,8 @@ void DeferredRenderer::CreateShaders() {
 	composit.CreateInputLayout(pointLightShader);
 	
 
-	constantBufferSlotCache[FD_SLOT_GEOMETRY_PROJECTION] = geometryShader->GetVSConstantBufferSlotByName("proj");
+	constantBufferSlotCache[FD_SLOT_GEOMETRY_PROJECTION] = geometryShader->GetVSConstantBufferSlotByName("projectionMatrix");
+	constantBufferSlotCache[FD_SLOT_GEOMETRY_VIEW] = geometryShader->GetVSConstantBufferSlotByName("viewMatrix");
 	constantBufferSlotCache[FD_SLOT_GEOMETRY_MODELDATA] = geometryShader->GetVSConstantBufferSlotByName("modelData");
 	constantBufferSlotCache[FD_SLOT_GEOMETRY_MATERIALDATA] = geometryShader->GetPSConstantBufferSlotByName("materialData");
 	constantBufferSlotCache[FD_SLOT_DIRECTIONAL_DATA] = directionalLightShader->GetPSConstantBufferSlotByName("lightData");
@@ -129,6 +130,8 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 	indexBufferPlane = new IndexBuffer(indices, 6);
 
 	SetProjectionMatrix(mat4::Perspective(70.0f, (float)width / height, 0.001f, 1000.0f));
+
+	camera = new Camera(vec3(0, 0, 0));
 }
 
 DeferredRenderer::~DeferredRenderer() {
@@ -164,6 +167,8 @@ void DeferredRenderer::AddLight(PointLight* light) {
 void DeferredRenderer::Render() {
 	SetBlendingInternal(false);
 	SetDepthInternal(true);
+
+	geometryShader->SetVSConstantBuffer(constantBufferSlotCache[FD_SLOT_GEOMETRY_VIEW], (void*)&camera->GetViewMatrix());
 
 	geometryShader->Bind();
 	

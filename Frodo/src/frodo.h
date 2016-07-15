@@ -21,6 +21,8 @@
 #include <graphics/render/material/material.h>
 #include <graphics/render/model/model.h>
 #include <graphics/render/model/meshfactory.h>
+#include <graphics/render/camera/camera.h>
+#include <graphics/render/camera/usercamera.h>
 
 #include <graphics/render/light/light.h>
 

@@ -15,6 +15,8 @@ private:
 	Entity* e;
 	unsigned int fps;
 
+	UserCamera* camera;
+
 public:
 
 	DeferredRenderer* renderer;

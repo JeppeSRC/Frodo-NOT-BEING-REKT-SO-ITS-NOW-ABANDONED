@@ -87,7 +87,10 @@
     <ClCompile Include="src\graphics\render\model\meshfactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\render\camera.cpp">
+    <ClCompile Include="src\graphics\render\camera\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\render\camera\usercamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -197,7 +200,10 @@
     <ClInclude Include="src\graphics\render\light\light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\render\camera.h">
+    <ClInclude Include="src\graphics\render\camera\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\render\camera\usercamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

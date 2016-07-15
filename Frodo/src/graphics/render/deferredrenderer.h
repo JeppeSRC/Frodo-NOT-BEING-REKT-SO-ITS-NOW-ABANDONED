@@ -2,6 +2,7 @@
 
 #include <fd.h>
 #include <graphics/d3dcontext.h>
+#include <graphics/render/camera/camera.h>
 #include <graphics/shader/shader.h>
 #include <graphics/texture/framebuffer2d.h>
 #include <graphics/render/light/light.h>
@@ -29,6 +30,9 @@ private:
 	IndexBuffer* indexBufferPlane;
 
 private:
+
+	Camera* camera;
+
 	FramebufferMRT<4> mrt;
 
 	Shader* geometryShader;
@@ -38,6 +42,7 @@ private:
 
 	enum {
 		FD_SLOT_GEOMETRY_PROJECTION,
+		FD_SLOT_GEOMETRY_VIEW,
 		FD_SLOT_GEOMETRY_MODELDATA,
 		FD_SLOT_GEOMETRY_MATERIALDATA,
 		FD_SLOT_DIRECTIONAL_DATA,
@@ -76,4 +81,10 @@ public:
 	void AddLight(PointLight* light);
 
 	void Render();
+
+	inline void SetCamera(Camera* camera) { 
+		if (this->camera != nullptr) delete this->camera; 
+
+		this->camera = camera; 
+	}
 };

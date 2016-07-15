@@ -29,7 +29,7 @@ bool Input::IsKeyDownOnce(unsigned char key) {
 		return true;
 	}
 
-	return true;
+	return false;
 }
 
 void Input::SetMousePos(unsigned int x, unsigned int y) {

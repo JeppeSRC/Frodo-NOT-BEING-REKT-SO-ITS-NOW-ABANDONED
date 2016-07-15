@@ -184,7 +184,8 @@
     <ClCompile Include="src\graphics\buffer\indexbuffer.cpp" />
     <ClCompile Include="src\graphics\buffer\vertexbuffer.cpp" />
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
-    <ClCompile Include="src\graphics\render\camera.cpp" />
+    <ClCompile Include="src\graphics\render\camera\camera.cpp" />
+    <ClCompile Include="src\graphics\render\camera\usercamera.cpp" />
     <ClCompile Include="src\graphics\render\deferredrenderer.cpp" />
     <ClCompile Include="src\graphics\render\model\meshfactory.cpp" />
     <ClCompile Include="src\graphics\shader\shader.cpp" />
@@ -214,7 +215,8 @@
     <ClInclude Include="src\graphics\buffer\indexbuffer.h" />
     <ClInclude Include="src\graphics\buffer\vertexbuffer.h" />
     <ClInclude Include="src\graphics\d3dcontext.h" />
-    <ClInclude Include="src\graphics\render\camera.h" />
+    <ClInclude Include="src\graphics\render\camera\camera.h" />
+    <ClInclude Include="src\graphics\render\camera\usercamera.h" />
     <ClInclude Include="src\graphics\render\deferredrenderer.h" />
     <ClInclude Include="src\graphics\render\light\light.h" />
     <ClInclude Include="src\graphics\render\material\material.h" />
