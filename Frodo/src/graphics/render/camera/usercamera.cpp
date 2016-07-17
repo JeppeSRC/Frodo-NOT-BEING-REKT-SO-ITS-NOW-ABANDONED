@@ -13,9 +13,8 @@ void UserCamera::Update(float delta) {
 
 	vec3 move(0, 0, 0);
 
-	if (Input::IsKeyDown('W')) {
+	if (Input::IsKeyDown('W'))
 		move += forward;
-	}
 	else if (Input::IsKeyDown('S'))
 		move += back;
 
@@ -25,7 +24,6 @@ void UserCamera::Update(float delta) {
 		move += right;
 
 	if (Input::IsKeyDownOnce('Q')) {
-		FD_DEBUG("B");
 		if (Input::mouseCaptured)
 			Input::ReleaseMouse();
 		else
@@ -38,8 +36,6 @@ void UserCamera::Update(float delta) {
 
 		float yRot = ((float)Input::GetMouseX() - (window.GetWidth() >> 1)) * delta * SENSE;
 		float xRot = ((float)Input::GetMouseY() - (window.GetHeight() >> 1)) * delta * SENSE;
-
-		FD_DEBUG("%u", Input::GetMouseY());
 
 		rotation += vec3(-xRot, yRot, 0);
 

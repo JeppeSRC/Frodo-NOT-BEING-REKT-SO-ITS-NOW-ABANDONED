@@ -31,7 +31,7 @@ float4 psMain(float4 pos : SV_POSITION, float2 texCoords : TEXCOORDS) : SV_TARGE
 
 	float attenuation = 1.0f / (l_attenuation.x + l_attenuation.y * dist + l_attenuation.z * dist * dist + 0.000001f);
 
-	float brightness  = dot(normal, dir) * attenuation;
+	float brightness  = /*dot(normal, dir) */ attenuation;
 
 	return float4(diffuse * brightness, 1);
 }
