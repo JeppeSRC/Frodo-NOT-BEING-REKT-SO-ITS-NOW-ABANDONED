@@ -39,8 +39,5 @@ void Input::SetMousePos(unsigned int x, unsigned int y) {
 
 	ClientToScreen(window->GetHWND(), &p);
 
-	mouseX = p.x;
-	mouseY = p.y;
-
-	SetCursorPos(mouseX, mouseY);
+	SetCursorPos(p.x, p.y);
 }
