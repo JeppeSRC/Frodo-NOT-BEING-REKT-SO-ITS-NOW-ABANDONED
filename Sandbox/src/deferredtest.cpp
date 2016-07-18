@@ -3,7 +3,7 @@
 
 void DeferredTest::OnInit() {
 	window->SetVSync(0);
-	SetUPS(60.0f);
+	SetUPS(60);
 	renderer = new DeferredRenderer(window->GetWidth(), window->GetHeight());
 
 	camera = new UserCamera(vec3(0, 0, 0), vec3(0, 0, 0));
@@ -20,13 +20,13 @@ void DeferredTest::OnInit() {
 	e->SetMaterial(material);
 
 	renderer->AddEntity(e);
-	//renderer->AddLight(new DirectionalLight(vec3(1, 1, 1), vec3(0, -0.2f, 0)));
-	renderer->AddLight(new PointLight(vec3(0, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.05, 1.10)));
+	for (int i = 0; i < 100; i++)
+		renderer->AddLight(new DirectionalLight(vec3(1, 1, 1), vec3(0, -1.f, 0)));
+	//renderer->AddLight(new PointLight(vec3(0, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.05, 1.10)));
 	
 }
 
 void DeferredTest::OnUpdate(float delta) {
-	//e->GetRotation() += (vec3(10, 0, 0) * delta);
 	camera->Update(delta);
 }
 
