@@ -23,8 +23,10 @@ cbuffer viewMatrix : register(b2) {
 Out vsMain(float3 position : POSITION, float2 texCoords : TEXCOORDS, float3 normals : NORMALS) {
 	Out o;
 
-	o.position =  mul(projection, mul(view, mul(translation, mul(rotation, float4(position, 1)))));
-	o.pos = position;
+	float4 translatedPos = mul(translation, mul(rotation, float4(position, 1)));
+
+	o.position =  mul(projection, mul(view, translatedPos));
+	o.pos = translatedPos.xyz;
 	o.texCoord = texCoords;
 	o.normal = mul(rotation, float4(normals, 0)).xyz;
 
