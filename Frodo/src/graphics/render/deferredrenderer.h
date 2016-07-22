@@ -30,7 +30,6 @@ private:
 	IndexBuffer* indexBufferPlane;
 
 private:
-
 	Camera* camera;
 
 	FramebufferMRT<4> mrt;

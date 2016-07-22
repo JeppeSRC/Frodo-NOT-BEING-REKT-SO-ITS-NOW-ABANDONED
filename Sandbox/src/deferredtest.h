@@ -21,7 +21,7 @@ public:
 
 	DeferredRenderer* renderer;
 
-	DeferredTest() : FDApplication("Deferred", 1000, 600) { }
+	DeferredTest() : FDApplication("Kebab ä gött", 1000, 600) { }
 
 
 

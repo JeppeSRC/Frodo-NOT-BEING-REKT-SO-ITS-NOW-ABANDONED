@@ -46,6 +46,8 @@ void D3DContext::CreateContext(Window* window) {
 	D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, 0, 0, 0, D3D11_SDK_VERSION, &scd, &pContext->swapChain, &pContext->device, 0, &pContext->context);
 #endif
 
+	pContext->activeContext = pContext->context;
+
 	ID3D11Texture2D* tmp = nullptr;
 	pContext->swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&tmp);
 
@@ -90,7 +92,6 @@ void D3DContext::Dispose() {
 
 void D3DContext::Present(unsigned int syncInterval, unsigned int flags) {
 	GetSwapChain()->Present(syncInterval, flags);
-	
 }
 
 float col[4]{0, 0, 0, 1};

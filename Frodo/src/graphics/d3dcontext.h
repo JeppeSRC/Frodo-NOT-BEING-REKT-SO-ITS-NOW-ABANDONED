@@ -22,6 +22,7 @@ private:
 
 	ID3D11Device* device;
 	ID3D11DeviceContext* context;
+	ID3D11DeviceContext* activeContext;
 	ID3D11RenderTargetView* renderTarget;
 	ID3D11DepthStencilView* depthStencilView;
 	IDXGISwapChain* swapChain;
@@ -43,6 +44,8 @@ public:
 	static void SetRenderTargets(unsigned short numRenderTargets, ID3D11RenderTargetView** target);
 	static void SetViewPort(float topLeftX, float topLeftY, float width, float height);
 	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
+	
+	//__forceinline static void SetActiveDeviceContext(ID3D11DeviceContext* context) { pContext->activeContext = context != nullptr ? context : pContext->context; }
 
 	inline static ID3D11DepthStencilView* GetDefaultDepthStencilView() { return D3DContext::GetContext()->depthStencilView; }
 	inline static ID3D11RenderTargetView* GetDefaultRenderTarget() { return D3DContext::GetContext()->renderTarget; }

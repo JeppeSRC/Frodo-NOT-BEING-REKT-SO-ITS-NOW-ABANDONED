@@ -129,9 +129,19 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 	vertexBufferPlane = new VertexBuffer(vertices, sizeof(vertices), sizeof(PlaneVertex));
 	indexBufferPlane = new IndexBuffer(indices, 6);
 
+	camera = new Camera(vec3(0, 0, 0));
+
+	//D3DContext::GetDevice()->CreateDeferredContext(0, &deferredContext);
+//	D3DContext::SetActiveDeviceContext(deferredContext);
+	D3DContext::SetViewPort(0, 0, 1000.0f, 600.0f);
+	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	SetProjectionMatrix(mat4::Perspective(70.0f, (float)width / height, 0.001f, 1000.0f));
 
-	camera = new Camera(vec3(0, 0, 0));
+	//D3DContext::SetActiveDeviceContext(nullptr);
+
+	//deferredContext->FinishCommandList(TRUE, nullptr);
+
+
 }
 
 DeferredRenderer::~DeferredRenderer() {
@@ -142,10 +152,15 @@ DeferredRenderer::~DeferredRenderer() {
 	DX_FREE(blendState[0]);
 	DX_FREE(depthState[1]);
 	DX_FREE(blendState[1]);
+
+//	DX_FREE(deferredContext);
+//	DX_FREE(list);
 }
 
 void DeferredRenderer::SetProjectionMatrix(const mat4& matrix) {
+//	D3DContext::SetActiveDeviceContext(deferredContext);
 	geometryShader->SetVSConstantBuffer(constantBufferSlotCache[FD_SLOT_GEOMETRY_PROJECTION], (void*)&matrix);
+//	D3DContext::SetActiveDeviceContext(nullptr);
 }
 
 void DeferredRenderer::AddEntity(Entity* e) {
@@ -165,6 +180,8 @@ void DeferredRenderer::AddLight(PointLight* light) {
 }
 
 void DeferredRenderer::Render() {
+	//D3DContext::SetActiveDeviceContext(deferredContext);
+
 	SetBlendingInternal(false);
 	SetDepthInternal(true);
 
@@ -196,8 +213,6 @@ void DeferredRenderer::Render() {
 
 	D3DContext::SetRenderTarget(nullptr);
 
-	
-
 	((Texture2D*)mrt[0])->Bind(0);
 	((Texture2D*)mrt[1])->Bind(1);
 	((Texture2D*)mrt[2])->Bind(2);
@@ -211,7 +226,6 @@ void DeferredRenderer::Render() {
 	SetDepthInternal(false);
 
 	directionalLightShader->Bind();
-
 
 	size_t num = directionalLights.GetSize();
 
@@ -230,4 +244,8 @@ void DeferredRenderer::Render() {
 
 		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 	}
+
+	/*D3DContext::SetActiveDeviceContext(nullptr);
+	deferredContext->FinishCommandList(FALSE, &list);
+	D3DContext::GetDeviceContext()->ExecuteCommandList(list, TRUE);*/
 }
