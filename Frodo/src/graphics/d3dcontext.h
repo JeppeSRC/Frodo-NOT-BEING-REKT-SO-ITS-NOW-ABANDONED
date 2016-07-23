@@ -45,7 +45,7 @@ public:
 	static void SetViewPort(float topLeftX, float topLeftY, float width, float height);
 	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
 	
-	//__forceinline static void SetActiveDeviceContext(ID3D11DeviceContext* context) { pContext->activeContext = context != nullptr ? context : pContext->context; }
+	__forceinline static void SetActiveDeviceContext(ID3D11DeviceContext* context) { pContext->activeContext = context != nullptr ? context : pContext->context; }
 
 	inline static ID3D11DepthStencilView* GetDefaultDepthStencilView() { return D3DContext::GetContext()->depthStencilView; }
 	inline static ID3D11RenderTargetView* GetDefaultRenderTarget() { return D3DContext::GetContext()->renderTarget; }
@@ -54,7 +54,7 @@ public:
 
 	__forceinline static D3DContext* GetContext() { return pContext; }
 	__forceinline static ID3D11Device* GetDevice() {return pContext->device;}
-	__forceinline static ID3D11DeviceContext* GetDeviceContext() { return pContext->context; }
+	__forceinline static ID3D11DeviceContext* GetDeviceContext() { return pContext->activeContext; }
 	__forceinline static IDXGISwapChain* GetSwapChain() { return  pContext->swapChain; }
 
 

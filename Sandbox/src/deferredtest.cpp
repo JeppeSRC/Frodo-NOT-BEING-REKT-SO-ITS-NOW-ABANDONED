@@ -40,7 +40,7 @@ void DeferredTest::OnInit() {
 
 
 
-	renderer->AddLight(new PointLight(vec3(0, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	/*renderer->AddLight(new PointLight(vec3(0, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 
 
 	renderer->AddLight(new PointLight(vec3(4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
@@ -53,7 +53,7 @@ void DeferredTest::OnInit() {
 	renderer->AddLight(new PointLight(vec3(-4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 	renderer->AddLight(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 	renderer->AddLight(new PointLight(vec3(-4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
-
+	*/
 }
 
 void DeferredTest::OnUpdate(float delta) {
