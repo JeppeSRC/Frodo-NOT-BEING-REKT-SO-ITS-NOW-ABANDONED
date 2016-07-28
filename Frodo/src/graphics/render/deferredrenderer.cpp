@@ -132,15 +132,6 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 	camera = new Camera(vec3(0, 0, 0));
 
 	SetProjectionMatrix(mat4::Perspective(70.0f, (float)width / height, 0.001f, 1000.0f));
-
-	D3DContext::GetDevice()->CreateDeferredContext(0, &deferredContext);
-	D3DContext::SetActiveDeviceContext(deferredContext);
-	D3DContext::SetViewPort(0, 0, 1000.0f, 600.0f);
-	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	D3DContext::SetActiveDeviceContext(nullptr);
-
-	deferredContext->FinishCommandList(FALSE, nullptr);
 }
 
 DeferredRenderer::~DeferredRenderer() {
@@ -151,9 +142,6 @@ DeferredRenderer::~DeferredRenderer() {
 	DX_FREE(blendState[0]);
 	DX_FREE(depthState[1]);
 	DX_FREE(blendState[1]);
-
-	DX_FREE(deferredContext);
-//	DX_FREE(list);
 }
 
 void DeferredRenderer::SetProjectionMatrix(const mat4& matrix) {
@@ -177,10 +165,6 @@ void DeferredRenderer::AddLight(PointLight* light) {
 }
 
 void DeferredRenderer::Render() {
-	D3DContext::SetActiveDeviceContext(deferredContext);
-	D3DContext::SetViewPort(0, 0, 1000.0f, 600.0f);
-	D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	SetBlendingInternal(false);
 	SetDepthInternal(true);
 
@@ -244,9 +228,7 @@ void DeferredRenderer::Render() {
 		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 	}
 
-	D3DContext::SetActiveDeviceContext(nullptr);
-	deferredContext->FinishCommandList(FALSE, &list);
-	D3DContext::GetDeviceContext()->ExecuteCommandList(list, TRUE);
-	
-	//DX_FREE(list);
+	ID3D11ShaderResourceView* v[3]{nullptr, nullptr, nullptr};
+
+	D3DContext::GetDeviceContext()->PSSetShaderResources(0, 3, v);
 }

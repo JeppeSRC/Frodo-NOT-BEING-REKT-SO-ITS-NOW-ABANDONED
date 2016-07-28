@@ -30,9 +30,6 @@ private:
 	IndexBuffer* indexBufferPlane;
 
 private:
-	ID3D11DeviceContext* deferredContext;
-	ID3D11CommandList* list;
-
 	Camera* camera;
 
 	FramebufferMRT<4> mrt;
