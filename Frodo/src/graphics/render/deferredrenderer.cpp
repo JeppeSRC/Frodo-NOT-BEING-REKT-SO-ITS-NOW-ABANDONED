@@ -222,7 +222,7 @@ void DeferredRenderer::Render() {
 
 	num = pointLights.GetSize();
 
-	for (int i = 0; i < num; i++) {
+	for (size_t i = 0; i < num; i++) {
 		pointLightShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_POINT_DATA], (void*)pointLights[i]);
 
 		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);

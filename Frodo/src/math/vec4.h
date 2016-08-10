@@ -5,14 +5,14 @@ class FDAPI vec4 {
 private:
 	friend class vec3;
 	friend class vec2;
-private:
+public:
 	union {
 		float fdata[4];
 		struct {
-			float _x;
-			float _y;
-			float _z;
-			float _w;
+			float x;
+			float y;
+			float z;
+			float w;
 		};
 	};
 
@@ -20,7 +20,6 @@ private:
 
 public:
 	vec4();
-	//vec4(__m128 xmm);
 	vec4(const vec2& v, float z = 0, float w = 0);
 	vec4(const vec3& v, float w = 0);
 	vec4(float x, float y, float z, float w);
@@ -54,10 +53,5 @@ public:
 	__forceinline void operator*=(float v) { Multiply(v); }
 	__forceinline void operator/=(float v) { Divide(v); }
 
-	__forceinline vec4 operator-() { return vec4(-_x, -_y, -_z, -_w); }
-
-	__forceinline float GetX() const { return _x; }
-	__forceinline float GetY() const { return _y; }
-	__forceinline float GetZ() const { return _z; }
-	__forceinline float GetW() const { return _w; }
+	__forceinline vec4 operator-() { return vec4(-x, -y, -z, -w); }
 };

@@ -41,7 +41,7 @@ void UserCamera::Update(float delta) {
 
 	}
 
-		position += move.RotateY(rotation.GetY()) * delta;
+		position += move.RotateY(rotation.y) * delta;
 
 	UpdateViewMatrix();
 }

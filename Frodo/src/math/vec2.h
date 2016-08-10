@@ -2,15 +2,15 @@
 #include "mathcommon.h"
 
 class FDAPI vec2 {
-private:
+public:
 	// float fdata[4];
 	union  {
 		float fdata[4];
 		struct {
-			float _x;
-			float _y;
-			float _z;
-			float _w;
+			float x;
+			float y;
+			float z;
+			float w;
 		};
 	};
 
@@ -48,8 +48,5 @@ public:
 	__forceinline void operator*=(float v) { Multiply(v); }
 	__forceinline void operator/=(float v) { Divide(v); }
 
-	__forceinline vec2 operator-() { return vec2(-_x, -_y); }
-
-	__forceinline float GetX() const { return _x; }
-	__forceinline float GetY() const { return _y; }
+	__forceinline vec2 operator-() { return vec2(-x, -y); }
 };

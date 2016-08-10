@@ -30,9 +30,9 @@ mat4::mat4(float diagonal) {
 mat4 mat4::Translate(const vec3& v) {
 	mat4 tmp(1);
 	
-	tmp.m[0 + 3 * 4] = v.GetX();
-	tmp.m[1 + 3 * 4] = v.GetY();
-	tmp.m[2 + 3 * 4] = v.GetZ();
+	tmp.m[0 + 3 * 4] = v.x;
+	tmp.m[1 + 3 * 4] = v.y;
+	tmp.m[2 + 3 * 4] = v.z;
 
 	return tmp;
 }
@@ -40,12 +40,12 @@ mat4 mat4::Translate(const vec3& v) {
 mat4 mat4::Rotate(const vec3& v) {
 	mat4 x(1), y(1), z(1);
 
-	float xcos = cosf((float)FD_TO_RADIANS(v.GetX()));
-	float xsin = sinf((float)FD_TO_RADIANS(v.GetX()));
-	float ycos = cosf((float)FD_TO_RADIANS(v.GetY()));
-	float ysin = sinf((float)FD_TO_RADIANS(v.GetY()));
-	float zcos = cosf((float)FD_TO_RADIANS(v.GetZ()));
-	float zsin = sinf((float)FD_TO_RADIANS(v.GetZ()));
+	float xcos = cosf((float)FD_TO_RADIANS(v.x));
+	float xsin = sinf((float)FD_TO_RADIANS(v.x));
+	float ycos = cosf((float)FD_TO_RADIANS(v.y));
+	float ysin = sinf((float)FD_TO_RADIANS(v.y));
+	float zcos = cosf((float)FD_TO_RADIANS(v.z));
+	float zsin = sinf((float)FD_TO_RADIANS(v.z));
 
 	x.m[1 + 1 * 4] = xcos;x.m[1 + 2 * 4] = -xsin;
 	x.m[2 + 1 * 4] = xsin;x.m[2 + 2 * 4] = xcos;
@@ -62,9 +62,9 @@ mat4 mat4::Rotate(const vec3& v) {
 mat4 mat4::Scale(const vec3& v) {
 	mat4 tmp(1);
 
-	tmp.m[0 + 0 * 4] = v.GetX();
-	tmp.m[1 + 1 * 4] = v.GetY();
-	tmp.m[2 + 2 * 4] = v.GetZ();
+	tmp.m[0 + 0 * 4] = v.x;
+	tmp.m[1 + 1 * 4] = v.y;
+	tmp.m[2 + 2 * 4] = v.z;
 
 	return tmp;
 }
@@ -128,10 +128,10 @@ vec4 mat4::operator*(const vec4& v) {
 	__m128 vec[4];
 	__m128 col[4];
 
-	vec[0] = _mm_set_ps(v.GetX(), v.GetX(), v.GetX(), v.GetX());
-	vec[1] = _mm_set_ps(v.GetY(), v.GetY(), v.GetY(), v.GetY());
-	vec[2] = _mm_set_ps(v.GetZ(), v.GetZ(), v.GetZ(), v.GetZ());
-	vec[3] = _mm_set_ps(v.GetW(), v.GetW(), v.GetW(), v.GetW());
+	vec[0] = _mm_set_ps(v.x, v.x, v.x, v.x);
+	vec[1] = _mm_set_ps(v.y, v.y, v.y, v.y);
+	vec[2] = _mm_set_ps(v.z, v.z, v.z, v.z);
+	vec[3] = _mm_set_ps(v.w, v.w, v.w, v.w);
 
 	LoadColumns(col);
 
@@ -147,9 +147,9 @@ vec3 mat4::operator*(const vec3& v) {
 	__m128 vec[4];
 	__m128 col[4];
 
-	vec[0] = _mm_set_ps(v.GetX(), v.GetX(), v.GetX(), v.GetX());
-	vec[1] = _mm_set_ps(v.GetY(), v.GetY(), v.GetY(), v.GetY());
-	vec[2] = _mm_set_ps(v.GetZ(), v.GetZ(), v.GetZ(), v.GetZ());
+	vec[0] = _mm_set_ps(v.x, v.x, v.x, v.x);
+	vec[1] = _mm_set_ps(v.y, v.y, v.y, v.y);
+	vec[2] = _mm_set_ps(v.z, v.z, v.z, v.z);
 	vec[3] = _mm_set_ps(1, 1, 1, 1);
 
 	LoadColumns(col);
