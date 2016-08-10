@@ -25,6 +25,8 @@ Framebuffer2D::Framebuffer2D(unsigned int width, unsigned int height, FD_TEXTURE
 		case FD_TEXTURE_FORMAT_FLOAT_32_32_32_32:
 			td.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 			break;
+		default:
+			FD_ASSERT(FD_TEXTURE_FORMAT_UNKNOWN);
 	}
 
 	D3DContext::GetDevice()->CreateTexture2D(&td, 0, &resource);
