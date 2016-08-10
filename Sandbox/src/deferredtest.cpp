@@ -13,6 +13,10 @@ void DeferredTest::OnInit() {
 
 
 	e = new Entity({0, -0.5f, 0}, {90, 0, 0});
+	Entity* e2 = new Entity({0, 0.5f, 0}, {35, 45, 45});
+
+	e2->SetMaterial(material);
+	e2->SetModel(MeshFactory::CreateCube(0.21, 0.21, 0.21));
 
 	e->SetModel(model);
 	e->SetMaterial(material);
@@ -20,6 +24,8 @@ void DeferredTest::OnInit() {
 	renderer->SetCamera(camera);
 
 	renderer->AddEntity(e);
+	renderer->AddEntity(e2);
+	
 	//renderer->AddLight(new DirectionalLight(vec3(1, 1, 1), vec3(0, -1.f, 0)));
 
 	renderer->AddLight(new PointLight(vec3(0, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
