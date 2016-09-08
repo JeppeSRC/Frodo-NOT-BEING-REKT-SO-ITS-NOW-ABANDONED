@@ -9,10 +9,10 @@ void TextureManager::Init() {
 	textures.Reserve(256);
 	
 	vec4 a[4]{
-		vec4(1, 0, 0, 1),
-		vec4(0, 1, 0, 1),
-		vec4(0, 0, 1, 1),
-		vec4(1, 0, 1, 1)
+		vec4(1, 1, 1, 1),
+		vec4(1, 1, 1, 1),
+		vec4(1, 1, 1, 1),
+		vec4(1, 1, 1, 1)
 	};
 
 	Add("default", new Texture2D(a, 2, 2, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32));

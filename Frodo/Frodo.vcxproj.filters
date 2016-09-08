@@ -93,6 +93,9 @@
     <ClCompile Include="src\graphics\render\camera\usercamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\render\forwardrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\frodo.h">
@@ -204,6 +207,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\render\camera\usercamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\render\forwardrenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

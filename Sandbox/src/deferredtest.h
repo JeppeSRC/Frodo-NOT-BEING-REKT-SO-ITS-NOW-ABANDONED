@@ -12,10 +12,14 @@ protected:
 	void OnExit() override;
 
 private:
-	Entity* e;
 	unsigned int fps;
 
 	UserCamera* camera;
+
+	PointLight* spinningLight0;
+	PointLight* spinningLight1;
+	PointLight* spinningLight2;
+	PointLight* spinningLight3;
 
 public:
 

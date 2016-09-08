@@ -9,6 +9,7 @@ protected:
 	vec3 rotation;
 
 	mat4 viewMatrix;
+	mat4 projectionMatrix;
 
 
 	virtual void UpdateViewMatrix();
@@ -18,7 +19,9 @@ public:
 
 	inline void SetPosition(const vec3& position) { this->position = position; UpdateViewMatrix(); }
 	inline void SetRotation(const vec3& rotation) { this->rotation = rotation; UpdateViewMatrix(); }
+	inline void SetProjection(const mat4& matrix) { this->projectionMatrix = matrix; }
 
+	inline const mat4& GetProjectionMatrix() const { return projectionMatrix; }
 	inline mat4 GetViewMatrix() { return viewMatrix; }
 	inline vec3 GetPosition() const { return position; }
 	inline vec3 GetRotation() const { return position; }
