@@ -23,5 +23,5 @@ public:
 	void Unmap();
 
 	void Bind() override;
-	void Bind(unsigned int slot = 0);
+	void Bind(unsigned int slot);
 };
