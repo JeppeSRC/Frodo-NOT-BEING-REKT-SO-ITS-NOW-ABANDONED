@@ -5,16 +5,9 @@ class FDAPI vec3 {
 private:
 	friend class vec2;
 public:
-	 union {
-		 float fdata[4];
-		 struct {
-			float x;
-			float y;
-			float z;
-			float w;
-		};
-	};
-
+	float x;
+	float y;
+	float z;
 
 
 public:

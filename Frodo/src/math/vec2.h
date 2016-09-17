@@ -3,16 +3,8 @@
 
 class FDAPI vec2 {
 public:
-	// float fdata[4];
-	union  {
-		float fdata[4];
-		struct {
-			float x;
-			float y;
-			float z;
-			float w;
-		};
-	};
+	float x;
+	float y;
 
 public:
 	vec2();
