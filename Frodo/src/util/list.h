@@ -152,6 +152,7 @@ public:
 
 	inline void SetExtraReserve(size_t extra) { this->extraReserve = extra; }
 
+	inline T* GetData() { return data; }
 	inline const size_t GetSize() const { return size; }
 	inline const size_t GetSizeInBytes() const { return size * sizeof(T); }
 	inline const size_t GetAllocated() const { return allocated; }
