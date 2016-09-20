@@ -19,6 +19,7 @@ private:
 	struct RenderData {
 		mat4 translation;
 		mat4 rotation;
+		mat4 scale;
 	} rData;
 
 
@@ -58,6 +59,7 @@ private:
 	List<Entity*> entities;
 	List<DirectionalLight*> directionalLights;
 	List<PointLight*> pointLights;
+	List<SpotLight*> spotLights;
 
 	void SetBlendingInternal(bool blending);
 	void SetDepthInternal(bool depth);
@@ -78,6 +80,7 @@ public:
 
 	void AddLight(DirectionalLight* light);
 	void AddLight(PointLight* light);
+	void AddLight(SpotLight* light);
 
 	void Render();
 

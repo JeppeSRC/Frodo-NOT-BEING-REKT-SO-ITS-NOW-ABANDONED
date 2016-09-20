@@ -25,5 +25,11 @@ public:
 	inline mat4 GetViewMatrix() { return viewMatrix; }
 	inline vec3 GetPosition() const { return position; }
 	inline vec3 GetRotation() const { return position; }
+
+	inline vec3 GetForward() {
+		mat4 rot = mat4::Rotate(rotation);
+		const float* d = rot.GetData();
+		return vec3(d[2 + 0 * 4], d[2 + 1 * 4], d[2 + 2 * 4]);
+	}
 };
 

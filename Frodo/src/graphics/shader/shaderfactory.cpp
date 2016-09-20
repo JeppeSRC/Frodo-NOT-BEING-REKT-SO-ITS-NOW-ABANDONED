@@ -21,6 +21,10 @@ static const char* deferred_point_light_p =
 #include "shaders/deferred_point_light_p.hlsl"
 ;
 
+static const char* deferred_spot_light_p =
+#include "shaders/deferred_spot_light_p.hlsl"
+;
+
 
 Shader* ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE shader) {
 	switch (shader) {
@@ -30,6 +34,8 @@ Shader* ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE shader) {
 			return new Shader(deferred_lightingpass_v, deferred_directional_light_p, true);
 		case FD_DEFERRED_SHADER_TYPE_POINT_LIGHT:
 			return new Shader(deferred_lightingpass_v, deferred_point_light_p, true);
+		case FD_DEFERRED_SHADER_TYPE_SPOT_LIGHT:
+			return new Shader(deferred_lightingpass_v, deferred_spot_light_p, true);
 	}
 
 	FD_WARNING("FD_DEFERRED_SHADER_TYPE_UNKNOWN: Unknown shader returning nullptr");

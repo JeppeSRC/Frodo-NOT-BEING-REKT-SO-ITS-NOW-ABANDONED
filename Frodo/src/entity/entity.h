@@ -11,10 +11,11 @@ protected:
 
 	vec3 position;
 	vec3 rotation;
+	vec3 scale;
 
 public:
 	Entity() { model = nullptr; material = nullptr; }
-	Entity(const vec3& position, const vec3& rotation) : position(position), rotation(rotation) { model = nullptr; material = nullptr; }
+	Entity(const vec3& position, const vec3& rotation, const vec3& scale = vec3(1, 1, 1)) : position(position), rotation(rotation), scale(scale) { model = nullptr; material = nullptr; }
 	~Entity() { delete model, material; }
 
 
@@ -26,4 +27,5 @@ public:
 
 	inline vec3& GetPosition() { return position; }
 	inline vec3& GetRotation() { return rotation; }
+	inline vec3& GetScale() { return scale; }
 };

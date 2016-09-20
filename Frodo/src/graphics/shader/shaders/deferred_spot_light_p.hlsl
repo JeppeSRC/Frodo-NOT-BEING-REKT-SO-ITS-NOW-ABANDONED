@@ -19,6 +19,11 @@ cbuffer lightData : register(b0) {
 	float pad1;
 	float3 l_attenuation;
 	float pad2;
+	float3 l_direction;
+	float pad3;
+	float2 l_cutoffExponent;
+	float2 pad4;
+	
 };
 
 float4 psMain(float4 pos : SV_POSITION, float2 texCoords : TEXCOORDS) : SV_TARGET {
@@ -27,19 +32,23 @@ float4 psMain(float4 pos : SV_POSITION, float2 texCoords : TEXCOORDS) : SV_TARGE
 	float3 diffuse = texDiffuse.Sample(samp, texCoords).xyz;
 	float3 normal = texNormals.Sample(samp, texCoords).xyz;
 
-	float3 dir = l_position - position;
-	float dist = length(dir);
+	float3 dirToLight = l_position - position;
+	float distToLight = length(dirToLight);
 	
-	dir = normalize(dir);
+	dirToLight = normalize(dirToLight);
 
-	float attenuation = 1.0f / (l_attenuation.x + l_attenuation.y * dist + l_attenuation.z * dist * dist + 0.000001f);
+	float NdotL = dot(normal, dirToLight);
+	float attenuation = 0;
 
-	float d = dot(dir, normal);
+	if (NdotL > 0.0) {
+		float spotEffect = dot(l_direction, -dirToLight);
+		if (spotEffect > l_cutoffExponent.x) {
+			spotEffect = pow(abs(spotEffect), l_cutoffExponent.y);
+			attenuation = spotEffect / (l_attenuation.x + l_attenuation.y * distToLight + l_attenuation.z * distToLight * distToLight);
+		}
+	}
 	
-	float brightness  = d * attenuation;
-
-	return float4(l_color * diffuse * brightness, 1);
-	
+	return float4(l_color * diffuse * attenuation, 1);
 }
 
 )"

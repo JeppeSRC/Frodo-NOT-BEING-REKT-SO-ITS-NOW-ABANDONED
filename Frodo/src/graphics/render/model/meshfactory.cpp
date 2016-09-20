@@ -1,12 +1,18 @@
 #include "meshfactory.h"
+#include <util/list.h>
+#include <util/fileutils.h>
+#include <core/log.h>
+#include <util/vfs/vfs.h>
+
+struct Vertex {
+	vec3 position;
+	vec2 texCoords;
+	vec3 normals;
+};
 
 Model* MeshFactory::CreatePlane(float width, float height) {
 
-	struct Vertex {
-		vec3 position;
-		vec2 texCoords;
-		vec3 normals;
-	};
+	
 
 	float w = width / 2.0f;
 	float h = height / 2.0f;
@@ -54,12 +60,6 @@ Model* MeshFactory::CreatePlane(float width, float height) {
 }
 
 Model* MeshFactory::CreateCube(float width, float height, float depth) {
-
-	struct Vertex {
-		vec3 position;
-		vec2 texCoords;
-		vec3 normals;
-	};
 
 	float w = width / 2.0f;
 	float h = height / 2.0f;
@@ -212,4 +212,96 @@ Model* MeshFactory::CreateCube(float width, float height, float depth) {
 	Model* model = new Model(vBuffer, iBuffer);
 
 	return model;
+}
+
+Model* MeshFactory::LoadFromFile(const String& filename) {
+
+	if (filename.EndsWith(".obj")) {
+		List<vec3> vertices, normals;
+		List<vec2> texCoords;
+		List<unsigned int> indices;
+
+		String text = VFS::Get()->ReadTextFile(filename);
+
+		ParseOBJ(text, vertices, texCoords, normals, indices);
+
+		size_t vertNum = vertices.GetSize();
+
+		Vertex* vert = new Vertex[vertNum];
+
+		for (size_t i = 0; i < vertNum; i++) {
+			Vertex& v = vert[i];
+			v.position = vertices[i];
+			v.texCoords = texCoords[i];
+			v.normals = normals[i];
+		}
+
+		VertexBuffer* vbo = new VertexBuffer(vert, vertNum * sizeof(Vertex), sizeof(Vertex));
+		IndexBuffer* ibo = new IndexBuffer(indices.GetData(), indices.GetSize());
+
+		return new Model(vbo, ibo);
+
+	} else {
+		FD_WARNING("\"%s\" Only supports obj files ATM!", __FUNCSIG__);
+	}
+
+	return new Model;
+
+}
+
+void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& texCoords, List<vec3>& normals, List<unsigned int>& indices) {
+
+	List<Face<3>> faces;
+	List<String*> lines = obj.Split('\n');
+
+
+	size_t numLines = lines.GetSize();
+
+	for (size_t i = 0; i < numLines; i++) {
+		String line = lines[i];
+
+		if (line.StartsWith("v ")) {
+			vec3 vert;
+			sscanf(*line, "v %f %f %f", &vert.x, &vert.y, &vert.z);
+			vertices.Push_back(vert);
+		} else if (line.StartsWith("vt ")) {
+			vec2 tex;
+			sscanf(*line, "vt %f %f", &tex.x, &tex.y);
+			texCoords.Push_back(tex);
+		} else if (line.StartsWith("vn ")) {
+			vec3 norm;
+			sscanf(*line, "vn %f %f %f", &norm.x, &norm.y, &norm.z);
+			normals.Push_back(norm);
+		} else if (line.StartsWith("f ")) {
+			Face<3> face;
+			sscanf(*line, "f %u/%u/%u %u/%u/%u %u/%u/%u", &face[0].vertex, &face[0].texCoord, &face[0].normal, &face[1].vertex, &face[1].texCoord, &face[1].normal, &face[2].vertex, &face[2].texCoord, &face[2].normal);
+			faces.Push_back(face);
+		}
+	}
+
+	texCoords.Resize(vertices.GetSize());
+	normals.Resize(vertices.GetSize());
+
+	MakeFacesOBJ(texCoords, normals, indices, faces);
+}
+
+void MeshFactory::MakeFacesOBJ(List<vec2>& texCoords, List<vec3>& normals, List<unsigned int>& indices, List<Face<3>> faces) {
+
+	List<vec2> tmpTexCoords = texCoords;
+	List<vec3> tmpNormals = normals;
+
+
+	size_t numFaces = faces.GetSize();
+
+	indices.Resize(numFaces * 3);
+
+	for (size_t i = 0; i < numFaces; i++) {
+		Face<3> face = faces[i];
+		for (size_t j = 0; j < 3; j++) {
+			unsigned int vertex = face[j].vertex - 1;
+			indices[i * 3 + j] = vertex;
+			texCoords[vertex] = tmpTexCoords[face[j].texCoord-1];
+			normals[vertex] = tmpNormals[face[j].normal-1];
+		}
+	}
 }

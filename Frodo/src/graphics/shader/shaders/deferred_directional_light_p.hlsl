@@ -14,7 +14,9 @@ Texture2D texNormals : register(t2);
 
 cbuffer lightData : register(b0) {
 	float3 l_color;
+	float pad;
 	float3 l_direction;
+	float pad1;
 };
 
 float4 psMain(float4 pos : SV_POSITION, float2 texCoords : TEXCOORDS) : SV_TARGET {

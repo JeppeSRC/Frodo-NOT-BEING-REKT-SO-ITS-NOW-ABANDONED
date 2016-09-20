@@ -89,9 +89,11 @@ void DeferredRenderer::CreateShaders() {
 
 	directionalLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_DIRECTIONAL_LIGHT);
 	pointLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_POINT_LIGHT);
+	spotLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_SPOT_LIGHT);
 
 	composit.CreateInputLayout(directionalLightShader);
 	composit.CreateInputLayout(pointLightShader);
+	composit.CreateInputLayout(spotLightShader);
 	
 
 	constantBufferSlotCache[FD_SLOT_GEOMETRY_PROJECTION] = geometryShader->GetVSConstantBufferSlotByName("projectionMatrix");
@@ -100,6 +102,7 @@ void DeferredRenderer::CreateShaders() {
 	constantBufferSlotCache[FD_SLOT_GEOMETRY_MATERIALDATA] = geometryShader->GetPSConstantBufferSlotByName("materialData");
 	constantBufferSlotCache[FD_SLOT_DIRECTIONAL_DATA] = directionalLightShader->GetPSConstantBufferSlotByName("lightData");
 	constantBufferSlotCache[FD_SLOT_POINT_DATA] = pointLightShader->GetPSConstantBufferSlotByName("lightData");
+	constantBufferSlotCache[FD_SLOT_SPOT_DATA] = spotLightShader->GetPSConstantBufferSlotByName("lightData");
 
 }
 
@@ -164,6 +167,10 @@ void DeferredRenderer::AddLight(PointLight* light) {
 	pointLights.Push_back(light);
 }
 
+void DeferredRenderer::AddLight(SpotLight* light) {
+	spotLights.Push_back(light);
+}
+
 void DeferredRenderer::Render() {
 	SetBlendingInternal(false);
 	SetDepthInternal(true);
@@ -181,9 +188,9 @@ void DeferredRenderer::Render() {
 		e.GetModel()->Bind();
 
 		Material* mat = e.GetMaterial();
-
 		rData.translation = mat4::Translate(e.GetPosition());
 		rData.rotation = mat4::Rotate(e.GetRotation());
+		rData.scale = mat4::Scale(e.GetScale());
 
 		cData.color = mat->GetDiffuseColor();
 
@@ -224,6 +231,16 @@ void DeferredRenderer::Render() {
 
 	for (size_t i = 0; i < num; i++) {
 		pointLightShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_POINT_DATA], (void*)pointLights[i]);
+
+		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
+	}
+
+	spotLightShader->Bind();
+
+	num = spotLights.GetSize();
+
+	for (size_t i = 0; i < num; i++) {
+		spotLightShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_SPOT_DATA], (void*)spotLights[i]);
 
 		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 	}
