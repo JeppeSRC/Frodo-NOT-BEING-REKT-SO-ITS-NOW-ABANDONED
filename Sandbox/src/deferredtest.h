@@ -20,6 +20,7 @@ private:
 	PointLight* spinningLight1;
 	PointLight* spinningLight2;
 	PointLight* spinningLight3;
+	SpotLight* spotLight0;
 
 public:
 
