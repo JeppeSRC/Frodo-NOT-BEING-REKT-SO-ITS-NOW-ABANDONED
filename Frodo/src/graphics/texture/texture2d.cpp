@@ -1,5 +1,5 @@
 #include "texture2d.h"
-#include <D3D/Include/WICTextureLoader.h>
+#include <WICTextureLoader.h>
 #include <core/log.h>
 #include <util/vfs/vfs.h>
 
