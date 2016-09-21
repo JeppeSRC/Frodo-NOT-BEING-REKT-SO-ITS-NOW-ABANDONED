@@ -22,9 +22,8 @@ private:
 	PointLight* spinningLight3;
 	SpotLight* spotLight0;
 
-public:
 
-	DeferredRenderer* renderer;
+public:
 
 	DeferredTest() : FDApplication("Kebab ä gött", 1000, 600) { }
 
