@@ -5,7 +5,7 @@
 
 class FDAPI TextureManager {
 private:
-	static Map<String, Texture*> textures;
+	static Map<char*, Texture*> textures;
 
 public:
 	static void Init();

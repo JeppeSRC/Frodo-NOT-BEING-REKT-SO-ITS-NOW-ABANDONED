@@ -3,7 +3,7 @@
 #include <core/log.h>
 #include <math/vec4.h>
 
-Map<String, Texture*> TextureManager::textures;
+Map<char*, Texture*> TextureManager::textures;
 
 void TextureManager::Init() {
 	textures.Reserve(256);
@@ -15,7 +15,9 @@ void TextureManager::Init() {
 		vec4(1, 1, 1, 1)
 	};
 
-	Add("default", new Texture2D(a, 2, 2, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32));
+	String s("default");
+	
+	Add(s, new Texture2D(a, 2, 2, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32));
 }
 
 void TextureManager::Dispose() {
@@ -24,14 +26,38 @@ void TextureManager::Dispose() {
 
 void TextureManager::Add(const String& name, Texture* tex) {
 
+	/*
 	if (textures.GetKeyList().Find(name) != (size_t)-1) {
 		FD_FATAL("\"%s\" already exist!", *name);
 		return;
+	}*/
+
+	for (size_t i = 0; i < textures.GetItems(); i++) {
+		String curr(textures.GetKeyList()[i]);
+		if (name == curr) {
+			FD_FATAL("\"%s\" already exist!", *name);
+			return;
+		}
 	}
 
-	textures.Add(tex, name);
+	char* tmp = new char[name.length + 1];
+	memcpy(tmp, name.str, name.length + 1);
+
+	textures.Add(tex, tmp);
 }
 
 Texture* TextureManager::Get(const String& name) {
-	return textures.Retrieve(name);
+
+	char* key = nullptr;
+
+	for (size_t i = 0; i < textures.GetItems(); i++) {
+		key = textures.GetKeyList()[i];
+		if (name == String(key)) {
+			return textures.Retrieve(key);
+		}
+	}
+
+	FD_WARNING("Couldn't find texture \"%s\"", *name);
+
+	return nullptr;
 }
