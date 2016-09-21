@@ -174,7 +174,7 @@ char String::operator[](size_t index) const {
 	return str[index];
 }
 
-bool String::operator==(const String& string) {
+bool String::operator==(const String& string) const {
 	if (length != string.length) return false;
 
 	for (size_t i = 0; i < length; i++) {
@@ -184,7 +184,7 @@ bool String::operator==(const String& string) {
 	return true;
 }
 
-bool String::operator!=(const String& string) {
+bool String::operator!=(const String& string) const {
 	if (length != string.length) return false;
 
 	for (size_t i = 0; i < length; i++) {

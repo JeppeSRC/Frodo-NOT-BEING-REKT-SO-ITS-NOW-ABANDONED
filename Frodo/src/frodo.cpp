@@ -10,6 +10,7 @@ FDApplication::FDApplication(const char* title, unsigned int width, unsigned int
 
 FDApplication::~FDApplication() {
 	OnExit();
+	delete mainRenderer;
 	delete window;
 
 	VFS::Dispose();

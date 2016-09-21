@@ -3,20 +3,25 @@
 #include <fd.h>
 #include <math/math.h>
 
+#define FD_LIGHT_TYPE_NONE 0x00
+#define FD_LIGHT_TYPE_DIRECTIONAL 0x01
+#define FD_LIGHT_TYPE_POINT 0x02
+#define FD_LIGHT_TYPE_SPOT 0x03
 
 class FDAPI Light {
 protected:
 
 	vec3 color;
-	float pad;
+	unsigned int lightType;
 
 protected:
-	Light(const vec3& color) { this->color = color; }
+	Light(const vec3& color) { this->color = color; lightType = FD_LIGHT_TYPE_NONE; }
 
 public:
 
 	inline vec3& GetColor() { return color; }
 
+	inline unsigned int GetLightType() const {return lightType; }
 };
 
 class FDAPI DirectionalLight : public Light {
@@ -27,7 +32,7 @@ private:
 
 public:
 
-	DirectionalLight(const vec3& color, const vec3& direction) : Light(color), direction(direction) {  }
+	DirectionalLight(const vec3& color, const vec3& direction) : Light(color), direction(direction) { lightType = FD_LIGHT_TYPE_DIRECTIONAL; }
 
 	inline vec3& GetDirection() { return direction; }
 };
@@ -42,7 +47,7 @@ protected:
 
 public:
 
-	PointLight(const vec3& position, const vec3& color, const vec3& attenuation) : Light(color), position(position), attenuation(attenuation) { }
+	PointLight(const vec3& position, const vec3& color, const vec3& attenuation) : Light(color), position(position), attenuation(attenuation) { lightType = FD_LIGHT_TYPE_POINT; }
 	
 	inline vec3& GetPosition() { return position; }
 	inline vec3& GetAttenuation() { return attenuation; }
@@ -57,9 +62,9 @@ protected:
 
 public:
 	SpotLight(const vec3& position, const vec3& color, const vec3& direction, const vec3& attenuation, vec2 cutoffExponent) : PointLight(position, color, attenuation), direction(direction) { 
-		this->cutoffExponent.x = cosf(FD_TO_RADIANS(cutoffExponent.x));
+		this->cutoffExponent.x = (float)cosf(FD_TO_RADIANS(cutoffExponent.x));
 		this->cutoffExponent.y = cutoffExponent.y;
-
+		lightType = FD_LIGHT_TYPE_SPOT;
 	}
 
 	inline vec3& GetDirection() { return direction; }

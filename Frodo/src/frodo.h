@@ -17,6 +17,8 @@
 #include <graphics/texture/texturemanager.h>
 
 #include <graphics/render/deferredrenderer.h>
+#include <graphics/render/forwardrenderer.h>
+#include <graphics/render/renderer.h>
 
 #include <graphics/render/material/material.h>
 #include <graphics/render/model/model.h>
@@ -47,6 +49,7 @@ private:
 
 protected:
 	Window* window;
+	Renderer* mainRenderer;
 
 	virtual void OnInit();
 	virtual void OnTick();

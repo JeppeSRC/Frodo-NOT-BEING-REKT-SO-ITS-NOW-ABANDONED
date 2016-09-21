@@ -3,6 +3,7 @@
 #include <graphics/shader/shaderfactory.h>
 #include <graphics/buffer/bufferlayout.h>
 
+
 void DeferredRenderer::SetBlendingInternal(bool blending) {
 	D3DContext::GetDeviceContext()->OMSetBlendState(blending ? blendState[1] : blendState[0], nullptr, 0xFFFFFFFF);
 }
@@ -33,7 +34,7 @@ void DeferredRenderer::CreateDepthStates() {
 
 	ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 
-	desc.DepthEnable = false;
+	desc.DepthEnable = true;
 	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	desc.DepthFunc = D3D11_COMPARISON_EQUAL;
 
@@ -80,16 +81,16 @@ void DeferredRenderer::CreateShaders() {
 	render.Push<vec2>("TEXCOORDS");
 	render.Push<vec3>("NORMALS");
 
-	geometryShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_GEOMETRY);
+	geometryShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_GEOMETRY);
 
 	render.CreateInputLayout(geometryShader);
 
 	composit.Push<vec3>("POSITION");
 	composit.Push<vec2>("TEXCOORDS");
 
-	directionalLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_DIRECTIONAL_LIGHT);
-	pointLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_POINT_LIGHT);
-	spotLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_TYPE_SPOT_LIGHT);
+	directionalLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_DIRECTIONAL_LIGHT);
+	pointLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_POINT_LIGHT);
+	spotLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_SPOT_LIGHT);
 
 	composit.CreateInputLayout(directionalLightShader);
 	composit.CreateInputLayout(pointLightShader);
@@ -106,13 +107,13 @@ void DeferredRenderer::CreateShaders() {
 
 }
 
-DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
+DeferredRenderer::DeferredRenderer(Window* window) : Renderer(window, nullptr) {
 	CreateDepthStates();
 	CreateBlendStates();
 	
 	CreateShaders();
 
-	mrt.Init(width, height, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32, true);
+	mrt.Init(window->GetWidth(), window->GetHeight(), FD_TEXTURE_FORMAT_FLOAT_32_32_32_32, true);
 
 
 	struct PlaneVertex {
@@ -134,12 +135,14 @@ DeferredRenderer::DeferredRenderer(unsigned int width, unsigned int height) {
 
 	camera = new Camera(vec3(0, 0, 0));
 
-	SetProjectionMatrix(mat4::Perspective(70.0f, (float)width / height, 0.001f, 1000.0f));
+	SetProjectionMatrix(mat4::Perspective(70.0f, window->GetAspectRatio(), 0.001f, 1000.0f));
 }
 
 DeferredRenderer::~DeferredRenderer() {
 	delete geometryShader;
 	delete directionalLightShader;
+	delete pointLightShader;
+	delete spotLightShader;
 
 	DX_FREE(depthState[0]);
 	DX_FREE(blendState[0]);
@@ -151,24 +154,46 @@ void DeferredRenderer::SetProjectionMatrix(const mat4& matrix) {
 	geometryShader->SetVSConstantBuffer(constantBufferSlotCache[FD_SLOT_GEOMETRY_PROJECTION], (void*)&matrix);
 }
 
-void DeferredRenderer::AddEntity(Entity* e) {
+void DeferredRenderer::Add(Entity* e) {
 	entities.Push_back(e);
 }
 
-void DeferredRenderer::RemoveEntity(Entity* e) {
+void DeferredRenderer::Remove(Entity* e) {
 	entities.Remove(e);
 }
 
-void DeferredRenderer::AddLight(DirectionalLight* light) {
-	directionalLights.Push_back(light);
+void DeferredRenderer::Add(Light* light) {
+	switch (light->GetLightType()) {
+		case FD_LIGHT_TYPE_DIRECTIONAL:
+			directionalLights.Push_back((DirectionalLight*)light);
+			break;
+		case FD_LIGHT_TYPE_POINT:
+			pointLights.Push_back((PointLight*)light);
+			break;
+		case FD_LIGHT_TYPE_SPOT:
+			spotLights.Push_back((SpotLight*)light);
+			break;
+		case FD_LIGHT_TYPE_NONE:
+			FD_WARNING("Light.lightType = FD_LIGHT_TYPE_NONE does nothing (%s)", __FUNCSIG__);
+			break;
+	}
 }
 
-void DeferredRenderer::AddLight(PointLight* light) {
-	pointLights.Push_back(light);
-}
-
-void DeferredRenderer::AddLight(SpotLight* light) {
-	spotLights.Push_back(light);
+void DeferredRenderer::Remove(Light* light) {
+	switch (light->GetLightType()) {
+		case FD_LIGHT_TYPE_DIRECTIONAL:
+			directionalLights.Remove((DirectionalLight*)light);
+			break;
+		case FD_LIGHT_TYPE_POINT:
+			pointLights.Remove((PointLight*)light);
+			break;
+		case FD_LIGHT_TYPE_SPOT:
+			spotLights.Remove((SpotLight*)light);
+			break;
+		case FD_LIGHT_TYPE_NONE:
+			FD_WARNING("Light.lightType = FD_LIGHT_TYPE_NONE does nothing (%s)", __FUNCSIG__);
+			break;
+	}
 }
 
 void DeferredRenderer::Render() {
@@ -212,8 +237,8 @@ void DeferredRenderer::Render() {
 	
 	unsigned int indexCount = indexBufferPlane->GetCount();
 
-	SetBlendingInternal(true);
-	SetDepthInternal(false);
+	/*SetBlendingInternal(true);
+	SetDepthInternal(false);*/
 
 	directionalLightShader->Bind();
 
@@ -230,6 +255,10 @@ void DeferredRenderer::Render() {
 	num = pointLights.GetSize();
 
 	for (size_t i = 0; i < num; i++) {
+		if (i > 0) {
+			SetBlendingInternal(true);
+			SetDepthInternal(false);
+		}
 		pointLightShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_POINT_DATA], (void*)pointLights[i]);
 
 		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);

@@ -48,7 +48,7 @@ float4 psMain(float4 pos : SV_POSITION, float2 texCoords : TEXCOORDS) : SV_TARGE
 		}
 	}
 	
-	return float4(l_color * diffuse * attenuation, 1);
+	return float4(l_color * diffuse * attenuation * NdotL, 1);
 }
 
 )"

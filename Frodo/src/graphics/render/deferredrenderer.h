@@ -7,13 +7,14 @@
 #include <graphics/texture/framebuffer2d.h>
 #include <graphics/render/light/light.h>
 #include <entity/entity.h>
+#include "renderer.h"
 
 #define FD_RENDERER_MRT_INDEX_POSITIONS		0x0
 #define FD_RENDERER_MRT_INDEX_DIFFUSE		0x1
 #define FD_RENDERER_MRT_INDEX_NORMALS		0x2 
 #define FD_RENDERER_MRT_INDEX_SHADOWMAP		0x3
 
-class FDAPI DeferredRenderer {
+class FDAPI DeferredRenderer : public Renderer {
 private:
 
 	struct RenderData {
@@ -31,8 +32,6 @@ private:
 	IndexBuffer* indexBufferPlane;
 
 private:
-	Camera* camera;
-
 	FramebufferMRT<4> mrt;
 
 	Shader* geometryShader;
@@ -70,23 +69,16 @@ private:
 	void CreateShaders();
 
 public:
-	DeferredRenderer(unsigned int width, unsigned int height);
+	DeferredRenderer(Window* window);
 	~DeferredRenderer();
 
 	void SetProjectionMatrix(const mat4& matrix);
 
-	void AddEntity(Entity* e);
-	void RemoveEntity(Entity* e);
+	void Add(Entity* e) override;
+	void Add(Light* light) override;
 
-	void AddLight(DirectionalLight* light);
-	void AddLight(PointLight* light);
-	void AddLight(SpotLight* light);
+	void Remove(Entity* e) override;
+	void Remove(Light* light) override;
 
 	void Render();
-
-	inline void SetCamera(Camera* camera) { 
-		if (this->camera != nullptr) delete this->camera; 
-
-		this->camera = camera; 
-	}
 };

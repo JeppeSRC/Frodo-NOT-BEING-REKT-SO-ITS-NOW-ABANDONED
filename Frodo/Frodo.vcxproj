@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>dependencies;src;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dependencies;src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
@@ -111,7 +111,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>dependencies;src;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dependencies;src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
@@ -133,7 +133,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>dependencies;src;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dependencies;src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -162,7 +162,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>dependencies;src;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dependencies;src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -233,6 +233,7 @@
     <ClInclude Include="src\graphics\render\material\material.h" />
     <ClInclude Include="src\graphics\render\model\meshfactory.h" />
     <ClInclude Include="src\graphics\render\model\model.h" />
+    <ClInclude Include="src\graphics\render\renderer.h" />
     <ClInclude Include="src\graphics\shader\shader.h" />
     <ClInclude Include="src\graphics\shader\shaderfactory.h" />
     <ClInclude Include="src\graphics\texture\framebuffer2d.h" />
@@ -255,6 +256,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Dependencies\DirectXTK\DirectXTK.vcxproj">
       <Project>{bd1a7f6d-7460-4223-b2bf-16ba83219fdb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Dependencies\FreeType\FreeType.vcxproj">
+      <Project>{567204d9-06c3-4d14-8722-759e9be9c88d}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

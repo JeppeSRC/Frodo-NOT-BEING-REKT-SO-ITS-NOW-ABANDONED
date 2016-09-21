@@ -37,8 +37,8 @@ public:
 
 	char operator[](size_t index) const;
 
-	bool operator==(const String& string);
-	bool operator!=(const String& string);
+	bool operator==(const String& string) const;
+	bool operator!=(const String& string) const;
 	String operator+(const String& string);
 	__forceinline void operator+=(const String& string) { Append(string); }
 
@@ -50,6 +50,8 @@ public:
 	void Split(const char delimiter, List<String*>& list) const;
 
 	inline char* operator*() const { return str; }
+
+	inline void SetNoDelete(bool nodelete) { this->noDelete = nodelete; }
 
 	inline wchar_t* GetWCHAR() const {
 		wchar_t* tmp = new wchar_t[length + 1];

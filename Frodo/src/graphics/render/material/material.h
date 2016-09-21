@@ -9,6 +9,7 @@ class Material {
 protected:
 
 	vec4 diffuseColor;
+	float specular;
 	Texture2D* diffuseTexture;
 
 public:
