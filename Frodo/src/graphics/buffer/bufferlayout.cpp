@@ -21,19 +21,31 @@ BufferLayout::~BufferLayout() {
 	
 }
 
-void BufferLayout::Push(const String& name, DXGI_FORMAT format) {
+void BufferLayout::Push(const String& name, DXGI_FORMAT format, unsigned int slot) {
 	unsigned int size = get_size_from_format(format);
 	FD_ASSERT(size);
-	elements.Push_back({name, format, size, offset});
+	elements.Push_back({name, format, slot, size, offset});
 	offset += size;
 }
 
 void BufferLayout::CreateInputLayout(Shader* shader) {
 	D3D11_INPUT_ELEMENT_DESC* desc = new D3D11_INPUT_ELEMENT_DESC[elements.GetSize()];
 
+	unsigned int stepRate = 0;
+	D3D11_INPUT_CLASSIFICATION input;
+
 	for (size_t i = 0; i < elements.GetSize(); i++) {
 		BufferLayoutAttrib& a = elements[i];
-		desc[i] = {*a.name, 0, a.format, 0, a.offset,D3D11_INPUT_PER_VERTEX_DATA, 0};
+
+		if (a.slot > 0) {
+			stepRate = 1;
+			input = D3D11_INPUT_PER_INSTANCE_DATA;
+		} else {
+			stepRate = 0;
+			input = D3D11_INPUT_PER_VERTEX_DATA;
+		}
+
+		desc[i] = {*a.name, 0, a.format, a.slot, a.offset, input, stepRate};
 	}
 
 	ID3D11InputLayout* tmp = nullptr;
