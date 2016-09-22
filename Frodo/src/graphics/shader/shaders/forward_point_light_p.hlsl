@@ -7,6 +7,7 @@ SamplerState samp{
 	AddressV = Warp;
 };
 
+
 cbuffer lightData : register(b0) {
 	float3 l_color;
 	float pad0;

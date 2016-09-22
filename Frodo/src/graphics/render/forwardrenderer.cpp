@@ -16,6 +16,7 @@ SetDepthInternal(true); \
 void ForwardRenderer::CreateShaders() {
 	BufferLayout layout;
 
+
 	layout.Push<vec3>("POSITION");
 	layout.Push<vec2>("TEXCOORDS");
 	layout.Push<vec3>("NORMALS");
@@ -25,6 +26,9 @@ void ForwardRenderer::CreateShaders() {
 
 	pointLightShader = ShaderFactory::GetShader(FD_FORWARD_SHADER_POINT_LIGHT);
 	layout.CreateInputLayout(pointLightShader);
+
+	spotLightShader = ShaderFactory::GetShader(FD_FORWARD_SHADER_SPOT_LIGHT);
+	layout.CreateInputLayout(spotLightShader);
 }
 
 void ForwardRenderer::CreateBlendStates() {
@@ -37,8 +41,8 @@ void ForwardRenderer::CreateBlendStates() {
 	D3DContext::GetDevice()->CreateBlendState(&d, &blendState[0]);
 
 	d.RenderTarget[0].BlendEnable = true;
-	d.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	d.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_ALPHA;
+	d.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	d.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
 	d.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 	d.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
 	d.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
@@ -92,11 +96,20 @@ ForwardRenderer::ForwardRenderer(Window* window) : Renderer(window, nullptr), on
 	slotCache[FD_SLOT_POINT_MODEL_DATA] = pointLightShader->GetVSConstantBufferSlotByName("modelData");
 	slotCache[FD_SLOT_POINT_LIGHT_DATA] = pointLightShader->GetPSConstantBufferSlotByName("lightData");
 	slotCache[FD_SLOT_POINT_MATERIAL_DATA] = pointLightShader->GetPSConstantBufferSlotByName("materialData");
+
+	slotCache[FD_SLOT_SPOT_VIEW_DATA] = spotLightShader->GetVSConstantBufferSlotByName("viewData");
+	slotCache[FD_SLOT_SPOT_MODEL_DATA] = spotLightShader->GetVSConstantBufferSlotByName("modelData");
+	slotCache[FD_SLOT_SPOT_LIGHT_DATA] = spotLightShader->GetPSConstantBufferSlotByName("lightData");
+	slotCache[FD_SLOT_SPOT_MATERIAL_DATA] = spotLightShader->GetPSConstantBufferSlotByName("materialData");
+
+	instanceBuffer = new VertexBuffer(sizeof(POINT_LIGHT_INSTANCE), 100);
 }
 
 
 ForwardRenderer::~ForwardRenderer(){
 	delete directionalLightShader;
+	delete pointLightShader;
+	delete instanceBuffer;
 
 	DX_FREE(depthState[0]);
 	DX_FREE(depthState[1]);
@@ -149,6 +162,7 @@ void ForwardRenderer::Remove(Light* light) {
 
 void ForwardRenderer::Render() {
 	FD_DISABLE_BLENDING
+	geometryRendered = false;
 	
 	size_t numl = directionalLights.GetSize();
 	size_t nume = entities.GetSize();
@@ -160,6 +174,7 @@ void ForwardRenderer::Render() {
 
 	//directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_VIEW_DATA], (void*)&view_data);
 	pointLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_POINT_VIEW_DATA], (void*)&view_data);
+	spotLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_SPOT_VIEW_DATA], (void*)&view_data);
 
 /*
 	//Directional Lights
@@ -191,12 +206,12 @@ void ForwardRenderer::Render() {
 	*/
 	
 	numl = pointLights.GetSize();
-
+	
 	if (numl > 0) {
 		pointLightShader->Bind();
 	
 		for (size_t i = 0; i < nume; i++) {
-			FD_DISABLE_BLENDING
+			if (!geometryRendered) { FD_DISABLE_BLENDING }
 			Entity& e = *entities[i];
 			Material& mat = *e.GetMaterial();
 
@@ -212,11 +227,52 @@ void ForwardRenderer::Render() {
 			pointLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_POINT_MODEL_DATA], (void*)&model_data);
 
 			pointLightShader->SetTexture(0, mat.GetDiffuseTexture());
-		
+
+			unsigned int indexCount = e.GetModel()->GetIndexBuffer()->GetCount();
+
 			for (size_t l = 0; l < numl; l++) {
 				pointLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_POINT_LIGHT_DATA], (void*)pointLights[l]);
 
-				D3DContext::GetDeviceContext()->DrawIndexed(e.GetModel()->GetIndexBuffer()->GetCount(), 0, 0);
+				D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
+				
+				FD_ENABLE_BLEDNING
+			}
+		}
+
+		geometryRendered = true;
+	}
+
+	numl = spotLights.GetSize();
+
+	if (numl > 0) {
+
+		spotLightShader->Bind();
+
+		for (size_t i = 0; i < nume; i++) {
+			if (!geometryRendered) { FD_DISABLE_BLENDING }
+			Entity& e = *entities[i];
+			Material& mat = *e.GetMaterial();
+
+			material_data.color = mat.GetDiffuseColor();
+
+			model_data.translation = mat4::Translate(e.GetPosition());
+			model_data.roatation = mat4::Rotate(e.GetRotation());
+			model_data.scale = mat4::Scale(e.GetScale());
+
+			e.GetModel()->Bind();
+
+			spotLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_SPOT_MATERIAL_DATA], (void*)&material_data);
+			spotLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_SPOT_MODEL_DATA], (void*)&model_data);
+
+			spotLightShader->SetTexture(0, mat.GetDiffuseTexture());
+
+			unsigned int indexCount = e.GetModel()->GetIndexBuffer()->GetCount();
+
+			for (size_t l = 0; l < numl; l++) {
+				spotLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_SPOT_LIGHT_DATA], (void*)spotLights[l]);
+
+				D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
+
 				FD_ENABLE_BLEDNING
 			}
 		}

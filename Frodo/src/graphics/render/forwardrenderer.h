@@ -19,7 +19,10 @@ private:
 	ID3D11BlendState* blendState[2];
 	ID3D11DepthStencilState* depthState[2];
 
+	VertexBuffer* instanceBuffer;
+
 	bool oneLightRendered;
+	bool geometryRendered;
 
 private:
 	void CreateShaders();
@@ -68,6 +71,15 @@ private:
 	struct MATERIAL_DATA {
 		vec4 color;
 	} material_data;
+
+	struct POINT_LIGHT_INSTANCE {
+		vec3 pad0;
+		vec2 pad1;
+		vec3 pad2;
+		vec3 color;
+		vec3 position;
+		vec3 attenuation;
+	};
 
 public:
 	ForwardRenderer(Window* window);

@@ -33,6 +33,10 @@ static const char* forward_directional_light_p =
 #include "shaders/forward_directional_light_p.hlsl"
 ;
 
+static const char* forward_point_light_v =
+#include "shaders/forward_point_light_v.hlsl"
+;
+
 static const char* forward_point_light_p =
 #include "shaders/forward_point_light_p.hlsl"
 ;
