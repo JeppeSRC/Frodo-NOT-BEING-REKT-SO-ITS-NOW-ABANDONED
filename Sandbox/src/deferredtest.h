@@ -22,6 +22,8 @@ private:
 	PointLight* spinningLight3;
 	SpotLight* spotLight0;
 
+	Entity* bigSphere;
+
 
 public:
 

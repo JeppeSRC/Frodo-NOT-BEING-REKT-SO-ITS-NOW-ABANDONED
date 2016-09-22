@@ -11,8 +11,6 @@ void DeferredTest::OnInit() {
 	window->SetVSync(0);
 	SetUPS(60);
 
-	aLable:
-
 	VFS::Get()->Mount("textures", "./res/");
 	VFS::Get()->Mount("models", "./res/");
 
@@ -25,7 +23,12 @@ void DeferredTest::OnInit() {
 	Model* model = MeshFactory::CreatePlane(WIDTH, DEPTH);
 	Model* model2 = MeshFactory::CreatePlane(WIDTH, HEIGHT);
 	Model* sphereModel = MeshFactory::LoadFromFile("/models/sphere.obj");
+	Model* sphereModelBig = MeshFactory::LoadFromFile("/models/sphere_big.obj");
 	Material* material = new Material(vec4(1, 1, 1, 1));
+
+	bigSphere = new Entity(vec3(3.5, 0, 0), vec3(0, 0, 0), vec3(0.35, 0.35, 0.35));
+	bigSphere->SetMaterial(material);
+	bigSphere->SetModel(sphereModelBig);
 
 	Entity* sphere = new Entity(vec3(0, 0, 0), vec3(0, 0, 0));
 	sphere->SetModel(sphereModel);
@@ -74,29 +77,30 @@ void DeferredTest::OnInit() {
 	mainRenderer->Add(front);
 	mainRenderer->Add(back);
 	mainRenderer->Add(sphere);
+	mainRenderer->Add(bigSphere);
 
 //	mainRenderer->Add(new DirectionalLight(vec3(1, 1, 1), vec3(0, -1, 1)));	
 
-	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 0, 1), vec3(1, 0.025, 4)));
-	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 0), vec3(1, 0.025, 4)));
-	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 0), vec3(0, 1, 1), vec3(1, 0.025, 4)));
-	mainRenderer->Add(new PointLight(vec3(0, 0.0f, -4), vec3(0, 0, 1), vec3(1, 0.025, 4)));
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 0, 1), vec3(0, 0.025, 10)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 0), vec3(0, 0.025, 10)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 0), vec3(0, 1, 1), vec3(0, 0.025, 10)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, -4), vec3(0, 0, 1), vec3(0, 0.025, 10)));
 
 
-	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 4), vec3(1, 0, 0), vec3(1, 0.025, 4)));
-	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 4), vec3(0, 0, 1), vec3(1, 0.025, 4)));
-	mainRenderer->Add(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 0), vec3(1, 0.025, 4)));
-	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(0, 1, 1), vec3(1, 0.025, 4)));
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 4), vec3(1, 0, 0), vec3(0, 0.025, 10)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 4), vec3(0, 0, 1), vec3(0, 0.025, 10)));
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 0), vec3(0, 0.025, 10)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(0, 1, 1), vec3(0, 0.025, 10)));
 
 	
-	spinningLight0 = new PointLight(vec3(1.5, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 4));
-	spinningLight1 = new PointLight(vec3(-1.5, 0.0f, 0), vec3(0, 1, 1), vec3(1, 0.025, 4));
-	spinningLight2 = new PointLight(vec3(0, 0.0f, 1.5), vec3(0, 0, 1), vec3(1, 0.025, 4));
-	spinningLight3 = new PointLight(vec3(0, 0.0f, -1.5), vec3(1, 0, 0), vec3(1, 0.025, 4));
+	spinningLight0 = new PointLight(vec3(1.5, 0.0f, 0), vec3(1, 1, 1), vec3(0, 0.025, 10));
+	spinningLight1 = new PointLight(vec3(-1.5, 0.0f, 0), vec3(0, 1, 1), vec3(0, 0.025, 10));
+	spinningLight2 = new PointLight(vec3(0, 0.0f, 1.5), vec3(0, 0, 1), vec3(0, 0.025, 10));
+	spinningLight3 = new PointLight(vec3(0, 0.0f, -1.5), vec3(1, 0, 0), vec3(0, 0.025, 10));
 
 	spotLight0 = new SpotLight(vec3(2, 0, 0), vec3(1, 1, 1), vec3(-1, -1, 0), vec3(0, 0, 1), vec2(25, 3));
-//	mainRenderer->Add(spotLight0);
-	/*
+	mainRenderer->Add(spotLight0);
+	
 
 	// 111
 	// 011
@@ -110,11 +114,21 @@ void DeferredTest::OnInit() {
 	mainRenderer->Add(spinningLight1);
 	mainRenderer->Add(spinningLight2);
 	mainRenderer->Add(spinningLight3);
-	*/
+	
 	
 
-	/*mainRenderer->AddLight(new PointLight(vec3(0, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	/*
+	
+	
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 
 	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
@@ -124,8 +138,48 @@ void DeferredTest::OnInit() {
 	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 	mainRenderer->Add(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
-	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));*/
-	
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(0, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, -4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
+	*/
 }
 
 void DeferredTest::OnUpdate(float delta) {
@@ -134,13 +188,14 @@ void DeferredTest::OnUpdate(float delta) {
 
 
 	spotLight0->GetDirection() = camera->GetForward();
-//	spotLight0->GetPosition() = camera->GetPosition();
+	//spotLight0->GetPosition() = camera->GetPosition();
 
 	spinningLight0->GetPosition().RotateY(80 * delta);
 	spinningLight1->GetPosition().RotateY(80 * delta);
 	spinningLight2->GetPosition().RotateY(80 * delta);
 	spinningLight3->GetPosition().RotateY(80 * delta);
 
+	bigSphere->GetPosition().RotateY(-5 * delta);
 }
 
 void DeferredTest::OnTick() {
