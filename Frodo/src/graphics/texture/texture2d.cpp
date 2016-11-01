@@ -51,7 +51,12 @@ Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEX
 			d.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 			size = 16;
 			break;
+		case FD_TEXTURE_FORMAT_UINT_8:
+			d.Format = DXGI_FORMAT_R8_UNORM;
+			size = 1;
 	}
+
+	
 
 	D3D11_SUBRESOURCE_DATA s;
 	ZeroMemory(&s, sizeof(D3D11_SUBRESOURCE_DATA));

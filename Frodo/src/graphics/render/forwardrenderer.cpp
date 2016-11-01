@@ -102,14 +102,12 @@ ForwardRenderer::ForwardRenderer(Window* window) : Renderer(window, nullptr), on
 	slotCache[FD_SLOT_SPOT_LIGHT_DATA] = spotLightShader->GetPSConstantBufferSlotByName("lightData");
 	slotCache[FD_SLOT_SPOT_MATERIAL_DATA] = spotLightShader->GetPSConstantBufferSlotByName("materialData");
 
-	instanceBuffer = new VertexBuffer(sizeof(POINT_LIGHT_INSTANCE), 100);
 }
 
 
 ForwardRenderer::~ForwardRenderer(){
 	delete directionalLightShader;
 	delete pointLightShader;
-	delete instanceBuffer;
 
 	DX_FREE(depthState[0]);
 	DX_FREE(depthState[1]);
@@ -167,43 +165,47 @@ void ForwardRenderer::Render() {
 	size_t numl = directionalLights.GetSize();
 	size_t nume = entities.GetSize();
 
-//	directionalLightShader->Bind();
 
 	view_data.projection = camera->GetProjectionMatrix();
 	view_data.view = camera->GetViewMatrix();
 
-	//directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_VIEW_DATA], (void*)&view_data);
+	directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_VIEW_DATA], (void*)&view_data);
 	pointLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_POINT_VIEW_DATA], (void*)&view_data);
 	spotLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_SPOT_VIEW_DATA], (void*)&view_data);
 
-/*
-	//Directional Lights
-	for (size_t l = 0; l < numl; l++) {
-		directionalLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_LIGHT_DATA], (void*)directionalLights[l]);
-		for (size_t i = 0; i < nume; i++) {
-			Entity& e = *entities[i];
-			Material& mat = *e.GetMaterial();
+	directionalLightShader->Bind();
 
-			material_data.color = mat.GetDiffuseColor();
+//	Directional Lights
 
-			model_data.translation = mat4::Translate(e.GetPosition());
-			model_data.roatation = mat4::Rotate(e.GetRotation());
-			model_data.scale = mat4::Scale(e.GetScale());
+	if (numl > 0) {
+		for (size_t l = 0; l < numl; l++) {
+			directionalLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_LIGHT_DATA], (void*)directionalLights[l]);
+			for (size_t i = 0; i < nume; i++) {
+				Entity& e = *entities[i];
+				Material& mat = *e.GetMaterial();
 
-			e.GetModel()->Bind();
+				material_data.color = mat.GetDiffuseColor();
 
-			directionalLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_MATERIAL_DATA], (void*)&material_data);
-			directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_MODEL_DATA], (void*)&model_data);
-			
+				model_data.translation = mat4::Translate(e.GetPosition());
+				model_data.roatation = mat4::Rotate(e.GetRotation());
+				model_data.scale = mat4::Scale(e.GetScale());
 
-			directionalLightShader->SetTexture(0, mat.GetDiffuseTexture());
+				e.GetModel()->Bind();
 
-			D3DContext::GetDeviceContext()->DrawIndexed(e.GetModel()->GetIndexBuffer()->GetCount(), 0, 0);
+				directionalLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_MATERIAL_DATA], (void*)&material_data);
+				directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_MODEL_DATA], (void*)&model_data);
+
+
+				directionalLightShader->SetTexture(0, mat.GetDiffuseTexture());
+
+				D3DContext::GetDeviceContext()->DrawIndexed(e.GetModel()->GetIndexBuffer()->GetCount(), 0, 0);
+			}
+
+			FD_ENABLE_BLEDNING
 		}
-
-		FD_ENABLE_BLEDNING
 	}
-	*/
+
+	
 	
 	numl = pointLights.GetSize();
 	

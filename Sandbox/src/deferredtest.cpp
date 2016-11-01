@@ -1,11 +1,14 @@
 #include "deferredtest.h"
 
+#include <graphics/font/font.h>
+
 #define WIDTH 10
 #define HWIDTH (WIDTH >> 1)
 #define DEPTH 10
 #define HDEPTH (DEPTH >> 1)
 #define HEIGHT 2
 #define HHEIGHT (HEIGHT >> 1)
+
 
 void DeferredTest::OnInit() {
 	window->SetVSync(0);
@@ -14,8 +17,10 @@ void DeferredTest::OnInit() {
 	VFS::Get()->Mount("textures", "./res/");
 	VFS::Get()->Mount("models", "./res/");
 
+
 	TextureManager::Add("mountains", new Texture2D("/textures/mountains.jpg"));
 	TextureManager::Add("white", new Texture2D("/textures/white.png"));
+	TextureManager::Add("A", Font::GetCharFromFont("./res/verdana.ttf", 'A'));
 
 	camera = new UserCamera(vec3(1, 0, -1.25), vec3(0, 0, 0));
 
@@ -65,8 +70,12 @@ void DeferredTest::OnInit() {
 	back->SetMaterial(material);
 	back->SetModel(model2);
 
-	//mainRenderer = new DeferredRenderer(window);
-	mainRenderer = new ForwardRenderer(window);
+	Entity* plane = new Entity(vec3(0, 0, -0.5f), vec3(0, 0, 0));
+	plane->SetModel(MeshFactory::CreatePlane(0.5f, 0.5f));
+	plane->SetMaterial(new Material(vec4(1, 1, 1, 1), (Texture2D*)TextureManager::Get("A")));
+
+	mainRenderer = new DeferredRenderer(window);
+	//mainRenderer = new ForwardRenderer(window);
 	mainRenderer->SetCamera(camera);
 
 	mainRenderer->Add(floor);
@@ -78,6 +87,15 @@ void DeferredTest::OnInit() {
 	mainRenderer->Add(back);
 	mainRenderer->Add(sphere);
 	mainRenderer->Add(bigSphere);
+	mainRenderer->Add(plane);
+	/*
+	for (int i = 1; i < 500; i++) {
+		Entity* ee = new Entity(vec3((((float)i / 100.0f) - 0.5f) * 7, 0.5f, 0), vec3(0, 0, 0), vec3(0.25f, 0.25f, 0.25f));
+		ee->SetMaterial(material);
+		ee->SetModel(sphereModelBig);
+		mainRenderer->Add(ee);
+	}
+	*/
 
 //	mainRenderer->Add(new DirectionalLight(vec3(1, 1, 1), vec3(0, -1, 1)));	
 
@@ -116,10 +134,7 @@ void DeferredTest::OnInit() {
 	mainRenderer->Add(spinningLight3);
 	
 	
-
 	/*
-	
-	
 	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 1), vec3(1, 0.025, 1)));
 	mainRenderer->Add(new PointLight(vec3(-4, 0.0f, 0), vec3(1, 1, 1), vec3(1, 0.025, 1)));
