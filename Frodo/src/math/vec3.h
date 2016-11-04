@@ -53,3 +53,50 @@ public:
 
 	__forceinline vec3 operator-() { return vec3(-x, -y, -z); }
 };
+
+
+class FDAPI ivec3 {
+private:
+	friend class ivec2;
+public:
+	int x;
+	int y;
+	int z;
+
+
+public:
+	ivec3();
+	ivec3(const ivec2& v, int z);
+	ivec3(int x, int y, int z);
+
+	ivec3& Add(const ivec3& v);
+	ivec3& Add(int v);
+	ivec3& Subtract(const ivec3& v);
+	ivec3& Subtract(int v);
+	ivec3& Multiply(const ivec3& v);
+	ivec3& Multiply(int v);
+	ivec3& Divide(const ivec3& v);
+	ivec3& Divide(int v);
+
+	__forceinline friend ivec3 operator+(const ivec3& l, const ivec3& r) { return ivec3(l).Add(r); }
+	__forceinline friend ivec3 operator-(const ivec3& l, const ivec3& r) { return ivec3(l).Subtract(r); }
+	__forceinline friend ivec3 operator*(const ivec3& l, const ivec3& r) { return ivec3(l).Multiply(r); }
+	__forceinline friend ivec3 operator/(const ivec3& l, const ivec3& r) { return ivec3(l).Divide(r); }
+
+	__forceinline friend ivec3 operator+(const ivec3& l, int r) { return ivec3(l).Add(r); }
+	__forceinline friend ivec3 operator-(const ivec3& l, int r) { return ivec3(l).Subtract(r); }
+	__forceinline friend ivec3 operator*(const ivec3& l, int r) { return ivec3(l).Multiply(r); }
+	__forceinline friend ivec3 operator/(const ivec3& l, int r) { return ivec3(l).Divide(r); }
+
+	__forceinline void operator+=(const ivec3& v) { Add(v); }
+	__forceinline void operator-=(const ivec3& v) { Subtract(v); }
+	__forceinline void operator*=(const ivec3& v) { Multiply(v); }
+	__forceinline void operator/=(const ivec3& v) { Divide(v); }
+
+	__forceinline void operator+=(int v) { Add(v); }
+	__forceinline void operator-=(int v) { Subtract(v); }
+	__forceinline void operator*=(int v) { Multiply(v); }
+	__forceinline void operator/=(int v) { Divide(v); }
+
+	__forceinline ivec3 operator-() { return ivec3(-x, -y, -z); }
+};
