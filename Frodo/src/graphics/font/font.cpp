@@ -148,7 +148,7 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 	unsigned int bitmapWidth = bitmapSquareSize * segment_width;
 	unsigned int bitmapHeight = bitmapSquareSize * segment_height;
 
-	unsigned char* bitmapData = new unsigned char[(bitmapWidth+1) * (bitmapHeight+1)];
+	unsigned char* bitmapData = new unsigned char[bitmapWidth * bitmapHeight];
 	memset(bitmapData, 0, bitmapWidth * bitmapHeight);
 
 	float xStep = (float)segment_width / (float)bitmapWidth;
