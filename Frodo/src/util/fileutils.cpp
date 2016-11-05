@@ -47,18 +47,22 @@ unsigned char* FDReadBinaryFile(const String& filename, size_t* fileSize) {
 
 	FILE* file = fopen(*filename, "rb");
 
+	size_t size;
+
 	if (!file) {
 		FD_FATAL("Failed to open file \"%s\"", *filename);
 		return nullptr;
 	}
 
-	FSIZE(*fileSize, file);
+	FSIZE(size, file);
 
-	unsigned char* buff = new unsigned char[*fileSize];
+	unsigned char* buff = new unsigned char[size];
 
-	FREAD(buff, *fileSize, file);
+	FREAD(buff, size, file);
 
 	fclose(file);
+
+	if (fileSize != nullptr) *fileSize = size;
 
 	return buff;
 }
