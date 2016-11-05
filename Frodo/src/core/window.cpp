@@ -101,3 +101,26 @@ void Window::SetVisible(bool visible) {
 	
 	FD_DEBUG("Window(%d) visibility set to %s", (int)hwnd, isVisible ? "TRUE" : "FALSE");
 }
+
+
+ivec2 Window::GetMonitorDpi() {
+	HDC m = GetDC(0);
+
+	int x = GetDeviceCaps(m, LOGPIXELSX);
+	int y = GetDeviceCaps(m, LOGPIXELSY);
+
+	ReleaseDC(0, m);
+
+	return ivec2(x, y);
+}
+
+ivec2 Window::GetWindowDpi() {
+	HDC m = GetDC(hwnd);
+
+	int x = GetDeviceCaps(m, LOGPIXELSX);
+	int y = GetDeviceCaps(m, LOGPIXELSY);
+
+	ReleaseDC(hwnd, m);
+
+	return ivec2(x, y);
+}

@@ -1,4 +1,6 @@
 #pragma once
+#include <math/vec2.h>
+
 #include <fd.h>
 #include <util/string.h>
 #include <util/map.h>
@@ -31,6 +33,7 @@ public:
 	void Clear();
 
 	void SetVisible(bool visible);
+	ivec2 GetWindowDpi();
 
 	inline void SetClearColor(float r, float g, float b) { clearColor[0] = r;clearColor[1] = g;clearColor[2] = b;}
 	inline bool IsOpen() const { return isOpen; }
@@ -41,4 +44,7 @@ public:
 	inline bool IsVisible() const { return isVisible; }
 	inline HWND GetHWND() const { return hwnd; }
 	inline void SetVSync(unsigned int status) { vSync = status; FD_DEBUG("Vsync set to: %u", vSync); }
+
+public:
+	static ivec2 GetMonitorDpi();
 };
