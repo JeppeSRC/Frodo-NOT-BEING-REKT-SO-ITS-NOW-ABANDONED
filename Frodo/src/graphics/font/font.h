@@ -21,8 +21,6 @@ public:
 		}
 	};
 
-private:
-
 	struct FD_GLYPH {
 		unsigned int unicodeCharacter;
 
@@ -30,7 +28,10 @@ private:
 
 		ivec2 advance;
 
-		vec2 texCoords;
+		float u0;
+		float u1;
+		float v0;
+		float v1;
 
 		ivec2 bitmapSize;
 
@@ -54,5 +55,10 @@ public:
 	Font(const String& fontFile, unsigned int size, ivec2 dpi);
 	Font(void* memory, unsigned int memory_size, unsigned int size, ivec2 dpi);
 	~Font();
+
+	inline const String& GetName() const { return name; }
+	inline unsigned int GetSize() const { return size; }
+	inline Texture2D* GetTexture() const { return texture; }
+	inline FD_GLYPH GetGlyph(unsigned int unicodeCharacter) { return charMap.Retrieve(unicodeCharacter); }
 };
 

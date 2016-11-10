@@ -75,7 +75,7 @@ Font::Font(void* memory, unsigned int memory_size, unsigned int size, ivec2 dpi)
 }
 
 Font::~Font() {
-
+	delete texture;
 }
 
 bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size, unsigned int size, ivec2 dpi, FD_RANGE<>* ranges, unsigned int num_ranges) {
@@ -137,12 +137,15 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 
 			memcpy(glyph.bitmap, bitmap.buffer, bitmap_size);
 
-			if (glyph.bitmapSize.x > segment_width) segment_width = glyph.bitmapSize.x;
+			if (glyph.bitmapSize.x > segment_width)  segment_width  = glyph.bitmapSize.x;
 			if (glyph.bitmapSize.y > segment_height) segment_height = glyph.bitmapSize.y;
 
 			charMap.Add(glyph, c);
 		}
 	}
+
+	FT_Done_Face(face);
+	FT_Done_FreeType(library);
 	
 	unsigned int bitmapSquareSize = (unsigned int)ceilf(sqrtf((float)num_characters));
 	unsigned int bitmapWidth = bitmapSquareSize * segment_width;
@@ -164,8 +167,10 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			int xStart = currentGlyph % bitmapSquareSize;
 			int yStart = currentGlyph / bitmapSquareSize;
 
-			glyph.texCoords.x = (float)xStart * xStep;
-			glyph.texCoords.y = (float)yStart * yStep;
+			glyph.u0 = (float)xStart * xStep;
+			glyph.v0 = (float)yStart * yStep;
+			glyph.u1 = glyph.u0 + xStep;
+			glyph.v1 = glyph.v0 + yStep;
 
 			for (int y = 0; y < glyph.bitmapSize.y; y++) {
 				int ya = (yStart * segment_height) + y;
@@ -181,6 +186,8 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 	}
 
 	texture = new Texture2D(bitmapData, bitmapWidth, bitmapHeight, FD_TEXTURE_FORMAT_UINT_8);
+
+	delete[] bitmapData;
 	
 	return true;
 }
