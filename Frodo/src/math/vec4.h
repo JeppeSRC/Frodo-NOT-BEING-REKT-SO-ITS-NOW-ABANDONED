@@ -60,8 +60,6 @@ public:
 	int z;
 	int w;
 
-
-
 public:
 	ivec4();
 	ivec4(const ivec2& v, int z = 0, int w = 0);

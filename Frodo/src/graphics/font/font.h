@@ -9,6 +9,9 @@
 FDAPI Texture2D* GetCharFromFont(const String& fontName, unsigned int character);
 
 class FDAPI Font {
+private:
+	friend struct FT_LibraryRec_;
+	friend struct FT_FaceRec_;
 public:
 	
 	template<typename T = int>
@@ -22,7 +25,7 @@ public:
 	};
 
 	struct FD_GLYPH {
-		unsigned int unicodeCharacter;
+		unsigned int unicodeCharacter = 0;
 
 		ivec2 offset;
 
@@ -47,6 +50,9 @@ private:
 	Texture2D* texture;
 	Map<unsigned int, FD_GLYPH> charMap;
 
+	FT_LibraryRec_* library;
+	FT_FaceRec_* face;
+
 	bool initialized;
 
 	bool LoadFontFileInternal(unsigned char* memory, unsigned int memory_size, unsigned int size, ivec2 dpi, FD_RANGE<>* ranges, unsigned int num_ranges);
@@ -55,6 +61,8 @@ public:
 	Font(const String& fontFile, unsigned int size, ivec2 dpi);
 	Font(void* memory, unsigned int memory_size, unsigned int size, ivec2 dpi);
 	~Font();
+
+	ivec2 GetKerning(unsigned int left, unsigned int right);
 
 	inline const String& GetName() const { return name; }
 	inline unsigned int GetSize() const { return size; }

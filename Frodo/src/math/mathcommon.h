@@ -14,4 +14,6 @@
 
 #define FD_PI M_PI
 
+#define CEIL(x) ((int)(x + 1))
+
 

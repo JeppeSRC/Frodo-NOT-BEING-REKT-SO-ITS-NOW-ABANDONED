@@ -76,14 +76,12 @@ Font::Font(void* memory, unsigned int memory_size, unsigned int size, ivec2 dpi)
 
 Font::~Font() {
 	delete texture;
+	FT_Done_Face(face);
+	FT_Done_FreeType(library);
 }
 
 bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size, unsigned int size, ivec2 dpi, FD_RANGE<>* ranges, unsigned int num_ranges) {
 	this->size = size;
-
-	FT_Library library;
-	FT_Face face;
-
 	unsigned int num_characters = 0;
 
 	for (size_t i = 0; i < num_ranges; i++)
@@ -117,6 +115,7 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			FT_GlyphSlot glyphSlot = face->glyph;
 			FT_Render_Glyph(glyphSlot, FT_RENDER_MODE_NORMAL);
 
+			
 
 			FT_Bitmap bitmap = glyphSlot->bitmap;
 			FT_Glyph_Metrics metrics = glyphSlot->metrics;
@@ -127,9 +126,11 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			glyph.unicodeCharacter = c;
 			glyph.advance.x = glyphSlot->advance.x >> 6;
 			glyph.offset.x = metrics.horiBearingX >> 6;
-			glyph.offset.y = (metrics.horiBearingY - metrics.height) >> 6;
+			glyph.offset.y = (metrics.horiBearingY >> 6) - (metrics.height >> 6);
 			glyph.bitmapSize.x = bitmap.width;
 			glyph.bitmapSize.y = bitmap.rows;
+			
+			
 
 			unsigned int bitmap_size = bitmap.rows * bitmap.width;
 
@@ -143,9 +144,6 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			charMap.Add(glyph, c);
 		}
 	}
-
-	FT_Done_Face(face);
-	FT_Done_FreeType(library);
 	
 	unsigned int bitmapSquareSize = (unsigned int)ceilf(sqrtf((float)num_characters));
 	unsigned int bitmapWidth = bitmapSquareSize * segment_width;
@@ -172,8 +170,10 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			glyph.u1 = glyph.u0 + xStep;
 			glyph.v1 = glyph.v0 + yStep;
 
+			unsigned int yOffset = segment_height - glyph.bitmapSize.y;
+
 			for (int y = 0; y < glyph.bitmapSize.y; y++) {
-				int ya = (yStart * segment_height) + y;
+				int ya = (yStart * segment_height) + y + yOffset;
 				for (int x = 0; x < glyph.bitmapSize.x; x++) {
 					int xa = (xStart * segment_width) + x;
 					bitmapData[xa + ya * bitmapWidth] = glyph.bitmap[x + y * glyph.bitmapSize.x];
@@ -190,4 +190,13 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 	delete[] bitmapData;
 	
 	return true;
+}
+
+ivec2 Font::GetKerning(unsigned int left, unsigned int right) {
+	if (!left || !right) return ivec2(0, 0);
+	FT_Vector kerning;
+
+	FT_Get_Kerning(face, FT_Get_Char_Index(face, left), FT_Get_Char_Index(face, right), FT_KERNING_DEFAULT, &kerning);
+
+	return ivec2(kerning.x, kerning.y);
 }

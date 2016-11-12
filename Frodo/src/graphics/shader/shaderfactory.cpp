@@ -41,6 +41,14 @@ static const char* forward_spot_light_p =
 #include "shaders/forward_spot_light_p.hlsl"
 ;
 
+static const char* font_default_v =
+#include "shaders/font_default_v.hlsl"
+;
+
+static const char* font_default_p =
+#include "shaders/font_default_p.hlsl"
+;
+
 Shader* ShaderFactory::GetShader(FD_SHADERFACTORY_SHADER_TYPE shader) {
 	switch (shader) {
 		case FD_DEFERRED_SHADER_GEOMETRY:
@@ -57,6 +65,8 @@ Shader* ShaderFactory::GetShader(FD_SHADERFACTORY_SHADER_TYPE shader) {
 			return new Shader(forward_lightingpass_v, forward_point_light_p, true);
 		case FD_FORWARD_SHADER_SPOT_LIGHT:
 			return new Shader(forward_lightingpass_v, forward_spot_light_p, true);
+		case FD_FONT_DEFAULT:
+			return new Shader(font_default_v, font_default_p, true);
 	}
 
 	FD_WARNING("FD_SHADER_TYPE_UNKNOWN: Unknown shader returning nullptr");

@@ -9,18 +9,23 @@
 #define HEIGHT 2
 #define HHEIGHT (HEIGHT >> 1)
 
-
 void DeferredTest::OnInit() {
 	window->SetVSync(0);
 	SetUPS(60);
 
+	for (unsigned int i = 0x21; i <= 0x7E; i++)
+		FD_INFO("0x%02x: %c", i, i);
+
+	FD_INFO("%d", (int)(sqrtf(0x7E - 0x21) + 1));
+	
 	VFS::Get()->Mount("textures", "./res/");
 	VFS::Get()->Mount("models", "./res/");
+	VFS::Get()->Mount("fonts", "./res/");
 
+//	Font font("/models/arial.ttf", 32, Window::GetMonitorDpi());
 
 	TextureManager::Add("mountains", new Texture2D("/textures/mountains.jpg"));
 	TextureManager::Add("white", new Texture2D("/textures/white.png"));
-	TextureManager::Add("A", Font::GetCharFromFont("./res/verdana.ttf", 'A'));
 
 	camera = new UserCamera(vec3(1, 0, -1.25), vec3(0, 0, 0));
 
@@ -70,12 +75,16 @@ void DeferredTest::OnInit() {
 	back->SetMaterial(material);
 	back->SetModel(model2);
 
-	Entity* plane = new Entity(vec3(0, 0, -0.5f), vec3(0, 0, 0));
-	plane->SetModel(MeshFactory::CreatePlane(0.5f, 0.5f));
-	plane->SetMaterial(new Material(vec4(1, 1, 1, 1), (Texture2D*)TextureManager::Get("A")));
+	/*Entity* plane = new Entity(vec3(0.85f, -0.1f, -0.5f), vec3(0, 0, 0));
+	plane->SetModel(MeshFactory::CreatePlane(1.5f, 1.5f));
+	plane->SetMaterial(new Material(vec4(1, 1, 1, 1), (Texture2D*)TextureManager::Get("A")));*/
 
 	mainRenderer = new DeferredRenderer(window);
 	//mainRenderer = new ForwardRenderer(window);
+
+	font = new Font("/fonts/arial.ttf", 32, Window::GetMonitorDpi());
+
+	fontRenderer = new FontRenderer(window, 128);
 	mainRenderer->SetCamera(camera);
 
 	mainRenderer->Add(floor);
@@ -87,7 +96,7 @@ void DeferredTest::OnInit() {
 	mainRenderer->Add(back);
 	mainRenderer->Add(sphere);
 	mainRenderer->Add(bigSphere);
-	mainRenderer->Add(plane);
+	//mainRenderer->Add(plane);
 	/*
 	for (int i = 1; i < 500; i++) {
 		Entity* ee = new Entity(vec3((((float)i / 100.0f) - 0.5f) * 7, 0.5f, 0), vec3(0, 0, 0), vec3(0.25f, 0.25f, 0.25f));
@@ -97,7 +106,7 @@ void DeferredTest::OnInit() {
 	}
 	*/
 
-//	mainRenderer->Add(new DirectionalLight(vec3(1, 1, 1), vec3(0, -1, 1)));	
+	//mainRenderer->Add(new DirectionalLight(vec3(1, 1, 1), vec3(0, 0, 1)));	
 
 	mainRenderer->Add(new PointLight(vec3(4, 0.0f, 0), vec3(1, 0, 1), vec3(0, 0.025, 10)));
 	mainRenderer->Add(new PointLight(vec3(0, 0.0f, 4), vec3(1, 1, 0), vec3(0, 0.025, 10)));
@@ -220,10 +229,16 @@ void DeferredTest::OnTick() {
 
 void DeferredTest::OnRender() {
 	mainRenderer->Render();
+	fontRenderer->Begin();
+
+	fontRenderer->SubmitText("Some text", font, vec2(3, 3.25));
+
+	fontRenderer->End();
+	fontRenderer->Render();
 
 	fps++;
 }
 
 void DeferredTest::OnExit() {
-
+	delete fontRenderer;
 }

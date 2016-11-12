@@ -16,8 +16,11 @@
 #include <graphics/texture/framebuffer2d.h>
 #include <graphics/texture/texturemanager.h>
 
+#include <graphics/font/font.h>
+
 #include <graphics/render/deferredrenderer.h>
 #include <graphics/render/forwardrenderer.h>
+#include <graphics/render/fontrenderer.h>
 #include <graphics/render/renderer.h>
 
 #include <graphics/render/material/material.h>

@@ -255,7 +255,7 @@ void DeferredRenderer::Render() {
 	num = pointLights.GetSize();
 
 	for (size_t i = 0; i < num; i++) {
-		if (i > 0) {
+		if (i == 1) {
 			SetBlendingInternal(true);
 			SetDepthInternal(false);
 		}

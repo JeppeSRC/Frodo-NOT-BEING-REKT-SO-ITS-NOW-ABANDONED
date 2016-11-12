@@ -87,7 +87,6 @@ mat4 mat4::Perspective(float fov, float aspect, float zNear, float zFar) {
 }
 
 
-//TODO: fix
 mat4 mat4::Orthographic(float left, float right, float top, float bottom, float zNear, float zFar) {
 	mat4 r;
 	

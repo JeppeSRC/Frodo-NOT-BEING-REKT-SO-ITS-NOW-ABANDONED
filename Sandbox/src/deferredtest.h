@@ -24,10 +24,11 @@ private:
 
 	Entity* bigSphere;
 
-
+	FontRenderer* fontRenderer;
+	Font* font;
 public:
 
-	DeferredTest() : FDApplication("Kebab ä gött", 1000, 600) { }
+	DeferredTest() : FDApplication("Kebab ä gött", 1280, 720) { }
 
 
 

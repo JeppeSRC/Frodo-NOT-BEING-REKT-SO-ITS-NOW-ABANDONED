@@ -174,7 +174,7 @@ void ForwardRenderer::Render() {
 	spotLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_SPOT_VIEW_DATA], (void*)&view_data);
 
 	directionalLightShader->Bind();
-
+	
 //	Directional Lights
 
 	if (numl > 0) {
