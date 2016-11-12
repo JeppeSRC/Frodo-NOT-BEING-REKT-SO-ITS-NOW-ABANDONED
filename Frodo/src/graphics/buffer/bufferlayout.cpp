@@ -49,7 +49,7 @@ void BufferLayout::CreateInputLayout(Shader* shader) {
 	}
 
 	ID3D11InputLayout* tmp = nullptr;
-	D3DContext::GetDevice()->CreateInputLayout(desc, elements.GetSize(), shader->GetVSBufferPointer(), shader->GetVSBufferSize(), &tmp);
+	D3DContext::GetDevice()->CreateInputLayout(desc, (unsigned int)elements.GetSize(), shader->GetVSBufferPointer(), shader->GetVSBufferSize(), &tmp);
 
 	shader->SetInputLayout(tmp);
 

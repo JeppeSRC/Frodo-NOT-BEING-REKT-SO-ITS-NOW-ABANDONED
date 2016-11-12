@@ -87,7 +87,7 @@ vec3 vec3::Cross(const vec3& v) {
 
 vec3& vec3::RotateX(float angle) {
 
-	float a = (float)FD_TO_RADIANS(angle);
+	float a = (float)FD_TO_RADIANS_F(angle);
 
 	float _y = y * cosf(a) - z * sinf(a);
 	float _z = z * cosf(a) + y * sinf(a);
@@ -100,7 +100,7 @@ vec3& vec3::RotateX(float angle) {
 
 vec3& vec3::RotateY(float angle) {
 
-	float a = (float)FD_TO_RADIANS(angle);
+	float a = (float)FD_TO_RADIANS_F(angle);
 
 	float _z = z * cosf(a) - x * sinf(a);
 	float _x = x * cosf(a) + z * sinf(a);
@@ -113,7 +113,7 @@ vec3& vec3::RotateY(float angle) {
 
 vec3& vec3::RotateZ(float angle) {
 
-	float a = (float)FD_TO_RADIANS(angle);
+	float a = (float)FD_TO_RADIANS_F(angle);
 
 	float _x = x * cosf(a) - y * sinf(a);
 	float _y = y * cosf(a) + x * sinf(a);

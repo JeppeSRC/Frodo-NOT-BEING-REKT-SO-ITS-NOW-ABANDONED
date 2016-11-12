@@ -119,7 +119,7 @@ FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : Renderer(w
 #if FD_FONT_SHOW_TEXTURE
 	shader->SetVSConstantBuffer("view_data", &mat4::Identity());
 #else
-	shader->SetVSConstantBuffer("view_data", &mat4::Orthographic(0, window->GetWidth(), 0, window->GetHeight(), -0.1f, 0.1f));
+	shader->SetVSConstantBuffer("view_data", &mat4::Orthographic(0.0f, (float)window->GetWidth(), 0.0f, (float)window->GetHeight(), -0.1f, 0.1f));
 #endif
 
 	layout.CreateInputLayout(shader);
@@ -157,11 +157,11 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position) {
 		}
 
 		tids.Push_back(tex);
-		tid = numTids + 1;
+		tid = (float)numTids + 1.0f;
 
 	}
 	else {
-		tid = tids.Find(tex) + 1;
+		tid = (float)tids.Find(tex) + 1.0f;
 	}
 
 	size_t textLength = text.length;
@@ -255,7 +255,7 @@ void FontRenderer::Render() {
 	SetDepthInternal(false);
 	SetBlendingInternal(true);
 	for (size_t i = 0; i < tids.GetSize(); i++) {
-		shader->SetTexture(i, tids[i]);
+		shader->SetTexture((unsigned int)i, tids[i]);
 	}
 	shader->Bind();
 

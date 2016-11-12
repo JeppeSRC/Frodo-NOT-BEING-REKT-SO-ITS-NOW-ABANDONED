@@ -26,7 +26,7 @@ IndexBuffer::IndexBuffer(void* data, size_t size, FD_INDEXBUFFER_FORMAT format) 
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	bd.ByteWidth = size;
+	bd.ByteWidth = (unsigned int)size;
 	bd.CPUAccessFlags = 0;
 	bd.StructureByteStride = 0;
 	bd.Usage = D3D11_USAGE_DEFAULT;

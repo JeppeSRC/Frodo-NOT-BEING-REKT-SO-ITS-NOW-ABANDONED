@@ -65,7 +65,7 @@ protected:
 
 public:
 	SpotLight(const vec3& position, const vec3& color, const vec3& direction, const vec3& attenuation, vec2 cutoffExponent) : PointLight(position, color, attenuation), direction(direction) { 
-		this->cutoffExponent.x = (float)cosf(FD_TO_RADIANS(cutoffExponent.x));
+		this->cutoffExponent.x = (float)cosf(FD_TO_RADIANS_F(cutoffExponent.x));
 		this->cutoffExponent.y = cutoffExponent.y;
 		lightType = FD_LIGHT_TYPE_SPOT;
 	}

@@ -215,7 +215,6 @@
     <ClCompile Include="src\util\vfs\vfs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\common.h" />
     <ClInclude Include="src\core\input.h" />
     <ClInclude Include="src\core\log.h" />
     <ClInclude Include="src\core\window.h" />

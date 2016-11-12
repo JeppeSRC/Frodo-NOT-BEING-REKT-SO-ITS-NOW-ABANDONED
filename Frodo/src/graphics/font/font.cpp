@@ -56,7 +56,7 @@ Font::Font(const String& fontFile, unsigned int size, ivec2 dpi) {
 	r.start = 0x21;
 	r.end = 0x7E;
 
-	if (!(initialized = LoadFontFileInternal(data, memory_size, size, dpi, &r, 1))) {
+	if (!(initialized = LoadFontFileInternal(data, (unsigned int)memory_size, size, dpi, &r, 1))) {
 		FD_WARNING("Failed to open font: \"%s\"", *fontFile);
 	}
 
@@ -135,7 +135,7 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 
 			if (glyph.bitmapSize.x > segmentWidth)  segmentWidth  = glyph.bitmapSize.x;
 			if (glyph.bitmapSize.y > segmentHeight) segmentHeight = glyph.bitmapSize.y;
-
+			
 			charMap.Add(glyph, c);
 		}
 	}

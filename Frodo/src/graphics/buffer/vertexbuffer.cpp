@@ -21,12 +21,12 @@ VertexBuffer::VertexBuffer(void* data, size_t size, unsigned int stride, bool dy
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.ByteWidth = size;
+	bd.ByteWidth = (unsigned int)size;
 	bd.CPUAccessFlags = dynamic ? D3D10_CPU_ACCESS_WRITE : 0;
 	bd.StructureByteStride = stride;
 	bd.Usage = dynamic ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
 
-	this->size = size;
+	this->size = (unsigned int)size;
 	this->stride = stride;
 
 	D3D11_SUBRESOURCE_DATA srd;

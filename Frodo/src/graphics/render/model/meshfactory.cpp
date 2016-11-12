@@ -237,7 +237,7 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 		}
 
 		VertexBuffer* vbo = new VertexBuffer(vert, vertNum * sizeof(Vertex), sizeof(Vertex));
-		IndexBuffer* ibo = new IndexBuffer(indices.GetData(), indices.GetSize());
+		IndexBuffer* ibo = new IndexBuffer(indices.GetData(), (unsigned int)indices.GetSize());
 
 		return new Model(vbo, ibo);
 

@@ -40,12 +40,12 @@ mat4 mat4::Translate(const vec3& v) {
 mat4 mat4::Rotate(const vec3& v) {
 	mat4 x(1), y(1), z(1);
 
-	float xcos = cosf((float)FD_TO_RADIANS(v.x));
-	float xsin = sinf((float)FD_TO_RADIANS(v.x));
-	float ycos = cosf((float)FD_TO_RADIANS(v.y));
-	float ysin = sinf((float)FD_TO_RADIANS(v.y));
-	float zcos = cosf((float)FD_TO_RADIANS(v.z));
-	float zsin = sinf((float)FD_TO_RADIANS(v.z));
+	float xcos = cosf((float)FD_TO_RADIANS_F(v.x));
+	float xsin = sinf((float)FD_TO_RADIANS_F(v.x));
+	float ycos = cosf((float)FD_TO_RADIANS_F(v.y));
+	float ysin = sinf((float)FD_TO_RADIANS_F(v.y));
+	float zcos = cosf((float)FD_TO_RADIANS_F(v.z));
+	float zsin = sinf((float)FD_TO_RADIANS_F(v.z));
 
 	x.m[1 + 1 * 4] = xcos;x.m[1 + 2 * 4] = -xsin;
 	x.m[2 + 1 * 4] = xsin;x.m[2 + 2 * 4] = xcos;

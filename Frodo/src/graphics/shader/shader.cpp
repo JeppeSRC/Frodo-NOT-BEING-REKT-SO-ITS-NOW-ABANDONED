@@ -289,7 +289,7 @@ void Shader::SetPSConstantBufferSlotInternal(unsigned int slot, void* data) {
 void Shader::SetVSConstantBuffer(const String& bufferName, void* data) {
 	size_t size = vCBuffers.GetSize();
 	for (size_t i = 0; i < size; i++) {
-		if (vCBuffers[i]->name == bufferName) SetVSConstantBufferSlotInternal(i, data);
+		if (vCBuffers[i]->name == bufferName) SetVSConstantBufferSlotInternal((unsigned int)i, data);
 		return;
 	}
 
@@ -299,7 +299,7 @@ void Shader::SetVSConstantBuffer(const String& bufferName, void* data) {
 void Shader::SetPSConstantBuffer(const String& bufferName, void* data) {
 	size_t size = pCBuffers.GetSize();
 	for (size_t i = 0; i < size; i++) {
-		if (pCBuffers[i]->name == bufferName) SetPSConstantBufferSlotInternal(i, data);
+		if (pCBuffers[i]->name == bufferName) SetPSConstantBufferSlotInternal((unsigned int)i, data);
 		return;
 	}
 
@@ -322,7 +322,7 @@ void Shader::SetPSConstantBuffer(unsigned int slot, void* data) {
 	size_t size = pCBuffers.GetSize();
 	for (size_t i = 0; i < size; i++) {
 		if (pCBuffers[i]->semRegister == slot) {
-			SetPSConstantBufferSlotInternal(i, data);
+			SetPSConstantBufferSlotInternal((unsigned int)i, data);
 			return;
 		}
 	}

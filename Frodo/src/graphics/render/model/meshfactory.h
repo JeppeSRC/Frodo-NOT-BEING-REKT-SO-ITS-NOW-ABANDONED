@@ -1,6 +1,7 @@
 #pragma once
 
 #include "model.h"
+#include <util/list.h>
 
 class FDAPI MeshFactory {
 private:
