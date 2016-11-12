@@ -3,16 +3,19 @@
 #include <fd.h>
 #include <math/math.h>
 
-#define FD_LIGHT_TYPE_NONE 0x00
-#define FD_LIGHT_TYPE_DIRECTIONAL 0x01
-#define FD_LIGHT_TYPE_POINT 0x02
-#define FD_LIGHT_TYPE_SPOT 0x03
+enum FD_LIGHT_TYPE {
+	FD_LIGHT_TYPE_NONE,
+	FD_LIGHT_TYPE_DIRECTIONAL,
+	FD_LIGHT_TYPE_POINT,
+	FD_LIGHT_TYPE_SPOT,
+};
+
 
 class FDAPI Light {
 protected:
 
 	vec3 color;
-	unsigned int lightType;
+	FD_LIGHT_TYPE lightType;
 
 protected:
 	Light(const vec3& color) { this->color = color; lightType = FD_LIGHT_TYPE_NONE; }

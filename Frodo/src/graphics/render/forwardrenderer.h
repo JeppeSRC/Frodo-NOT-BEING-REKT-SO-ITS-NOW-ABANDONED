@@ -58,17 +58,17 @@ private:
 	struct VIEW_DATA {
 		mat4 projection;
 		mat4 view;
-	} view_data;
+	} viewData;
 
 	struct MODEL_DATA {
 		mat4 translation;
 		mat4 roatation;
 		mat4 scale;
-	} model_data; 
+	} modelData; 
 
 	struct MATERIAL_DATA {
 		vec4 color;
-	} material_data;
+	} materialData;
 
 public:
 	ForwardRenderer(Window* window);

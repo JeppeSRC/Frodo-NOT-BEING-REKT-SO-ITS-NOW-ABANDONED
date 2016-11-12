@@ -32,44 +32,44 @@ void ForwardRenderer::CreateShaders() {
 }
 
 void ForwardRenderer::CreateBlendStates() {
-	D3D11_BLEND_DESC d;
-	ZeroMemory(&d, sizeof(D3D11_BLEND_DESC));
+	D3D11_BLEND_DESC desc;
+	ZeroMemory(&desc, sizeof(D3D11_BLEND_DESC));
 
-	d.RenderTarget[0].BlendEnable = false;
-	d.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	desc.RenderTarget[0].BlendEnable = false;
+	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-	D3DContext::GetDevice()->CreateBlendState(&d, &blendState[0]);
+	D3DContext::GetDevice()->CreateBlendState(&desc, &blendState[0]);
 
-	d.RenderTarget[0].BlendEnable = true;
-	d.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-	d.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-	d.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	d.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-	d.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	d.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	d.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	desc.RenderTarget[0].BlendEnable = true;
+	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-	D3DContext::GetDevice()->CreateBlendState(&d, &blendState[1]);
+	D3DContext::GetDevice()->CreateBlendState(&desc, &blendState[1]);
 
 }
 
 void ForwardRenderer::CreateDepthStates() {
-	D3D11_DEPTH_STENCIL_DESC d;
-	ZeroMemory(&d, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	D3D11_DEPTH_STENCIL_DESC desc;
+	ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 
-	d.DepthEnable = true;
-	d.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	d.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-	d.StencilEnable = false;
+	desc.DepthEnable = true;
+	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	desc.StencilEnable = false;
 
-	D3DContext::GetDevice()->CreateDepthStencilState(&d, &depthState[0]);
+	D3DContext::GetDevice()->CreateDepthStencilState(&desc, &depthState[0]);
 
-	d.DepthEnable = true;
-	d.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	d.DepthFunc = D3D11_COMPARISON_EQUAL;
-	d.StencilEnable = false;
+	desc.DepthEnable = true;
+	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	desc.DepthFunc = D3D11_COMPARISON_EQUAL;
+	desc.StencilEnable = false;
 
-	D3DContext::GetDevice()->CreateDepthStencilState(&d, &depthState[1]);
+	D3DContext::GetDevice()->CreateDepthStencilState(&desc, &depthState[1]);
 
 }
 
@@ -166,12 +166,12 @@ void ForwardRenderer::Render() {
 	size_t nume = entities.GetSize();
 
 
-	view_data.projection = camera->GetProjectionMatrix();
-	view_data.view = camera->GetViewMatrix();
+	viewData.projection = camera->GetProjectionMatrix();
+	viewData.view = camera->GetViewMatrix();
 
-	directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_VIEW_DATA], (void*)&view_data);
-	pointLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_POINT_VIEW_DATA], (void*)&view_data);
-	spotLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_SPOT_VIEW_DATA], (void*)&view_data);
+	directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_VIEW_DATA], (void*)&viewData);
+	pointLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_POINT_VIEW_DATA], (void*)&viewData);
+	spotLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_SPOT_VIEW_DATA], (void*)&viewData);
 
 	directionalLightShader->Bind();
 	
@@ -184,16 +184,16 @@ void ForwardRenderer::Render() {
 				Entity& e = *entities[i];
 				Material& mat = *e.GetMaterial();
 
-				material_data.color = mat.GetDiffuseColor();
+				materialData.color = mat.GetDiffuseColor();
 
-				model_data.translation = mat4::Translate(e.GetPosition());
-				model_data.roatation = mat4::Rotate(e.GetRotation());
-				model_data.scale = mat4::Scale(e.GetScale());
+				modelData.translation = mat4::Translate(e.GetPosition());
+				modelData.roatation = mat4::Rotate(e.GetRotation());
+				modelData.scale = mat4::Scale(e.GetScale());
 
 				e.GetModel()->Bind();
 
-				directionalLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_MATERIAL_DATA], (void*)&material_data);
-				directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_MODEL_DATA], (void*)&model_data);
+				directionalLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_MATERIAL_DATA], (void*)&materialData);
+				directionalLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_MODEL_DATA], (void*)&modelData);
 
 
 				directionalLightShader->SetTexture(0, mat.GetDiffuseTexture());
@@ -217,16 +217,16 @@ void ForwardRenderer::Render() {
 			Entity& e = *entities[i];
 			Material& mat = *e.GetMaterial();
 
-			material_data.color = mat.GetDiffuseColor();
+			materialData.color = mat.GetDiffuseColor();
 
-			model_data.translation = mat4::Translate(e.GetPosition());
-			model_data.roatation = mat4::Rotate(e.GetRotation());
-			model_data.scale = mat4::Scale(e.GetScale());
+			modelData.translation = mat4::Translate(e.GetPosition());
+			modelData.roatation = mat4::Rotate(e.GetRotation());
+			modelData.scale = mat4::Scale(e.GetScale());
 
 			e.GetModel()->Bind();
 
-			pointLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_POINT_MATERIAL_DATA], (void*)&material_data);
-			pointLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_POINT_MODEL_DATA], (void*)&model_data);
+			pointLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_POINT_MATERIAL_DATA], (void*)&materialData);
+			pointLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_POINT_MODEL_DATA], (void*)&modelData);
 
 			pointLightShader->SetTexture(0, mat.GetDiffuseTexture());
 
@@ -255,16 +255,16 @@ void ForwardRenderer::Render() {
 			Entity& e = *entities[i];
 			Material& mat = *e.GetMaterial();
 
-			material_data.color = mat.GetDiffuseColor();
+			materialData.color = mat.GetDiffuseColor();
 
-			model_data.translation = mat4::Translate(e.GetPosition());
-			model_data.roatation = mat4::Rotate(e.GetRotation());
-			model_data.scale = mat4::Scale(e.GetScale());
+			modelData.translation = mat4::Translate(e.GetPosition());
+			modelData.roatation = mat4::Rotate(e.GetRotation());
+			modelData.scale = mat4::Scale(e.GetScale());
 
 			e.GetModel()->Bind();
 
-			spotLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_SPOT_MATERIAL_DATA], (void*)&material_data);
-			spotLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_SPOT_MODEL_DATA], (void*)&model_data);
+			spotLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_SPOT_MATERIAL_DATA], (void*)&materialData);
+			spotLightShader->SetVSConstantBuffer(slotCache[FD_SLOT_SPOT_MODEL_DATA], (void*)&modelData);
 
 			spotLightShader->SetTexture(0, mat.GetDiffuseTexture());
 

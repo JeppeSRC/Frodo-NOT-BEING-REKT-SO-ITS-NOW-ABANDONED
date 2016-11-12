@@ -24,8 +24,8 @@ private:
 
 	List<Texture2D*> tids;
 
-	unsigned int max_glyphs;
-	unsigned int index_count;
+	unsigned int maxGlyphs;
+	unsigned int indexCount;
 
 
 	ID3D11BlendState* blendState[2];

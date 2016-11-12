@@ -2,7 +2,15 @@
 
 #include <fd.h>
 #include <graphics/d3dcontext.h>
-#include <common.h>
+
+enum FD_TEXTURE_FORMAT {
+	FD_TEXTURE_FORMAT_UNKNOWN,
+	FD_TEXTURE_FORMAT_UINT_8_8_8_8,
+	FD_TEXTURE_FORMAT_FLOAT_32_32_32_32,
+	FD_TEXTURE_FORMAT_FLOAT_D32,
+	FD_TEXTURE_FORMAT_UINT_8
+};
+
 
 class FDAPI Texture {
 protected:

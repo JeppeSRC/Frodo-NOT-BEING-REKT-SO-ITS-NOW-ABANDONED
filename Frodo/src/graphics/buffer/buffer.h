@@ -1,7 +1,6 @@
 #pragma once
 #include <fd.h>
 #include <graphics/d3dcontext.h>
-#include <common.h>
 
 static unsigned int numBuffers = 0;
 

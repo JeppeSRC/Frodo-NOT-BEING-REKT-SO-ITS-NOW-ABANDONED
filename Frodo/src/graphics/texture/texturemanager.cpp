@@ -25,13 +25,6 @@ void TextureManager::Dispose() {
 }
 
 void TextureManager::Add(const String& name, Texture* tex) {
-
-	/*
-	if (textures.GetKeyList().Find(name) != (size_t)-1) {
-		FD_FATAL("\"%s\" already exist!", *name);
-		return;
-	}*/
-
 	for (size_t i = 0; i < textures.GetItems(); i++) {
 		String curr(textures.GetKeyList()[i]);
 		if (name == curr) {
@@ -57,7 +50,7 @@ Texture* TextureManager::Get(const String& name) {
 		}
 	}
 
-	FD_WARNING("Couldn't find texture \"%s\"", *name);
+	FD_FATAL("Couldn't find texture \"%s\"", *name);
 
 	return nullptr;
 }

@@ -89,9 +89,9 @@ void FontRenderer::CreateDepthStates() {
 }
 
 FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : Renderer(window, nullptr ){
-	this->max_glyphs = max_glyphs;
+	this->maxGlyphs = max_glyphs;
+	this->indexCount = 0;
 	this->buffer = nullptr;
-	this->index_count = 0;
 
 	unsigned int* indices = new unsigned int[max_glyphs * 6];
 
@@ -235,7 +235,7 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position) {
 
 #endif
 
-		index_count += 6;
+		indexCount += 6;
 
 		xPos += glyph.advance.x;
 
@@ -245,7 +245,7 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position) {
 
 
 void FontRenderer::Begin() {
-	index_count = 0;
+	indexCount = 0;
 	tids.Clear();
 	buffer = (Vertex*)vbo->Map(FD_MAP_WRITE_DISCARD);
 }
@@ -262,7 +262,7 @@ void FontRenderer::Render() {
 	vbo->Bind();
 	ibo->Bind();
 	
-	D3DContext::GetDeviceContext()->DrawIndexed(index_count, 0, 0);
+	D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
 }
 
 void FontRenderer::End() {

@@ -24,7 +24,7 @@ public:
 	inline const mat4& GetProjectionMatrix() const { return projectionMatrix; }
 	inline mat4 GetViewMatrix() { return viewMatrix; }
 	inline vec3 GetPosition() const { return position; }
-	inline vec3 GetRotation() const { return position; }
+	inline vec3 GetRotation() const { return rotation; }
 
 	inline vec3 GetForward() {
 		mat4 rot = mat4::Rotate(rotation);

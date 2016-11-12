@@ -4,6 +4,16 @@
 #include <util/vfs/vfs.h>
 #include <math/math.h>
 
+enum FD_SHADER_FIELD_TYPE {
+	FD_SHADER_FIELD_TYPE_UNKOWN,
+	FD_SHADER_FIELD_TYPE_MAT4,
+	FD_SHADER_FIELD_TYPE_MAT3,
+	FD_SHADER_FIELD_TYPE_VEC4,
+	FD_SHADER_FIELD_TYPE_VEC3,
+	FD_SHADER_FIELD_TYPE_VEC2,
+	FD_SHADER_FIELD_TYPE_FLOAT
+};
+
 inline static String get_field_type_as_string(FD_SHADER_FIELD_TYPE type) {
 	switch (type) {
 		case FD_SHADER_FIELD_TYPE_UNKOWN: return ("UNKOWN");
@@ -225,7 +235,6 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool s
 
 Shader::~Shader() {
 	DX_FREE(inputLayout);
-
 	DX_FREE(vertexShader);
 	DX_FREE(pixelShader);
 	DX_FREE(vByteCode);

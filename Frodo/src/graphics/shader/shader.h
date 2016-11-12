@@ -4,7 +4,15 @@
 #include <graphics/texture/texture.h>
 #include <util/string.h>
 #include <util/list.h>
-#include <common.h>
+
+enum FD_SHADER_TYPE {
+	FD_SHADER_TYPE_UNKOWN,
+	FD_SHADER_TYPE_VERTEXSHADER,
+	FD_SHADER_TYPE_PIXELSHADER,
+	FD_SHADER_TYPE_GEOMETRYSHADER,
+	FD_SHADER_TYPE_COMPUTESHADER
+};
+
 
 class FDAPI Shader {
 private:

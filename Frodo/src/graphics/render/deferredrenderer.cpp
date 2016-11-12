@@ -237,9 +237,6 @@ void DeferredRenderer::Render() {
 	
 	unsigned int indexCount = indexBufferPlane->GetCount();
 
-	/*SetBlendingInternal(true);
-	SetDepthInternal(false);*/
-
 	directionalLightShader->Bind();
 
 	size_t num = directionalLights.GetSize();

@@ -11,7 +11,6 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 	unsigned char* data = VFS::Get()->ReadFile(filename, &size);
 
 	CreateWICTextureFromMemory(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), data, size, (ID3D11Resource**)&resource, &resourceView);
-	//CreateWICTextureFromFile(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), filename.GetWCHAR(), (ID3D11Resource**)&resource, &resourceView);
 	
 	FD_ASSERT(resource && resourceView);
 

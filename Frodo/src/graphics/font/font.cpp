@@ -82,10 +82,10 @@ Font::~Font() {
 
 bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size, unsigned int size, ivec2 dpi, FD_RANGE<>* ranges, unsigned int num_ranges) {
 	this->size = size;
-	unsigned int num_characters = 0;
+	unsigned int numCharacters = 0;
 
 	for (size_t i = 0; i < num_ranges; i++)
-		num_characters += ranges[i].GetDistance();
+		numCharacters += ranges[i].GetDistance();
 
 	FT_Init_FreeType(&library);
 
@@ -99,8 +99,8 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 	FT_Set_Char_Size(face, size * 64, 0, dpi.x, dpi.y);
 	FT_Select_Charmap(face, FT_ENCODING_UNICODE);
 
-	unsigned int segment_width = 0;
-	unsigned int segment_height = 0;
+	unsigned int segmentWidth = 0;
+	unsigned int segmentHeight = 0;
 
 	for (size_t i = 0; i < num_ranges; i++) {
 		FD_RANGE<> range = ranges[i];
@@ -115,13 +115,10 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			FT_GlyphSlot glyphSlot = face->glyph;
 			FT_Render_Glyph(glyphSlot, FT_RENDER_MODE_NORMAL);
 
-			
-
 			FT_Bitmap bitmap = glyphSlot->bitmap;
 			FT_Glyph_Metrics metrics = glyphSlot->metrics;
 
 			FD_GLYPH glyph;
-
 
 			glyph.unicodeCharacter = c;
 			glyph.advance.x = glyphSlot->advance.x >> 6;
@@ -129,8 +126,6 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			glyph.offset.y = (metrics.horiBearingY >> 6) - (metrics.height >> 6);
 			glyph.bitmapSize.x = bitmap.width;
 			glyph.bitmapSize.y = bitmap.rows;
-			
-			
 
 			unsigned int bitmap_size = bitmap.rows * bitmap.width;
 
@@ -138,22 +133,22 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 
 			memcpy(glyph.bitmap, bitmap.buffer, bitmap_size);
 
-			if (glyph.bitmapSize.x > segment_width)  segment_width  = glyph.bitmapSize.x;
-			if (glyph.bitmapSize.y > segment_height) segment_height = glyph.bitmapSize.y;
+			if (glyph.bitmapSize.x > segmentWidth)  segmentWidth  = glyph.bitmapSize.x;
+			if (glyph.bitmapSize.y > segmentHeight) segmentHeight = glyph.bitmapSize.y;
 
 			charMap.Add(glyph, c);
 		}
 	}
 	
-	unsigned int bitmapSquareSize = (unsigned int)ceilf(sqrtf((float)num_characters));
-	unsigned int bitmapWidth = bitmapSquareSize * segment_width;
-	unsigned int bitmapHeight = bitmapSquareSize * segment_height;
+	unsigned int bitmapSquareSize = (unsigned int)ceilf(sqrtf((float)numCharacters));
+	unsigned int bitmapWidth = bitmapSquareSize * segmentWidth;
+	unsigned int bitmapHeight = bitmapSquareSize * segmentHeight;
 
 	unsigned char* bitmapData = new unsigned char[bitmapWidth * bitmapHeight];
 	memset(bitmapData, 0, bitmapWidth * bitmapHeight);
 
-	float xStep = (float)segment_width / (float)bitmapWidth;
-	float yStep = (float)segment_height / (float)bitmapHeight;
+	float xStep = (float)segmentWidth / (float)bitmapWidth;
+	float yStep = (float)segmentHeight / (float)bitmapHeight;
 
 	unsigned int currentGlyph = 0;
 
@@ -170,12 +165,12 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			glyph.u1 = glyph.u0 + xStep;
 			glyph.v1 = glyph.v0 + yStep;
 
-			unsigned int yOffset = segment_height - glyph.bitmapSize.y;
+			unsigned int yOffset = segmentHeight - glyph.bitmapSize.y;
 
 			for (int y = 0; y < glyph.bitmapSize.y; y++) {
-				int ya = (yStart * segment_height) + y + yOffset;
+				int ya = (yStart * segmentHeight) + y + yOffset;
 				for (int x = 0; x < glyph.bitmapSize.x; x++) {
-					int xa = (xStart * segment_width) + x;
+					int xa = (xStart * segmentWidth) + x;
 					bitmapData[xa + ya * bitmapWidth] = glyph.bitmap[x + y * glyph.bitmapSize.x];
 				}
 			}
