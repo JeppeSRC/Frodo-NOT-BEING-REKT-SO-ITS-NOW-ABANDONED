@@ -49,6 +49,10 @@ public:
 		return data[index];
 	}
 
+	__forceinline T Get(size_t index) const {
+		return data[index];
+	}
+
 	inline List<T>& operator=(const List<T>& list) {
 	
 		delete[] data;
@@ -89,7 +93,7 @@ public:
 		Push_back(item);
 	}
 
-	inline size_t Find(T item) {
+	inline size_t Find(T item) const {
 		for (size_t i = 0; i < size; i++)
 			if (data[i] == item) return i;
 

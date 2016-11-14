@@ -55,12 +55,12 @@ public:
 		keys << key;
 	}
 
-	__forceinline D Retrieve(K key) {
+	__forceinline D Retrieve(K key) const {
 		size_t index = keys.Find(key);
 		
 		if (index == (size_t)-1) return D();
 
-		return data[index];
+		return data.Get(index);
 	}
 
 
