@@ -82,7 +82,7 @@ void DeferredTest::OnInit() {
 	mainRenderer = new DeferredRenderer(window);
 	//mainRenderer = new ForwardRenderer(window);
 
-	font = new Font("/fonts/arial.ttf", 32, Window::GetMonitorDpi());
+	font = new Font("/fonts/verdana.ttf", 32, Window::GetMonitorDpi());
 
 	fontRenderer = new FontRenderer(window, 128);
 	mainRenderer->SetCamera(camera);
@@ -224,6 +224,14 @@ void DeferredTest::OnUpdate(float delta) {
 
 void DeferredTest::OnTick() {
 	FD_INFO("FPS: %u", fps);
+	char fpss[32];
+	sprintf(fpss, "FPS: %u", fps);
+	fpsString = fpss;
+	ivec2 size = font->GetFontMetrics(fpsString);
+	sprintf(fpss, " Size: %d", size.x);
+
+	fpsString += fpss;
+
 	fps = 0;
 }
 
@@ -231,7 +239,7 @@ void DeferredTest::OnRender() {
 	mainRenderer->Render();
 	fontRenderer->Begin();
 
-	fontRenderer->SubmitText("Some text", font, vec2(3, 3.25));
+	fontRenderer->SubmitText(fpsString, font, vec2(0, 0));
 
 	fontRenderer->End();
 	fontRenderer->Render();

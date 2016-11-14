@@ -14,6 +14,8 @@ protected:
 private:
 	unsigned int fps;
 
+	String fpsString;
+
 	UserCamera* camera;
 
 	PointLight* spinningLight0;
