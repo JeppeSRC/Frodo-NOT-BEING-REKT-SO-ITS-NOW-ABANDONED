@@ -3,7 +3,7 @@ R"(
 SamplerState samp {
 	AddressU = Wrap;
 	AddressV = Wrap;
-	Filter = MIN_MAG_MIP_LINEAR;
+	Filter = MIN_MAG_MIP_NEAREST;
 };
 
 Texture2D tex1 : register(t0);
