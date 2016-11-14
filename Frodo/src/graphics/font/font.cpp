@@ -195,3 +195,25 @@ ivec2 Font::GetKerning(unsigned int left, unsigned int right) {
 
 	return ivec2(kerning.x, kerning.y);
 }
+
+ivec2 Font::GetFontMetrics(const String& string) const {
+	size_t len = string.length;
+
+	ivec2 total;
+
+	for (size_t i = 0; i < len; i++) {
+		unsigned int c = string[i];
+		if (c == ' ') {
+			total.x += size >> 1;
+			continue;
+		}
+
+		const FD_GLYPH& glyph = charMap.Retrieve((unsigned int)string[i]);
+		
+		total.x += glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0));
+	}
+
+	total.y = size;
+
+	return total;
+}
