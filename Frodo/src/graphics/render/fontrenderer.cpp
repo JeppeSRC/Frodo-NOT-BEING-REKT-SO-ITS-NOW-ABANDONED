@@ -12,102 +12,9 @@ struct Vertex {
 	float tid;
 };
 
-void FontRenderer::SetBlendingInternal(bool enable_blending) {
-	float factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	D3DContext::GetDeviceContext()->OMSetBlendState(blendState[enable_blending ? 1 : 0], factor, 0xFFFFFFFF);
-}
-
-void FontRenderer::SetDepthInternal(bool enable_depthtesting) {
-	D3DContext::GetDeviceContext()->OMSetDepthStencilState(depthState[enable_depthtesting ? 1 : 0], 0);
-}
-
-void FontRenderer::CreateBlendStates() {
-
-	D3D11_BLEND_DESC desc;
-	ZeroMemory(&desc, sizeof(D3D11_BLEND_DESC));
-
-
-	desc.AlphaToCoverageEnable = false;
-	desc.IndependentBlendEnable = false;
-	desc.RenderTarget[0].BlendEnable = true;
-	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-	desc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
-	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-	D3DContext::GetDevice()->CreateBlendState(&desc, &blendState[0]);
-
-	// ENABLED
-
-	desc.AlphaToCoverageEnable = false;
-	desc.IndependentBlendEnable = false;
-	desc.RenderTarget[0].BlendEnable = true;
-	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-	desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-	D3DContext::GetDevice()->CreateBlendState(&desc, &blendState[1]);
-}
-
-
-void FontRenderer::CreateDepthStates() {
-
-
-	//DEFAULT
-	D3D11_DEPTH_STENCIL_DESC desc;
-	ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
-
-	desc.DepthEnable = false;
-	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-
-	desc.StencilEnable = false;
-
-	D3DContext::GetDevice()->CreateDepthStencilState(&desc, &depthState[1]);
-
-	ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
-
-
-	//NO DEPTH
-
-	ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
-
-	desc.DepthEnable = true;
-	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	desc.DepthFunc = D3D11_COMPARISON_ALWAYS;
-
-	desc.StencilEnable = false;
-
-	D3DContext::GetDevice()->CreateDepthStencilState(&desc, &depthState[0]);
-}
-
-FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : Renderer(window, nullptr ){
-	this->maxGlyphs = max_glyphs;
-	this->indexCount = 0;
-	this->buffer = nullptr;
-
-	unsigned int* indices = new unsigned int[max_glyphs * 6];
-
-	for (unsigned int i = 0; i < max_glyphs; i++) {
-		indices[i * 6 + 0] = i * 4 + 0;
-		indices[i * 6 + 1] = i * 4 + 1;
-		indices[i * 6 + 2] = i * 4 + 2;
-		indices[i * 6 + 3] = i * 4 + 2;
-		indices[i * 6 + 4] = i * 4 + 3;
-		indices[i * 6 + 5] = i * 4 + 0;
-	}
-
-	ibo = new IndexBuffer(indices, max_glyphs * 6);
-	vbo = new VertexBuffer(sizeof(Vertex), max_glyphs * 4);
-
-	delete[] indices;
+FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRenderer(window, max_glyphs) { 
+	blending = true; 
+	depthTesting = false; 
 
 	BufferLayout layout;
 
@@ -124,45 +31,18 @@ FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : Renderer(w
 
 	layout.CreateInputLayout(shader);
 
+
 	CreateBlendStates();
 	CreateDepthStates();
 }
 
 FontRenderer::~FontRenderer() {
-	delete ibo;
-	delete vbo;
-	delete shader;
 
-	DX_FREE(blendState[0]);
-	DX_FREE(blendState[1]);
-	DX_FREE(depthState[0]);
-	DX_FREE(depthState[1]);
 }
 
 void FontRenderer::SubmitText(const String& text, Font* font, vec2 position) {
 	//if (buffer == nullptr) Begin();
-	Texture2D* tex = font->GetTexture();
-
-	size_t numTids = tids.GetSize();
-
-	float tid = 0;
-
-	if (tids.Find(tex) == (size_t)-1) {
-		if (tids.GetSize() == FD_FONT_MAX_SIMULTANEOUS_FONTS) {
-			End();
-			Render();
-			Begin();
-
-			numTids = 0;
-		}
-
-		tids.Push_back(tex);
-		tid = (float)numTids + 1.0f;
-
-	}
-	else {
-		tid = (float)tids.Find(tex) + 1.0f;
-	}
+	float tid = SubmitTexture(font->GetTexture());
 
 	size_t textLength = text.length;
 	float size = (float)font->GetSize();
@@ -241,31 +121,4 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position) {
 
 		prevGlyph = glyph;
 	}
-}
-
-
-void FontRenderer::Begin() {
-	indexCount = 0;
-	tids.Clear();
-	buffer = (Vertex*)vbo->Map(FD_MAP_WRITE_DISCARD);
-}
-
-void FontRenderer::Render() {
-//	if (buffer != nullptr) End();
-	SetDepthInternal(false);
-	SetBlendingInternal(true);
-	for (size_t i = 0; i < tids.GetSize(); i++) {
-		shader->SetTexture((unsigned int)i, tids[i]);
-	}
-	shader->Bind();
-
-	vbo->Bind();
-	ibo->Bind();
-	
-	D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
-}
-
-void FontRenderer::End() {
-	vbo->Unmap();
-	buffer = nullptr;
 }

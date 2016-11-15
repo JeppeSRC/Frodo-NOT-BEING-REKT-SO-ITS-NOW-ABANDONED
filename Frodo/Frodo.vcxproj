@@ -194,6 +194,7 @@
     <ClCompile Include="src\graphics\buffer\vertexbuffer.cpp" />
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
     <ClCompile Include="src\graphics\font\font.cpp" />
+    <ClCompile Include="src\graphics\render\batchrenderer.cpp" />
     <ClCompile Include="src\graphics\render\camera\camera.cpp" />
     <ClCompile Include="src\graphics\render\camera\usercamera.cpp" />
     <ClCompile Include="src\graphics\render\deferredrenderer.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="src\graphics\buffer\vertexbuffer.h" />
     <ClInclude Include="src\graphics\d3dcontext.h" />
     <ClInclude Include="src\graphics\font\font.h" />
+    <ClInclude Include="src\graphics\render\batchrenderer.h" />
     <ClInclude Include="src\graphics\render\camera\camera.h" />
     <ClInclude Include="src\graphics\render\camera\usercamera.h" />
     <ClInclude Include="src\graphics\render\deferredrenderer.h" />
