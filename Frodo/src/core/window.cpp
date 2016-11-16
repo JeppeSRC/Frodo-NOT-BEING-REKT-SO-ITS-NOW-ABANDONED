@@ -1,26 +1,75 @@
 #include "window.h"
 #include "log.h"
 #include "input.h"
+#include <core/event/eventdispatcher.h>
 
 Map<HWND, Window*> Window::window_handels;
 
 LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 	Window* window = window_handels.Retrieve(hwnd);
-	
+	Event* e;
+	unsigned int x = 0;
+	unsigned int y = 0;
+
 	switch (msg) {
 		case WM_CLOSE:
 			window->isOpen = false;
 			break;
+		case WM_LBUTTONDOWN:
+			e = new EventMouseActionButton(true, EventMouseActionButton::FD_LEFTBUTTON);
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_LBUTTONUP:
+			e = new EventMouseActionButton(false, EventMouseActionButton::FD_LEFTBUTTON);
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_MBUTTONDOWN:
+			e = new EventMouseActionButton(true, EventMouseActionButton::FD_MIDDLEBUTTON);
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_MBUTTONUP:
+			e = new EventMouseActionButton(false, EventMouseActionButton::FD_MIDDLEBUTTON);
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_RBUTTONDOWN:
+			e = new EventMouseActionButton(true, EventMouseActionButton::FD_RIGHTBUTTON);
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_RBUTTONUP:
+			e = new EventMouseActionButton(false, EventMouseActionButton::FD_RIGHTBUTTON);
+			EventDispatcher::DispatchEvent(e);
+			break;
 		case WM_MOUSEMOVE:
-			Input::mouseX = LOWORD(l);
-			Input::mouseY = HIWORD(l);
+			x = LOWORD(l);
+			y = HIWORD(l);
+			Input::mouseX = x;
+			Input::mouseY = y;
+
+			e = new EventMouseActionMove(ivec2(x, y));
+			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYDOWN:
 			Input::keys[(unsigned char)w] = true;
+			e = new EventKeyboardActionKey(true, w);
+			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYUP:
 			Input::keys[(unsigned char)w] = false;
 			Input::prevKeys[(unsigned char)w] = false;
+			e = new EventKeyboardActionKey(false, w);
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_MOVE:
+			x = LOWORD(l);
+			y = HIWORD(l);
+			e = new EventWindowActionMove(ivec2(x, y));
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_SIZING:
+			x = LOWORD(l);
+			y = HIWORD(l);
+			e = new EventWindowActionResize(ivec2(x, y));
+			EventDispatcher::DispatchEvent(e);
 			break;
 	}
 
