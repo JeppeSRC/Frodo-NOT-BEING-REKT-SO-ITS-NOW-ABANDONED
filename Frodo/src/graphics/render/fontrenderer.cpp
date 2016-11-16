@@ -2,8 +2,6 @@
 
 #include <graphics/shader/shaderfactory.h>
 
-#define FD_FONT_MAX_SIMULTANEOUS_FONTS 4
-
 #define FD_FONT_SHOW_TEXTURE 0
 
 struct Vertex {
@@ -49,8 +47,8 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position) {
 
 	ivec2 dpi = window->GetMonitorDpi();
 
-	float xPos = position.x * (float)dpi.x;
-	float yPos = position.y * (float)dpi.y;
+	float xPos = position.x;
+	float yPos = position.y;
 
 	Font::FD_GLYPH prevGlyph;
 

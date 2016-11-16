@@ -218,6 +218,7 @@
   <ItemGroup>
     <ClInclude Include="src\core\input.h" />
     <ClInclude Include="src\core\log.h" />
+    <ClInclude Include="src\core\menu\menuitem.h" />
     <ClInclude Include="src\core\window.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\fd.h" />

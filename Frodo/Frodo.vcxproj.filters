@@ -230,5 +230,8 @@
     <ClInclude Include="src\graphics\render\batchrenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\menu\menuitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

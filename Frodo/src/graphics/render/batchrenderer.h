@@ -50,16 +50,16 @@ public:
 	virtual ~BatchRenderer();
 
 	void Begin();
-	void Submit(Entity* entity);
+	virtual void Submit(Entity* entity);
 	void End();
 
 	void Render();
 
-	void Add(Entity* e) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
-	void Add(Light* l) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
+	virtual void Add(Entity* e) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
+	virtual void Add(Light* l) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
 
-	void Remove(Entity* e) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
-	void Remove(Light* l) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
+	virtual void Remove(Entity* e) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
+	virtual void Remove(Light* l) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
 
 };
 

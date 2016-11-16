@@ -4,8 +4,6 @@
 
 #define FD_FONT_MAX_SIMULTANEOUS_TEXTURES 4
 
-#define FD_FONT_SHOW_TEXTURE 0
-
 struct Vertex {
 	vec2 position;
 	vec2 texCoords;
@@ -145,25 +143,6 @@ BatchRenderer::BatchRenderer(Window* window, unsigned int max_vertices) : Render
 	vbo = new VertexBuffer(sizeof(Vertex), max_vertices * 4);
 
 	delete[] indices;
-
-	CreateBlendStates();
-	CreateDepthStates();
-
-	/*
-	BufferLayout layout;
-
-	layout.Push<vec2>("POSITION");
-	layout.Push<vec2>("TEXCOORDS");
-	layout.Push<float>("TID");
-
-	shader = ShaderFactory::GetShader(FD_FONT_DEFAULT);
-	#if FD_FONT_SHOW_TEXTURE
-	shader->SetVSConstantBuffer("view_data", &mat4::Identity());
-	#else
-	shader->SetVSConstantBuffer("view_data", &mat4::Orthographic(0.0f, (float)window->GetWidth(), 0.0f, (float)window->GetHeight(), -0.1f, 0.1f));
-	#endif
-
-	layout.CreateInputLayout(shader);*/
 }
 
 BatchRenderer::BatchRenderer(Window* window, Camera* camera, unsigned int max_vertices) : BatchRenderer(window, max_vertices) {
@@ -182,7 +161,7 @@ BatchRenderer::~BatchRenderer() {
 }
 
 void BatchRenderer::Submit(Entity* e) {
-	//TODO: implement
+	FD_WARNING("\"%s\" not implemented", __FUNCSIG__);
 }
 
 void BatchRenderer::Render() {
