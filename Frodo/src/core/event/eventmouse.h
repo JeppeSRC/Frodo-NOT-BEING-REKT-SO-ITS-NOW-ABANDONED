@@ -23,18 +23,25 @@ public:
 
 class EventMouseActionButton : public EventMouse {
 public:
+
 	enum {
-		FD_LEFTBUTTON = 0,
-		FD_MIDDLEBUTTON = 1,
-		FD_RIGHTBUTTON = 2
+		FD_BUTTON_LEFT,
+		FD_BUTTON_RIGHT,
+		FD_BUTTON_MIDDLE
+	};
+
+	enum FD_ACTION {
+		FD_PRESSED,
+		FD_RELEASED,
+		FD_HOLD
 	};
 
 private:
 	unsigned int button;
-	bool pressed;
+	FD_ACTION action;
 public:
-	EventMouseActionButton(bool pressed, unsigned int button) : EventMouse(pressed ? FD_MOUSE_ACTION_BUTTON_PRESSED : FD_MOUSE_ACTION_BUTTON_RELEASED) { this->pressed = pressed; }
+	EventMouseActionButton(FD_ACTION action, unsigned int button) : EventMouse(action == FD_PRESSED ? FD_MOUSE_ACTION_BUTTON_PRESSED : action == FD_RELEASED ? FD_MOUSE_ACTION_BUTTON_RELEASED : FD_MOUSE_ACTION_BUTTON_HOLD) { this->action = action; }
 
 	inline unsigned int GetButton() const { return button; }
-	inline bool IsPressed() const { return pressed; }
+	inline FD_ACTION GetAction() const { return action; }
 };

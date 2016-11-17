@@ -32,21 +32,19 @@ public:
 };
 
 class EventWindowState : public EventWindow {
+public:
+	enum FD_ACTION {
+		FD_FOCUS_GAINED,
+		FD_FOCUS_LOST,
+		FD_MINIMIZED,
+		FD_MAXIMIZED
+	};
+
 private:
-	bool maximize;
+	FD_ACTION action;
 
 public:
-	EventWindowState(bool maximize) : EventWindow(maximize ? FD_WINDOW_STATE_MAXIMIZED : FD_WINDOW_STATE_MINIMIZED) { this->maximize = maximize; }
+	EventWindowState(FD_ACTION action) : EventWindow(action == FD_MAXIMIZED? FD_WINDOW_STATE_MAXIMIZED : action == FD_MINIMIZED ? FD_WINDOW_STATE_MINIMIZED : action == FD_FOCUS_GAINED ? FD_WINDOW_STATE_FOCUS_GAINED : FD_WINDOW_STATE_FOCUS_LOST) { this->action = action; }
 
-	inline bool IsMaximized() const { return maximize; }
-};
-
-class EventWindowStateFocus : public EventWindow {
-private:
-	bool gained;
-
-public:
-	EventWindowStateFocus(bool gained) : EventWindow(gained ? FD_WINDOW_STATE_FOCUS_GAINED : FD_WINDOW_STATE_FOCUS_LOST) { this->gained = gained; }
-
-	inline bool GainedFocus() const { return gained; }
+	inline FD_ACTION GetAction() const { return action; }
 };

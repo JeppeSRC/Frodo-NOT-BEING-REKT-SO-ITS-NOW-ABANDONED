@@ -11,12 +11,18 @@ public:
 };
 
 class EventKeyboardActionKey : public EventKeyboard {
+public:
+	enum FD_ACTION {
+		FD_PRESSED,
+		FD_RELEASED,
+		FD_HOLD
+	};
 private:
 	unsigned int key;
-	bool pressed;
+	FD_ACTION action;
 public:
-	EventKeyboardActionKey(bool pressed, unsigned int key) : EventKeyboard(pressed ? FD_KEYBOARD_ACTION_KEY_PRESSED : FD_KEYBOARD_ACTION_KEY_RELEASED) { this->key = key; this->pressed = pressed; }
+	EventKeyboardActionKey(FD_ACTION action, unsigned int key) : EventKeyboard(action == FD_PRESSED ? FD_KEYBOARD_ACTION_KEY_PRESSED : action == FD_RELEASED ? FD_KEYBOARD_ACTION_KEY_RELEASED : FD_KEYBOARD_ACTION_KEY_HOLD) { this->key = key; this->action = action; }
 
 	inline unsigned int GetKey() const { return key; }
-	inline bool IsPressed() const { return pressed; }
+	inline unsigned int GetAction() const { return action; }
 };

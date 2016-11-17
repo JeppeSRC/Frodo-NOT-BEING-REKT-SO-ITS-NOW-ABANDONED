@@ -8,36 +8,59 @@ Map<HWND, Window*> Window::window_handels;
 LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 	Window* window = window_handels.Retrieve(hwnd);
 	Event* e;
-	unsigned int x = 0;
-	unsigned int y = 0;
+	static unsigned int x = 0;
+	static unsigned int y = 0;
+	static bool keys[65535];
+	static bool buttons[3];
 
 	switch (msg) {
 		case WM_CLOSE:
 			window->isOpen = false;
 			break;
 		case WM_LBUTTONDOWN:
-			e = new EventMouseActionButton(true, EventMouseActionButton::FD_LEFTBUTTON);
+			if (!buttons[EventMouseActionButton::FD_BUTTON_LEFT]) {
+				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_LEFT);
+				buttons[EventMouseActionButton::FD_BUTTON_LEFT] = true;
+			}
+			else {
+				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_LEFT);
+			}
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_LBUTTONUP:
-			e = new EventMouseActionButton(false, EventMouseActionButton::FD_LEFTBUTTON);
+			e = new EventMouseActionButton(EventMouseActionButton::FD_RELEASED, EventMouseActionButton::FD_BUTTON_LEFT);
 			EventDispatcher::DispatchEvent(e);
+			buttons[EventMouseActionButton::FD_BUTTON_LEFT] = false;
 			break;
 		case WM_MBUTTONDOWN:
-			e = new EventMouseActionButton(true, EventMouseActionButton::FD_MIDDLEBUTTON);
+			if (!buttons[EventMouseActionButton::FD_BUTTON_MIDDLE]) {
+				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_MIDDLE);
+				buttons[EventMouseActionButton::FD_BUTTON_MIDDLE] = true;
+			}
+			else {
+				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_MIDDLE);
+			}
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_MBUTTONUP:
-			e = new EventMouseActionButton(false, EventMouseActionButton::FD_MIDDLEBUTTON);
+			e = new EventMouseActionButton(EventMouseActionButton::FD_RELEASED, EventMouseActionButton::FD_BUTTON_MIDDLE);
 			EventDispatcher::DispatchEvent(e);
+			buttons[EventMouseActionButton::FD_BUTTON_MIDDLE] = false;
 			break;
 		case WM_RBUTTONDOWN:
-			e = new EventMouseActionButton(true, EventMouseActionButton::FD_RIGHTBUTTON);
+			if (!buttons[EventMouseActionButton::FD_BUTTON_RIGHT]) {
+				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_RIGHT);
+				buttons[EventMouseActionButton::FD_BUTTON_RIGHT] = true;
+			}
+			else {
+				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_RIGHT);
+			}
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_RBUTTONUP:
-			e = new EventMouseActionButton(false, EventMouseActionButton::FD_RIGHTBUTTON);
+			e = new EventMouseActionButton(EventMouseActionButton::FD_RELEASED, EventMouseActionButton::FD_BUTTON_RIGHT);
 			EventDispatcher::DispatchEvent(e);
+			buttons[EventMouseActionButton::FD_BUTTON_RIGHT] = false;
 			break;
 		case WM_MOUSEMOVE:
 			x = LOWORD(l);
@@ -50,13 +73,20 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			break;
 		case WM_KEYDOWN:
 			Input::keys[(unsigned char)w] = true;
-			e = new EventKeyboardActionKey(true, w);
+			if (!keys[w]) {
+				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_PRESSED, w);
+				keys[w] = true;
+			}
+			else {
+				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_HOLD, w);
+			}
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYUP:
 			Input::keys[(unsigned char)w] = false;
 			Input::prevKeys[(unsigned char)w] = false;
-			e = new EventKeyboardActionKey(false, w);
+			keys[w] = false;
+			e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_RELEASED, w);
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_MOVE:
@@ -69,6 +99,24 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			x = LOWORD(l);
 			y = HIWORD(l);
 			e = new EventWindowActionResize(ivec2(x, y));
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_SYSCOMMAND:
+			if ((w & 0xFFF0) == SC_MINIMIZE) {
+				e = new EventWindowState(EventWindowState::FD_MINIMIZED);
+				EventDispatcher::DispatchEvent(e);
+			}
+			else if ((w & 0xFFF0) == SC_MAXIMIZE) {
+				e = new EventWindowState(EventWindowState::FD_MAXIMIZED);
+				EventDispatcher::DispatchEvent(e);
+			}
+			break;
+		case WM_SETFOCUS:
+			e = new EventWindowState(EventWindowState::FD_FOCUS_GAINED);
+			EventDispatcher::DispatchEvent(e);
+			break;
+		case WM_KILLFOCUS:
+			e = new EventWindowState(EventWindowState::FD_FOCUS_LOST);
 			EventDispatcher::DispatchEvent(e);
 			break;
 	}

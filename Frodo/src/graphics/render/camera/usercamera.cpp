@@ -11,31 +11,14 @@ static vec3 back(0, 0, -1);
 
 void UserCamera::Update(float delta) {
 
-	vec3 move(0, 0, 0);
-
-	if (Input::IsKeyDown('W'))
-		move += forward;
-	else if (Input::IsKeyDown('S'))
-		move += back;
-
-	if (Input::IsKeyDown('A'))
-		move += left;
-	else if (Input::IsKeyDown('D'))
-		move += right;
-
-	if (Input::IsKeyDownOnce('Q')) {
-		if (Input::mouseCaptured)
-			Input::ReleaseMouse();
-		else
-			Input::CaptureMouse();
-	}
+	vec3 move(dir);
 
 	if (Input::mouseCaptured) {
 
 		Window& window = *D3DContext::GetWindow();
 
-		float yRot = ((float)Input::GetMouseX() - (window.GetWidth() >> 1)) * delta * SENSE;
-		float xRot = ((float)Input::GetMouseY() - (window.GetHeight() >> 1)) * delta * SENSE;
+		float yRot = (x - (window.GetWidth() >> 1)) * delta * SENSE;
+		float xRot = (y - (window.GetHeight() >> 1)) * delta * SENSE;
 
 		rotation += vec3(-xRot, yRot, 0);
 
@@ -44,4 +27,55 @@ void UserCamera::Update(float delta) {
 		position += move.RotateY(rotation.y) * delta;
 
 	UpdateViewMatrix();
+}
+
+bool UserCamera::OnKeyboardActionKeyPressed(unsigned int key) {
+
+	if (key == 'W') {
+		dir += forward;
+	}
+	else if (key == 'S') {
+		dir += back;
+	}
+
+	if (key == 'A') {
+		dir += left;
+	}
+	else if (key == 'D') {
+		dir += right;
+	}
+
+	if (key == 'Q')
+		if (Input::mouseCaptured)
+			Input::ReleaseMouse();
+		else
+			Input::CaptureMouse();
+
+	return false;
+}
+
+bool UserCamera::OnKeyboardActionKeyReleased(unsigned int key) {
+
+	if (key == 'W') {
+		dir -= forward;
+	}
+	else if (key == 'S') {
+		dir -= back;
+	}
+
+	if (key == 'A') {
+		dir -= left;
+	}
+	else if (key == 'D') {
+		dir -= right;
+	}
+
+	return false;
+}
+
+bool UserCamera::OnMouseActionMove(ivec2 position) {
+	x = (float)position.x;
+	y = (float)position.y;
+
+	return false;
 }
