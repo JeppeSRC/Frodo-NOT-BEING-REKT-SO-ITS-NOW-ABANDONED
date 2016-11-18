@@ -12,6 +12,8 @@
 
 #include <core/log.h>
 
+#define FD_FONT_MAX_SIMULTANEOUS_TEXTURES 16
+
 class FDAPI BatchRenderer : public Renderer {
 protected:
 	friend struct Vertex;

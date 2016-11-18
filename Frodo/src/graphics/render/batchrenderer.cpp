@@ -2,13 +2,6 @@
 
 #include <graphics/shader/shaderfactory.h>
 
-#define FD_FONT_MAX_SIMULTANEOUS_TEXTURES 4
-
-struct Vertex {
-	vec2 position;
-	vec2 texCoords;
-	float tid;
-};
 
 void BatchRenderer::SetBlendingInternal(bool enable_blending) {
 	float factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -127,22 +120,6 @@ BatchRenderer::BatchRenderer(Window* window, unsigned int max_vertices) : Render
 	this->maxVertices = max_vertices;
 	this->indexCount = 0;
 	this->buffer = nullptr;
-
-	unsigned int* indices = new unsigned int[max_vertices * 6];
-
-	for (unsigned int i = 0; i < max_vertices; i++) {
-		indices[i * 6 + 0] = i * 4 + 0;
-		indices[i * 6 + 1] = i * 4 + 1;
-		indices[i * 6 + 2] = i * 4 + 2;
-		indices[i * 6 + 3] = i * 4 + 2;
-		indices[i * 6 + 4] = i * 4 + 3;
-		indices[i * 6 + 5] = i * 4 + 0;
-	}
-
-	ibo = new IndexBuffer(indices, max_vertices * 6);
-	vbo = new VertexBuffer(sizeof(Vertex), max_vertices * 4);
-
-	delete[] indices;
 }
 
 BatchRenderer::BatchRenderer(Window* window, Camera* camera, unsigned int max_vertices) : BatchRenderer(window, max_vertices) {

@@ -1,12 +1,15 @@
 #include "fontrenderer.h"
 
 #include <graphics/shader/shaderfactory.h>
+#include <math/vec4.h>
+#include <math/vec2.h>
 
 #define FD_FONT_SHOW_TEXTURE 0
 
 struct Vertex {
 	vec2 position;
 	vec2 texCoords;
+	vec4 color;
 	float tid;
 };
 
@@ -18,7 +21,10 @@ FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRende
 
 	layout.Push<vec2>("POSITION");
 	layout.Push<vec2>("TEXCOORDS");
+	layout.Push<vec4>("COLOR");
 	layout.Push<float>("TID");
+
+	
 
 	shader = ShaderFactory::GetShader(FD_FONT_DEFAULT);
 #if FD_FONT_SHOW_TEXTURE
@@ -29,6 +35,22 @@ FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRende
 
 	layout.CreateInputLayout(shader);
 
+	
+	unsigned int* indices = new unsigned int[max_glyphs * 6];
+
+	for (unsigned int i = 0; i < max_glyphs; i++) {
+		indices[i * 6 + 0] = i * 4 + 0;
+		indices[i * 6 + 1] = i * 4 + 1;
+		indices[i * 6 + 2] = i * 4 + 2;
+		indices[i * 6 + 3] = i * 4 + 2;
+		indices[i * 6 + 4] = i * 4 + 3;
+		indices[i * 6 + 5] = i * 4 + 0;
+	}
+
+	ibo = new IndexBuffer(indices, max_glyphs * 6);
+	vbo = new VertexBuffer(sizeof(Vertex), max_glyphs * 4);
+
+	delete[] indices;
 
 	CreateBlendStates();
 	CreateDepthStates();
@@ -38,9 +60,10 @@ FontRenderer::~FontRenderer() {
 
 }
 
-void FontRenderer::SubmitText(const String& text, Font* font, vec2 position) {
+void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec4 color) {
 	//if (buffer == nullptr) Begin();
-	float tid = SubmitTexture(font->GetTexture());
+	float tid  = SubmitTexture(font->GetTexture());
+	//float btid = SubmitTexture(background);
 
 	size_t textLength = text.length;
 	float size = (float)font->GetSize();
@@ -70,21 +93,25 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position) {
 
 		buffer->position = vec2(xa, ya);
 		buffer->texCoords = vec2(glyph.u0, glyph.v0);
+		buffer->color = color;
 		buffer->tid = tid;
 		buffer++;
 
 		buffer->position = vec2(xa + size, ya);
 		buffer->texCoords = vec2(glyph.u1, glyph.v0);
+		buffer->color = color;
 		buffer->tid = tid;
 		buffer++;
 
 		buffer->position = vec2(xa + size, ya + size);
 		buffer->texCoords = vec2(glyph.u1, glyph.v1);
+		buffer->color = color;
 		buffer->tid = tid;
 		buffer++;
 
 		buffer->position = vec2(xa, ya + size);
 		buffer->texCoords = vec2(glyph.u0, glyph.v1);
+		buffer->color = color;
 		buffer->tid = tid;
 		buffer++;
 
