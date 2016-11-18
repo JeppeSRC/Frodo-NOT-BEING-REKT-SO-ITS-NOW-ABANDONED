@@ -5,9 +5,13 @@
 #include "eventkayboard.h"
 #include "eventmouse.h"
 #include "eventwindow.h"
+#include "eventdispatcher.h"
 
 class FDAPI EventListener {
 public:
+	EventListener() { EventDispatcher::AddListener(this); }
+	~EventListener() { EventDispatcher::RemoveListener(this); }
+
 	virtual bool OnEvent(const Event* event) { return false;  }
 
 	virtual bool OnEvent(const EventMouseActionMove* event) { return false; }

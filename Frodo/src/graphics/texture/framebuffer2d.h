@@ -27,6 +27,7 @@ template<unsigned int C>
 class FramebufferMRT {
 private:
 	unsigned int numRenderTargets;
+	bool initialized = false;
 
 	Framebuffer2D* renderTargets[C];
 
@@ -44,6 +45,10 @@ public:
 	}
 
 	inline void Init(unsigned int width, unsigned int height, FD_TEXTURE_FORMAT format, bool createDepthStencil = true) {
+		if (initialized) {
+			for (unsigned int i = 0; i < numRenderTargets; i++)
+				delete renderTargets[i];
+		}
 		numRenderTargets = C;
 
 		renderTargets[0] = new Framebuffer2D(width, height, format, createDepthStencil);
@@ -51,6 +56,8 @@ public:
 		for (unsigned int i = 1; i < numRenderTargets; i++) {
 			renderTargets[i] = new Framebuffer2D(width, height, format, false);
 		}
+
+		initialized = true;
 	}
 
 	inline void BindAsRenderTarget() const {

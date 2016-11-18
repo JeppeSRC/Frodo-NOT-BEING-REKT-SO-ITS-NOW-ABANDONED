@@ -5,7 +5,7 @@
 #include <entity/entity.h>
 #include <graphics/render/light/light.h>
 
-class FDAPI Renderer {
+class FDAPI Renderer : public EventListener {
 protected:
 	Window* window;
 	Camera* camera;

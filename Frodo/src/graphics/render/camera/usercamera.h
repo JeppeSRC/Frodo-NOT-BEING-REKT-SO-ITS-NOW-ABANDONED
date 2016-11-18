@@ -11,8 +11,8 @@ private:
 	float x,  y;
 
 public:
-	UserCamera(const vec3& position, const vec3& rotation) : Camera(position, rotation) { EventDispatcher::AddListener(this); }
-	~UserCamera() { EventDispatcher::RemoveListener(this); }
+	UserCamera(const vec3& position, const vec3& rotation) : Camera(position, rotation) {  }
+	~UserCamera() { }
 
 	virtual void Update(float delta);
 	bool OnEvent(const Event* event) override { return false; }

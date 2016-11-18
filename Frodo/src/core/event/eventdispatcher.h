@@ -3,9 +3,11 @@
 #include <fd.h>
 #include <util/list.h>
 
-#include "eventlistener.h"
+#include "event.h"
 
 class FDAPI EventDispatcher {
+private:
+	friend class EventListener;
 private:
 	static List<EventListener*> listeners;
 

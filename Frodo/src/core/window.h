@@ -4,11 +4,13 @@
 #include <fd.h>
 #include <util/string.h>
 #include <util/map.h>
+#include <core/event/eventlistener.h>
 #include "log.h"
 
 #include <graphics/d3dcontext.h>
 
-class FDAPI Window {
+
+class FDAPI Window : public EventListener {
 private:
 	static Map<HWND, Window*> window_handels;
 
@@ -34,6 +36,8 @@ public:
 
 	void SetVisible(bool visible);
 	ivec2 GetWindowDpi();
+
+	bool OnWindowActionResize(ivec2 size) override;
 
 	inline void SetClearColor(float r, float g, float b) { clearColor[0] = r;clearColor[1] = g;clearColor[2] = b;}
 	inline bool IsOpen() const { return isOpen; }

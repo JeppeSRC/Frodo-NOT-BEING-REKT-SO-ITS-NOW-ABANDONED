@@ -81,4 +81,6 @@ public:
 	void Remove(Light* light) override;
 
 	void Render();
+
+	bool OnWindowActionResize(ivec2 size) override;
 };

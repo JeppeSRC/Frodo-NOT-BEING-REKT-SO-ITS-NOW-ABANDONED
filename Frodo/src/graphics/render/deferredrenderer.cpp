@@ -275,3 +275,12 @@ void DeferredRenderer::Render() {
 
 	D3DContext::GetDeviceContext()->PSSetShaderResources(0, 3, v);
 }
+
+bool DeferredRenderer::OnWindowActionResize(ivec2 size) {
+
+	SetProjectionMatrix(mat4::Perspective(70.0f, window->GetAspectRatio(), 0.001f, 1000.0f));
+
+	mrt.Init(window->GetWidth(), window->GetHeight(), FD_TEXTURE_FORMAT_FLOAT_32_32_32_32);
+
+	return false;
+}

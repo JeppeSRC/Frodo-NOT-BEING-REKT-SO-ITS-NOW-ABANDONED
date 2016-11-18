@@ -95,7 +95,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			e = new EventWindowActionMove(ivec2(x, y));
 			EventDispatcher::DispatchEvent(e);
 			break;
-		case WM_SIZING:
+		case WM_SIZE:
 			x = LOWORD(l);
 			y = HIWORD(l);
 			e = new EventWindowActionResize(ivec2(x, y));
@@ -126,7 +126,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 
 Window::Window(const String& title, int width, int height) : title(title), width(width), height(height) {
 	FD_DEBUG("Creating window Title<%s> Width<%d> Height<%d>!", *title, width, height);
-	
+
 	WNDCLASSEX ws;
 
 	ws.cbClsExtra = 0;
@@ -220,4 +220,12 @@ ivec2 Window::GetWindowDpi() {
 	ReleaseDC(hwnd, m);
 
 	return ivec2(x, y);
+}
+
+bool Window::OnWindowActionResize(ivec2 size) {
+
+	width = size.x;
+	height = size.y;
+
+	return false;
 }

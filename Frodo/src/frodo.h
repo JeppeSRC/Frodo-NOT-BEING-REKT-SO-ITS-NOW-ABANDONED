@@ -4,6 +4,13 @@
 #include <core/window.h>
 #include <core/input.h>
 
+#include <core/event/event.h>
+#include <core/event/eventdispatcher.h>
+#include <core/event/eventlistener.h>
+#include <core/event/eventkayboard.h>
+#include <core/event/eventmouse.h>
+#include <core/event/eventwindow.h>
+
 #include <graphics/d3dcontext.h>
 #include <graphics/buffer/bufferlayout.h>
 #include <graphics/buffer/vertexbuffer.h>

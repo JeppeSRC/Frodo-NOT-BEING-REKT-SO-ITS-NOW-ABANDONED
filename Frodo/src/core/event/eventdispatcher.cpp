@@ -1,4 +1,5 @@
 #include "eventdispatcher.h"
+#include "eventlistener.h"
 
 List<EventListener*> EventDispatcher::listeners;
 
