@@ -63,7 +63,6 @@ FontRenderer::~FontRenderer() {
 void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec4 color) {
 	//if (buffer == nullptr) Begin();
 	float tid  = SubmitTexture(font->GetTexture());
-	//float btid = SubmitTexture(background);
 
 	size_t textLength = text.length;
 	float size = (float)font->GetSize();
@@ -83,8 +82,6 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 			continue;
 		}
 		Font::FD_GLYPH glyph = font->GetGlyph(c);
-
-		ivec2 kerning = font->GetKerning(prevGlyph.unicodeCharacter, glyph.unicodeCharacter);
 
 		float xa = xPos + glyph.offset.x;
 		float ya = yPos - glyph.offset.y;
