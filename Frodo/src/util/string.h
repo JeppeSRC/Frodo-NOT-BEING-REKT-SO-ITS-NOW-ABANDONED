@@ -15,7 +15,7 @@ public:
 public:
 	String() { str = nullptr; length = 0; }
 	String(const char* string);
-	String(char* stirng, size_t length, bool noCopy = false);
+	String(char* string, size_t length, bool noCopy = false);
 	String(const String& string);
 	String(const String* string);
 	String(String&& string);
@@ -30,6 +30,8 @@ public:
 	String& Remove(const String& string);
 	String& Remove(size_t start, size_t end);
 	String& RemoveBlankspace();
+
+	String  SubString(size_t start, size_t end) const;
 
 	size_t Count(const String& string, size_t offset = 0) const;
 
