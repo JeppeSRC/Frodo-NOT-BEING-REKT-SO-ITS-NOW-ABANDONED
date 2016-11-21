@@ -27,9 +27,18 @@
     <ClInclude Include="src\package\format.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\package\package.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
