@@ -12,8 +12,6 @@
 
 #include <core/log.h>
 
-#define FD_FONT_MAX_SIMULTANEOUS_TEXTURES 16
-
 class FDAPI BatchRenderer : public Renderer {
 protected:
 	friend struct Vertex;
@@ -36,6 +34,8 @@ protected:
 	bool blending;
 	bool depthTesting;
 
+	unsigned int maxSimultaneousTextures;
+
 protected:
 	void SetBlendingInternal(bool enable_blending);
 	void SetDepthInternal(bool enable_depthtesting);
@@ -45,7 +45,7 @@ protected:
 
 	float SubmitTexture(Texture2D* texture);
 
-	BatchRenderer(Window* window, unsigned int max_vertices);
+	BatchRenderer(Window* window, unsigned int max_vertices, unsigned int max_simultaneous_textures);
 
 public:
 	BatchRenderer(Window* window, Camera* camera, unsigned int max_glyphs);
@@ -62,6 +62,9 @@ public:
 
 	virtual void Remove(Entity* e) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
 	virtual void Remove(Light* l) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
+
+	inline unsigned int GetMaxSimultaneousTextures() const { return maxSimultaneousTextures; }
+	inline void SetMaxSimultaneousTextures(unsigned int num) { this->maxSimultaneousTextures = num; }
 
 };
 

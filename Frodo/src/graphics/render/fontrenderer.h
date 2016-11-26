@@ -13,7 +13,7 @@ public:
 	FontRenderer(Window* window, unsigned int max_glyphs);
 	~FontRenderer();
 
-	void SubmitText(const String& text, Font* font, vec2 position, vec4 color = vec4(1, 1, 1, 1));
+	void SubmitText(const String& text, Font* font, vec2 position, vec4 color = vec4(1, 1, 1, 1), vec2 scale = vec2(1, 1));
 
 	void Submit(Entity* e) { }
 };

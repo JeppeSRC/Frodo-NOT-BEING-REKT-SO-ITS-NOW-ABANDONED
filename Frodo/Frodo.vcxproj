@@ -202,6 +202,7 @@
     <ClCompile Include="src\graphics\render\deferredrenderer.cpp" />
     <ClCompile Include="src\graphics\render\fontrenderer.cpp" />
     <ClCompile Include="src\graphics\render\forwardrenderer.cpp" />
+    <ClCompile Include="src\graphics\render\menurenderer.cpp" />
     <ClCompile Include="src\graphics\render\model\meshfactory.cpp" />
     <ClCompile Include="src\graphics\shader\shader.cpp" />
     <ClCompile Include="src\graphics\shader\shaderfactory.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="src\graphics\render\forwardrenderer.h" />
     <ClInclude Include="src\graphics\render\light\light.h" />
     <ClInclude Include="src\graphics\render\material\material.h" />
+    <ClInclude Include="src\graphics\render\menurenderer.h" />
     <ClInclude Include="src\graphics\render\model\meshfactory.h" />
     <ClInclude Include="src\graphics\render\model\model.h" />
     <ClInclude Include="src\graphics\render\renderer.h" />

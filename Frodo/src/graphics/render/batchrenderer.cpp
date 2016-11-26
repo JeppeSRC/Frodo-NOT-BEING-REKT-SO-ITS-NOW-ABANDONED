@@ -97,7 +97,7 @@ float BatchRenderer::SubmitTexture(Texture2D* texture) {
 	float tid = 0;
 
 	if (tids.Find(texture) == (size_t)-1) {
-		if (tids.GetSize() == FD_FONT_MAX_SIMULTANEOUS_TEXTURES) {
+		if (tids.GetSize() == maxSimultaneousTextures) {
 			End();
 			Render();
 			Begin();
@@ -116,13 +116,14 @@ float BatchRenderer::SubmitTexture(Texture2D* texture) {
 	return tid;
 }
 
-BatchRenderer::BatchRenderer(Window* window, unsigned int max_vertices) : Renderer(window, nullptr) {
+BatchRenderer::BatchRenderer(Window* window, unsigned int max_vertices, unsigned int max_simultaneous_textures) : Renderer(window, nullptr) {
 	this->maxVertices = max_vertices;
 	this->indexCount = 0;
+	this->maxSimultaneousTextures = max_simultaneous_textures;
 	this->buffer = nullptr;
 }
 
-BatchRenderer::BatchRenderer(Window* window, Camera* camera, unsigned int max_vertices) : BatchRenderer(window, max_vertices) {
+BatchRenderer::BatchRenderer(Window* window, Camera* camera, unsigned int max_vertices) : BatchRenderer(window, max_vertices, 16) {
 	SetCamera(camera);
 }
 

@@ -8,6 +8,8 @@
 
 #include <stdio.h>
 
+Font* Font::defaultFont = nullptr;
+
 
 Texture2D* GetCharFromFont(const String& fontName, unsigned int character) {
 
@@ -196,7 +198,7 @@ ivec2 Font::GetKerning(unsigned int left, unsigned int right) {
 	return ivec2(kerning.x, kerning.y);
 }
 
-ivec2 Font::GetFontMetrics(const String& string) const {
+ivec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 	size_t len = string.length;
 
 	ivec2 total;
@@ -210,7 +212,7 @@ ivec2 Font::GetFontMetrics(const String& string) const {
 
 		const FD_GLYPH& glyph = charMap.Retrieve((unsigned int)string[i]);
 		
-		total.x += glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0));
+		total.x += (unsigned int)(float(glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0))) * scale.x);
 	}
 
 	total.y = size;

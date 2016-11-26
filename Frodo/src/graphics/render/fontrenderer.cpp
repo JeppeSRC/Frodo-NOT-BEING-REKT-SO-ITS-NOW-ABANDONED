@@ -13,7 +13,7 @@ struct Vertex {
 	float tid;
 };
 
-FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRenderer(window, max_glyphs) { 
+FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRenderer(window, max_glyphs, 16) { 
 	blending = true; 
 	depthTesting = false; 
 
@@ -60,34 +60,38 @@ FontRenderer::~FontRenderer() {
 
 }
 
-void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec4 color) {
+void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec4 color, vec2 scale) {
 	//if (buffer == nullptr) Begin();
 	float tid  = SubmitTexture(font->GetTexture());
 	//float btid = SubmitTexture(background);
 
 	size_t textLength = text.length;
-	float size = (float)font->GetSize();
+	float sizeX = (float)font->GetSize() * scale.x;
+	float sizeY = (float)font->GetSize() * scale.y;
 
 	ivec2 dpi = window->GetMonitorDpi();
 
 	float xPos = position.x;
 	float yPos = position.y;
 
-	Font::FD_GLYPH prevGlyph;
+	float xPosOrigin = xPos;
+
+	Font::FD_GLYPH glyph;
 
 	for (size_t i = 0; i < textLength; i++) {
 		unsigned int c = text[i];
 		if (c == ' ') {
-			xPos += size / 2.0f;
-			prevGlyph.unicodeCharacter = 0;
+			xPos += sizeX / 2.0f;
 			continue;
+		} else if (c == '\n') {
+			xPos = xPosOrigin;
+			yPos += sizeY;
 		}
-		Font::FD_GLYPH glyph = font->GetGlyph(c);
 
-		ivec2 kerning = font->GetKerning(prevGlyph.unicodeCharacter, glyph.unicodeCharacter);
+		glyph = font->GetGlyph(c);
 
-		float xa = xPos + glyph.offset.x;
-		float ya = yPos - glyph.offset.y;
+		float xa = xPos + ((float)glyph.offset.x * scale.x);
+		float ya = yPos - ((float)glyph.offset.y * scale.y);
 
 #if (!FD_FONT_SHOW_TEXTURE)
 
@@ -97,19 +101,19 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 		buffer->tid = tid;
 		buffer++;
 
-		buffer->position = vec2(xa + size, ya);
+		buffer->position = vec2(xa + sizeX, ya);
 		buffer->texCoords = vec2(glyph.u1, glyph.v0);
 		buffer->color = color;
 		buffer->tid = tid;
 		buffer++;
 
-		buffer->position = vec2(xa + size, ya + size);
+		buffer->position = vec2(xa + sizeX, ya + sizeY);
 		buffer->texCoords = vec2(glyph.u1, glyph.v1);
 		buffer->color = color;
 		buffer->tid = tid;
 		buffer++;
 
-		buffer->position = vec2(xa, ya + size);
+		buffer->position = vec2(xa, ya + sizeY);
 		buffer->texCoords = vec2(glyph.u0, glyph.v1);
 		buffer->color = color;
 		buffer->tid = tid;
@@ -142,8 +146,6 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 
 		indexCount += 6;
 
-		xPos += glyph.advance.x;
-
-		prevGlyph = glyph;
+		xPos += (float)glyph.advance.x * scale.x;
 	}
 }
