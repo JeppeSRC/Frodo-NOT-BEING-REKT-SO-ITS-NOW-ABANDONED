@@ -201,13 +201,20 @@ ivec2 Font::GetKerning(unsigned int left, unsigned int right) {
 ivec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 	size_t len = string.length;
 
-	ivec2 total;
+	ivec2 total(0, (int)((float)size * scale.y));
+
+	int maxLength = 0;
 
 	for (size_t i = 0; i < len; i++) {
 		unsigned int c = string[i];
 		if (c == ' ') {
-			total.x += size >> 1;
+			total.x += (int)(((float)size * scale.x) / 2.0f);
 			continue;
+		}
+		else if (c == '\n') {
+			total.y += (unsigned int)((float)size * scale.y);
+			maxLength = MAX(maxLength, total.x);
+			total.x = 0;
 		}
 
 		const FD_GLYPH& glyph = charMap.Retrieve((unsigned int)string[i]);
@@ -215,7 +222,7 @@ ivec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 		total.x += (unsigned int)(float(glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0))) * scale.x);
 	}
 
-	total.y = size;
+	total.x = MAX(maxLength, total.x);
 
 	return total;
 }
