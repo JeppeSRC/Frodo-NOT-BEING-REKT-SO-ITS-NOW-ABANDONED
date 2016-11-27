@@ -27,6 +27,8 @@ private:
 	Entity* bigSphere;
 
 	FontRenderer* fontRenderer;
+	MenuRenderer* menuRenderer;
+	UIHandler* handler;
 	Font* font;
 public:
 

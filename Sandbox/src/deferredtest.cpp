@@ -80,7 +80,16 @@ void DeferredTest::OnInit() {
 
 	font = new Font("/fonts/verdana.ttf", 32, Window::GetMonitorDpi());
 
+	Font::SetDefaultFont(font);
+
 	fontRenderer = new FontRenderer(window, 500000);
+	menuRenderer = new MenuRenderer(window, 1024);
+
+	handler = new UIHandler();
+
+	UIItem* button = new UIButton("Some text!", vec2(100, 100), vec2(500, 100));
+
+	handler->Add(button);
 
 	mainRenderer->SetCamera(camera);
 
@@ -122,10 +131,10 @@ void DeferredTest::OnInit() {
 	
 	
 }
-
+float a = 0;
 void DeferredTest::OnUpdate(float delta) {
 	camera->Update(delta);
-
+	a += 0.20 * delta;
 	spotLight0->GetDirection() = camera->GetForward();
 	//spotLight0->GetPosition() = camera->GetPosition();
 
@@ -135,6 +144,10 @@ void DeferredTest::OnUpdate(float delta) {
 	spinningLight3->GetPosition().RotateY(80 * delta);
 
 	bigSphere->GetPosition().RotateY(-5 * delta);
+
+	UIItem* item = handler->operator[](0);
+
+	item->SetSize(vec2(abs(sinf(a) * 500), abs(cosf(a) * 200)));
 }
 
 void DeferredTest::OnTick() {
@@ -151,16 +164,21 @@ void DeferredTest::OnTick() {
 void DeferredTest::OnRender() {
 	mainRenderer->Render();
 	fontRenderer->Begin();
+	menuRenderer->Begin();
 
 	fontRenderer->SubmitText(fpsString, font, vec2(0, 0));
+	menuRenderer->Submit(handler);
 
 	fontRenderer->End();
+	menuRenderer->End();
 
 	fontRenderer->Render();
+	menuRenderer->Render();
 
 	fps++;
 }
 
 void DeferredTest::OnExit() {
 	delete fontRenderer;
+	delete menuRenderer;
 }
