@@ -3,7 +3,7 @@ R"(
 SamplerState samp {
 	AddressU = Wrap;
 	AddressV = Wrap;
-	Filter = MIN_MAG_MIP_NEAREST;
+	Filter = MIN_MAG_MIP_LINEAR;
 };
 
 Texture2D tex1 : register(t0);
@@ -24,61 +24,62 @@ Texture2D tex15 : register(t14);
 Texture2D tex16 : register(t15);
 
 float4 psMain(float4 position : SV_POSITION, float2 texCoord : TEXCOORDS, float4 color : COLOR, float tid : TID) : SV_TARGET0 {
-	float alpha = 1;
+	float4 tex = float4(1, 1, 1, 1);
 	
 	switch(tid) {
 		case 1:
-			alpha = tex1.Sample(samp, texCoord).x;
+			tex = tex1.Sample(samp, texCoord);
 			break;
 		case 2:
-			alpha = tex2.Sample(samp, texCoord).x;
+			tex = tex2.Sample(samp, texCoord);
 			break;
 		case 3:
-			alpha = tex3.Sample(samp, texCoord).x;
+			tex = tex3.Sample(samp, texCoord);
 			break;
 		case 4:
-			alpha = tex4.Sample(samp, texCoord).x;
+			tex = tex4.Sample(samp, texCoord);
 			break;
 		case 5:
-			alpha = tex5.Sample(samp, texCoord).x;
+			tex = tex5.Sample(samp, texCoord);
 			break;
 		case 6:
-			alpha = tex6.Sample(samp, texCoord).x;
+			tex = tex6.Sample(samp, texCoord);
 			break;
 		case 7:
-			alpha = tex7.Sample(samp, texCoord).x;
+			tex = tex7.Sample(samp, texCoord);
 			break;
 		case 8:
-			alpha = tex8.Sample(samp, texCoord).x;
+			tex = tex8.Sample(samp, texCoord);
 			break;		
 		case 9:
-			alpha = tex9.Sample(samp, texCoord).x;
+			tex = tex9.Sample(samp, texCoord);
 			break;
 		case 10:
-			alpha = tex10.Sample(samp, texCoord).x;
+			tex = tex10.Sample(samp, texCoord);
 			break;
 		case 11:
-			alpha = tex11.Sample(samp, texCoord).x;
+			tex = tex11.Sample(samp, texCoord);
 			break;
 		case 12:
-			alpha = tex12.Sample(samp, texCoord).x;
+			tex = tex12.Sample(samp, texCoord);
 			break;		
 		case 13:
-			alpha = tex13.Sample(samp, texCoord).x;
+			tex = tex13.Sample(samp, texCoord);
 			break;
 		case 14:
-			alpha = tex14.Sample(samp, texCoord).x;
+			tex = tex14.Sample(samp, texCoord);
 			break;
 		case 15:
-			alpha = tex15.Sample(samp, texCoord).x;
+			tex = tex15.Sample(samp, texCoord);
 			break;
 		case 16:
-			alpha = tex16.Sample(samp, texCoord).x;
+			tex = tex16.Sample(samp, texCoord);
 			break;
 	}
 
+
 	
-	return color * alpha;
+	return color * tex;
 }
 
 )"

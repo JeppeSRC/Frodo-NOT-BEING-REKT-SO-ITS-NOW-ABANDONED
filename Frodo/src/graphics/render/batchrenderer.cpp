@@ -92,9 +92,11 @@ void BatchRenderer::End() {
 }
 
 float BatchRenderer::SubmitTexture(Texture2D* texture) {
+	if (texture == nullptr) return 0.0f;
 	size_t numTids = tids.GetSize();
 
 	float tid = 0;
+
 
 	if (tids.Find(texture) == (size_t)-1) {
 		if (tids.GetSize() == maxSimultaneousTextures) {

@@ -187,7 +187,8 @@
     <ClCompile Include="src\core\event\eventdispatcher.cpp" />
     <ClCompile Include="src\core\input.cpp" />
     <ClCompile Include="src\core\log.cpp" />
-    <ClCompile Include="src\core\ui\menu.cpp" />
+    <ClCompile Include="src\core\ui\uibutton.cpp" />
+    <ClCompile Include="src\core\ui\uihandler.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\fd.cpp" />
     <ClCompile Include="src\frodo.cpp" />
@@ -227,8 +228,10 @@
     <ClInclude Include="src\core\event\eventwindow.h" />
     <ClInclude Include="src\core\input.h" />
     <ClInclude Include="src\core\log.h" />
-    <ClInclude Include="src\core\ui\menu.h" />
-    <ClInclude Include="src\core\ui\menuitem.h" />
+    <ClInclude Include="src\core\ui\ui.h" />
+    <ClInclude Include="src\core\ui\uibutton.h" />
+    <ClInclude Include="src\core\ui\uihandler.h" />
+    <ClInclude Include="src\core\ui\uiitem.h" />
     <ClInclude Include="src\core\window.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\fd.h" />

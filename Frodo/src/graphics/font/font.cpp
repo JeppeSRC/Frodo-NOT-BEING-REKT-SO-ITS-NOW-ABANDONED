@@ -198,28 +198,28 @@ ivec2 Font::GetKerning(unsigned int left, unsigned int right) {
 	return ivec2(kerning.x, kerning.y);
 }
 
-ivec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
+vec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 	size_t len = string.length;
 
-	ivec2 total(0, (int)((float)size * scale.y));
+	vec2 total(0, ((float)size * scale.y));
 
-	int maxLength = 0;
+	float maxLength = 0;
 
 	for (size_t i = 0; i < len; i++) {
 		unsigned int c = string[i];
 		if (c == ' ') {
-			total.x += (int)(((float)size * scale.x) / 2.0f);
+			total.x += (((float)size * scale.x) / 2.0f);
 			continue;
 		}
 		else if (c == '\n') {
-			total.y += (unsigned int)((float)size * scale.y);
+			total.y += ((float)size * scale.y);
 			maxLength = MAX(maxLength, total.x);
 			total.x = 0;
 		}
 
 		const FD_GLYPH& glyph = charMap.Retrieve((unsigned int)string[i]);
 		
-		total.x += (unsigned int)(float(glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0))) * scale.x);
+		total.x += (float(glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0))) * scale.x);
 	}
 
 	total.x = MAX(maxLength, total.x);

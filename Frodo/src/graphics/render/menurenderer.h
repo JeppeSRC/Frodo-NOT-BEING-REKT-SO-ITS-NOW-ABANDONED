@@ -2,7 +2,7 @@
 
 #include "fontrenderer.h"
 
-#include <core/ui/menuitem.h>
+#include <core/ui/uiitem.h>
 
 class FDAPI MenuRenderer : public BatchRenderer {
 private:
@@ -12,5 +12,8 @@ public:
 	MenuRenderer(Window* window, unsigned int max_items);
 	~MenuRenderer();
 
-	void Submit(const Menu* menu);
+	void Begin() override;
+	void Submit(const UIHandler* menu);
+	void End() override;
+	void Render() override;
 };

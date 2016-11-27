@@ -51,11 +51,11 @@ public:
 	BatchRenderer(Window* window, Camera* camera, unsigned int max_glyphs);
 	virtual ~BatchRenderer();
 
-	void Begin();
+	virtual void Begin();
 	virtual void Submit(Entity* entity);
-	void End();
+	virtual void End();
 
-	void Render();
+	virtual void Render();
 
 	virtual void Add(Entity* e) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
 	virtual void Add(Light* l) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }

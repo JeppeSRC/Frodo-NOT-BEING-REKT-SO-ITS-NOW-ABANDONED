@@ -65,7 +65,7 @@ public:
 	~Font();
 
 	ivec2 GetKerning(unsigned int left, unsigned int right);
-	ivec2 GetFontMetrics(const String& string, vec2 scale = vec2(1, 1)) const;
+	vec2 GetFontMetrics(const String& string, vec2 scale = vec2(1, 1)) const;
 
 	inline const String& GetName() const { return name; }
 	inline unsigned int GetSize() const { return size; }

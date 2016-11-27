@@ -4,6 +4,8 @@
 #include <core/window.h>
 #include <core/input.h>
 
+#include <core/ui/ui.h>
+
 #include <core/event/event.h>
 #include <core/event/eventdispatcher.h>
 #include <core/event/eventlistener.h>
@@ -28,6 +30,7 @@
 #include <graphics/render/deferredrenderer.h>
 #include <graphics/render/forwardrenderer.h>
 #include <graphics/render/fontrenderer.h>
+#include <graphics/render/menurenderer.h>
 #include <graphics/render/batchrenderer.h>
 #include <graphics/render/renderer.h>
 

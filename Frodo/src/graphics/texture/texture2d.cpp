@@ -18,6 +18,8 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 
 	resource->GetDesc(&d);
 
+	
+
 	this->width = d.Width;
 	this->height = d.Height;
 }
