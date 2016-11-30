@@ -31,6 +31,8 @@ public:
 	String& Remove(size_t start, size_t end);
 	String& RemoveBlankspace();
 
+	String SubString(size_t start, size_t end) const;
+
 	size_t Count(const String& string, size_t offset = 0) const;
 
 	inline bool IsNull() const { return (str == nullptr && length == 0); }

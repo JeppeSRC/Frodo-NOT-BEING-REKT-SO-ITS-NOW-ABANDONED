@@ -151,6 +151,10 @@ String& String::RemoveBlankspace() {
 	return *this;
 }
 
+String String::SubString(size_t start, size_t end) const {
+	return String(str + start, end - start);
+}
+
 size_t String::Count(const String& string, size_t offset) const {
 	size_t total = length - string.length;
 	if (total <= 0) return 0;
