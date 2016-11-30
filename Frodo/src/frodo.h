@@ -48,7 +48,10 @@
 #include <util/list.h>
 #include <util/map.h>
 #include <util/string.h>
+
 #include <util/vfs/vfs.h>
+
+#include <util/asset/package/package.h>
 
 #include <fd.h>
 
