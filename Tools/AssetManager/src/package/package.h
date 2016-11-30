@@ -49,8 +49,6 @@ public:
 	void Write(const String& filename);
 	void Read(const String& filename);
 
-	void DumpContent();
-
 	inline unsigned int GetNumAssets() const { return header.num_assets; }
 	inline unsigned int GetSize() const { return header.size; }
 	inline String GetName() const { return name; }
