@@ -189,7 +189,7 @@ bool String::operator==(const String& string) const {
 }
 
 bool String::operator!=(const String& string) const {
-	if (length != string.length) return false;
+	if (length != string.length) return true;
 
 	for (size_t i = 0; i < length; i++) {
 		if (str[i] == string.str[i]) return false;
