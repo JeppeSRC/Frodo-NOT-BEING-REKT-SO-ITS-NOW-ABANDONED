@@ -85,10 +85,16 @@ void AssetPackage::Read(const String& filename) {
 
 	header = *(FD_HEADER*)data;
 
+	
+
+	name = String(header.name, 32);
+
 	assets.Reserve(header.num_assets);
 
+	FD_ASSET* a = (FD_ASSET*)(data + sizeof(FD_HEADER));
+
 	for (unsigned int i = 0; i < header.num_assets; i++) {
-		FD_ASSET asset = ((FD_ASSET*)data + sizeof(FD_HEADER))[i];
+		FD_ASSET asset = a[i];
 
 		unsigned long long offset = asset.data;
 
@@ -96,6 +102,8 @@ void AssetPackage::Read(const String& filename) {
 		memcpy((void*)asset.data, (const void*)(data + offset), asset.size);
 
 		assets.Push_back(asset);
+
+	
 	}
 
 }

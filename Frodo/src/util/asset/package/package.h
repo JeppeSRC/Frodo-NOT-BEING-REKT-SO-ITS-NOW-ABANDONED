@@ -29,7 +29,7 @@ private:
 	struct FD_HEADER {
 		char signature[4]{ 'O', 'Y', 'M', '8' };
 		unsigned short version = 0x0101;
-		char name[32];
+		char name[32]{ 0 };
 		unsigned int size;
 		unsigned int num_assets;
 	} header;
@@ -41,6 +41,7 @@ private:
 	bool writable;
 public:
 	AssetPackage(const String& name);
+	AssetPackage() {}
 	~AssetPackage();
 
 	void AddAsset(const String& name, void* data, unsigned int size, FD_ASSET_TYPE type);
