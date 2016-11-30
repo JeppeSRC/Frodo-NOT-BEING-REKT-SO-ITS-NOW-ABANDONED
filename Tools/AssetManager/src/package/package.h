@@ -19,7 +19,7 @@ struct FD_ASSET {
 
 	unsigned int size;
 
-	unsigned long long* data;
+	unsigned long long data;
 
 	FD_ASSET_TYPE type;
 };
@@ -27,6 +27,8 @@ struct FD_ASSET {
 class FDAPI AssetPackage {
 private:
 	struct FD_HEADER {
+		char signature[4]{ 'O', 'Y', 'M', '8' };
+		unsigned short version = 0x0101;
 		char name[32];
 		unsigned int size;
 		unsigned int num_assets;
@@ -44,7 +46,10 @@ public:
 	void AddAsset(const String& name, void* data, unsigned int size, FD_ASSET_TYPE type);
 	FD_ASSET GetAsset(const String& name);
 
-	void Flush(const String& filename);
+	void Write(const String& filename);
+	void Read(const String& filename);
+
+	void DumpContent();
 
 	inline unsigned int GetNumAssets() const { return header.num_assets; }
 	inline unsigned int GetSize() const { return header.size; }
