@@ -296,6 +296,8 @@ Shader::~Shader() {
 	for (size_t i = 0; i < pCBuffers.GetSize(); i++)
 		delete pCBuffers[i];
 
+	for (size_t i = 0; i < pTextures.GetSize(); i++)
+		delete pTextures[i];
 }
 
 void Shader::Bind() {
