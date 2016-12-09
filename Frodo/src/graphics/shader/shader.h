@@ -13,6 +13,16 @@ enum FD_SHADER_TYPE {
 	FD_SHADER_TYPE_COMPUTESHADER
 };
 
+enum FD_SHADER_TEXTURE_TYPE {
+	FD_SHADER_TEXTURE_TYPE_TEXTURE1D,
+	FD_SHADER_TEXTURE_TYPE_TEXTURE2D,
+	FD_SHADER_TEXTURE_TYPE_TEXTURE3D,
+	FD_SHADER_TEXTURE_TYPE_TEXTURECUBE,
+	FD_SHADER_TEXTURE_TYPE_TEXTURE1D_ARRAY,
+	FD_SHADER_TEXTURE_TYPE_TEXTURE2D_ARRAY,
+	FD_SHADER_TEXTURE_TYPE_TEXTURECUBE_ARRAY
+};
+
 
 class FDAPI Shader {
 private:
@@ -25,9 +35,19 @@ private:
 		~ShaderStructInfo() { DX_FREE(buffer); }
 	};
 
+	struct ShaderTextureInfo {
+		String name;
+		unsigned int semRegister;
+		unsigned int numTextures;
+		FD_SHADER_TEXTURE_TYPE type;
+	};
+
 	void RemoveComments(String& source);
+
 	void ParseStructs(String source, FD_SHADER_TYPE type);
 	void CalcStructSize(String& structSource, size_t offset, ShaderStructInfo* cbuffer);
+
+	void ParseTextures(String source);
 
 	void CreateBuffers();
 	
@@ -40,6 +60,8 @@ private:
 
 	List<ShaderStructInfo*> vCBuffers;
 	List<ShaderStructInfo*> pCBuffers;
+
+	List<ShaderTextureInfo*> pTextures;
 	
 	ID3D11InputLayout* inputLayout;
 
@@ -60,6 +82,7 @@ public:
 
 	unsigned int GetVSConstantBufferSlotByName(const String& bufferName);
 	unsigned int GetPSConstantBufferSlotByName(const String& bufferName);
+	unsigned int GetPSTextureSlotByName(const String& textureName);
 
 	inline const void* GetVSBufferPointer() const { return vByteCode->GetBufferPointer(); }
 	inline size_t GetVSBufferSize() const { return vByteCode->GetBufferSize(); }

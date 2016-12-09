@@ -132,11 +132,60 @@ void Shader::CalcStructSize(String& structSource, size_t offset, ShaderStructInf
 			fieldOffset = currSemicolon;
 			currSemicolon = fields.Find(";", currSemicolon + 1);
 
-			i = 6;
+			break;
 		}
 	}
 
 	structSource.Remove(offset, end+2);
+}
+
+void Shader::ParseTextures(String source) {
+
+	while (true) {
+		size_t textureStart = source.Find("Texture");
+
+		if (textureStart < (size_t)0) break;
+
+		ShaderTextureInfo* tex = new ShaderTextureInfo;
+		tex->numTextures = 1;
+
+		String type = source.SubString(textureStart + 7, source.Find(" ", textureStart + 7)).RemoveBlankspace();
+
+		if (type == "1D ") {
+			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE1D;
+		}
+		else if (type == "2D ") {
+			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE2D;
+		}
+		else if (type == "3D ") {
+			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE3D;
+		}
+		else if (type == "1DArray") {
+			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE1D_ARRAY;
+		}
+		else if (type == "2DArray") {
+			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE2D_ARRAY;
+		}
+		else if (type == "CubeArray") {
+			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURECUBE_ARRAY;
+		}
+		else if (type == "Cube") {
+			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURECUBE;
+		}
+
+
+		size_t nameStart = source.Find(" ", textureStart);
+		size_t nameEnd = source.Find(":", nameStart);
+
+		tex->name = source.SubString(nameStart, nameEnd).RemoveBlankspace();
+
+		size_t regStart = source.Find("register(t", nameEnd) + 10;
+
+		tex->semRegister = atoi(*source + regStart);
+		
+		pTextures.Push_back(tex);
+	}
+
 }
 
 void Shader::CreateBuffers() {
@@ -229,6 +278,7 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool s
 	ParseStructs(vSource, FD_SHADER_TYPE_VERTEXSHADER);
 	ParseStructs(pSource, FD_SHADER_TYPE_PIXELSHADER);
 
+	ParseTextures(pSource);
 
 	CreateBuffers();
 }
@@ -352,5 +402,15 @@ unsigned int Shader::GetPSConstantBufferSlotByName(const String& bufferName) {
 	}
 
 	FD_FATAL("Buffer not found \"%s\"", *bufferName);
+	return -1;
+}
+
+unsigned int Shader::GetPSTextureSlotByName(const String& textureName) {
+	size_t size = pTextures.GetSize();
+	for (size_t i = 0; i < size; i++) {
+		if (pTextures[i]->name == textureName) return pTextures[i]->semRegister;
+	}
+
+	FD_FATAL("Texture not found \"%s\"", *textureName);
 	return -1;
 }
