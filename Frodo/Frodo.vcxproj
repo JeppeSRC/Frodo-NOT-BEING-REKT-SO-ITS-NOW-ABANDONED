@@ -204,6 +204,8 @@
     <ClCompile Include="src\graphics\render\model\meshfactory.cpp" />
     <ClCompile Include="src\graphics\shader\shader.cpp" />
     <ClCompile Include="src\graphics\shader\shaderfactory.cpp" />
+    <ClCompile Include="src\graphics\shader\shadergen.cpp" />
+    <ClCompile Include="src\graphics\shader\shaderparser.cpp" />
     <ClCompile Include="src\graphics\texture\framebuffer2d.cpp" />
     <ClCompile Include="src\graphics\texture\texture2d.cpp" />
     <ClCompile Include="src\graphics\texture\texturemanager.cpp" />
