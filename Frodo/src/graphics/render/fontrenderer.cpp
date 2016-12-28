@@ -27,6 +27,9 @@ FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRende
 	
 
 	shader = ShaderFactory::GetShader(FD_FONT_DEFAULT);
+
+	shader->ShaderGenComplete();
+
 #if FD_FONT_SHOW_TEXTURE
 	shader->SetVSConstantBuffer("view_data", &mat4::Identity());
 #else

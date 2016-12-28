@@ -40,23 +40,12 @@ void Shader::CreateBuffers() {
 	}
 }
 
-Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool src) {
+void Shader::Compile(String vSource, String pSource) {
 	inputLayout = nullptr;
 	vByteCode = nullptr;
 	pByteCode = nullptr;
 	vertexShader = nullptr;
 	pixelShader = nullptr;
-
-	String vSource;
-	String pSource;
-
-	if (src) {
-		vSource = vertexFilename;
-		pSource = pixelFilename;
-	} else {
-		vSource = VFS::Get()->ReadTextFile(vertexFilename);
-		pSource = VFS::Get()->ReadTextFile(pixelFilename);
-	}
 
 	ID3DBlob* error = nullptr;
 
@@ -79,7 +68,7 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool s
 	}
 
 	DX_FREE(error);
-	
+
 
 	D3DContext::GetDevice()->CreateVertexShader(vByteCode->GetBufferPointer(), vByteCode->GetBufferSize(), 0, &vertexShader);
 
@@ -89,15 +78,31 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool s
 
 	FD_ASSERT(pixelShader && "Failed to create pixelshader");
 
-	RemoveComments(vSource);
-	RemoveComments(pSource);
-
 	ParseStructs(vSource, FD_SHADER_TYPE_VERTEXSHADER);
 	ParseStructs(pSource, FD_SHADER_TYPE_PIXELSHADER);
 
 	ParseTextures(pSource);
 
 	CreateBuffers();
+}
+
+Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool src) {
+	if (src) {
+		vSource = vertexFilename;
+		pSource = pixelFilename;
+	} else {
+		vSource = VFS::Get()->ReadTextFile(vertexFilename);
+		pSource = VFS::Get()->ReadTextFile(pixelFilename);
+	}
+
+	vSourceOriginal = vSource;
+	pSourceOriginal = pSource;
+
+	RemoveComments(vSource);
+	RemoveComments(pSource);
+
+	ShaderGenParseDefinitions(vSource, FD_SHADER_TYPE_VERTEXSHADER);
+	ShaderGenParseDefinitions(pSource, FD_SHADER_TYPE_PIXELSHADER);
 }
 
 Shader::~Shader() {
@@ -107,14 +112,16 @@ Shader::~Shader() {
 	DX_FREE(vByteCode);
 	DX_FREE(pByteCode);
 
-	for (size_t i = 0; i < vCBuffers.GetSize(); i++)
-		delete vCBuffers[i];
+	vCBuffers.Free();
+	pCBuffers.Free();
+	pTextures.Free();
+	
+	for (size_t i = 0; i < variables.GetSize(); i++) {
+		delete variables[i]->data;
+	}
 
-	for (size_t i = 0; i < pCBuffers.GetSize(); i++)
-		delete pCBuffers[i];
-
-	for (size_t i = 0; i < pTextures.GetSize(); i++)
-		delete pTextures[i];
+	variables.Free();
+	blocks.Free();
 }
 
 void Shader::Bind() {

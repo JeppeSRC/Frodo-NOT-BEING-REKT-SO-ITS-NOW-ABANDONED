@@ -6,6 +6,12 @@ SamplerState samp {
 	Filter = MIN_MAG_MIP_NEAREST;
 };
 
+#shaderGen if defined(test)
+
+Defined
+
+#shaderGen elif defined(test2)
+
 Texture2D tex1 : register(t0);
 Texture2D tex2 : register(t1);
 Texture2D tex3 : register(t2);
@@ -22,6 +28,16 @@ Texture2D tex13 : register(t12);
 Texture2D tex14 : register(t13);
 Texture2D tex15 : register(t14);
 Texture2D tex16 : register(t15);
+
+#shaderGen elif defined(test3)
+
+defined 3
+
+#shaderGen else
+
+Else
+
+#shaderGen endif
 
 float4 psMain(float4 position : SV_POSITION, float2 texCoord : TEXCOORDS, float4 color : COLOR, float tid : TID) : SV_TARGET0 {
 	float alpha = 1;

@@ -23,8 +23,52 @@ enum FD_SHADER_TEXTURE_TYPE {
 	FD_SHADER_TEXTURE_TYPE_TEXTURECUBE_ARRAY
 };
 
+enum FD_SHADER_GEN_VARIABLE_TYPE {
+	FD_UNKNOWN,
+	FD_S8,
+	FD_U8,
+	FD_S16,
+	FD_U16,
+	FD_S32,
+	FD_U32,
+	FD_S64,
+	FD_U64,
+	FD_F32,
+	FD_F64,
+	FD_STRING
+};
 
 class FDAPI Shader {
+private:
+	struct ShaderGenVariable {
+		String name;
+
+		FD_SHADER_GEN_VARIABLE_TYPE dataType;
+		void* data;
+
+		FD_SHADER_TYPE shader;
+	};
+
+	struct ShaderGenBlock {
+		String name;
+		String code;
+
+		FD_SHADER_TYPE shader;
+	};
+
+	List<ShaderGenVariable*> variables;
+	List<ShaderGenBlock*> blocks;
+
+	ShaderGenVariable* ShaderGenGetVariableInternal(const String& name, FD_SHADER_TYPE type);
+
+	void ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type);
+	void ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type);
+	
+	bool ShaderGenProcessFunction(String function, FD_SHADER_TYPE type);
+
+	bool ShaderGenIsVariableDefined(const String& name, FD_SHADER_TYPE type);
+
+
 private:
 	struct ShaderStructInfo {
 		String name;
@@ -53,6 +97,13 @@ private:
 	
 
 private:
+	String vSourceOriginal;
+	String pSourceOriginal;
+
+	String vSource;
+	String pSource;
+
+
 	ID3DBlob* vByteCode;
 	ID3DBlob* pByteCode;
 	ID3D11VertexShader* vertexShader;
@@ -67,6 +118,8 @@ private:
 
 	void SetVSConstantBufferSlotInternal(unsigned int slot, void* data);
 	void SetPSConstantBufferSlotInternal(unsigned int slot, void* data);
+
+	void Compile(String vSource, String pSource);
 
 public:
 	Shader(const String& vertexFilename, const String& pixelFilename, bool src = false);
@@ -83,6 +136,13 @@ public:
 	unsigned int GetVSConstantBufferSlotByName(const String& bufferName);
 	unsigned int GetPSConstantBufferSlotByName(const String& bufferName);
 	unsigned int GetPSTextureSlotByName(const String& textureName);
+
+	void ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, FD_SHADER_GEN_VARIABLE_TYPE variableType, void* data);
+
+	void*  ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type);
+	String ShaderGenGetBlock(const String& name, FD_SHADER_TYPE typ);
+
+	void ShaderGenComplete();
 
 	inline const void* GetVSBufferPointer() const { return vByteCode->GetBufferPointer(); }
 	inline size_t GetVSBufferSize() const { return vByteCode->GetBufferSize(); }
