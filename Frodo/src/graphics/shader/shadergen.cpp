@@ -264,6 +264,10 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 bool Shader::ShaderGenProcessFunction(String function, FD_SHADER_TYPE type) {
 	if (function.StartsWith("defined(")) {
 		return ShaderGenIsVariableDefined(function.SubString(8, function.Find(")", 9)).RemoveBlankspace(), type);
+	}else if (function.StartsWith("true")) {
+		return true;
+	} else if (function.StartsWith("false")) {
+		return false;
 	} else if (function.StartsWith("eq(")) {
 		String para1, para2;
 

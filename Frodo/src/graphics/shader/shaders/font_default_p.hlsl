@@ -13,7 +13,7 @@ SamplerState samp {
 
 Defined
 
-#shaderGen elif le(test2, test3)
+#shaderGen elif true
 
 Texture2D tex1 : register(t0);
 Texture2D tex2 : register(t1);
