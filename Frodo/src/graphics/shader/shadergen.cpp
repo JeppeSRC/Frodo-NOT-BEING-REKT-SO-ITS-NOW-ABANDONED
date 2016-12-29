@@ -14,14 +14,25 @@ if (ShaderGenIsVariableDefined(para1, type)) { \
 		var2->dataType = var1->dataType; \
 		double value = atof(*para2); \
 	 \
-		if (var2->dataType == FD_U8) { var2->data = new unsigned char((unsigned char)value); } else if (var2->dataType == FD_S8) { var2->data = new signed char((signed char)value); } else if (var2->dataType == FD_U16) { var2->data = new unsigned short((unsigned short)value); } else if (var2->dataType == FD_S16) { var2->data = new signed short((signed short)value); } else if (var2->dataType == FD_U32) { var2->data = new unsigned int((unsigned int)value); } else if (var2->dataType == FD_S32) { var2->data = new signed int((signed int)value); } else if (var2->dataType == FD_U64) { var2->data = new unsigned long long((unsigned long long)value); } else if (var2->dataType == FD_S64) { var2->data = new signed long long((signed long long)value); } else if (var2->dataType == FD_F32) { var2->data = new float((float)value); } else if (var2->dataType == FD_F64) { var2->data = new double(value); } \
+		if (var2->dataType == FD_U8) { var2->data = new unsigned char((unsigned char)value); } \
+		else if (var2->dataType == FD_S8) { var2->data = new signed char((signed char)value); }  \
+		else if (var2->dataType == FD_U16) { var2->data = new unsigned short((unsigned short)value); }  \
+		else if (var2->dataType == FD_S16) { var2->data = new signed short((signed short)value); }  \
+		else if (var2->dataType == FD_U32) { var2->data = new unsigned int((unsigned int)value); }  \
+		else if (var2->dataType == FD_S32) { var2->data = new signed int((signed int)value); }  \
+		else if (var2->dataType == FD_U64) { var2->data = new unsigned long long((unsigned long long)value); }  \
+		else if (var2->dataType == FD_S64) { var2->data = new signed long long((signed long long)value); }  \
+		else if (var2->dataType == FD_F32) { var2->data = new float((float)value); }  \
+		else if (var2->dataType == FD_F64) { var2->data = new double(value); } \
 	} \
  \
 	if (var1->dataType == FD_UNKNOWN) { \
+		FD_WARNING("[ShaderGen] Variable \"%s\" does not have any data", *para1); \
 		return false; \
 	} \
 	 \
 	if (var1->dataType != var2->dataType) { \
+		FD_WARNING("[ShaderGen] Variables \"%s\" and \"%s\" missmatched data type", *para1, *para2); \
 		return false; \
 	} \
 	switch (var1->dataType) { \
@@ -49,6 +60,7 @@ if (ShaderGenIsVariableDefined(para1, type)) { \
 				break; \
 		} \
 } else { \
+	FD_WARNING("[ShaderGen] Variable \"%s\" not defined", *para1); \
 	return false; \
 }  \
 
@@ -88,6 +100,7 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 	//define
 	while (true) {
+		while_beginning1:
 		size_t start = source.Find(sg_define);
 
 		if (start == (size_t)-1) break;
@@ -104,27 +117,41 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 		ShaderGenVariable* variable = new ShaderGenVariable;
 		variable->shader = type;
-		
-		if		(dataType == sg_type_u8)  { variable->dataType = FD_U8;  variable->data = new unsigned char((unsigned char)value); }
-		else if (dataType == sg_type_s8)  { variable->dataType = FD_S8;  variable->data = new signed char((signed char)value); }
-		else if (dataType == sg_type_u16) { variable->dataType = FD_U16; variable->data = new unsigned short((unsigned short)value); }
-		else if (dataType == sg_type_s16) { variable->dataType = FD_S16; variable->data = new signed short((signed short)value); }
-		else if (dataType == sg_type_u32) { variable->dataType = FD_U32; variable->data = new unsigned int((unsigned int)value); }
-		else if (dataType == sg_type_s32) { variable->dataType = FD_S32; variable->data = new signed int((signed int)value); }
-		else if (dataType == sg_type_u64) { variable->dataType = FD_U64; variable->data = new unsigned long long((unsigned long long)value); }
-		else if (dataType == sg_type_s64) { variable->dataType = FD_S64; variable->data = new signed long long((signed long long)value); }
-		else if (dataType == sg_type_f32) { variable->dataType = FD_F32; variable->data = new float((float)value); }
-		else if (dataType == sg_type_f64) { variable->dataType = FD_F64; variable->data = new double(value); }
+
+		String d_DataType;
+
+		if		(dataType == (d_DataType = sg_type_u8))  { variable->dataType = FD_U8;  variable->data = new unsigned char((unsigned char)value); }
+		else if (dataType == (d_DataType = sg_type_s8))  { variable->dataType = FD_S8;  variable->data = new signed char((signed char)value); }
+		else if (dataType == (d_DataType = sg_type_u16)) { variable->dataType = FD_U16; variable->data = new unsigned short((unsigned short)value); }
+		else if (dataType == (d_DataType = sg_type_s16)) { variable->dataType = FD_S16; variable->data = new signed short((signed short)value); }
+		else if (dataType == (d_DataType = sg_type_u32)) { variable->dataType = FD_U32; variable->data = new unsigned int((unsigned int)value); }
+		else if (dataType == (d_DataType = sg_type_s32)) { variable->dataType = FD_S32; variable->data = new signed int((signed int)value); }
+		else if (dataType == (d_DataType = sg_type_u64)) { variable->dataType = FD_U64; variable->data = new unsigned long long((unsigned long long)value); }
+		else if (dataType == (d_DataType = sg_type_s64)) { variable->dataType = FD_S64; variable->data = new signed long long((signed long long)value); }
+		else if (dataType == (d_DataType = sg_type_f32)) { variable->dataType = FD_F32; variable->data = new float((float)value); }
+		else if (dataType == (d_DataType = sg_type_f64)) { variable->dataType = FD_F64; variable->data = new double(value); }
 				
 		variable->name = source.SubString(nameStart, nameEnd).RemoveBlankspace();
 
 		source.Remove(start, end);
 
+		for (size_t i = 0; i < variables.GetSize(); i++) {
+			if (variables[i]->name == variable->name && variables[i]->shader == type) {
+				FD_WARNING("[ShaderGen] Variable \"%s\" re-definition, saving existing", *variable->name);
+				delete variable->data;
+				delete variable;
+				goto while_beginning1;
+			}
+		}
+
 		variables.Push_back(variable);
+
+		FD_DEBUG("[ShaderGen] Added variable <NAME: %s TYPE: %s DATA: %f>", *variable->name, *d_DataType, value);
 	}
 
 	//define_r
 	while (true) {
+		while_beginning2:
 		size_t start = source.Find(sg_define_r);
 
 		if (start == (size_t)-1) break;
@@ -141,11 +168,22 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 		source.Remove(start, end);
 
+		for (size_t i = 0; i < variables.GetSize(); i++) {
+			if (variables[i]->name == variable->name && variables[i]->shader == type) {
+				FD_WARNING("[ShaderGen] Variable \"%s\" re-definition, saving existing", *variable->name);
+				delete variable->data;
+				delete variable;
+				goto while_beginning2;
+			}
+		}
+
 		variables.Push_back(variable);
+		FD_DEBUG("[ShaderGen] Added variable <NAME: %s TYPE: UNKNOWN DATA: NOT_SET>", *variable->name);
 	}
 
 	//define_b
 	while (true) {
+		while_beginning3:
 		size_t start = source.Find(sg_define_b);
 
 		if (start == (size_t)-1) break;
@@ -162,8 +200,17 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 		source.Remove(start, end);
 
+		for (size_t i = 0; i < blocks.GetSize(); i++) {
+			if (blocks[i]->name == block->name && blocks[i]->shader == type) {
+				FD_WARNING("[ShaderGen] Block \"%s\" re-definition, saving existing", *block->name);
+				delete block;
+				goto while_beginning3;
+			}
+		}
+
 		blocks.Push_back(block);
 
+		FD_DEBUG("[ShaderGen] Added block <NAME: %s>", *block->name);
 	}
 }
 
@@ -183,7 +230,10 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 		if (res) {
 			size_t end = source.Find(sg_endif, start);
 
-			if (end == (size_t)-1); //TODO: logging
+			if (end == (size_t)-1) {
+				FD_FATAL("[ShaderGen] No \"endif\" found after \"if\" aborting");
+				return;
+			}
 
 			size_t other = source.Find(sg_shadergen, functionEnd);
 
@@ -197,7 +247,10 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 		} else {
 			size_t end = source.Find(sg_endif, start);
 
-			if (end == (size_t)-1); //TODO: error
+			if (end == (size_t)-1) {
+				FD_FATAL("[ShaderGen] No \"endif\" found after \"if\" aborting");
+				return;
+			}
 
 			size_t firstElif = source.Find(sg_elif, functionEnd);
 			size_t firstElse = source.Find(sg_else, functionEnd);
@@ -377,6 +430,7 @@ bool Shader::ShaderGenProcessFunction(String function, FD_SHADER_TYPE type) {
 		CMP_VARS(<=, true, para1, para2)
 	}
 
+	FD_WARNING("[ShaderGen] Unknown function \"%s\"", *function);
 	return false;
 }
 
@@ -393,7 +447,9 @@ void Shader::ShaderGenGetParametersFromFunction(const String& function, size_t o
 	size_t comma = parameters.Find(",");
 	size_t numParameters = parameters.Count(",")+1;
 
-	if (numParameters == 0); //TODO: Log
+	if (numParameters == 0) {
+		FD_FATAL("[ShaderGen] Function \"%s\" only has 1 or less parameters, min 2 required", *function);
+	}
 
 	size_t start = 0;
 
@@ -416,9 +472,11 @@ void Shader::ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, FD_SH
 			variable->dataType = variableType;
 			if (variable->data) delete variable->data;
 			variable->data = data;
+			FD_DEBUG("[ShaderGen] Variable \"%s\" updated", *name);
 			return;
 		}
 	}
+
 
 	ShaderGenVariable* var = new ShaderGenVariable;
 	var->name = name;
@@ -427,7 +485,8 @@ void Shader::ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, FD_SH
 	var->data = data;
 
 	variables.Push_back(var);
-	//TODO: log
+
+	FD_DEBUG("[ShaderGen] Variable \"%s\" doesn't exist. Creating....", *name);
 }
 
 void Shader::ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type, bool deleteData) {
@@ -439,11 +498,14 @@ void Shader::ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type, boo
 	variables.Remove(var);
 
 	delete var;
+
+	FD_DEBUG("[ShaderGen] Undefined variable \"%s\"", *name);
 }
 
 void*  Shader::ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type) {
 	ShaderGenVariable* var = ShaderGenGetVariableInternal(name, type);
 	if (var != nullptr) return var->data;
+	FD_WARNING("[ShaderGen] Variable \"%s\" not found", *name);
 	return nullptr;
 }
 
@@ -454,6 +516,7 @@ String Shader::ShaderGenGetBlock(const String& name, FD_SHADER_TYPE type) {
 		if (block->shader == type && block->name == name) return block->code;
 	}
 
+	FD_WARNING("[ShaderGen] Block \"%s\" not found", *name);
 	return String("Empty Block");
 }
 
@@ -461,5 +524,6 @@ void Shader::ShaderGenComplete() {
 	ShaderGenProcessConditions(vSource, FD_SHADER_TYPE_VERTEXSHADER);
 	ShaderGenProcessConditions(pSource, FD_SHADER_TYPE_PIXELSHADER);
 
+	FD_DEBUG("[ShaderGen] Shader generation completed, compiling...");
 	Compile(vSource, pSource);
 }
