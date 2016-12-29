@@ -1,6 +1,58 @@
 #include "shader.h"
 #include <core/log.h>
+#include <stdarg.h>
 
+#define CMP_VARS(op, ret, p1, p2) \
+if (ShaderGenIsVariableDefined(para1, type)) { \
+	ShaderGenVariable* var1 = ShaderGenGetVariableInternal(para1, type);  \
+	ShaderGenVariable* var2 = nullptr; \
+	if (ShaderGenIsVariableDefined(para2, type)) { \
+		var2 = ShaderGenGetVariableInternal(para2, type); \
+	} else { \
+		var2 = new ShaderGenVariable; \
+		var2->name = String("tmpVar%") + para2; \
+		var2->dataType = var1->dataType; \
+		double value = atof(*para2); \
+	 \
+		if (var2->dataType == FD_U8) { var2->data = new unsigned char((unsigned char)value); } else if (var2->dataType == FD_S8) { var2->data = new signed char((signed char)value); } else if (var2->dataType == FD_U16) { var2->data = new unsigned short((unsigned short)value); } else if (var2->dataType == FD_S16) { var2->data = new signed short((signed short)value); } else if (var2->dataType == FD_U32) { var2->data = new unsigned int((unsigned int)value); } else if (var2->dataType == FD_S32) { var2->data = new signed int((signed int)value); } else if (var2->dataType == FD_U64) { var2->data = new unsigned long long((unsigned long long)value); } else if (var2->dataType == FD_S64) { var2->data = new signed long long((signed long long)value); } else if (var2->dataType == FD_F32) { var2->data = new float((float)value); } else if (var2->dataType == FD_F64) { var2->data = new double(value); } \
+	} \
+ \
+	if (var1->dataType == FD_UNKNOWN) { \
+		return false; \
+	} \
+	 \
+	if (var1->dataType != var2->dataType) { \
+		return false; \
+	} \
+	switch (var1->dataType) { \
+		case FD_S8: \
+		case FD_U8: \
+				if ((*(unsigned char*)var1->data) op (*(unsigned char*)var2->data)) return ret; \
+				break; \
+		case FD_S16: \
+		case FD_U16: \
+				if ((*(unsigned short*)var1->data) op (*(unsigned short*)var2->data)) return ret; \
+				break; \
+		case FD_S32: \
+		case FD_U32: \
+				if ((*(unsigned int*)var1->data) op (*(unsigned int*)var2->data)) return ret; \
+				break; \
+		case FD_S64: \
+		case FD_U64: \
+				if ((*(unsigned long long*)var1->data) op (*(unsigned long long*)var2->data)) return ret; \
+				break; \
+		case FD_F32: \
+				if ((*(float*)var1->data) op (*(float*)var2->data)) return ret; \
+				break; \
+		case FD_F64: \
+				if ((*(double*)var1->data) op (*(double*)var2->data)) return ret; \
+				break; \
+		} \
+} else { \
+	return false; \
+}  \
+
+	//TODO: Loggin everywhere
 static String sg_endblock("#shaderGen endblock");
 static String sg_define_r("#shaderGen define_r ");
 static String sg_define_b("#shaderGen define_b ");
@@ -212,54 +264,113 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 bool Shader::ShaderGenProcessFunction(String function, FD_SHADER_TYPE type) {
 	if (function.StartsWith("defined(")) {
 		return ShaderGenIsVariableDefined(function.SubString(8, function.Find(")", 9)).RemoveBlankspace(), type);
-	} else if (function.StartsWith("equals(")) {
-		String parameters = function.SubString(7, function.Find(")", 8)).RemoveBlankspace();
+	} else if (function.StartsWith("eq(")) {
+		String para1, para2;
 
-		size_t comma = parameters.Find(",");
+		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
 
-		String para1 = parameters.SubString(0, comma);
-		String para2 = parameters.SubString(comma+1, parameters.length);
+		/*if (ShaderGenIsVariableDefined(para1, type)) {
+				ShaderGenVariable* var1 = ShaderGenGetVariableInternal(para1, type); 
+				ShaderGenVariable* var2 = nullptr;
+				if (ShaderGenIsVariableDefined(para2, type)) {
+					var2 = ShaderGenGetVariableInternal(para2, type);
+				} else {
+					var2 = new ShaderGenVariable;
+					var2->name = String("tmpVar%") + para2;
+					var2->dataType = var1->dataType;
+					double value = atof(*para2);
 
-
-
-		if (ShaderGenIsVariableDefined(para1, type)) {
-			if (ShaderGenIsVariableDefined(para2, type)) {
-				ShaderGenVariable* var1 = ShaderGenGetVariableInternal(para1, type);
-				ShaderGenVariable* var2 = ShaderGenGetVariableInternal(para2, type);
-
-				if (var1->dataType == FD_UNKNOWN) return false;
-
-				if (var1->dataType != var2->dataType) return false;
-
-				switch (var1->dataType) {
-				case FD_S8:
-				case FD_U8:
-					if ((*(unsigned char*)var1->data) == (*(unsigned char*)var2->data)) return true;
-				case FD_S16:
-				case FD_U16:
-					if ((*(unsigned short*)var1->data) == (*(unsigned short*)var2->data)) return true;
-				case FD_S32:
-				case FD_U32:
-					if ((*(unsigned int*)var1->data) == (*(unsigned int*)var2->data)) return true;
-				case FD_S64:
-				case FD_U64:
-					if ((*(unsigned long long*)var1->data) == (*(unsigned long long*)var2->data)) return true;
-				case FD_F32:
-					if ((*(float*)var1->data) == (*(float*)var2->data)) return true;
-				case FD_F64:
-					if ((*(double*)var1->data) == (*(double*)var2->data)) return true;
+					if		(var2->dataType == FD_U8)  { var2->data = new unsigned char((unsigned char)value); }
+					else if (var2->dataType == FD_S8)  { var2->data = new signed char((signed char)value); }
+					else if (var2->dataType == FD_U16) { var2->data = new unsigned short((unsigned short)value); }
+					else if (var2->dataType == FD_S16) { var2->data = new signed short((signed short)value); }
+					else if (var2->dataType == FD_U32) { var2->data = new unsigned int((unsigned int)value); }
+					else if (var2->dataType == FD_S32) { var2->data = new signed int((signed int)value); }
+					else if (var2->dataType == FD_U64) { var2->data = new unsigned long long((unsigned long long)value); }
+					else if (var2->dataType == FD_S64) { var2->data = new signed long long((signed long long)value); }
+					else if (var2->dataType == FD_F32) { var2->data = new float((float)value); }
+					else if (var2->dataType == FD_F64) { var2->data = new double(value); }
 				}
+						
+				if (var1->dataType == FD_UNKNOWN) {
+					return false; 
+				} 
+							
+				if (var1->dataType != var2->dataType) {
+					return false; 
+				} 
+									
+				switch (var1->dataType) {
+				case FD_S8: 
+				case FD_U8: 
+						if ((*(unsigned char*)var1->data) == (*(unsigned char*)var2->data)) return true; 
+						break; 
+				case FD_S16: 
+				case FD_U16: 
+						if ((*(unsigned short*)var1->data) == (*(unsigned short*)var2->data)) return true; 
+						break; 
+				case FD_S32: 
+				case FD_U32: 
+						if ((*(unsigned int*)var1->data) == (*(unsigned int*)var2->data)) return true; 
+						break; 
+				case FD_S64: 
+				case FD_U64: 
+						if ((*(unsigned long long*)var1->data) == (*(unsigned long long*)var2->data)) return true; 
+						break; 
+				case FD_F32: 
+						if ((*(float*)var1->data) == (*(float*)var2->data)) return true; 
+						break; 
+				case FD_F64: 
+						if ((*(double*)var1->data) == (*(double*)var2->data)) return true; 
+						break; 
+				} 
 
-			} else {
-				return false;
-			}
+				if (var2->name == (String("tmpVar%").Append(para2))) {
+					delete var2->data;
+					delete var2;
+				}
+											
 		} else {
-			//TODO: Loggin everywhere
-			return false;
-		}
+			return false; 
+		}  */
 
+		CMP_VARS(==, true, para1, para2)
+		
+	} else if (function.StartsWith("neq(")) {
+		String para1, para2;
 
+		ShaderGenGetParametersFromFunction(function, 4, &para1, &para2);
 
+		CMP_VARS(!= , true, para1, para2)
+				
+			
+	} else if (function.StartsWith("gr(")) {
+		String para1, para2;
+
+		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
+
+		CMP_VARS(> , true, para1, para2);
+
+	} else if (function.StartsWith("ls(")) {
+		String para1, para2;
+
+		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
+
+		CMP_VARS(<, true, para1, para2)
+
+	} else if (function.StartsWith("ge(")) {
+		String para1, para2;
+
+		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
+
+		CMP_VARS(>=, true, para1, para2)
+
+	} else if (function.StartsWith("le(")) {
+		String para1, para2;
+
+		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
+
+		CMP_VARS(<=, true, para1, para2)
 	}
 
 	return false;
@@ -267,6 +378,30 @@ bool Shader::ShaderGenProcessFunction(String function, FD_SHADER_TYPE type) {
 
 bool Shader::ShaderGenIsVariableDefined(const String& name, FD_SHADER_TYPE type) {
 	return ShaderGenGetVariableInternal(name, type) == nullptr ? false : true;
+}
+
+void Shader::ShaderGenGetParametersFromFunction(const String& function, size_t offset...) {
+	va_list list;
+	va_start(list, offset);
+
+	String parameters = function.SubString(offset, function.Find(")", offset+1)).RemoveBlankspace();
+
+	size_t comma = parameters.Find(",");
+	size_t numParameters = parameters.Count(",")+1;
+
+	if (numParameters == 0); //TODO: Log
+
+	size_t start = 0;
+
+	for (size_t i = 0; i < numParameters; i++) {
+		String* para = va_arg(list, String*);
+		if (comma == (size_t)-1) comma = parameters.length;
+		*para = parameters.SubString(start, comma).RemoveBlankspace();
+		start = comma + 1;
+		comma = parameters.Find(",", start);
+	}
+
+	va_end(list);
 }
 
 void Shader::ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, FD_SHADER_GEN_VARIABLE_TYPE variableType, void* data) {
@@ -277,11 +412,30 @@ void Shader::ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, FD_SH
 			variable->dataType = variableType;
 			if (variable->data) delete variable->data;
 			variable->data = data;
-			break;
+			return;
 		}
 	}
+
+	ShaderGenVariable* var = new ShaderGenVariable;
+	var->name = name;
+	var->shader = type;
+	var->dataType = variableType;
+	var->data = data;
+
+	variables.Push_back(var);
+	//TODO: log
 }
 
+void Shader::ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type, bool deleteData) {
+	ShaderGenVariable* var = ShaderGenGetVariableInternal(name, type);
+	if (var == nullptr) return;
+
+	if (deleteData) delete var->data;
+
+	variables.Remove(var);
+
+	delete var;
+}
 
 void*  Shader::ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type) {
 	ShaderGenVariable* var = ShaderGenGetVariableInternal(name, type);
@@ -296,7 +450,7 @@ String Shader::ShaderGenGetBlock(const String& name, FD_SHADER_TYPE type) {
 		if (block->shader == type && block->name == name) return block->code;
 	}
 
-	return String();
+	return String("Empty Block");
 }
 
 void Shader::ShaderGenComplete() {

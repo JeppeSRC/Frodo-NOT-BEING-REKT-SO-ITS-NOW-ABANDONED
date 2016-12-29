@@ -6,11 +6,14 @@ SamplerState samp {
 	Filter = MIN_MAG_MIP_NEAREST;
 };
 
+#shaderGen define test2 u32 22
+#shaderGen define test3 u32 23
+
 #shaderGen if defined(test)
 
 Defined
 
-#shaderGen elif defined(test2)
+#shaderGen elif le(test2, test3)
 
 Texture2D tex1 : register(t0);
 Texture2D tex2 : register(t1);

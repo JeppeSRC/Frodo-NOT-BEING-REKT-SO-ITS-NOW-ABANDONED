@@ -68,6 +68,7 @@ private:
 
 	bool ShaderGenIsVariableDefined(const String& name, FD_SHADER_TYPE type);
 
+	void ShaderGenGetParametersFromFunction(const String& function, size_t offset...);
 
 private:
 	struct ShaderStructInfo {
@@ -138,6 +139,7 @@ public:
 	unsigned int GetPSTextureSlotByName(const String& textureName);
 
 	void ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, FD_SHADER_GEN_VARIABLE_TYPE variableType, void* data);
+	void ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type, bool deleteData);
 
 	void*  ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type);
 	String ShaderGenGetBlock(const String& name, FD_SHADER_TYPE typ);
