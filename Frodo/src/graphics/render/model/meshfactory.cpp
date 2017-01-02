@@ -253,6 +253,9 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 
 	List<Face<3>> faces;
 	List<String*> lines = obj.Split('\n');
+	List<vec3> tmpVertices, tmpNormals;
+	List<vec2> tmpTexCoords;
+
 
 
 	size_t numLines = lines.GetSize();
@@ -263,15 +266,15 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 		if (line.StartsWith("v ")) {
 			vec3 vert;
 			sscanf(*line, "v %f %f %f", &vert.x, &vert.y, &vert.z);
-			vertices.Push_back(vert);
+			tmpVertices.Push_back(vert);
 		} else if (line.StartsWith("vt ")) {
 			vec2 tex;
 			sscanf(*line, "vt %f %f", &tex.x, &tex.y);
-			texCoords.Push_back(tex);
+			tmpTexCoords.Push_back(tex);
 		} else if (line.StartsWith("vn ")) {
 			vec3 norm;
 			sscanf(*line, "vn %f %f %f", &norm.x, &norm.y, &norm.z);
-			normals.Push_back(norm);
+			tmpNormals.Push_back(norm);
 		} else if (line.StartsWith("f ")) {
 			Face<3> face;
 			sscanf(*line, "f %u/%u/%u %u/%u/%u %u/%u/%u", &face[0].vertex, &face[0].texCoord, &face[0].normal, &face[1].vertex, &face[1].texCoord, &face[1].normal, &face[2].vertex, &face[2].texCoord, &face[2].normal);
@@ -279,29 +282,28 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 		}
 	}
 
-	texCoords.Resize(vertices.GetSize());
-	normals.Resize(vertices.GetSize());
+	texCoords.Resize(faces.GetSize() * 3);
+	normals.Resize(faces.GetSize() * 3);
+	vertices.Resize(faces.GetSize() * 3);
 
-	MakeFacesOBJ(texCoords, normals, indices, faces);
+	MakeFacesOBJ(vertices, tmpVertices, texCoords, tmpTexCoords, normals, tmpNormals, indices, faces);
 }
 
-void MeshFactory::MakeFacesOBJ(List<vec2>& texCoords, List<vec3>& normals, List<unsigned int>& indices, List<Face<3>> faces) {
-
-	List<vec2> tmpTexCoords = texCoords;
-	List<vec3> tmpNormals = normals;
-
+void MeshFactory::MakeFacesOBJ(List<vec3>& vertices, List<vec3>& tmpVertices, List<vec2>& texCoords, List<vec2>& tmpTexCoords, List<vec3>& normals, List<vec3>& tmpNormals, List<unsigned int>& indices, List<Face<3>> faces) {
 
 	size_t numFaces = faces.GetSize();
 
-	indices.Resize(numFaces * 3);
+	indices.Reserve(numFaces * 3);
 
 	for (size_t i = 0; i < numFaces; i++) {
 		Face<3> face = faces[i];
 		for (size_t j = 0; j < 3; j++) {
-			unsigned int vertex = face[j].vertex - 1;
-			indices[i * 3 + j] = vertex;
-			texCoords[vertex] = tmpTexCoords[face[j].texCoord-1];
-			normals[vertex] = tmpNormals[face[j].normal-1];
+			unsigned int index = indices.GetSize();
+
+			indices.Push_back(index);
+			vertices[index] = tmpVertices[face[j].vertex - 1];
+			texCoords[index] = tmpTexCoords[face[j].texCoord-1];
+			normals[index] = tmpNormals[face[j].normal-1];
 		}
 	}
 }
