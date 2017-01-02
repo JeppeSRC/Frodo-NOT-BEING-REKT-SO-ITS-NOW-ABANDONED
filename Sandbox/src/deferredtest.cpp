@@ -26,15 +26,18 @@ void DeferredTest::OnInit() {
 
 	TextureManager::Add("mountains", new Texture2D("/textures/mountains.jpg"));
 	TextureManager::Add("white", new Texture2D("/textures/white.png"));
+	TextureManager::Add("cube", new Texture2D("/textures/cube.png"));
 
 	camera = new UserCamera(vec3(1, 0, -1.25), vec3(0, 0, 0));
 
 	camera->SetProjection(mat4::Perspective(70.0f, window->GetAspectRatio(), 0.002f, 1000.0f));
 	Model* model = MeshFactory::CreatePlane(WIDTH, DEPTH);
 	Model* model2 = MeshFactory::CreatePlane(WIDTH, HEIGHT);
+	Model* cubeModel = MeshFactory::LoadFromFile("/models/cube.obj");
 	Model* sphereModel = MeshFactory::LoadFromFile("/models/sphere.obj");
 	Model* sphereModelBig = MeshFactory::LoadFromFile("/models/sphere_big.obj");
 	Material* material = new Material(vec4(1, 1, 1, 1));
+	Material* cubeMat = new Material(vec4(1, 1, 1, 1), (Texture2D*)TextureManager::Get("cube"));
 
 	bigSphere = new Entity(vec3(3.5, 0, 0), vec3(0, 0, 0), vec3(0.35, 0.35, 0.35));
 	bigSphere->SetMaterial(material);
@@ -75,6 +78,10 @@ void DeferredTest::OnInit() {
 	back->SetMaterial(material);
 	back->SetModel(model2);
 
+	Entity* cube = new Entity(vec3(2, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1) * 0.3);
+	cube->SetModel(cubeModel);
+	cube->SetMaterial(cubeMat);
+
 	mainRenderer = new DeferredRenderer(window);
 	//mainRenderer = new ForwardRenderer(window);
 
@@ -84,6 +91,7 @@ void DeferredTest::OnInit() {
 
 	mainRenderer->SetCamera(camera);
 
+	mainRenderer->Add(cube);
 	mainRenderer->Add(floor);
 	//renderer->Add(e2);
 	mainRenderer->Add(left);
