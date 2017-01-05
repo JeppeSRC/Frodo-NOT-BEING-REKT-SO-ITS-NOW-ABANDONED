@@ -4,6 +4,32 @@
 #include <util/vfs/vfs.h>
 #include <math/math.h>
 
+String Shader::GetFunctionTypeString(FD_SHADER_GEN_FUNCTION_TYPE type) {
+	switch (type) {
+		case FD_TRUE:
+			return "true";
+		case FD_FALSE:
+			return "false";
+		case FD_DEFINED:
+			return "defined";
+		case FD_EQ:
+			return "eq";
+		case FD_NEQ:
+			return "neq";
+		case FD_GR:
+			return "gr";
+		case FD_LS:
+			return "ls";
+		case FD_GE:
+			return "ge";
+		case FD_LE:
+			return "le";
+	}
+
+	FD_WARNING("[Shader] Unknown function type %d", (int)type);
+
+	return "UNKNOWN";
+}
 
 void Shader::CreateBuffers() {
 
@@ -115,10 +141,6 @@ Shader::~Shader() {
 	vCBuffers.Free();
 	pCBuffers.Free();
 	pTextures.Free();
-	
-	for (size_t i = 0; i < variables.GetSize(); i++) {
-		delete variables[i]->data;
-	}
 
 	variables.Free();
 	blocks.Free();
@@ -169,7 +191,7 @@ void Shader::SetVSConstantBuffer(const String& bufferName, void* data) {
 		return;
 	}
 
-	FD_WARNING("Buffer not found \"%s\"", *bufferName);
+	FD_WARNING("[Shader] Buffer not found \"%s\"", *bufferName);
 }
 
 void Shader::SetPSConstantBuffer(const String& bufferName, void* data) {
@@ -179,7 +201,7 @@ void Shader::SetPSConstantBuffer(const String& bufferName, void* data) {
 		return;
 	}
 
-	FD_WARNING("Buffer not found \"%s\"", *bufferName);
+	FD_WARNING("[Shader] Buffer not found \"%s\"", *bufferName);
 }
 
 void Shader::SetVSConstantBuffer(unsigned int slot, void* data) {
@@ -191,7 +213,7 @@ void Shader::SetVSConstantBuffer(unsigned int slot, void* data) {
 		}
 	}
 
-	FD_WARNING("No buffer at slot %u", slot);
+	FD_WARNING("[Shader] No buffer at slot %u", slot);
 }
 
 void Shader::SetPSConstantBuffer(unsigned int slot, void* data) {
@@ -203,7 +225,7 @@ void Shader::SetPSConstantBuffer(unsigned int slot, void* data) {
 		}
 	}
 
-	FD_WARNING("No buffer at slot %u", slot);
+	FD_WARNING("[Shader] No buffer at slot %u", slot);
 }
 
 void Shader::SetTexture(unsigned int slot, const Texture* tex) {
@@ -217,7 +239,7 @@ unsigned int Shader::GetVSConstantBufferSlotByName(const String& bufferName) {
 		if (vCBuffers[i]->name == bufferName) return vCBuffers[i]->semRegister;
 	}
 
-	FD_FATAL("Buffer not found \"%s\"", *bufferName);
+	FD_FATAL("[Shader] Buffer not found \"%s\"", *bufferName);
 	return -1;
 }
 
@@ -227,7 +249,7 @@ unsigned int Shader::GetPSConstantBufferSlotByName(const String& bufferName) {
 		if (pCBuffers[i]->name == bufferName) return pCBuffers[i]->semRegister;
 	}
 
-	FD_FATAL("Buffer not found \"%s\"", *bufferName);
+	FD_FATAL("[Shader] Buffer not found \"%s\"", *bufferName);
 	return -1;
 }
 
@@ -237,6 +259,6 @@ unsigned int Shader::GetPSTextureSlotByName(const String& textureName) {
 		if (pTextures[i]->name == textureName) return pTextures[i]->semRegister;
 	}
 
-	FD_FATAL("Texture not found \"%s\"", *textureName);
+	FD_FATAL("[Shader] Texture not found \"%s\"", *textureName);
 	return -1;
 }

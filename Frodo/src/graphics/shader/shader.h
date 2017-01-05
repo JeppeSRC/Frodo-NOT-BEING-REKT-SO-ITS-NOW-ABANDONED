@@ -23,19 +23,17 @@ enum FD_SHADER_TEXTURE_TYPE {
 	FD_SHADER_TEXTURE_TYPE_TEXTURECUBE_ARRAY
 };
 
-enum FD_SHADER_GEN_VARIABLE_TYPE {
-	FD_UNKNOWN,
-	FD_S8,
-	FD_U8,
-	FD_S16,
-	FD_U16,
-	FD_S32,
-	FD_U32,
-	FD_S64,
-	FD_U64,
-	FD_F32,
-	FD_F64,
-	FD_STRING
+enum FD_SHADER_GEN_FUNCTION_TYPE {
+	FD_TRUE,
+	FD_FALSE,
+	FD_DEFINED,
+
+	FD_EQ,
+	FD_NEQ,
+	FD_GR,
+	FD_LS,
+	FD_GE,
+	FD_LE
 };
 
 class FDAPI Shader {
@@ -43,8 +41,7 @@ private:
 	struct ShaderGenVariable {
 		String name;
 
-		FD_SHADER_GEN_VARIABLE_TYPE dataType;
-		void* data;
+		float data;
 
 		FD_SHADER_TYPE shader;
 	};
@@ -60,15 +57,16 @@ private:
 	List<ShaderGenBlock*> blocks;
 
 	ShaderGenVariable* ShaderGenGetVariableInternal(const String& name, FD_SHADER_TYPE type);
-
 	void ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type);
 	void ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type);
-	
+	void ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type);
 	bool ShaderGenProcessFunction(String function, FD_SHADER_TYPE type);
-
 	bool ShaderGenIsVariableDefined(const String& name, FD_SHADER_TYPE type);
-
+	bool ShaderGenIsBlockDefined(const String& name, FD_SHADER_TYPE type);
 	void ShaderGenGetParametersFromFunction(const String& function, size_t offset...);
+	void ShaderGenAddVariableData(String& source, FD_SHADER_TYPE type);
+	void ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE type);
+
 
 private:
 	struct ShaderStructInfo {
@@ -138,10 +136,10 @@ public:
 	unsigned int GetPSConstantBufferSlotByName(const String& bufferName);
 	unsigned int GetPSTextureSlotByName(const String& textureName);
 
-	void ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, FD_SHADER_GEN_VARIABLE_TYPE variableType, void* data);
-	void ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type, bool deleteData);
+	void ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, float data);
+	void ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type);
 
-	void*  ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type);
+	float  ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type);
 	String ShaderGenGetBlock(const String& name, FD_SHADER_TYPE typ);
 
 	void ShaderGenComplete();
@@ -151,4 +149,6 @@ public:
 	inline ID3D11InputLayout* GetInputLayout() { return inputLayout; }
 	
 	inline void SetInputLayout(ID3D11InputLayout* layout) { DX_FREE(inputLayout); inputLayout = layout; }
+
+	static String GetFunctionTypeString(FD_SHADER_GEN_FUNCTION_TYPE type);
 };
