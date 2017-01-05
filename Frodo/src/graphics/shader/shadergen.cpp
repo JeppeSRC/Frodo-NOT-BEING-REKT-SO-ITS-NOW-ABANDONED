@@ -358,6 +358,9 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 				forStart = ShaderGenGetVariableInternal(forStartName, type)->data;
 			} else {
 				forStart = (float)atof(*forStartName);
+				if (forStart == 0 && forStartName[0] != ' ') {
+					FD_FATAL("[ShaderGen] Variable \"%s\" not defined", *forStartName);
+				}
 			}
 
 
@@ -374,6 +377,9 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 				forEnd = ShaderGenGetVariableInternal(forEndName, type)->data;
 			} else {
 				forEnd = (float)atof(*forEndName);
+				if (forEnd == 0 && forEndName[0] != ' ') {
+					FD_FATAL("[ShaderGen] Variable \"%s\" not defined", *forEndName);
+				}
 			}
 
 			if (ShaderGenIsVariableDefined(forIncName, type)) {
@@ -381,6 +387,9 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 				forInc = var->data;
 			} else {
 				forInc = (float)atof(*forIncName);
+				if (forInc == 0 && forIncName[0] != ' ') {
+					FD_FATAL("[ShaderGen] Variable \"%s\" not defined", *forIncName);
+				}
 			}
 			
 			forVariable->data = forStart;
