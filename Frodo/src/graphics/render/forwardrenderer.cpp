@@ -22,12 +22,15 @@ void ForwardRenderer::CreateShaders() {
 	layout.Push<vec3>("NORMALS");
 
 	directionalLightShader = ShaderFactory::GetShader(FD_FORWARD_SHADER_DIRECTIONAL_LIGHT);
+	directionalLightShader->ShaderGenComplete();
 	layout.CreateInputLayout(directionalLightShader);
 
 	pointLightShader = ShaderFactory::GetShader(FD_FORWARD_SHADER_POINT_LIGHT);
+	pointLightShader->ShaderGenComplete();
 	layout.CreateInputLayout(pointLightShader);
 
 	spotLightShader = ShaderFactory::GetShader(FD_FORWARD_SHADER_SPOT_LIGHT);
+	spotLightShader->ShaderGenComplete();
 	layout.CreateInputLayout(spotLightShader);
 }
 

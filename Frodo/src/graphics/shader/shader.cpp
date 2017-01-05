@@ -4,139 +4,31 @@
 #include <util/vfs/vfs.h>
 #include <math/math.h>
 
-enum FD_SHADER_FIELD_TYPE {
-	FD_SHADER_FIELD_TYPE_UNKOWN,
-	FD_SHADER_FIELD_TYPE_MAT4,
-	FD_SHADER_FIELD_TYPE_MAT3,
-	FD_SHADER_FIELD_TYPE_VEC4,
-	FD_SHADER_FIELD_TYPE_VEC3,
-	FD_SHADER_FIELD_TYPE_VEC2,
-	FD_SHADER_FIELD_TYPE_FLOAT
-};
-
-inline static String get_field_type_as_string(FD_SHADER_FIELD_TYPE type) {
+String Shader::GetFunctionTypeString(FD_SHADER_GEN_FUNCTION_TYPE type) {
 	switch (type) {
-		case FD_SHADER_FIELD_TYPE_UNKOWN: return ("UNKOWN");
-		case FD_SHADER_FIELD_TYPE_MAT4: return ("float4x4");
-		case FD_SHADER_FIELD_TYPE_MAT3: return ("float3x3");
-		case FD_SHADER_FIELD_TYPE_VEC4: return ("float4");
-		case FD_SHADER_FIELD_TYPE_VEC3: return ("float3");
-		case FD_SHADER_FIELD_TYPE_VEC2: return ("float2");
-		case FD_SHADER_FIELD_TYPE_FLOAT: return ("float");
-	}
-	return ("ERROR");
-}
-
-inline static unsigned int get_field_type_size(FD_SHADER_FIELD_TYPE type) {
-	switch (type) {
-		case FD_SHADER_FIELD_TYPE_UNKOWN: return 0;
-		case FD_SHADER_FIELD_TYPE_MAT4: return sizeof(mat4);
-		case FD_SHADER_FIELD_TYPE_MAT3: return sizeof(mat3);
-		case FD_SHADER_FIELD_TYPE_VEC4: return sizeof(vec4);
-		case FD_SHADER_FIELD_TYPE_VEC3: return sizeof(vec3);
-		case FD_SHADER_FIELD_TYPE_VEC2: return sizeof(vec2);
-		case FD_SHADER_FIELD_TYPE_FLOAT: return sizeof(float);
+		case FD_TRUE:
+			return "true";
+		case FD_FALSE:
+			return "false";
+		case FD_DEFINED:
+			return "defined";
+		case FD_EQ:
+			return "eq";
+		case FD_NEQ:
+			return "neq";
+		case FD_GR:
+			return "gr";
+		case FD_LS:
+			return "ls";
+		case FD_GE:
+			return "ge";
+		case FD_LE:
+			return "le";
 	}
 
-	return 0;
-}
+	FD_WARNING("[Shader] Unknown function type %d", (int)type);
 
-void Shader::RemoveComments(String& source) {
-
-	while (true) {
-		size_t start = source.Find("/*");
-
-		if (start == -1) break;
-
-		size_t end = source.Find("*/", start);
-
-		source.Remove(start, end+2);
-	}
-
-	while (true) {
-		size_t start = source.Find("//");
-
-		if (start == -1) break;
-
-		size_t end = source.Find("\n", start);
-		if (end == -1) end = source.length;
-
-		source.Remove(start, end);
-	}
-
-}
-
-void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
-
-	while(true) {
-		size_t cbufferStart = source.Find("cbuffer") + 7;
-
-		if (cbufferStart < 7) break;
-
-		size_t colon = source.Find(":", cbufferStart);
-
-		String name(source.str + cbufferStart, colon - cbufferStart);
-		name.RemoveBlankspace();
-
-		size_t regIndex = source.Find("register", colon) + 10;
-
-		ShaderStructInfo* cbuffer = new ShaderStructInfo;
-
-		cbuffer->name = name;
-		cbuffer->semRegister = atoi(*source + regIndex);
-
-		CalcStructSize(source, cbufferStart-7, cbuffer);
-		
-		switch (type) {
-			case FD_SHADER_TYPE_VERTEXSHADER:
-				vCBuffers.Push_back(cbuffer);
-				break;
-			case FD_SHADER_TYPE_PIXELSHADER:
-				pCBuffers.Push_back(cbuffer);
-				break;
-		}
-	}
-
-	
-}
-
-void Shader::CalcStructSize(String& structSource, size_t offset, ShaderStructInfo* cbuffer) {
-
-	FD_SHADER_FIELD_TYPE types[6]{
-		FD_SHADER_FIELD_TYPE_MAT4,
-		FD_SHADER_FIELD_TYPE_MAT3,
-		FD_SHADER_FIELD_TYPE_VEC4,
-		FD_SHADER_FIELD_TYPE_VEC3,
-		FD_SHADER_FIELD_TYPE_VEC2,
-		FD_SHADER_FIELD_TYPE_FLOAT};
-
-	size_t end = structSource.Find("};", offset);
-
-	String fields(*structSource + offset, end - offset);
-
-	size_t numFields = fields.Count(";");
-
-	size_t currSemicolon = fields.Find(";");
-	size_t fieldOffset = 0;
-
-	cbuffer->structSize = 0;
-
-	for (size_t num = 0; num < numFields; num++) {
-		for (size_t i = 0; i < 6; i++) {
-			size_t index = fields.Find(get_field_type_as_string(types[i]), fieldOffset);
-
-			if (index > currSemicolon || index == -1) continue;
-
-			cbuffer->structSize += get_field_type_size(types[i]);
-			
-			fieldOffset = currSemicolon;
-			currSemicolon = fields.Find(";", currSemicolon + 1);
-
-			i = 6;
-		}
-	}
-
-	structSource.Remove(offset, end+2);
+	return "UNKNOWN";
 }
 
 void Shader::CreateBuffers() {
@@ -174,23 +66,12 @@ void Shader::CreateBuffers() {
 	}
 }
 
-Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool src) {
+void Shader::Compile(String vSource, String pSource) {
 	inputLayout = nullptr;
 	vByteCode = nullptr;
 	pByteCode = nullptr;
 	vertexShader = nullptr;
 	pixelShader = nullptr;
-
-	String vSource;
-	String pSource;
-
-	if (src) {
-		vSource = vertexFilename;
-		pSource = pixelFilename;
-	} else {
-		vSource = VFS::Get()->ReadTextFile(vertexFilename);
-		pSource = VFS::Get()->ReadTextFile(pixelFilename);
-	}
 
 	ID3DBlob* error = nullptr;
 
@@ -213,7 +94,7 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool s
 	}
 
 	DX_FREE(error);
-	
+
 
 	D3DContext::GetDevice()->CreateVertexShader(vByteCode->GetBufferPointer(), vByteCode->GetBufferSize(), 0, &vertexShader);
 
@@ -223,14 +104,31 @@ Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool s
 
 	FD_ASSERT(pixelShader && "Failed to create pixelshader");
 
-	RemoveComments(vSource);
-	RemoveComments(pSource);
-
 	ParseStructs(vSource, FD_SHADER_TYPE_VERTEXSHADER);
 	ParseStructs(pSource, FD_SHADER_TYPE_PIXELSHADER);
 
+	ParseTextures(pSource);
 
 	CreateBuffers();
+}
+
+Shader::Shader(const String& vertexFilename, const String& pixelFilename, bool src) {
+	if (src) {
+		vSource = vertexFilename;
+		pSource = pixelFilename;
+	} else {
+		vSource = VFS::Get()->ReadTextFile(vertexFilename);
+		pSource = VFS::Get()->ReadTextFile(pixelFilename);
+	}
+
+	vSourceOriginal = vSource;
+	pSourceOriginal = pSource;
+
+	RemoveComments(vSource);
+	RemoveComments(pSource);
+
+	ShaderGenParseDefinitions(vSource, FD_SHADER_TYPE_VERTEXSHADER);
+	ShaderGenParseDefinitions(pSource, FD_SHADER_TYPE_PIXELSHADER);
 }
 
 Shader::~Shader() {
@@ -240,12 +138,12 @@ Shader::~Shader() {
 	DX_FREE(vByteCode);
 	DX_FREE(pByteCode);
 
-	for (size_t i = 0; i < vCBuffers.GetSize(); i++)
-		delete vCBuffers[i];
+	vCBuffers.Free();
+	pCBuffers.Free();
+	pTextures.Free();
 
-	for (size_t i = 0; i < pCBuffers.GetSize(); i++)
-		delete pCBuffers[i];
-
+	variables.Free();
+	blocks.Free();
 }
 
 void Shader::Bind() {
@@ -293,7 +191,7 @@ void Shader::SetVSConstantBuffer(const String& bufferName, void* data) {
 		return;
 	}
 
-	FD_WARNING("Buffer not found \"%s\"", *bufferName);
+	FD_WARNING("[Shader] Buffer not found \"%s\"", *bufferName);
 }
 
 void Shader::SetPSConstantBuffer(const String& bufferName, void* data) {
@@ -303,7 +201,7 @@ void Shader::SetPSConstantBuffer(const String& bufferName, void* data) {
 		return;
 	}
 
-	FD_WARNING("Buffer not found \"%s\"", *bufferName);
+	FD_WARNING("[Shader] Buffer not found \"%s\"", *bufferName);
 }
 
 void Shader::SetVSConstantBuffer(unsigned int slot, void* data) {
@@ -315,7 +213,7 @@ void Shader::SetVSConstantBuffer(unsigned int slot, void* data) {
 		}
 	}
 
-	FD_WARNING("No buffer at slot %u", slot);
+	FD_WARNING("[Shader] No buffer at slot %u", slot);
 }
 
 void Shader::SetPSConstantBuffer(unsigned int slot, void* data) {
@@ -327,7 +225,7 @@ void Shader::SetPSConstantBuffer(unsigned int slot, void* data) {
 		}
 	}
 
-	FD_WARNING("No buffer at slot %u", slot);
+	FD_WARNING("[Shader] No buffer at slot %u", slot);
 }
 
 void Shader::SetTexture(unsigned int slot, const Texture* tex) {
@@ -341,7 +239,7 @@ unsigned int Shader::GetVSConstantBufferSlotByName(const String& bufferName) {
 		if (vCBuffers[i]->name == bufferName) return vCBuffers[i]->semRegister;
 	}
 
-	FD_FATAL("Buffer not found \"%s\"", *bufferName);
+	FD_FATAL("[Shader] Buffer not found \"%s\"", *bufferName);
 	return -1;
 }
 
@@ -351,6 +249,16 @@ unsigned int Shader::GetPSConstantBufferSlotByName(const String& bufferName) {
 		if (pCBuffers[i]->name == bufferName) return pCBuffers[i]->semRegister;
 	}
 
-	FD_FATAL("Buffer not found \"%s\"", *bufferName);
+	FD_FATAL("[Shader] Buffer not found \"%s\"", *bufferName);
+	return -1;
+}
+
+unsigned int Shader::GetPSTextureSlotByName(const String& textureName) {
+	size_t size = pTextures.GetSize();
+	for (size_t i = 0; i < size; i++) {
+		if (pTextures[i]->name == textureName) return pTextures[i]->semRegister;
+	}
+
+	FD_FATAL("[Shader] Texture not found \"%s\"", *textureName);
 	return -1;
 }

@@ -83,6 +83,8 @@ void DeferredRenderer::CreateShaders() {
 
 	geometryShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_GEOMETRY);
 
+	geometryShader->ShaderGenComplete();
+
 	render.CreateInputLayout(geometryShader);
 
 	composit.Push<vec3>("POSITION");
@@ -91,6 +93,11 @@ void DeferredRenderer::CreateShaders() {
 	directionalLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_DIRECTIONAL_LIGHT);
 	pointLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_POINT_LIGHT);
 	spotLightShader = ShaderFactory::GetShader(FD_DEFERRED_SHADER_SPOT_LIGHT);
+
+	directionalLightShader->ShaderGenComplete();
+	pointLightShader->ShaderGenComplete();
+	spotLightShader->ShaderGenComplete();
+
 
 	composit.CreateInputLayout(directionalLightShader);
 	composit.CreateInputLayout(pointLightShader);
