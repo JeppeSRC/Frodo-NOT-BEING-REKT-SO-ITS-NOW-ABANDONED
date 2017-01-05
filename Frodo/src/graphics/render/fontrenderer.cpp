@@ -28,6 +28,8 @@ FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRende
 
 	shader = ShaderFactory::GetShader(FD_FONT_DEFAULT);
 
+	shader->ShaderGenSetVariable("maxTextures", FD_SHADER_TYPE_PIXELSHADER, FD_FONT_MAX_SIMULTANEOUS_TEXTURES);
+
 	shader->ShaderGenComplete();
 
 #if FD_FONT_SHOW_TEXTURE
