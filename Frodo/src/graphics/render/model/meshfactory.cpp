@@ -220,7 +220,9 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 		List<vec3> vertices, normals;
 		List<vec2> texCoords;
 		List<unsigned int> indices;
-
+		
+		FD_DEBUG("[MeshFactory] Loading \"%s\"", *filename);
+		FD_DEBUG("[MeshFactory] Loading text file");
 		String text = VFS::Get()->ReadTextFile(filename);
 
 		ParseOBJ(text, vertices, texCoords, normals, indices);
@@ -229,6 +231,7 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 
 		Vertex* vert = new Vertex[vertNum];
 
+		FD_DEBUG("[MeshFactory] Moving data");
 		for (size_t i = 0; i < vertNum; i++) {
 			Vertex& v = vert[i];
 			v.position = vertices[i];
@@ -236,9 +239,11 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 			v.normals = normals[i];
 		}
 
+		FD_DEBUG("[MeshFactory] Loading data");
 		VertexBuffer* vbo = new VertexBuffer(vert, vertNum * sizeof(Vertex), sizeof(Vertex));
 		IndexBuffer* ibo = new IndexBuffer(indices.GetData(), (unsigned int)indices.GetSize());
 
+		FD_DEBUG("[MeshFactory] Loading complete!\n");
 		return new Model(vbo, ibo);
 
 	} else {
@@ -257,10 +262,11 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 	List<vec2> tmpTexCoords;
 
 
-
+	
 	size_t numLines = lines.GetSize();
-
-	for (size_t i = 0; i < numLines; i++) {
+	FD_DEBUG("[MeshFactory] Parsing text");
+	#pragma omp for
+	for (int i = 0; i < numLines; i++) {
 		String line = lines[i];
 
 		if (line.StartsWith("v ")) {
@@ -282,10 +288,13 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 		}
 	}
 
+	FD_DEBUG("[MeshFactory] Found %u vertices %u normals %u uvs %u faces", tmpVertices.GetSize(), tmpNormals.GetSize(), tmpTexCoords.GetSize(), faces.GetSize());
+	FD_DEBUG("[MeshFactory] Allocating space");
 	texCoords.Resize(faces.GetSize() * 3);
 	normals.Resize(faces.GetSize() * 3);
 	vertices.Resize(faces.GetSize() * 3);
 
+	FD_DEBUG("[MeshFactory] Making faces");
 	MakeFacesOBJ(vertices, tmpVertices, texCoords, tmpTexCoords, normals, tmpNormals, indices, faces);
 }
 
@@ -294,11 +303,11 @@ void MeshFactory::MakeFacesOBJ(List<vec3>& vertices, List<vec3>& tmpVertices, Li
 	size_t numFaces = faces.GetSize();
 
 	indices.Reserve(numFaces * 3);
-
-	for (size_t i = 0; i < numFaces; i++) {
+	#pragma omp for
+	for (int i = 0; i < numFaces; i++) {
 		Face<3> face = faces[i];
-		for (size_t j = 0; j < 3; j++) {
-			unsigned int index = indices.GetSize();
+		for (int j = 0; j < 3; j++) {
+			unsigned int index = i * 3 + j;//indices.GetSize();
 
 			indices.Push_back(index);
 			vertices[index] = tmpVertices[face[j].vertex - 1];
