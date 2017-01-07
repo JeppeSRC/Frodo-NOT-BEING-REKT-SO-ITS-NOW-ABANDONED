@@ -26,6 +26,7 @@ void DeferredTest::OnInit() {
 
 	TextureManager::Add("mountains", new Texture2D("/textures/mountains.jpg"));
 	TextureManager::Add("white", new Texture2D("/textures/white.png"));
+	TextureManager::Add("button", new Texture2D("/textures/button.png"));
 
 	camera = new UserCamera(vec3(1, 0, -1.25), vec3(0, 0, 0));
 
@@ -87,9 +88,22 @@ void DeferredTest::OnInit() {
 
 	handler = new UIHandler();
 
-	UIItem* button = new UIButton("Some text!", vec2(100, 100), vec2(500, 100));
+	UIGroup* group = new UIGroup(vec2(10, 100), "Test Group");
 
-	handler->Add(button);
+	UIItem* button = new UIButton("Some text!", vec2(0, 0), vec2(150, 35));
+	button->SetTitleMargin(vec2(1, 35));
+
+	UIItem* button2 = new UIButton("Some text2!", vec2(0, 40), vec2(150, 35));
+	button2->SetTitleMargin(vec2(35, 35));
+
+	UIItem* button3 = new UIButton("Some text3!", vec2(0, 80), vec2(150, 35));
+	button3->SetTitleMargin(vec2(35, 35));
+
+	/*handler->Add(group);
+
+	group->Add(button);
+	group->Add(button2);
+	group->Add(button3);*/
 
 	mainRenderer->SetCamera(camera);
 
@@ -123,6 +137,22 @@ void DeferredTest::OnInit() {
 	spotLight0 = new SpotLight(vec3(2, 0, 0), vec3(1, 1, 1), vec3(-1, -1, 0), vec3(0, 0, 1), vec2(25, 3));
 	mainRenderer->Add(spotLight0);
 	
+
+	UISlider* slider = new UISlider("Test Slider", vec2(0, 0), vec2(400, 50), new ValueInterpolation<float>(&spotLight0->GetAttenuation().x, -1.0f, 10.0f));
+	UISlider* slider2 = new UISlider("Test Slider", vec2(0, 60), vec2(400, 50), new ValueInterpolation<float>(&spotLight0->GetAttenuation().y, 0.0f, 10.0f));
+	UISlider* slider3 = new UISlider("Test Slider", vec2(0, 120), vec2(400, 50), new ValueInterpolation<float>(&spotLight0->GetAttenuation().z, 0.0f, 10.0f));
+	UISlider* slider4 = new UISlider("Test Slider", vec2(0, 180), vec2(400, 50), new ValueInterpolation<float>(&spotLight0->GetCutoffExponent().x, 0.0f, 100.0f));
+	UISlider* slider5 = new UISlider("Test Slider", vec2(0, 240), vec2(400, 50), new ValueInterpolation<float>(&spotLight0->GetCutoffExponent().y, 0.0f, 100.0f));
+
+	UIGroup* sliderGroup = new UIGroup(vec2(10, 50), "Sliders");
+
+	handler->Add(sliderGroup);
+	
+	sliderGroup->Add(slider);
+	sliderGroup->Add(slider2);
+	sliderGroup->Add(slider3);
+	sliderGroup->Add(slider4);
+	sliderGroup->Add(slider5);
 	
 	mainRenderer->Add(spinningLight0);
 	mainRenderer->Add(spinningLight1);
@@ -134,9 +164,12 @@ void DeferredTest::OnInit() {
 float a = 0;
 void DeferredTest::OnUpdate(float delta) {
 	camera->Update(delta);
+
+	handler->Update();
+	//FD_DEBUG("%f", spinningLight0->GetAttenuation().y);
 	a += 0.20 * delta;
 	spotLight0->GetDirection() = camera->GetForward();
-	//spotLight0->GetPosition() = camera->GetPosition();
+	spotLight0->GetPosition() = camera->GetPosition();
 
 	spinningLight0->GetPosition().RotateY(80 * delta);
 	spinningLight1->GetPosition().RotateY(80 * delta);
@@ -147,7 +180,7 @@ void DeferredTest::OnUpdate(float delta) {
 
 	UIItem* item = handler->operator[](0);
 
-	item->SetSize(vec2(abs(sinf(a) * 500), abs(cosf(a) * 200)));
+	//item->SetSize(vec2(abs(sinf(a) * 500), abs(cosf(a) * 200)));
 }
 
 void DeferredTest::OnTick() {
