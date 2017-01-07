@@ -23,4 +23,9 @@ public:
 
 	inline size_t GetSize() const { return items.GetSize(); }
 	inline const List<UIItem*>& GetItems() const { return items; }
+
+public:
+	bool OnMouseActionButtonPressed(unsigned int button) override;
+	bool OnMouseActionButtonReleased(unsigned int button) override;
+	bool OnMouseActionMove(ivec2 position) override;
 };

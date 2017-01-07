@@ -65,29 +65,38 @@ void MenuRenderer::Submit(const UIHandler* handler) {
 		if (!item->IsVisible()) continue;
 
 		const vec4& color = item->GetColor();
-		const vec2& position = item->GetPosition();
+		const vec2& position = item->GetAbsolutePosition();
 		const vec2& size = item->GetSize();
 		const vec2& margin = item->GetTitleMargin();
 		Texture2D* texture = item->GetTexture();
 		const String& title = item->GetTitle();
 
+		if (title.length == 0) goto skip_title;
+
 		Font* font = Font::GetDefaultFont();
 
-		vec2 titleSize = font->GetFontMetrics(title);
+		if (item->AutoTextAdjustment()) {
 
-		titleSize += margin;
+			vec2 titleSize = font->GetFontMetrics(title);
 
-		vec2 difference = size / titleSize;
+			titleSize += margin;
 
-		float finalScale = MIN(difference.x, difference.y);
+			vec2 difference = size / titleSize;
 
-		titleSize -= margin;
+			float finalScale = MIN(difference.x, difference.y);
 
-		vec2 scale(finalScale, finalScale);
+			titleSize -= margin;
 
-		titleSize = font->GetFontMetrics(title, scale);
+			vec2 scale(finalScale, finalScale);
 
-		fontRenderer->SubmitText(title, Font::GetDefaultFont(), (position + (size / 2.0f)) - (titleSize / 2.0f) + item->GetTitleOffset() * scale , item->GetTitleColor(), scale);
+			titleSize = font->GetFontMetrics(title, scale);
+
+			fontRenderer->SubmitText(title, font, (position + (size / 2.0f)) - (titleSize / 2.0f) + item->GetTitleOffset() * scale, item->GetTitleColor(), scale);
+		} else {
+			fontRenderer->SubmitText(title, font, position + item->GetTitleOffset(), item->GetTitleColor(), item->GetTtitleScale());
+		}
+
+		skip_title:
 
 		float tid = SubmitTexture(texture);
 
