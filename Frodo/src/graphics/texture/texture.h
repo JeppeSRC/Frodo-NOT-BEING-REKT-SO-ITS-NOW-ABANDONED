@@ -30,3 +30,5 @@ public:
 
 	inline ID3D11ShaderResourceView* GetResourceView() const { return resourceView; }
 };
+
+static unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned int* height, unsigned int* bits);
