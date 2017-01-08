@@ -52,7 +52,7 @@ Font::Font(const String& fontFile, unsigned int size, ivec2 dpi) {
 	unsigned char* data = VFS::Get()->ReadFile(fontFile, &memory_size);
 
 	FD_RANGE<> r;
-
+	
 	r.start = 0x21;
 	r.end = 0x7E;
 
