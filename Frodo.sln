@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Frodo", "Frodo\Frodo.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{610C60D3-5D1B-4BAE-9F36-733B5B06E38A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dependencies", "dependencies", "{A81A7A4F-D4F5-46E0-8E7F-71A16C6B0905}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{A81A7A4F-D4F5-46E0-8E7F-71A16C6B0905}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTK", "Dependencies\DirectXTK\DirectXTK.vcxproj", "{BD1A7F6D-7460-4223-B2BF-16BA83219FDB}"
 EndProject
