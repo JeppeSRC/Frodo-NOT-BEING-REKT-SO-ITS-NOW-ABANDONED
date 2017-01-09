@@ -205,6 +205,7 @@
     <ClCompile Include="src\graphics\texture\framebuffer2d.cpp" />
     <ClCompile Include="src\graphics\texture\texture.cpp" />
     <ClCompile Include="src\graphics\texture\texture2d.cpp" />
+    <ClCompile Include="src\graphics\texture\texturecube.cpp" />
     <ClCompile Include="src\graphics\texture\texturemanager.cpp" />
     <ClCompile Include="src\math\mat3.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="src\graphics\texture\framebuffer2d.h" />
     <ClInclude Include="src\graphics\texture\texture.h" />
     <ClInclude Include="src\graphics\texture\texture2d.h" />
+    <ClInclude Include="src\graphics\texture\texturecube.h" />
     <ClInclude Include="src\graphics\texture\texturemanager.h" />
     <ClInclude Include="src\math\mat3.h" />
     <ClInclude Include="src\math\mat4.h" />

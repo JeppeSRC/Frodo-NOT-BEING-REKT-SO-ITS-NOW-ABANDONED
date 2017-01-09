@@ -10,10 +10,11 @@ unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned
 	
 	size_t size = 0;
 	
-	FIMEMORY data;
-	data.data = VFS::Get()->ReadFile(filename, &size);
+	unsigned char* rawData = VFS::Get()->ReadFile(filename, &size);
 
-	FREE_IMAGE_FORMAT format = FreeImage_GetFileTypeFromMemory(&data);
+	FIMEMORY* data = FreeImage_OpenMemory(rawData, size);
+
+	FREE_IMAGE_FORMAT format = FreeImage_GetFileTypeFromMemory(data, size);
 
 	FIBITMAP* bitmap = nullptr;
 
@@ -32,16 +33,18 @@ unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned
 		FD_WARNING("[Texture] \"%s\" does not support reading", *filename);
 	}
 
-	bitmap = FreeImage_LoadFromMemory(format, &data);
+	bitmap = FreeImage_LoadFromMemory(format, data);
 
 	*width = FreeImage_GetWidth(bitmap);
 	*height = FreeImage_GetHeight(bitmap);
 	*bits = FreeImage_GetBPP(bitmap);
 	
-	unsigned char* pixels = FreeImage_GetBits(bitmap);
+	unsigned char* pixels = new unsigned char[*width * *height * (*bits / 8)];
+	memcpy(pixels, FreeImage_GetBits(bitmap), *width * *height * (*bits / 8));
 
 	FreeImage_Unload(bitmap);
-	delete data.data;
+	FreeImage_CloseMemory(data);
+
 
 	return pixels;
 }

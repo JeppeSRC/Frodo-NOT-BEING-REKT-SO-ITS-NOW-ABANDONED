@@ -16,8 +16,9 @@ class FDAPI Texture {
 protected:
 	unsigned int width;
 	unsigned int height;
+	unsigned int bits;
 
-	ID3D11ShaderResourceView* resourceView;
+	ID3D11ShaderResourceView* resourceView = nullptr;
 
 public:
 	Texture() { resourceView = nullptr; }
@@ -31,4 +32,4 @@ public:
 	inline ID3D11ShaderResourceView* GetResourceView() const { return resourceView; }
 };
 
-static unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned int* height, unsigned int* bits);
+extern unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned int* height, unsigned int* bits);

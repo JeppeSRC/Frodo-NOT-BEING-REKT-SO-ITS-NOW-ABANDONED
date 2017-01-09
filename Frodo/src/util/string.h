@@ -35,7 +35,7 @@ public:
 
 	size_t Count(const String& string, size_t offset = 0) const;
 
-	inline bool IsNull() const { return (str == nullptr && length == 0); }
+	inline bool IsNull() const { return (str == nullptr || length == 0); }
 
 	char operator[](size_t index) const;
 
