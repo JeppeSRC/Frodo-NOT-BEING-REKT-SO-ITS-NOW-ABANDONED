@@ -244,6 +244,7 @@
     <ClInclude Include="src\graphics\render\forwardrenderer.h" />
     <ClInclude Include="src\graphics\render\light\light.h" />
     <ClInclude Include="src\graphics\render\material\material.h" />
+    <ClInclude Include="src\graphics\pbr\material\pbrmaterial.h" />
     <ClInclude Include="src\graphics\render\model\meshfactory.h" />
     <ClInclude Include="src\graphics\render\model\model.h" />
     <ClInclude Include="src\graphics\render\renderer.h" />

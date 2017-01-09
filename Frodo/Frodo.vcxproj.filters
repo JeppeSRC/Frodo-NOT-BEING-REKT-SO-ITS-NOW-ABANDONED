@@ -272,5 +272,8 @@
     <ClInclude Include="src\graphics\texture\texturecube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\pbr\material\pbrmaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
