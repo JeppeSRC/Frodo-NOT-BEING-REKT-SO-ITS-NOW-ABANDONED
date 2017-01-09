@@ -16,7 +16,7 @@ protected:
 public:
 	Entity() { model = nullptr; material = nullptr; }
 	Entity(const vec3& position, const vec3& rotation, const vec3& scale = vec3(1, 1, 1)) : position(position), rotation(rotation), scale(scale) { model = nullptr; material = nullptr; }
-	~Entity() { delete model, material; }
+	virtual ~Entity() { delete model, material; }
 
 
 	inline Model* GetModel() const { return model; }
