@@ -12,6 +12,7 @@ protected:
 	float specular;
 	Texture2D* diffuseTexture;
 
+	Material() {}
 public:
 
 	Material(const vec4& diffuseColor, Texture2D* diffuseTexture = (Texture2D*)TextureManager::Get("default")) : diffuseColor(diffuseColor), diffuseTexture(diffuseTexture) { }

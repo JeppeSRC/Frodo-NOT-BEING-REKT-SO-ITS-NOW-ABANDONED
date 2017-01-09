@@ -1,10 +1,11 @@
 #pragma once
 
 #include <fd.h>
+#include <graphics/render/material/material.h>
 #include <graphics/texture/texture2d.h>
-#include <math/math.h>
+#include <math/vec3.h>
 
-class FDAPI PBRMaterial {
+class FDAPI PBRMaterial : private Material {
 protected:
 	vec3  albedoValue = vec3(1.0f, 1.0f, 1.0f);
 	float metallicValue = 0.0f;

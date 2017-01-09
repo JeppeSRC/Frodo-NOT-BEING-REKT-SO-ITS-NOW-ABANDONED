@@ -123,6 +123,9 @@
     <ClCompile Include="src\graphics\texture\texturecube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\pbr\render\pbrrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\frodo.h">
@@ -273,6 +276,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\pbr\material\pbrmaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\pbr\render\pbrrenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
