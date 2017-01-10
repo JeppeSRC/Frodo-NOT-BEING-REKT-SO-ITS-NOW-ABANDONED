@@ -127,6 +127,11 @@ void TextureCube::LoadMultipleFiles(const String* filePaths) {
 		}
 	}
 
+	if (w != h) {
+		FD_FATAL("[TextureCube] w != h");
+		return;
+	}
+
 	D3D11_TEXTURE2D_DESC d;
 	d.Width = files[0].width;
 	d.Height = files[0].height;
@@ -135,6 +140,7 @@ void TextureCube::LoadMultipleFiles(const String* filePaths) {
 	d.CPUAccessFlags = 0;
 	d.MipLevels = 1;
 	d.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+	d.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	d.SampleDesc.Quality = 0;
 	d.SampleDesc.Count = 1;
 	d.Usage = D3D11_USAGE_DEFAULT;

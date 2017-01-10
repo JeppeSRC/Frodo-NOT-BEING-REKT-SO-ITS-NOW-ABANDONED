@@ -5,7 +5,7 @@
 #include <graphics/texture/texturemanager.h>
 #include <math/math.h>
 
-class Material {
+class FDAPI Material {
 protected:
 
 	vec4 diffuseColor;

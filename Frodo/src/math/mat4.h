@@ -24,6 +24,8 @@ public:
 	static mat4 Rotate(const vec3& v);
 	static mat4 Scale(const vec3& v);
 
+	static mat4 Inverse(mat4 m);
+
 	static mat4 Perspective(float fov, float aspect, float zNear, float zFar);
 	static mat4 Orthographic(float left, float right, float top, float bottom, float zNear, float zFar);
 

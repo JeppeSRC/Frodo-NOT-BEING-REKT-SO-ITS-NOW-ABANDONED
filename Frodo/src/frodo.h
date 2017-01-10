@@ -26,6 +26,7 @@
 
 #include <graphics/font/font.h>
 
+#include <graphics/pbr/render/pbrrenderer.h>
 #include <graphics/render/deferredrenderer.h>
 #include <graphics/render/forwardrenderer.h>
 #include <graphics/render/fontrenderer.h>
