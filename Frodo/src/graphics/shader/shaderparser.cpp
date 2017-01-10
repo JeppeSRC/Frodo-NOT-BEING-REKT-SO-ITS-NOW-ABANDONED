@@ -1,5 +1,6 @@
 #include "shader.h"
 #include <math/math.h>
+#include <core/log.h>
 
 enum FD_SHADER_FIELD_TYPE {
 	FD_SHADER_FIELD_TYPE_UNKOWN,
@@ -88,9 +89,11 @@ void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 		switch (type) {
 		case FD_SHADER_TYPE_VERTEXSHADER:
 			vCBuffers.Push_back(cbuffer);
+			FD_DEBUG("[ShaderParser] Found vCBuffer <NAME: %s> <SIZE: %u> <SLOT: %u>", *cbuffer->name, cbuffer->structSize, cbuffer->semRegister);
 			break;
 		case FD_SHADER_TYPE_PIXELSHADER:
 			pCBuffers.Push_back(cbuffer);
+			FD_DEBUG("[ShaderParser] Found pCBuffer <NAME: %s> <SIZE: %u> <SLOT: %u>", *cbuffer->name, cbuffer->structSize, cbuffer->semRegister);
 			break;
 		}
 	}
@@ -181,6 +184,10 @@ void Shader::ParseTextures(String source) {
 		tex->name = source.SubString(nameStart, nameEnd).RemoveBlankspace();
 
 		size_t regStart = source.Find("register(t", nameEnd) + 10;
+
+		if (regStart < 10) {
+			FD_WARNING("[ShaderParser] Texture \"%s\" has not been registered to a texture slot", *tex->name);
+		}
 
 		tex->semRegister = atoi(*source + regStart);
 

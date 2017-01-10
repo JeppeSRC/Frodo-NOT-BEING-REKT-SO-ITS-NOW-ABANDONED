@@ -76,7 +76,7 @@ public:
 	virtual ~FDApplication();
 
 
-	inline void start() { Run(); }
+	inline void Start() { Run(); }
 
 	inline void SetUPS(float timesPerSec) { this->ups = 1000.0f / timesPerSec; }
 };
