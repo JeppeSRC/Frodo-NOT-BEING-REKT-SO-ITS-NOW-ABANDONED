@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 
-Texture2D* GetCharFromFont(const String& fontName, unsigned int character) {
+Texture2D* GetCharFromFont(const String& fontName, uint32 character) {
 
 	FT_Library library;
 	FT_Face face;
@@ -25,7 +25,7 @@ Texture2D* GetCharFromFont(const String& fontName, unsigned int character) {
 		FT_Set_Char_Size(face, 32 * 64, 0, 96, 96);
 	}
 
-	unsigned int glyph_index = FT_Get_Char_Index(face, character);
+	uint32 glyph_index = FT_Get_Char_Index(face, character);
 
 	FT_GlyphSlot glyph = face->glyph;
 
@@ -36,7 +36,7 @@ Texture2D* GetCharFromFont(const String& fontName, unsigned int character) {
 	}
 
 
-	unsigned int advance = (glyph->advance.x >> 6);
+	uint32 advance = (glyph->advance.x >> 6);
 
 
 	Texture2D* tex = new Texture2D(glyph->bitmap.buffer, glyph->bitmap.width, glyph->bitmap.rows, FD_TEXTURE_FORMAT_UINT_8);
@@ -47,29 +47,29 @@ Texture2D* GetCharFromFont(const String& fontName, unsigned int character) {
 }
 
 
-Font::Font(const String& fontFile, unsigned int size, ivec2 dpi) { 
-	size_t memory_size = 0;
-	unsigned char* data = VFS::Get()->ReadFile(fontFile, &memory_size);
+Font::Font(const String& fontFile, uint32 size, ivec2 dpi) { 
+	uint_t memory_size = 0;
+	byte* data = VFS::Get()->ReadFile(fontFile, &memory_size);
 
 	FD_RANGE<> r;
 	
 	r.start = 0x21;
 	r.end = 0x7E;
 
-	if (!(initialized = LoadFontFileInternal(data, (unsigned int)memory_size, size, dpi, &r, 1))) {
+	if (!(initialized = LoadFontFileInternal(data, (uint32)memory_size, size, dpi, &r, 1))) {
 		FD_WARNING("Failed to open font: \"%s\"", *fontFile);
 	}
 
 	delete[] data;
 }
 
-Font::Font(void* memory, unsigned int memory_size, unsigned int size, ivec2 dpi) {
+Font::Font(void* memory, uint32 memory_size, uint32 size, ivec2 dpi) {
 	FD_RANGE<> r;
 
 	r.start = 0x21;
 	r.end = 0x7E;
 
-	if (!(initialized = LoadFontFileInternal((unsigned char*)memory, memory_size, size, dpi, &r, 1))) {
+	if (!(initialized = LoadFontFileInternal((byte*)memory, memory_size, size, dpi, &r, 1))) {
 		FD_WARNING("Failed to open font: \"%s\"", "nullptr(\"From memory\")");
 	}
 }
@@ -80,11 +80,11 @@ Font::~Font() {
 	FT_Done_FreeType(library);
 }
 
-bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size, unsigned int size, ivec2 dpi, FD_RANGE<>* ranges, unsigned int num_ranges) {
+bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, ivec2 dpi, FD_RANGE<>* ranges, uint32 num_ranges) {
 	this->size = size;
-	unsigned int numCharacters = 0;
+	uint32 numCharacters = 0;
 
-	for (size_t i = 0; i < num_ranges; i++)
+	for (uint_t i = 0; i < num_ranges; i++)
 		numCharacters += ranges[i].GetDistance();
 
 	FT_Init_FreeType(&library);
@@ -99,14 +99,14 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 	FT_Set_Char_Size(face, size * 64, 0, dpi.x, dpi.y);
 	FT_Select_Charmap(face, FT_ENCODING_UNICODE);
 
-	unsigned int segmentWidth = 0;
-	unsigned int segmentHeight = 0;
+	uint32 segmentWidth = 0;
+	uint32 segmentHeight = 0;
 
-	for (size_t i = 0; i < num_ranges; i++) {
+	for (uint_t i = 0; i < num_ranges; i++) {
 		FD_RANGE<> range = ranges[i];
-		for (int c = range.start; c < range.end; c++) {
+		for (int32 c = range.start; c < range.end; c++) {
 
-			unsigned int index = FT_Get_Char_Index(face, c);
+			uint32 index = FT_Get_Char_Index(face, c);
 
 			if (index == 0) continue;
 
@@ -127,9 +127,9 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 			glyph.bitmapSize.x = bitmap.width;
 			glyph.bitmapSize.y = bitmap.rows;
 
-			unsigned int bitmap_size = bitmap.rows * bitmap.width;
+			uint32 bitmap_size = bitmap.rows * bitmap.width;
 
-			glyph.bitmap = new unsigned char[bitmap_size];
+			glyph.bitmap = new byte[bitmap_size];
 
 			memcpy(glyph.bitmap, bitmap.buffer, bitmap_size);
 
@@ -140,37 +140,37 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 		}
 	}
 	
-	unsigned int bitmapSquareSize = (unsigned int)ceilf(sqrtf((float)numCharacters));
-	unsigned int bitmapWidth = bitmapSquareSize * segmentWidth;
-	unsigned int bitmapHeight = bitmapSquareSize * segmentHeight;
+	uint32 bitmapSquareSize = (uint32)ceilf(sqrtf((float32)numCharacters));
+	uint32 bitmapWidth = bitmapSquareSize * segmentWidth;
+	uint32 bitmapHeight = bitmapSquareSize * segmentHeight;
 
-	unsigned char* bitmapData = new unsigned char[bitmapWidth * bitmapHeight];
+	byte* bitmapData = new byte[bitmapWidth * bitmapHeight];
 	memset(bitmapData, 0, bitmapWidth * bitmapHeight);
 
-	float xStep = (float)segmentWidth / (float)bitmapWidth;
-	float yStep = (float)segmentHeight / (float)bitmapHeight;
+	float32 xStep = (float32)segmentWidth / (float32)bitmapWidth;
+	float32 yStep = (float32)segmentHeight / (float32)bitmapHeight;
 
-	unsigned int currentGlyph = 0;
+	uint32 currentGlyph = 0;
 
-	for (size_t i = 0; i < num_ranges; i++) {
+	for (uint_t i = 0; i < num_ranges; i++) {
 		FD_RANGE<> range = ranges[i];
-		for (int c = range.start; c < range.end; c++) {
+		for (int32 c = range.start; c < range.end; c++) {
 			FD_GLYPH& glyph = charMap[c];
 
-			int xStart = currentGlyph % bitmapSquareSize;
-			int yStart = currentGlyph / bitmapSquareSize;
+			int32 xStart = currentGlyph % bitmapSquareSize;
+			int32 yStart = currentGlyph / bitmapSquareSize;
 
-			glyph.u0 = (float)xStart * xStep;
-			glyph.v0 = (float)yStart * yStep;
+			glyph.u0 = (float32)xStart * xStep;
+			glyph.v0 = (float32)yStart * yStep;
 			glyph.u1 = glyph.u0 + xStep;
 			glyph.v1 = glyph.v0 + yStep;
 
-			unsigned int yOffset = segmentHeight - glyph.bitmapSize.y;
+			uint32 yOffset = segmentHeight - glyph.bitmapSize.y;
 
-			for (int y = 0; y < glyph.bitmapSize.y; y++) {
-				int ya = (yStart * segmentHeight) + y + yOffset;
-				for (int x = 0; x < glyph.bitmapSize.x; x++) {
-					int xa = (xStart * segmentWidth) + x;
+			for (int32 y = 0; y < glyph.bitmapSize.y; y++) {
+				int32 ya = (yStart * segmentHeight) + y + yOffset;
+				for (int32 x = 0; x < glyph.bitmapSize.x; x++) {
+					int32 xa = (xStart * segmentWidth) + x;
 					bitmapData[xa + ya * bitmapWidth] = glyph.bitmap[x + y * glyph.bitmapSize.x];
 				}
 			}
@@ -187,7 +187,7 @@ bool Font::LoadFontFileInternal(unsigned char* memory, unsigned int memory_size,
 	return true;
 }
 
-ivec2 Font::GetKerning(unsigned int left, unsigned int right) {
+ivec2 Font::GetKerning(uint32 left, uint32 right) {
 	if (!left || !right) return ivec2(0, 0);
 	FT_Vector kerning;
 
@@ -197,18 +197,18 @@ ivec2 Font::GetKerning(unsigned int left, unsigned int right) {
 }
 
 ivec2 Font::GetFontMetrics(const String& string) const {
-	size_t len = string.length;
+	uint_t len = string.length;
 
 	ivec2 total;
 
-	for (size_t i = 0; i < len; i++) {
-		unsigned int c = string[i];
+	for (uint_t i = 0; i < len; i++) {
+		uint32 c = string[i];
 		if (c == ' ') {
 			total.x += size >> 1;
 			continue;
 		}
 
-		const FD_GLYPH& glyph = charMap.Retrieve((unsigned int)string[i]);
+		const FD_GLYPH& glyph = charMap.Retrieve((uint32)string[i]);
 		
 		total.x += glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0));
 	}

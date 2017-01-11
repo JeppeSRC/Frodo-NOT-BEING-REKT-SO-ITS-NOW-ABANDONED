@@ -50,7 +50,7 @@ private:
 		FD_SLOT_NUM
 	};
 
-	unsigned int constantBufferSlotCache[FD_SLOT_NUM];
+	uint32 constantBufferSlotCache[FD_SLOT_NUM];
 
 	ID3D11DepthStencilState* depthState[2];
 	ID3D11BlendState* blendState[2];

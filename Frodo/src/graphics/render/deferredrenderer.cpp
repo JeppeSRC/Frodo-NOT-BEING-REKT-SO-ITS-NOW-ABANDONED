@@ -135,7 +135,7 @@ DeferredRenderer::DeferredRenderer(Window* window) : Renderer(window, nullptr) {
 		{vec3(-1, -1, 0), vec2(0, 1)},
 	};
 
-	unsigned int indices[6]{0, 1, 2, 2, 3, 0};
+	uint32 indices[6]{0, 1, 2, 2, 3, 0};
 
 	vertexBufferPlane = new VertexBuffer(vertices, sizeof(vertices), sizeof(PlaneVertex));
 	indexBufferPlane = new IndexBuffer(indices, 6);
@@ -214,7 +214,7 @@ void DeferredRenderer::Render() {
 	mrt.BindAsRenderTarget();
 	D3DContext::Clear(4);
 
-	for (size_t i = 0; i < entities.GetSize(); i++) {
+	for (uint_t i = 0; i < entities.GetSize(); i++) {
 		Entity& e = *entities[i];
 
 		e.GetModel()->Bind();
@@ -242,13 +242,13 @@ void DeferredRenderer::Render() {
 	vertexBufferPlane->Bind();
 	indexBufferPlane->Bind();
 	
-	unsigned int indexCount = indexBufferPlane->GetCount();
+	uint32 indexCount = indexBufferPlane->GetCount();
 
 	directionalLightShader->Bind();
 
-	size_t num = directionalLights.GetSize();
+	uint_t num = directionalLights.GetSize();
 
-	for (size_t i = 0; i < num; i++) {
+	for (uint_t i = 0; i < num; i++) {
 		directionalLightShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_DIRECTIONAL_DATA], (void*)directionalLights[i]);
 
 		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
@@ -258,7 +258,7 @@ void DeferredRenderer::Render() {
 
 	num = pointLights.GetSize();
 
-	for (size_t i = 0; i < num; i++) {
+	for (uint_t i = 0; i < num; i++) {
 		if (i == 1) {
 			SetBlendingInternal(true);
 			SetDepthInternal(false);
@@ -272,7 +272,7 @@ void DeferredRenderer::Render() {
 
 	num = spotLights.GetSize();
 
-	for (size_t i = 0; i < num; i++) {
+	for (uint_t i = 0; i < num; i++) {
 		spotLightShader->SetPSConstantBuffer(constantBufferSlotCache[FD_SLOT_SPOT_DATA], (void*)spotLights[i]);
 
 		D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);

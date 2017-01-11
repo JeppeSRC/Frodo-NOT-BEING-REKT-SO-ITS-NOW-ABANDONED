@@ -2,7 +2,7 @@
 #include <core/log.h>
 
 
-VertexBuffer::VertexBuffer(unsigned int structSize, unsigned int num) {
+VertexBuffer::VertexBuffer(uint32 structSize, uint32 num) {
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 
@@ -16,17 +16,17 @@ VertexBuffer::VertexBuffer(unsigned int structSize, unsigned int num) {
 	FD_ASSERT(buffer);
 }
 
-VertexBuffer::VertexBuffer(void* data, size_t size, unsigned int stride, bool dynamic) : Buffer(), stride(stride) {
+VertexBuffer::VertexBuffer(void* data, uint_t size, uint32 stride, bool dynamic) : Buffer(), stride(stride) {
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.ByteWidth = (unsigned int)size;
+	bd.ByteWidth = (uint32)size;
 	bd.CPUAccessFlags = dynamic ? D3D10_CPU_ACCESS_WRITE : 0;
 	bd.StructureByteStride = stride;
 	bd.Usage = dynamic ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
 
-	this->size = (unsigned int)size;
+	this->size = (uint32)size;
 	this->stride = stride;
 
 	D3D11_SUBRESOURCE_DATA srd;
@@ -55,11 +55,11 @@ void VertexBuffer::Unmap() {
 }
 
 void VertexBuffer::Bind() {
-	unsigned int offset = 0;
+	uint32 offset = 0;
 	D3DContext::GetDeviceContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 }
 
-void VertexBuffer::Bind(unsigned int slot) {
-	unsigned int offset = 0;
+void VertexBuffer::Bind(uint32 slot) {
+	uint32 offset = 0;
 	D3DContext::GetDeviceContext()->IASetVertexBuffers(slot, 1, &buffer, &stride, &offset);
 }

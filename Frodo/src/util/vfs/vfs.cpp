@@ -35,8 +35,8 @@ void VFS::UnMount(const String& name) {
 	mountPoints.Remove(name);
 }
 
-unsigned char* VFS::ReadFile(const String& filename, size_t* fileSize) {
-	size_t* fsize = fileSize != nullptr ? fileSize : new size_t(0);
+byte* VFS::ReadFile(const String& filename, uint_t* fileSize) {
+	uint_t* fsize = fileSize != nullptr ? fileSize : new uint_t(0);
 	return FDReadBinaryFile(ResolvePath(filename), fsize);
 }
 

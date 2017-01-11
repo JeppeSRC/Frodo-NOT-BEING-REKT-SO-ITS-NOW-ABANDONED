@@ -9,7 +9,7 @@ static vec3 right(1, 0, 0);
 static vec3 forward(0, 0, 1);
 static vec3 back(0, 0, -1);
 
-void UserCamera::Update(float delta) {
+void UserCamera::Update(float32 delta) {
 
 	vec3 move(dir);
 
@@ -17,8 +17,8 @@ void UserCamera::Update(float delta) {
 
 		Window& window = *D3DContext::GetWindow();
 
-		float yRot = (x - (window.GetWidth() >> 1)) * delta * SENSE;
-		float xRot = (y - (window.GetHeight() >> 1)) * delta * SENSE;
+		float32 yRot = (x - (window.GetWidth() >> 1)) * delta * SENSE;
+		float32 xRot = (y - (window.GetHeight() >> 1)) * delta * SENSE;
 
 		rotation += vec3(-xRot, yRot, 0);
 
@@ -29,7 +29,7 @@ void UserCamera::Update(float delta) {
 	UpdateViewMatrix();
 }
 
-bool UserCamera::OnKeyboardActionKeyPressed(unsigned int key) {
+bool UserCamera::OnKeyboardActionKeyPressed(uint32 key) {
 
 	if (key == 'W') {
 		dir += forward;
@@ -54,7 +54,7 @@ bool UserCamera::OnKeyboardActionKeyPressed(unsigned int key) {
 	return false;
 }
 
-bool UserCamera::OnKeyboardActionKeyReleased(unsigned int key) {
+bool UserCamera::OnKeyboardActionKeyReleased(uint32 key) {
 
 	if (key == 'W') {
 		dir -= forward;
@@ -74,8 +74,8 @@ bool UserCamera::OnKeyboardActionKeyReleased(unsigned int key) {
 }
 
 bool UserCamera::OnMouseActionMove(ivec2 position) {
-	x = (float)position.x;
-	y = (float)position.y;
+	x = (float32)position.x;
+	y = (float32)position.y;
 
 	return false;
 }

@@ -19,7 +19,7 @@
 #define FD_ASSERT(x) \
 if (!x) { \
 	FD_FATAL("ASSERTION FAILED: File: \"%s\" Func: \"%s\" Line: %u \"%s\"", __FILE__, __FUNCSIG__, __LINE__, #x); \
-	int* abcdefghijklmnopqrstuvwxyz123456789 = nullptr; \
+	int32* abcdefghijklmnopqrstuvwxyz123456789 = nullptr; \
 	*abcdefghijklmnopqrstuvwxyz123456789 = 1; \
 }
 #else
@@ -31,4 +31,4 @@ if (!x) { \
 
 
 
-void FDAPI FDLog(unsigned char level, const char* message...);
+void FDAPI FDLog(byte level, const char* message...);

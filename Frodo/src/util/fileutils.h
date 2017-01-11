@@ -3,4 +3,4 @@
 #include "string.h"
 
 String FDReadTextFile(const String& filename);
-unsigned char* FDReadBinaryFile(const String& filename, size_t* fileSize);
+byte* FDReadBinaryFile(const String& filename, uint_t* fileSize);

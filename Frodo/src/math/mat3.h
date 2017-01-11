@@ -6,7 +6,7 @@ private:
 	friend class vec3;
 private:
 	union {
-		float m[9];
+		float32 m[9];
 	};
 
 	void LoadRows(__m128* xmm) const;
@@ -14,7 +14,7 @@ private:
 
 public:
 	mat3();
-	mat3(float diagonal);
+	mat3(float32 diagonal);
 
 	inline static mat3 Identity() { return mat3(1); }
 
@@ -24,5 +24,5 @@ public:
 	mat3 operator*(const mat3& r);
 	vec3 operator*(const vec3& v);
 
-	__forceinline const float* GetData() const { return m; }
+	__forceinline const float32* GetData() const { return m; }
 };

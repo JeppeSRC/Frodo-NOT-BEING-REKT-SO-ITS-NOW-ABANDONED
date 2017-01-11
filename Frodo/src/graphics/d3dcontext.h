@@ -36,13 +36,13 @@ public:
 	static void CreateContext(Window* window);
 	static void Dispose();
 
-	static void Present(unsigned int syncInterval, unsigned int flags);
-	static void Clear(unsigned short numRenderTargets = 1);
+	static void Present(uint32 syncInterval, uint32 flags);
+	static void Clear(uint16 numRenderTargets = 1);
 
 	static void SetRenderTarget(ID3D11RenderTargetView* target);
-	static void SetRenderTargets(unsigned short numRenderTargets, ID3D11RenderTargetView** target, ID3D11DepthStencilView* depthView);
-	static void SetRenderTargets(unsigned short numRenderTargets, ID3D11RenderTargetView** target);
-	static void SetViewPort(float topLeftX, float topLeftY, float width, float height);
+	static void SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetView** target, ID3D11DepthStencilView* depthView);
+	static void SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetView** target);
+	static void SetViewPort(float32 topLeftX, float32 topLeftY, float32 width, float32 height);
 	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
 	
 	__forceinline static void SetActiveDeviceContext(ID3D11DeviceContext* context) { pContext->activeContext = context != nullptr ? context : pContext->context; }

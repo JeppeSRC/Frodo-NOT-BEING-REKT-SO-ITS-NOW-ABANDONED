@@ -26,8 +26,8 @@ protected:
 
 	List<Texture2D*> tids;
 
-	unsigned int maxVertices;
-	unsigned int indexCount;
+	uint32 maxVertices;
+	uint32 indexCount;
 
 
 	ID3D11BlendState* blendState[2];
@@ -43,12 +43,12 @@ protected:
 	virtual void CreateBlendStates();
 	virtual void CreateDepthStates();
 
-	float SubmitTexture(Texture2D* texture);
+	float32 SubmitTexture(Texture2D* texture);
 
-	BatchRenderer(Window* window, unsigned int max_vertices);
+	BatchRenderer(Window* window, uint32 max_vertices);
 
 public:
-	BatchRenderer(Window* window, Camera* camera, unsigned int max_glyphs);
+	BatchRenderer(Window* window, Camera* camera, uint32 max_glyphs);
 	virtual ~BatchRenderer();
 
 	void Begin();

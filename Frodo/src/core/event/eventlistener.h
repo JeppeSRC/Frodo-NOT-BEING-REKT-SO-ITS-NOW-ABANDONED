@@ -18,9 +18,9 @@ public:
 	virtual bool OnMouseActionMove(ivec2 position) { return false; }
 
 	virtual bool OnEvent(const EventMouseActionButton* event) { return false; }
-	virtual bool OnMouseActionButtonPressed(unsigned int button) { return false; }
-	virtual bool OnMouseActionButtonReleased(unsigned int button) { return false; }
-	virtual bool OnMouseActionButtonHold(unsigned int button) { return false; }
+	virtual bool OnMouseActionButtonPressed(uint32 button) { return false; }
+	virtual bool OnMouseActionButtonReleased(uint32 button) { return false; }
+	virtual bool OnMouseActionButtonHold(uint32 button) { return false; }
 
 	virtual bool OnEvent(const EventWindowActionResize* event) { return false; }
 	virtual bool OnWindowActionResize(ivec2 size) { return false; }
@@ -33,7 +33,7 @@ public:
 
 
 	virtual bool OnEvent(const EventKeyboardActionKey* event) { return false; }
-	virtual bool OnKeyboardActionKeyPressed(unsigned int key) { return false; }
-	virtual bool OnKeyboardActionKeyReleased(unsigned int key) { return false; }
-	virtual bool OnKeyboardActionKeyHold(unsigned int key) { return false; }
+	virtual bool OnKeyboardActionKeyPressed(uint32 key) { return false; }
+	virtual bool OnKeyboardActionKeyReleased(uint32 key) { return false; }
+	virtual bool OnKeyboardActionKeyHold(uint32 key) { return false; }
 };

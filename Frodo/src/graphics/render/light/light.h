@@ -24,14 +24,14 @@ public:
 
 	inline vec3& GetColor() { return color; }
 
-	inline unsigned int GetLightType() const {return lightType; }
+	inline uint32 GetLightType() const {return lightType; }
 };
 
 class FDAPI DirectionalLight : public Light {
 private:
 
 	vec3 direction;
-	float pad0;
+	float32 pad0;
 
 public:
 
@@ -44,9 +44,9 @@ class FDAPI PointLight : public Light {
 protected:
 
 	vec3 position;
-	float pad0;
+	float32 pad0;
 	vec3 attenuation; // constant, linear, exponent
-	float pad1;
+	float32 pad1;
 
 public:
 
@@ -59,20 +59,20 @@ public:
 class FDAPI SpotLight : public PointLight {
 protected:
 	vec3 direction;
-	float pad3;
+	float32 pad3;
 	vec2 cutoffExponent;
 	vec2 pad4;
 
 public:
 	SpotLight(const vec3& position, const vec3& color, const vec3& direction, const vec3& attenuation, vec2 cutoffExponent) : PointLight(position, color, attenuation), direction(direction) { 
-		this->cutoffExponent.x = (float)cosf(FD_TO_RADIANS_F(cutoffExponent.x));
+		this->cutoffExponent.x = (float32)cosf(FD_TO_RADIANS_F(cutoffExponent.x));
 		this->cutoffExponent.y = cutoffExponent.y;
 		lightType = FD_LIGHT_TYPE_SPOT;
 	}
 
 	inline vec3& GetDirection() { return direction; }
 	inline vec2& GetCutoffExponent() { return cutoffExponent; }
-	inline float& GetCutoff() { return cutoffExponent.x; }
-	inline float& GetExponent() { return cutoffExponent.y; }
+	inline float32& GetCutoff() { return cutoffExponent.x; }
+	inline float32& GetExponent() { return cutoffExponent.y; }
 
 };

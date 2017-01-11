@@ -7,8 +7,8 @@ using namespace DirectX;
 
 Texture2D::Texture2D(const String& filename) : Texture2D() {
 
-	size_t size = 0;
-	unsigned char* data = VFS::Get()->ReadFile(filename, &size);
+	uint_t size = 0;
+	byte* data = VFS::Get()->ReadFile(filename, &size);
 
 	CreateWICTextureFromMemory(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), data, size, (ID3D11Resource**)&resource, &resourceView);
 	
@@ -22,7 +22,7 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 	this->height = d.Height;
 }
 
-Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEXTURE_FORMAT format) : Texture2D() {
+Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT format) : Texture2D() {
 	this->width = width;
 	this->height = height;
 	D3D11_TEXTURE2D_DESC d;
@@ -36,7 +36,7 @@ Texture2D::Texture2D(void* data, unsigned int width, unsigned int height, FD_TEX
 	d.SampleDesc.Count = 1;
 	d.Usage = D3D11_USAGE_DEFAULT;
 	
-	unsigned int size = 0;
+	uint32 size = 0;
 
 	switch (format) {
 		case FD_TEXTURE_FORMAT_UNKNOWN:
@@ -76,6 +76,6 @@ Texture2D::~Texture2D() {
 	DX_FREE(resource);
 }
 
-void Texture2D::Bind(unsigned int slot) {
+void Texture2D::Bind(uint32 slot) {
 	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &resourceView);
 }

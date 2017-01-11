@@ -59,7 +59,7 @@ class FDAPI FDApplication {
 private:
 	void Run();
 
-	float ups;
+	float32 ups;
 
 protected:
 	Window* window;
@@ -67,16 +67,16 @@ protected:
 
 	virtual void OnInit();
 	virtual void OnTick();
-	virtual void OnUpdate(float delta);
+	virtual void OnUpdate(float32 delta);
 	virtual void OnRender();
 	virtual void OnExit();
 
 public:
-	FDApplication(const char* title, unsigned int width, unsigned int height);
+	FDApplication(const char* title, uint32 width, uint32 height);
 	virtual ~FDApplication();
 
 
 	inline void Start() { Run(); }
 
-	inline void SetUPS(float timesPerSec) { this->ups = 1000.0f / timesPerSec; }
+	inline void SetUPS(float32 timesPerSec) { this->ups = 1000.0f / timesPerSec; }
 };

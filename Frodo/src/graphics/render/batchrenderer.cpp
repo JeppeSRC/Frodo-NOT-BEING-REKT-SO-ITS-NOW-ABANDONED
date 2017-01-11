@@ -4,7 +4,7 @@
 
 
 void BatchRenderer::SetBlendingInternal(bool enable_blending) {
-	float factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float32 factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	D3DContext::GetDeviceContext()->OMSetBlendState(blendState[enable_blending ? 1 : 0], factor, 0xFFFFFFFF);
 }
 
@@ -91,12 +91,12 @@ void BatchRenderer::End() {
 	buffer = nullptr;
 }
 
-float BatchRenderer::SubmitTexture(Texture2D* texture) {
-	size_t numTids = tids.GetSize();
+float32 BatchRenderer::SubmitTexture(Texture2D* texture) {
+	uint_t numTids = tids.GetSize();
 
-	float tid = 0;
+	float32 tid = 0;
 
-	if (tids.Find(texture) == (size_t)-1) {
+	if (tids.Find(texture) == (uint_t)-1) {
 		if (tids.GetSize() == FD_FONT_MAX_SIMULTANEOUS_TEXTURES) {
 			End();
 			Render();
@@ -106,23 +106,23 @@ float BatchRenderer::SubmitTexture(Texture2D* texture) {
 		}
 
 		tids.Push_back(texture);
-		tid = (float)numTids + 1.0f;
+		tid = (float32)numTids + 1.0f;
 
 	}
 	else {
-		tid = (float)tids.Find(texture) + 1.0f;
+		tid = (float32)tids.Find(texture) + 1.0f;
 	}
 
 	return tid;
 }
 
-BatchRenderer::BatchRenderer(Window* window, unsigned int max_vertices) : Renderer(window, nullptr) {
+BatchRenderer::BatchRenderer(Window* window, uint32 max_vertices) : Renderer(window, nullptr) {
 	this->maxVertices = max_vertices;
 	this->indexCount = 0;
 	this->buffer = nullptr;
 }
 
-BatchRenderer::BatchRenderer(Window* window, Camera* camera, unsigned int max_vertices) : BatchRenderer(window, max_vertices) {
+BatchRenderer::BatchRenderer(Window* window, Camera* camera, uint32 max_vertices) : BatchRenderer(window, max_vertices) {
 	SetCamera(camera);
 }
 
@@ -147,9 +147,9 @@ void BatchRenderer::Render() {
 
 	shader->Bind();
 
-	size_t num = tids.GetSize();
-	for (size_t i = 0; i < num; i++) {
-		shader->SetTexture((unsigned int)i, tids[i]);
+	uint_t num = tids.GetSize();
+	for (uint_t i = 0; i < num; i++) {
+		shader->SetTexture((uint32)i, tids[i]);
 	}
 
 	vbo->Bind();

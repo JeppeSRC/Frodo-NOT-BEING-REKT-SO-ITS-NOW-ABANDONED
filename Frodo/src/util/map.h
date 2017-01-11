@@ -11,14 +11,14 @@ private:
 	inline D& Add(K key) {
 		keys.Push_back(key);
 
-		size_t size = keys.GetSize();
+		uint_t size = keys.GetSize();
 		data.Resize(size);
 
 		return data[size - 1];
 	}
 
 public:
-	Map(unsigned int size = 0) {
+	Map(uint32 size = 0) {
 		data.Reserve(size);
 		keys.Reserve(size);
 	}
@@ -27,22 +27,22 @@ public:
 		
 	}
 
-	inline void Reserve(unsigned int size) {
+	inline void Reserve(uint32 size) {
 		data.Reserve(size);
 		keys.Reserve(size);
 	}
 
 	inline void Remove(K key) {
-		size_t index = keys.Find(key);
-		if (index == (size_t)-1) return;
+		uint_t index = keys.Find(key);
+		if (index == (uint_t)-1) return;
 
 		keys.RemoveIndex(index);
 		data.RemoveIndex(index);
 	}
 
 	__forceinline D& operator[](K key) {
-		size_t loc = keys.Find(key);
-		if (loc != (size_t)-1) {
+		uint_t loc = keys.Find(key);
+		if (loc != (uint_t)-1) {
 			return data[loc];
 		}
 
@@ -56,15 +56,15 @@ public:
 	}
 
 	__forceinline D Retrieve(K key) const {
-		size_t index = keys.Find(key);
+		uint_t index = keys.Find(key);
 		
-		if (index == (size_t)-1) return D();
+		if (index == (uint_t)-1) return D();
 
 		return data.Get(index);
 	}
 
 
-	inline size_t GetItems() const { return keys.GetSize(); }
+	inline uint_t GetItems() const { return keys.GetSize(); }
 
 	inline List<K> GetKeyList() const { return keys; }
 	inline List<D> GetDataList() const { return data; }

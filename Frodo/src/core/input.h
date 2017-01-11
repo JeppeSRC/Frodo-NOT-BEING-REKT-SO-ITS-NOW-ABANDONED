@@ -15,23 +15,23 @@ public:
 	static void Init(Window* window);
 	static void Update();
 
-	static bool IsKeyDown(unsigned char key);
-	static bool IsKeyDownOnce(unsigned char key);
+	static bool IsKeyDown(byte key);
+	static bool IsKeyDownOnce(byte key);
 
-	static void SetMousePos(unsigned int x, unsigned int y);
+	static void SetMousePos(uint32 x, uint32 y);
 
 	inline static void CaptureMouse() { mouseCaptured = true; ShowCursor(FALSE); }
 	inline static void ReleaseMouse() { mouseCaptured = false; ShowCursor(TRUE); }
 	
 	static inline bool IsMouseCaptured() { return mouseCaptured; }
-	static inline unsigned int GetMouseX() { return mouseX; }
-	static inline unsigned int GetMouseY() { return mouseY; }
+	static inline uint32 GetMouseX() { return mouseX; }
+	static inline uint32 GetMouseY() { return mouseY; }
 
 public:
 	static bool prevKeys[FD_INPUT_MAX_KEYS];
 	static bool keys[FD_INPUT_MAX_KEYS];
 
-	static unsigned int mouseX;
-	static unsigned int mouseY;
+	static uint32 mouseX;
+	static uint32 mouseY;
 	static bool mouseCaptured;
 };

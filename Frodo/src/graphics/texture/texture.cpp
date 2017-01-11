@@ -3,12 +3,12 @@
 #include <util/vfs/vfs.h>
 #include <FreeImage.h>
 
-unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned int* height, unsigned int* bits) {
+byte* FDLoadImage(const String& filename, uint32* width, uint32* height, uint32* bits) {
 	FD_ASSERT((width != nullptr && "width parameter nullptr"));
 	FD_ASSERT((height != nullptr && "height parameter nullptr"));
 	FD_ASSERT((bits != nullptr && "bits parameter nullptr"));
 	
-	size_t size = 0;
+	uint_t size = 0;
 	
 	FIMEMORY data;
 	data.data = VFS::Get()->ReadFile(filename, &size);
@@ -38,7 +38,7 @@ unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned
 	*height = FreeImage_GetHeight(bitmap);
 	*bits = FreeImage_GetBPP(bitmap);
 	
-	unsigned char* pixels = FreeImage_GetBits(bitmap);
+	byte* pixels = FreeImage_GetBits(bitmap);
 
 	FreeImage_Unload(bitmap);
 	delete data.data;

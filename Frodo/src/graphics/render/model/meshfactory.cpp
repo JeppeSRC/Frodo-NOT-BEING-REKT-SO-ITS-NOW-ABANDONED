@@ -10,12 +10,12 @@ struct Vertex {
 	vec3 normals;
 };
 
-Model* MeshFactory::CreatePlane(float width, float height) {
+Model* MeshFactory::CreatePlane(float32 width, float32 height) {
 
 	
 
-	float w = width / 2.0f;
-	float h = height / 2.0f;
+	float32 w = width / 2.0f;
+	float32 h = height / 2.0f;
 
 	vec3 vertices[4]{
 		{-w, h, 0},
@@ -40,7 +40,7 @@ Model* MeshFactory::CreatePlane(float width, float height) {
 
 	Vertex v[4];
 
-	for (int i = 0; i < 4; i++) {
+	for (int32 i = 0; i < 4; i++) {
 		v[i].position = vertices[i];
 		v[i].texCoords = tex[i];
 		v[i].normals = normals[i];
@@ -48,7 +48,7 @@ Model* MeshFactory::CreatePlane(float width, float height) {
 
 	VertexBuffer* vBuffer = new VertexBuffer(v, sizeof(v), sizeof(Vertex));
 
-	unsigned int indices[6]{
+	uint32 indices[6]{
 		0, 1, 2, 2, 3, 0
 	};
 
@@ -59,11 +59,11 @@ Model* MeshFactory::CreatePlane(float width, float height) {
 	return model;
 }
 
-Model* MeshFactory::CreateCube(float width, float height, float depth) {
+Model* MeshFactory::CreateCube(float32 width, float32 height, float32 depth) {
 
-	float w = width / 2.0f;
-	float h = height / 2.0f;
-	float d = depth / 2.0f;
+	float32 w = width / 2.0f;
+	float32 h = height / 2.0f;
+	float32 d = depth / 2.0f;
 
 	vec3 vertices[24]{
 
@@ -179,7 +179,7 @@ Model* MeshFactory::CreateCube(float width, float height, float depth) {
 
 	Vertex v[24];
 
-	for (int i = 0; i < 24; i++) {
+	for (int32 i = 0; i < 24; i++) {
 		v[i].position = vertices[i];
 		v[i].texCoords = tex[i];
 		v[i].normals = normals[i];
@@ -187,7 +187,7 @@ Model* MeshFactory::CreateCube(float width, float height, float depth) {
 
 	VertexBuffer* vBuffer = new VertexBuffer(v, sizeof(v), sizeof(Vertex));
 
-	unsigned int indices[36]{
+	uint32 indices[36]{
 		//front
 		0, 1, 2, 2, 3, 0,
 
@@ -219,7 +219,7 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 	if (filename.EndsWith(".obj")) {
 		List<vec3> vertices, normals;
 		List<vec2> texCoords;
-		List<unsigned int> indices;
+		List<uint32> indices;
 		
 		FD_DEBUG("[MeshFactory] Loading \"%s\"", *filename);
 		FD_DEBUG("[MeshFactory] Loading text file");
@@ -227,12 +227,12 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 
 		ParseOBJ(text, vertices, texCoords, normals, indices);
 
-		size_t vertNum = vertices.GetSize();
+		uint_t vertNum = vertices.GetSize();
 
 		Vertex* vert = new Vertex[vertNum];
 
 		FD_DEBUG("[MeshFactory] Moving data");
-		for (size_t i = 0; i < vertNum; i++) {
+		for (uint_t i = 0; i < vertNum; i++) {
 			Vertex& v = vert[i];
 			v.position = vertices[i];
 			v.texCoords = texCoords[i];
@@ -241,7 +241,7 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 
 		FD_DEBUG("[MeshFactory] Loading data");
 		VertexBuffer* vbo = new VertexBuffer(vert, vertNum * sizeof(Vertex), sizeof(Vertex));
-		IndexBuffer* ibo = new IndexBuffer(indices.GetData(), (unsigned int)indices.GetSize());
+		IndexBuffer* ibo = new IndexBuffer(indices.GetData(), (uint32)indices.GetSize());
 
 		FD_DEBUG("[MeshFactory] Loading complete!\n");
 		return new Model(vbo, ibo);
@@ -254,7 +254,7 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 
 }
 
-void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& texCoords, List<vec3>& normals, List<unsigned int>& indices) {
+void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& texCoords, List<vec3>& normals, List<uint32>& indices) {
 
 	List<Face<3>> faces;
 	List<String*> lines = obj.Split('\n');
@@ -263,10 +263,10 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 
 
 	
-	size_t numLines = lines.GetSize();
+	uint_t numLines = lines.GetSize();
 	FD_DEBUG("[MeshFactory] Parsing text");
 	#pragma omp for
-	for (int i = 0; i < numLines; i++) {
+	for (int32 i = 0; i < numLines; i++) {
 		String line = lines[i];
 
 		if (line.StartsWith("v ")) {
@@ -298,16 +298,16 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 	MakeFacesOBJ(vertices, tmpVertices, texCoords, tmpTexCoords, normals, tmpNormals, indices, faces);
 }
 
-void MeshFactory::MakeFacesOBJ(List<vec3>& vertices, List<vec3>& tmpVertices, List<vec2>& texCoords, List<vec2>& tmpTexCoords, List<vec3>& normals, List<vec3>& tmpNormals, List<unsigned int>& indices, List<Face<3>> faces) {
+void MeshFactory::MakeFacesOBJ(List<vec3>& vertices, List<vec3>& tmpVertices, List<vec2>& texCoords, List<vec2>& tmpTexCoords, List<vec3>& normals, List<vec3>& tmpNormals, List<uint32>& indices, List<Face<3>> faces) {
 
-	size_t numFaces = faces.GetSize();
+	uint_t numFaces = faces.GetSize();
 
 	indices.Reserve(numFaces * 3);
 	#pragma omp for
-	for (int i = 0; i < numFaces; i++) {
+	for (int32 i = 0; i < numFaces; i++) {
 		Face<3> face = faces[i];
-		for (int j = 0; j < 3; j++) {
-			unsigned int index = i * 3 + j;//indices.GetSize();
+		for (int32 j = 0; j < 3; j++) {
+			uint32 index = i * 3 + j;//indices.GetSize();
 
 			indices.Push_back(index);
 			vertices[index] = tmpVertices[face[j].vertex - 1];

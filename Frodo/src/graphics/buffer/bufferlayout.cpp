@@ -1,15 +1,15 @@
 #include "bufferlayout.h"
 #include <graphics/shader/shader.h>
 
-static unsigned int get_size_from_format(DXGI_FORMAT format) {
+static uint32 get_size_from_format(DXGI_FORMAT format) {
 	switch (format) {
-		case DXGI_FORMAT_R32_FLOAT: return sizeof(float);
+		case DXGI_FORMAT_R32_FLOAT: return sizeof(float32);
 		case DXGI_FORMAT_R32G32_FLOAT: return sizeof(vec2);
 		case DXGI_FORMAT_R32G32B32_FLOAT: return sizeof(vec3);
 		case DXGI_FORMAT_R32G32B32A32_FLOAT: return sizeof(vec4);
 		case DXGI_FORMAT_R8G8B8A8_UINT:
 		case DXGI_FORMAT_R8G8B8A8_SINT:
-		case DXGI_FORMAT_R8G8B8A8_UNORM: return sizeof(int);
+		case DXGI_FORMAT_R8G8B8A8_UNORM: return sizeof(int32);
 		default:
 			FD_ASSERT(false && "UNKNOWN FORMAT");
 	}
@@ -21,8 +21,8 @@ BufferLayout::~BufferLayout() {
 	
 }
 
-void BufferLayout::Push(const String& name, DXGI_FORMAT format, unsigned int slot) {
-	unsigned int size = get_size_from_format(format);
+void BufferLayout::Push(const String& name, DXGI_FORMAT format, uint32 slot) {
+	uint32 size = get_size_from_format(format);
 	FD_ASSERT(size);
 	elements.Push_back({name, format, slot, size, offset});
 	offset += size;
@@ -31,10 +31,10 @@ void BufferLayout::Push(const String& name, DXGI_FORMAT format, unsigned int slo
 void BufferLayout::CreateInputLayout(Shader* shader) {
 	D3D11_INPUT_ELEMENT_DESC* desc = new D3D11_INPUT_ELEMENT_DESC[elements.GetSize()];
 
-	unsigned int stepRate = 0;
+	uint32 stepRate = 0;
 	D3D11_INPUT_CLASSIFICATION input;
 
-	for (size_t i = 0; i < elements.GetSize(); i++) {
+	for (uint_t i = 0; i < elements.GetSize(); i++) {
 		BufferLayoutAttrib& a = elements[i];
 
 		if (a.slot > 0) {
@@ -49,7 +49,7 @@ void BufferLayout::CreateInputLayout(Shader* shader) {
 	}
 
 	ID3D11InputLayout* tmp = nullptr;
-	D3DContext::GetDevice()->CreateInputLayout(desc, (unsigned int)elements.GetSize(), shader->GetVSBufferPointer(), shader->GetVSBufferSize(), &tmp);
+	D3DContext::GetDevice()->CreateInputLayout(desc, (uint32)elements.GetSize(), shader->GetVSBufferPointer(), shader->GetVSBufferSize(), &tmp);
 
 	shader->SetInputLayout(tmp);
 

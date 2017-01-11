@@ -51,7 +51,7 @@ private:
 		FD_SLOT_NUM
 	};
 
-	unsigned int slotCache[FD_SLOT_NUM];
+	uint32 slotCache[FD_SLOT_NUM];
 
 private:
 

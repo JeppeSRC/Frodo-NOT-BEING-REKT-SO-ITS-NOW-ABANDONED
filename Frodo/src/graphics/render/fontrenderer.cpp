@@ -10,10 +10,10 @@ struct Vertex {
 	vec2 position;
 	vec2 texCoords;
 	vec4 color;
-	float tid;
+	float32 tid;
 };
 
-FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRenderer(window, max_glyphs) { 
+FontRenderer::FontRenderer(Window* window, uint32 max_glyphs) : BatchRenderer(window, max_glyphs) { 
 	blending = true; 
 	depthTesting = false; 
 
@@ -22,7 +22,7 @@ FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRende
 	layout.Push<vec2>("POSITION");
 	layout.Push<vec2>("TEXCOORDS");
 	layout.Push<vec4>("COLOR");
-	layout.Push<float>("TID");
+	layout.Push<float32>("TID");
 
 	
 
@@ -35,15 +35,15 @@ FontRenderer::FontRenderer(Window* window, unsigned int max_glyphs) : BatchRende
 #if FD_FONT_SHOW_TEXTURE
 	shader->SetVSConstantBuffer("view_data", &mat4::Identity());
 #else
-	shader->SetVSConstantBuffer("view_data", &mat4::Orthographic(0.0f, (float)window->GetWidth(), 0.0f, (float)window->GetHeight(), -0.1f, 0.1f));
+	shader->SetVSConstantBuffer("view_data", &mat4::Orthographic(0.0f, (float32)window->GetWidth(), 0.0f, (float32)window->GetHeight(), -0.1f, 0.1f));
 #endif
 
 	layout.CreateInputLayout(shader);
 
 	
-	unsigned int* indices = new unsigned int[max_glyphs * 6];
+	uint32* indices = new uint32[max_glyphs * 6];
 
-	for (unsigned int i = 0; i < max_glyphs; i++) {
+	for (uint32 i = 0; i < max_glyphs; i++) {
 		indices[i * 6 + 0] = i * 4 + 0;
 		indices[i * 6 + 1] = i * 4 + 1;
 		indices[i * 6 + 2] = i * 4 + 2;
@@ -66,20 +66,20 @@ FontRenderer::~FontRenderer() {
 }
 
 void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec4 color) {
-	float tid  = SubmitTexture(font->GetTexture());
+	float32 tid  = SubmitTexture(font->GetTexture());
 
-	size_t textLength = text.length;
-	float size = (float)font->GetSize();
+	uint_t textLength = text.length;
+	float32 size = (float32)font->GetSize();
 
 	ivec2 dpi = window->GetMonitorDpi();
 
-	float xPos = position.x;
-	float yPos = position.y;
+	float32 xPos = position.x;
+	float32 yPos = position.y;
 
 	Font::FD_GLYPH prevGlyph;
 
-	for (size_t i = 0; i < textLength; i++) {
-		unsigned int c = text[i];
+	for (uint_t i = 0; i < textLength; i++) {
+		uint32 c = text[i];
 		if (c == ' ') {
 			xPos += size / 2.0f;
 			prevGlyph.unicodeCharacter = 0;
@@ -88,8 +88,8 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 
 		Font::FD_GLYPH glyph = font->GetGlyph(c);
 
-		float xa = xPos + glyph.offset.x;
-		float ya = yPos - glyph.offset.y;
+		float32 xa = xPos + glyph.offset.x;
+		float32 ya = yPos - glyph.offset.y;
 
 #if (!FD_FONT_SHOW_TEXTURE)
 

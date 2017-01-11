@@ -10,7 +10,7 @@ class FDAPI FontRenderer : public BatchRenderer {
 protected:
 
 public:
-	FontRenderer(Window* window, unsigned int max_glyphs);
+	FontRenderer(Window* window, uint32 max_glyphs);
 	~FontRenderer();
 
 	void SubmitText(const String& text, Font* font, vec2 position, vec4 color = vec4(1, 1, 1, 1));

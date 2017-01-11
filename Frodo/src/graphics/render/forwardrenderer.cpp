@@ -165,8 +165,8 @@ void ForwardRenderer::Render() {
 	FD_DISABLE_BLENDING
 	geometryRendered = false;
 	
-	size_t numl = directionalLights.GetSize();
-	size_t nume = entities.GetSize();
+	uint_t numl = directionalLights.GetSize();
+	uint_t nume = entities.GetSize();
 
 
 	viewData.projection = camera->GetProjectionMatrix();
@@ -181,9 +181,9 @@ void ForwardRenderer::Render() {
 //	Directional Lights
 
 	if (numl > 0) {
-		for (size_t l = 0; l < numl; l++) {
+		for (uint_t l = 0; l < numl; l++) {
 			directionalLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_DIRECTIONAL_LIGHT_DATA], (void*)directionalLights[l]);
-			for (size_t i = 0; i < nume; i++) {
+			for (uint_t i = 0; i < nume; i++) {
 				Entity& e = *entities[i];
 				Material& mat = *e.GetMaterial();
 
@@ -215,7 +215,7 @@ void ForwardRenderer::Render() {
 	if (numl > 0) {
 		pointLightShader->Bind();
 	
-		for (size_t i = 0; i < nume; i++) {
+		for (uint_t i = 0; i < nume; i++) {
 			if (!geometryRendered) { FD_DISABLE_BLENDING }
 			Entity& e = *entities[i];
 			Material& mat = *e.GetMaterial();
@@ -233,9 +233,9 @@ void ForwardRenderer::Render() {
 
 			pointLightShader->SetTexture(0, mat.GetDiffuseTexture());
 
-			unsigned int indexCount = e.GetModel()->GetIndexBuffer()->GetCount();
+			uint32 indexCount = e.GetModel()->GetIndexBuffer()->GetCount();
 
-			for (size_t l = 0; l < numl; l++) {
+			for (uint_t l = 0; l < numl; l++) {
 				pointLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_POINT_LIGHT_DATA], (void*)pointLights[l]);
 
 				D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
@@ -253,7 +253,7 @@ void ForwardRenderer::Render() {
 
 		spotLightShader->Bind();
 
-		for (size_t i = 0; i < nume; i++) {
+		for (uint_t i = 0; i < nume; i++) {
 			if (!geometryRendered) { FD_DISABLE_BLENDING }
 			Entity& e = *entities[i];
 			Material& mat = *e.GetMaterial();
@@ -271,9 +271,9 @@ void ForwardRenderer::Render() {
 
 			spotLightShader->SetTexture(0, mat.GetDiffuseTexture());
 
-			unsigned int indexCount = e.GetModel()->GetIndexBuffer()->GetCount();
+			uint32 indexCount = e.GetModel()->GetIndexBuffer()->GetCount();
 
-			for (size_t l = 0; l < numl; l++) {
+			for (uint_t l = 0; l < numl; l++) {
 				spotLightShader->SetPSConstantBuffer(slotCache[FD_SLOT_SPOT_LIGHT_DATA], (void*)spotLights[l]);
 
 				D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
