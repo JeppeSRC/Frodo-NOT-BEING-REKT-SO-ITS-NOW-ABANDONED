@@ -3,6 +3,12 @@
 #include "list.h"
 
 template<typename K, typename D>
+struct FD_MAP_PAIR {
+	K key;
+	D data;
+};
+
+template<typename K, typename D>
 class Map {
 private:
 	List<D> data;
@@ -25,6 +31,12 @@ public:
 
 	~Map() {
 		
+	}
+
+	inline Map<K, D>& operator=(const Map<K, D>& map) {
+		data = map.data;
+		keys = map.keys;
+		return *this;
 	}
 
 	inline void Reserve(uint32 size) {
@@ -68,4 +80,6 @@ public:
 
 	inline List<K> GetKeyList() const { return keys; }
 	inline List<D> GetDataList() const { return data; }
+
+	inline FD_MAP_PAIR<K, D> GetPair(uint_t index) { return { keys[index], data[index] }; }
 };

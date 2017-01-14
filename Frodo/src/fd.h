@@ -12,3 +12,4 @@
 extern "C" __declspec(dllexport) uint32 NvOptimusEnablement = 0x1;
 #undef NV_OPTIMUS_ENABLE
 #endif
+

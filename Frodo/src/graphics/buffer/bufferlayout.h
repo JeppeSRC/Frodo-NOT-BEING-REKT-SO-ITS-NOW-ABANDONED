@@ -31,6 +31,13 @@ public:
 
 	void CreateInputLayout(Shader* shader);
 
+	void PushElement(const String& name, uint32 size);
+	uint32 GetElementOffset(const String& name);
+	uint32 GetElementOffset(uint32 index);
+	uint32 GetElementSize(const String& name);
+	uint32 GetElementSize(uint32 index);
+	uint32 GetSize() const { return offset; }
+
 	template<typename T>
 	inline void Push(const char* name, uint32 slot = 0) { FD_FATAL("Unsupported format"); }
 

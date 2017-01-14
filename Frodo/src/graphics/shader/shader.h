@@ -4,6 +4,7 @@
 #include <graphics/texture/texture.h>
 #include <util/string.h>
 #include <util/list.h>
+#include <graphics/buffer/bufferlayout.h>
 
 enum FD_SHADER_TYPE {
 	FD_SHADER_TYPE_UNKOWN,
@@ -36,6 +37,8 @@ enum FD_SHADER_GEN_FUNCTION_TYPE {
 	FD_LE
 };
 
+
+
 class FDAPI Shader {
 private:
 	struct ShaderGenVariable {
@@ -67,12 +70,30 @@ private:
 	void ShaderGenAddVariableData(String& source, FD_SHADER_TYPE type);
 	void ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE type);
 
+public:
+	struct ConstantBufferSlot {
+		ConstantBufferSlot(uint32 reg = 0, uint32 size = 0, byte* data = nullptr, BufferLayout layout = BufferLayout()) : semRegister(reg), structSize(size), data(data), layout(layout) {}
+		uint32 semRegister;
+		uint32 structSize;
+		byte* data;
+
+		BufferLayout layout;
+	};
+
+	struct TextureSlot {
+		TextureSlot(uint32 reg = 0, uint32 numTextures = 0) : semRegister(reg), numTextures(numTextures) {}
+		uint32 semRegister;
+		uint32 numTextures;
+	};
 
 private:
 	struct ShaderStructInfo {
 		String name;
 		uint32 semRegister;
 		uint32 structSize;
+
+		BufferLayout layout;
+
 		ID3D11Buffer* buffer = nullptr;
 
 		~ShaderStructInfo() { DX_FREE(buffer); }
@@ -130,7 +151,14 @@ public:
 	void SetPSConstantBuffer(const String& bufferName, void* data);
 	void SetVSConstantBuffer(uint32 slot, void* data);
 	void SetPSConstantBuffer(uint32 slot, void* data);
+	void SetVSConstantBuffer(ConstantBufferSlot vCBuffer);
+	void SetPSConstantBuffer(ConstantBufferSlot pCBuffer);
 	void SetTexture(uint32 slot, const Texture* tex);
+
+	ConstantBufferSlot GetVSConstantBufferInfo(const String& name);
+	ConstantBufferSlot GetPSConstantBufferInfo(const String& name);
+
+	TextureSlot GetTextureInfo(const String& name);
 
 	uint32 GetVSConstantBufferSlotByName(const String& bufferName);
 	uint32 GetPSConstantBufferSlotByName(const String& bufferName);

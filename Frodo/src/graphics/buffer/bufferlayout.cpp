@@ -1,5 +1,6 @@
 #include "bufferlayout.h"
 #include <graphics/shader/shader.h>
+#include <Windows.h>
 
 static uint32 get_size_from_format(DXGI_FORMAT format) {
 	switch (format) {
@@ -13,12 +14,55 @@ static uint32 get_size_from_format(DXGI_FORMAT format) {
 		default:
 			FD_ASSERT(false && "UNKNOWN FORMAT");
 	}
-
+	
 	return 0;
 }
 
 BufferLayout::~BufferLayout() {
 	
+}
+
+void BufferLayout::PushElement(const String& name, uint32 size) {
+	elements.Push_back({ name, (DXGI_FORMAT)0, 0, size, offset });
+	offset += size;
+}
+
+uint32 BufferLayout::GetElementOffset(const String& name) {
+	uint_t size = elements.GetSize();
+	for (uint_t i = 0; i < size; i++) {
+		BufferLayoutAttrib attrib = elements[i];
+		if (attrib.name == name) return attrib.offset;
+	}
+
+	FD_WARNING("[BufferLayout] No element in buffer named \"%s\"", *name);
+	return -1;
+}
+
+uint32 BufferLayout::GetElementOffset(uint32 index) {
+	if (index >= elements.GetSize()) {
+		FD_WARNING("[BufferLayout] Index out of bounds %u", index);
+	}
+
+	return elements[index].offset;
+}
+
+uint32 BufferLayout::GetElementSize(const String& name) {
+	uint_t size = elements.GetSize();
+	for (uint_t i = 0; i < size; i++) {
+		BufferLayoutAttrib attrib = elements[i];
+		if (attrib.name == name) return attrib.size;
+	}
+
+	FD_WARNING("[BufferLayout] No element in buffer named \"%s\"", *name);
+	return -1;
+}
+
+uint32 BufferLayout::GetElementSize(uint32 index) {
+	if (index >= elements.GetSize()) {
+		FD_WARNING("[BufferLayout] Index out of bounds %u", index);
+	}
+
+	return elements[index].size;
 }
 
 void BufferLayout::Push(const String& name, DXGI_FORMAT format, uint32 slot) {

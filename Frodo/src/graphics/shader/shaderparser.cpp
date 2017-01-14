@@ -84,6 +84,8 @@ void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 		cbuffer->name = name;
 		cbuffer->semRegister = atoi(*source + regIndex);
 
+		
+
 		CalcStructSize(source, cbufferStart - 7, cbuffer);
 
 		switch (type) {
@@ -124,11 +126,15 @@ void Shader::CalcStructSize(String& structSource, uint_t offset, ShaderStructInf
 
 	for (uint_t num = 0; num < numFields; num++) {
 		for (uint_t i = 0; i < 6; i++) {
-			uint_t index = fields.Find(get_field_type_as_string(types[i]), fieldOffset);
+			String fieldType = get_field_type_as_string(types[i]);
+			uint_t index = fields.Find(fieldType, fieldOffset);
 
 			if (index > currSemicolon || index == -1) continue;
 
-			cbuffer->structSize += get_field_type_size(types[i]);
+			uint32 fieldSize = get_field_type_size(types[i]);
+			cbuffer->structSize += fieldSize;
+
+			cbuffer->layout.PushElement(fields.SubString(index + fieldType.length, fields.Find(";", index + 1)).RemoveBlankspace(), fieldSize);
 
 			fieldOffset = currSemicolon;
 			currSemicolon = fields.Find(";", currSemicolon + 1);
@@ -184,14 +190,22 @@ void Shader::ParseTextures(String source) {
 		tex->name = source.SubString(nameStart, nameEnd).RemoveBlankspace();
 
 		uint_t regStart = source.Find("register(t", nameEnd) + 10;
+		uint_t end = source.Find(";", regStart);
 
 		if (regStart < 10) {
 			FD_WARNING("[ShaderParser] Texture \"%s\" has not been registered to a texture slot", *tex->name);
 		}
 
-		tex->semRegister = atoi(*source + regStart);
+		String sem = source.SubString(regStart, end);
 
-		source.Remove(textureStart, source.Find(";", regStart)+1);
+		tex->semRegister = atoi(*sem);
+		
+		uint_t subCompStart = sem.Find("[");
+		if (subCompStart != (uint_t)-1) {
+			tex->numTextures = atoi(*sem + subCompStart+1);
+		}
+
+		source.Remove(textureStart, end+1);
 
 		pTextures.Push_back(tex);
 	}

@@ -25,15 +25,15 @@
 
 #include <graphics/font/font.h>
 
-#include <graphics/render/deferredrenderer.h>
-#include <graphics/render/forwardrenderer.h>
-#include <graphics/render/fontrenderer.h>
-#include <graphics/render/batchrenderer.h>
-#include <graphics/render/renderer.h>
+/*#include <graphics/render/deferredrenderer.h>
+#include <graphics/render/forwardrenderer.h>*/
+#include <graphics/render/renderer/fontrenderer.h>
+#include <graphics/render/renderer/batchrenderer.h>
+#include <graphics/render/renderer/renderer.h>
 
 #include <graphics/render/material/material.h>
-#include <graphics/render/model/model.h>
-#include <graphics/render/model/meshfactory.h>
+#include <graphics/render/renderable/model.h>
+#include <graphics/render/mesh/meshfactory.h>
 #include <graphics/render/camera/camera.h>
 #include <graphics/render/camera/usercamera.h>
 

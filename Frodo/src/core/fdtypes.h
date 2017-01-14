@@ -11,4 +11,4 @@ typedef unsigned long long	uint64;
 typedef signed   long long	int64;
 typedef float				float32;
 typedef double				float64;
-typedef uint_t				uint_t;
+typedef size_t				uint_t;

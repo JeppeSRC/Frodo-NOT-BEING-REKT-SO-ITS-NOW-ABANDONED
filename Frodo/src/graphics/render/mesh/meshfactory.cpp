@@ -10,7 +10,7 @@ struct Vertex {
 	vec3 normals;
 };
 
-Model* MeshFactory::CreatePlane(float32 width, float32 height) {
+Mesh* MeshFactory::CreatePlane(float32 width, float32 height, MaterialInstance* material) {
 
 	
 
@@ -54,12 +54,12 @@ Model* MeshFactory::CreatePlane(float32 width, float32 height) {
 
 	IndexBuffer* iBuffer = new IndexBuffer(indices, 6);
 
-	Model* model = new Model(vBuffer, iBuffer);
+	Mesh* mesh = new Mesh(vBuffer, iBuffer, material);
 
-	return model;
+	return mesh;
 }
 
-Model* MeshFactory::CreateCube(float32 width, float32 height, float32 depth) {
+Mesh* MeshFactory::CreateCube(float32 width, float32 height, float32 depth, MaterialInstance* material) {
 
 	float32 w = width / 2.0f;
 	float32 h = height / 2.0f;
@@ -209,12 +209,12 @@ Model* MeshFactory::CreateCube(float32 width, float32 height, float32 depth) {
 
 	IndexBuffer* iBuffer = new IndexBuffer(indices, 36);
 
-	Model* model = new Model(vBuffer, iBuffer);
+	Mesh* mesh = new Mesh(vBuffer, iBuffer, material);
 
-	return model;
+	return mesh;
 }
 
-Model* MeshFactory::LoadFromFile(const String& filename) {
+Mesh* MeshFactory::LoadFromFile(const String& filename, MaterialInstance* material) {
 
 	if (filename.EndsWith(".obj")) {
 		List<vec3> vertices, normals;
@@ -244,13 +244,13 @@ Model* MeshFactory::LoadFromFile(const String& filename) {
 		IndexBuffer* ibo = new IndexBuffer(indices.GetData(), (uint32)indices.GetSize());
 
 		FD_DEBUG("[MeshFactory] Loading complete!\n");
-		return new Model(vbo, ibo);
+		return new Mesh(vbo, ibo, material);
 
 	} else {
 		FD_WARNING("\"%s\" Only supports obj files ATM!", __FUNCSIG__);
 	}
 
-	return new Model;
+	return new Mesh(nullptr, nullptr, nullptr);
 
 }
 
