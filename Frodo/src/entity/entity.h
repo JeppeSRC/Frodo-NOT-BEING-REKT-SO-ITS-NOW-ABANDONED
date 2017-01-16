@@ -20,6 +20,7 @@ public:
 	virtual void Update() {}
 
 	inline Mesh* GetMesh() const { return mesh; }
+	inline mat4 GetTransform() const { return mat4::Translate(position) * mat4::Rotate(rotation) * mat4::Scale(scale); }
 
 	inline vec3& GetPosition() { return position; }
 	inline vec3& GetRotation() { return rotation; }

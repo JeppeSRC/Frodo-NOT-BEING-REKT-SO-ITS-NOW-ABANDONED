@@ -48,20 +48,13 @@ protected:
 	BatchRenderer(Window* window, uint32 max_vertices);
 
 public:
-	BatchRenderer(Window* window, Camera* camera, uint32 max_glyphs);
 	virtual ~BatchRenderer();
 
-	void Begin();
-	virtual void Submit(Entity* entity);
-	void End();
+	void Begin(Camera* camera) override;
+	void End() override;
 
-	void Render();
+	void Present() override;
 
-	virtual void Add(Entity* e) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
-	virtual void Add(Light* l) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
-
-	virtual void Remove(Entity* e) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
-	virtual void Remove(Light* l) override { FD_WARNING("\"%s\" not implemented", __FUNCSIG__); }
 
 };
 

@@ -72,15 +72,7 @@ public:
 	DeferredRenderer(Window* window);
 	~DeferredRenderer();
 
-	void SetProjectionMatrix(const mat4& matrix);
-
-	void Add(Entity* e) override;
-	void Add(Light* light) override;
-
-	void Remove(Entity* e) override;
-	void Remove(Light* light) override;
-
-	void Render();
+	void Present() override;
 
 	bool OnWindowActionResize(ivec2 size) override;
 };

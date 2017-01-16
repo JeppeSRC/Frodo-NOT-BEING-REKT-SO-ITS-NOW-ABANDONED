@@ -123,6 +123,15 @@
     <ClCompile Include="src\graphics\render\material\materialinstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\render\mesh\mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\render\renderer\renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\render\renderer\deferredrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\frodo.h">
@@ -263,10 +272,7 @@
     <ClInclude Include="src\graphics\render\mesh\meshfactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\render\renderable\model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\render\renderable\renderable.h">
+    <ClInclude Include="src\graphics\render\renderer\deferredrenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,25 +1,45 @@
 #include "texture2d.h"
-#include <WICTextureLoader.h>
 #include <core/log.h>
 #include <util/vfs/vfs.h>
 
-using namespace DirectX;
-
 Texture2D::Texture2D(const String& filename) : Texture2D() {
 
-	uint_t size = 0;
-	byte* data = VFS::Get()->ReadFile(filename, &size);
+	//TODO: only supports 32bit
+	uint32 bits = 0;
+	byte* data = Texture::Load(filename, &width, &height, &bits);
 
-	CreateWICTextureFromMemory(D3DContext::GetDevice(), D3DContext::GetDeviceContext(), data, size, (ID3D11Resource**)&resource, &resourceView);
-	
-	FD_ASSERT(resource && resourceView);
+	if (bits != 32) FD_WARNING("[Texture2D] Only supports 32 bit images atm!");
 
 	D3D11_TEXTURE2D_DESC d;
+	d.ArraySize = 1;
+	d.Width = width;
+	d.Height = height;
+	d.MipLevels = 1;
+	d.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	d.CPUAccessFlags = 0;
+	d.MiscFlags = 0;
+	d.Usage = D3D11_USAGE_DEFAULT;
+	d.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	resource->GetDesc(&d);
+	D3D11_SHADER_RESOURCE_VIEW_DESC s;
+	ZeroMemory(&s, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	s.Format = d.Format;
+	s.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	s.Texture2D.MipLevels = 1;
+	s.Texture2D.MostDetailedMip = 0;
 
-	this->width = d.Width;
-	this->height = d.Height;
+	D3D11_SUBRESOURCE_DATA r;
+	r.pSysMem = data;
+	r.SysMemPitch = width * (bits / 8);
+	r.SysMemSlicePitch = 0;
+
+	D3DContext::GetDevice()->CreateTexture2D(&d, &r, &resource);
+
+	FD_ASSERT(resource);
+
+	D3DContext::GetDevice()->CreateShaderResourceView(resource, &s, &resourceView);
+
+	FD_ASSERT(resourceView);
 }
 
 Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT format) : Texture2D() {

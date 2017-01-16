@@ -154,7 +154,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\deferredtest.cpp" />
     <ClCompile Include="src\test.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -164,7 +163,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\deferredtest.h" />
     <ClInclude Include="src\test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -14,7 +14,9 @@ protected:
 
 public:
 	Mesh(VertexBuffer* vBuffer, IndexBuffer* iBuffer, MaterialInstance* material) : vBuffer(vBuffer), iBuffer(iBuffer), material(material) { }
-	virtual ~Mesh() { delete material, vBuffer, iBuffer; }
+	~Mesh() { delete material, vBuffer, iBuffer; }
+
+	void Render();
 
 	inline VertexBuffer* GetVertexBuffer() { return vBuffer; }
 	inline IndexBuffer* GetIndexBuffer() { return iBuffer; }

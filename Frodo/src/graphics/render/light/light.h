@@ -76,3 +76,17 @@ public:
 	inline float32& GetExponent() { return cutoffExponent.y; }
 
 };
+
+class FDAPI LightStack {
+private:
+	List<Light*> lights;
+
+public:
+	LightStack() {}
+	~LightStack() { lights.Free(); }
+
+	void Add(Light* light) { lights.Push_back(light); }
+	void Remove(Light* light) { lights.Remove(light);
+	
+	}
+};

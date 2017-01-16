@@ -11,26 +11,10 @@ protected:
 	void OnExit() override;
 
 public:
+	FontRenderer* renderer;
+	Font* font;
 
-	IndexBuffer* i;
-	IndexBuffer* i2;
-	VertexBuffer* v;
-	VertexBuffer* v2;
-	Shader* shader;
-	Shader* shader2;
-	Texture* tex;
-	Framebuffer2D* framebuffer;
-
-	unsigned int fps;
-
-	struct Mod {
-		mat4 projection;
-		mat4 model;
-	} mod;
-
-	float tmp;
-
-	Test() : FDApplication("Title", 1000, 600) { tmp = 0; }
+	Test() : FDApplication("Title", 1000, 600) {  }
 
 
 

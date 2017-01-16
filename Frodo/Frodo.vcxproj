@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
@@ -110,7 +110,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
@@ -131,7 +131,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -159,7 +159,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include;$(SolutionDir)Dependencies\DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -193,12 +193,15 @@
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
     <ClCompile Include="src\graphics\font\font.cpp" />
     <ClCompile Include="src\graphics\render\material\materialinstance.cpp" />
+    <ClCompile Include="src\graphics\render\mesh\mesh.cpp" />
     <ClCompile Include="src\graphics\render\renderer\batchrenderer.cpp" />
     <ClCompile Include="src\graphics\render\camera\camera.cpp" />
     <ClCompile Include="src\graphics\render\camera\usercamera.cpp" />
+    <ClCompile Include="src\graphics\render\renderer\deferredrenderer.cpp" />
     <ClCompile Include="src\graphics\render\renderer\fontrenderer.cpp" />
     <ClCompile Include="src\graphics\render\material\material.cpp" />
     <ClCompile Include="src\graphics\render\mesh\meshfactory.cpp" />
+    <ClCompile Include="src\graphics\render\renderer\renderer.cpp" />
     <ClCompile Include="src\graphics\shader\shader.cpp" />
     <ClCompile Include="src\graphics\shader\shaderfactory.cpp" />
     <ClCompile Include="src\graphics\shader\shadergen.cpp" />
@@ -237,15 +240,14 @@
     <ClInclude Include="src\graphics\d3dcontext.h" />
     <ClInclude Include="src\graphics\font\font.h" />
     <ClInclude Include="src\graphics\render\mesh\mesh.h" />
-    <ClInclude Include="src\graphics\render\renderable\renderable.h" />
     <ClInclude Include="src\graphics\render\renderer\batchrenderer.h" />
     <ClInclude Include="src\graphics\render\camera\camera.h" />
     <ClInclude Include="src\graphics\render\camera\usercamera.h" />
+    <ClInclude Include="src\graphics\render\renderer\deferredrenderer.h" />
     <ClInclude Include="src\graphics\render\renderer\fontrenderer.h" />
     <ClInclude Include="src\graphics\render\light\light.h" />
     <ClInclude Include="src\graphics\render\material\material.h" />
     <ClInclude Include="src\graphics\render\mesh\meshfactory.h" />
-    <ClInclude Include="src\graphics\render\renderable\model.h" />
     <ClInclude Include="src\graphics\render\renderer\renderer.h" />
     <ClInclude Include="src\graphics\shader\shader.h" />
     <ClInclude Include="src\graphics\shader\shaderfactory.h" />
@@ -268,9 +270,6 @@
     <ClInclude Include="src\util\vfs\vfs.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dependencies\DirectXTK\DirectXTK.vcxproj">
-      <Project>{bd1a7f6d-7460-4223-b2bf-16ba83219fdb}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Dependencies\FreeType\FreeType.vcxproj">
       <Project>{567204d9-06c3-4d14-8722-759e9be9c88d}</Project>
     </ProjectReference>

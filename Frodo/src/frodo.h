@@ -32,7 +32,6 @@
 #include <graphics/render/renderer/renderer.h>
 
 #include <graphics/render/material/material.h>
-#include <graphics/render/renderable/model.h>
 #include <graphics/render/mesh/meshfactory.h>
 #include <graphics/render/camera/camera.h>
 #include <graphics/render/camera/usercamera.h>

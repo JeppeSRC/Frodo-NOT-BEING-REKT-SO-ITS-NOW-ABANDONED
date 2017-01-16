@@ -80,7 +80,7 @@ void BatchRenderer::CreateDepthStates() {
 }
 
 
-void BatchRenderer::Begin() {
+void BatchRenderer::Begin(Camera* camera) {
 	indexCount = 0;
 	tids.Clear();
 	buffer = (Vertex*)vbo->Map(FD_MAP_WRITE_DISCARD);
@@ -99,8 +99,8 @@ float32 BatchRenderer::SubmitTexture(Texture2D* texture) {
 	if (tids.Find(texture) == (uint_t)-1) {
 		if (tids.GetSize() == FD_FONT_MAX_SIMULTANEOUS_TEXTURES) {
 			End();
-			Render();
-			Begin();
+			Present();
+			Begin(nullptr);
 
 			numTids = 0;
 		}
@@ -116,14 +116,10 @@ float32 BatchRenderer::SubmitTexture(Texture2D* texture) {
 	return tid;
 }
 
-BatchRenderer::BatchRenderer(Window* window, uint32 max_vertices) : Renderer(window, nullptr) {
+BatchRenderer::BatchRenderer(Window* window, uint32 max_vertices) : Renderer(window) {
 	this->maxVertices = max_vertices;
 	this->indexCount = 0;
 	this->buffer = nullptr;
-}
-
-BatchRenderer::BatchRenderer(Window* window, Camera* camera, uint32 max_vertices) : BatchRenderer(window, max_vertices) {
-	SetCamera(camera);
 }
 
 BatchRenderer::~BatchRenderer() {
@@ -137,11 +133,7 @@ BatchRenderer::~BatchRenderer() {
 	DX_FREE(depthState[1]);
 }
 
-void BatchRenderer::Submit(Entity* e) {
-	FD_WARNING("\"%s\" not implemented", __FUNCSIG__);
-}
-
-void BatchRenderer::Render() {
+void BatchRenderer::Present() {
 	SetBlendingInternal(blending);
 	SetDepthInternal(depthTesting);
 

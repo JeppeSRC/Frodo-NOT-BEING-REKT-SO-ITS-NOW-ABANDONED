@@ -14,6 +14,4 @@ public:
 	~FontRenderer();
 
 	void SubmitText(const String& text, Font* font, vec2 position, vec4 color = vec4(1, 1, 1, 1));
-
-	void Submit(Entity* e) { }
 };

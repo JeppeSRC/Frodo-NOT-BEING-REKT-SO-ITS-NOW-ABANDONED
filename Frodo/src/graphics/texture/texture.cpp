@@ -3,7 +3,7 @@
 #include <util/vfs/vfs.h>
 #include <FreeImage.h>
 
-byte* FDLoadImage(const String& filename, uint32* width, uint32* height, uint32* bits) {
+byte* Texture::Load(const String& filename, uint32* width, uint32* height, uint32* bits) {
 	FD_ASSERT((width != nullptr && "width parameter nullptr"));
 	FD_ASSERT((height != nullptr && "height parameter nullptr"));
 	FD_ASSERT((bits != nullptr && "bits parameter nullptr"));

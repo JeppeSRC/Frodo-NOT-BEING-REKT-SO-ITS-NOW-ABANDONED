@@ -5,27 +5,32 @@
 #include <entity/entity.h>
 #include <graphics/render/light/light.h>
 
+struct RenderCommand {
+	Mesh* mesh;
+	mat4 transform;
+	Shader* shader;
+};
+
 class FDAPI Renderer : public EventListener {
 protected:
 	Window* window;
-	Camera* camera;
 
+	List<RenderCommand> commandQueue;
+	
+	Renderer(Window* window) { this->window = window; }
 public:
-	Renderer(Window* window, Camera* camera) {
-		this->window = window;
-		this->camera = camera;
-	}
+	virtual ~Renderer() {}
 
-	virtual void Render() = 0;
+	virtual void Present() = 0;
 
-	virtual void Add(Entity* entity) = 0;
-	virtual void Add(Light* light) = 0;
+	virtual void Begin(Camera* camera) = 0;
+	virtual void Submit()
+	virtual void Submit(const RenderCommand& cmd);
+	virtual void Submit(Entity* e);
+	virtual void Submit(Mesh* mesn, mat4 transform);
+	virtual void End() = 0;
 
-	virtual void Remove(Entity* entity) = 0;
-	virtual void Remove(Light* light) = 0;
 
 	inline Window* GetWindow() const { return window; }
-	inline Camera* GetCamera() const { return camera; }
-
-	inline void SetCamera(Camera* camera) { this->camera = camera; }
+	inline List<RenderCommand> GetCommandQueue() const { return commandQueue; }
 };
