@@ -86,7 +86,8 @@ public:
 	~LightStack() { lights.Free(); }
 
 	void Add(Light* light) { lights.Push_back(light); }
-	void Remove(Light* light) { lights.Remove(light);
+	void Remove(Light* light) { lights.Remove(light);  }
+
+	inline List<Light*> GetLights() const { return lights; }
 	
-	}
 };
