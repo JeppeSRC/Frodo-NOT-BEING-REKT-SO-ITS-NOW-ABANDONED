@@ -8,8 +8,8 @@ Map<HWND, Window*> Window::window_handels;
 LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 	Window* window = window_handels.Retrieve(hwnd);
 	Event* e;
-	static unsigned int x = 0;
-	static unsigned int y = 0;
+	static uint32 x = 0;
+	static uint32 y = 0;
 	static bool keys[65535];
 	static bool buttons[3];
 
@@ -72,7 +72,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYDOWN:
-			Input::keys[(unsigned char)w] = true;
+			Input::keys[(byte)w] = true;
 			if (!keys[w]) {
 				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_PRESSED, w);
 				keys[w] = true;
@@ -83,8 +83,8 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYUP:
-			Input::keys[(unsigned char)w] = false;
-			Input::prevKeys[(unsigned char)w] = false;
+			Input::keys[(byte)w] = false;
+			Input::prevKeys[(byte)w] = false;
 			keys[w] = false;
 			e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_RELEASED, w);
 			EventDispatcher::DispatchEvent(e);
@@ -124,7 +124,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 	return DefWindowProc(hwnd, msg, w, l);
 }
 
-Window::Window(const String& title, int width, int height) : title(title), width(width), height(height) {
+Window::Window(const String& title, int32 width, int32 height) : title(title), width(width), height(height) {
 	FD_DEBUG("Creating window Title<%s> Width<%d> Height<%d>!", *title, width, height);
 
 	WNDCLASSEX ws;
@@ -196,15 +196,15 @@ void Window::SetVisible(bool visible) {
 	else
 		ShowWindow(hwnd, SW_HIDE);
 	
-	FD_DEBUG("Window(%d) visibility set to %s", (int)hwnd, isVisible ? "TRUE" : "FALSE");
+	FD_DEBUG("Window(%d) visibility set to %s", (int32)hwnd, isVisible ? "TRUE" : "FALSE");
 }
 
 
 ivec2 Window::GetMonitorDpi() {
 	HDC m = GetDC(0);
 
-	int x = GetDeviceCaps(m, LOGPIXELSX);
-	int y = GetDeviceCaps(m, LOGPIXELSY);
+	int32 x = GetDeviceCaps(m, LOGPIXELSX);
+	int32 y = GetDeviceCaps(m, LOGPIXELSY);
 
 	ReleaseDC(0, m);
 
@@ -214,8 +214,8 @@ ivec2 Window::GetMonitorDpi() {
 ivec2 Window::GetWindowDpi() {
 	HDC m = GetDC(hwnd);
 
-	int x = GetDeviceCaps(m, LOGPIXELSX);
-	int y = GetDeviceCaps(m, LOGPIXELSY);
+	int32 x = GetDeviceCaps(m, LOGPIXELSX);
+	int32 y = GetDeviceCaps(m, LOGPIXELSY);
 
 	ReleaseDC(hwnd, m);
 

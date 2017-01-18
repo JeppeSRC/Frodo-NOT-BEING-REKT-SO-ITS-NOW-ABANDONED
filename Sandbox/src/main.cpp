@@ -8,10 +8,11 @@
 #define PRINT(str) FD_INFO("%s", *str)
 
 int main() {
+	Test t;
+	t.Start();
 
-
-	DeferredTest g;
-	g.start();
+/*	DeferredTest g;
+	g.Start();*/
 
 	return 0;
 }

@@ -14,16 +14,16 @@ enum FD_INDEXBUFFER_FORMAT {
 class FDAPI IndexBuffer : public Buffer {
 private:
 	DXGI_FORMAT format;
-	unsigned int count;
+	uint32 count;
 
 public:
-	IndexBuffer(void* data, size_t size, FD_INDEXBUFFER_FORMAT format);
-	IndexBuffer(unsigned int* data, unsigned int count);
-	IndexBuffer(int* data, unsigned int count);
-	IndexBuffer(unsigned short* data, unsigned int count);
-	IndexBuffer(short* data, unsigned int count);
+	IndexBuffer(void* data, uint_t size, FD_INDEXBUFFER_FORMAT format);
+	IndexBuffer(uint32* data, uint32 count);
+	IndexBuffer(int32* data, uint32 count);
+	IndexBuffer(uint16* data, uint32 count);
+	IndexBuffer(int16* data, uint32 count);
 
 	void Bind() override;
 
-	__forceinline unsigned int GetCount() const { return count; }
+	__forceinline uint32 GetCount() const { return count; }
 };

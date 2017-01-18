@@ -18,11 +18,11 @@ public:
 		FD_HOLD
 	};
 private:
-	unsigned int key;
+	uint32 key;
 	FD_ACTION action;
 public:
-	EventKeyboardActionKey(FD_ACTION action, unsigned int key) : EventKeyboard(action == FD_PRESSED ? FD_KEYBOARD_ACTION_KEY_PRESSED : action == FD_RELEASED ? FD_KEYBOARD_ACTION_KEY_RELEASED : FD_KEYBOARD_ACTION_KEY_HOLD) { this->key = key; this->action = action; }
+	EventKeyboardActionKey(FD_ACTION action, uint32 key) : EventKeyboard(action == FD_PRESSED ? FD_KEYBOARD_ACTION_KEY_PRESSED : action == FD_RELEASED ? FD_KEYBOARD_ACTION_KEY_RELEASED : FD_KEYBOARD_ACTION_KEY_HOLD) { this->key = key; this->action = action; }
 
-	inline unsigned int GetKey() const { return key; }
-	inline unsigned int GetAction() const { return action; }
+	inline uint32 GetKey() const { return key; }
+	inline uint32 GetAction() const { return action; }
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/fdtypes.h"
 
 #ifdef FD_BUILD
 #define FDAPI __declspec(dllexport)

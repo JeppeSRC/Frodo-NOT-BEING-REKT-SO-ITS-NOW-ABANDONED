@@ -5,12 +5,12 @@
 #define CMP_VARS(op, p1, p2) \
 if (ShaderGenIsVariableDefined(para1, type)) { \
  \
-	float var1 = ShaderGenGetVariableInternal(para1, type)->data; \
-	float var2 = 0; \
+	float32 var1 = ShaderGenGetVariableInternal(para1, type)->data; \
+	float32 var2 = 0; \
 	if (ShaderGenIsVariableDefined(para2, type)) { \
 		var2 = ShaderGenGetVariableInternal(para2, type)->data; \
 	} else { \
-		var2 = (float)atof(*para2); \
+		var2 = (float32)atof(*para2); \
 	} \
 	 \
 	if (var1 op var2) return true; \
@@ -39,14 +39,14 @@ static String sg_mul("sg_mul");
 static String sg_div("sg_div");
 
 static void RemoveDecimalsInString(String& source) {
-	size_t start = source.Find(".");
+	uint_t start = source.Find(".");
 
-	if (start == (size_t)-1) return;
+	if (start == (uint_t)-1) return;
 
 	source.Remove(start, source.length);
 }
 
-static bool ShaderGenProcessForLoopFunction(float variable, float end, FD_SHADER_GEN_FUNCTION_TYPE op) {
+static bool ShaderGenProcessForLoopFunction(float32 variable, float32 end, FD_SHADER_GEN_FUNCTION_TYPE op) {
 	switch (op) {
 		case FD_EQ:
 			if (variable == end) return true;
@@ -67,14 +67,14 @@ static bool ShaderGenProcessForLoopFunction(float variable, float end, FD_SHADER
 			if (variable >= end) return true;
 			break;
 		default:
-			FD_FATAL("[ShaderGen] Unknown function in for loop \"%u\"", (unsigned int)op);
+			FD_FATAL("[ShaderGen] Unknown function in for loop \"%u\"", (uint32)op);
 			return false;
 	}
 
 	return false;
 }
 
-static void InsertString(String& source, const String& code, size_t offset) {
+static void InsertString(String& source, const String& code, uint_t offset) {
 	String afterBlock = source.SubString(offset, source.length);
 	source.Remove(offset, source.length);
 
@@ -83,8 +83,8 @@ static void InsertString(String& source, const String& code, size_t offset) {
 }
 
 Shader::ShaderGenVariable* Shader::ShaderGenGetVariableInternal(const String& name, FD_SHADER_TYPE type) {
-	size_t size = variables.GetSize();
-	for (size_t i = 0; i < size; i++) {
+	uint_t size = variables.GetSize();
+	for (uint_t i = 0; i < size; i++) {
 		ShaderGenVariable* variable = variables.Get(i);
 		if (type == variable->shader && variable->name == name) return variable;
 	}
@@ -93,8 +93,8 @@ Shader::ShaderGenVariable* Shader::ShaderGenGetVariableInternal(const String& na
 }
 
 bool Shader::ShaderGenIsBlockDefined(const String& name, FD_SHADER_TYPE type) {
-	size_t size = blocks.GetSize();
-	for (size_t i = 0; i < size; i++) {
+	uint_t size = blocks.GetSize();
+	for (uint_t i = 0; i < size; i++) {
 		ShaderGenBlock* block = blocks.Get(i);
 		if (block->shader == type && block->name == name) return true;
 	}
@@ -107,16 +107,16 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 	//define
 	while (true) {
 		while_beginning1:
-		size_t start = source.Find(sg_define);
+		uint_t start = source.Find(sg_define);
 
-		if (start == (size_t)-1) break;
+		if (start == (uint_t)-1) break;
 
-		size_t nameStart = start + sg_define.length;
-		size_t nameEnd = source.Find(" ", nameStart+1);
-		size_t end = source.Find("\n", nameEnd);
+		uint_t nameStart = start + sg_define.length;
+		uint_t nameEnd = source.Find(" ", nameStart+1);
+		uint_t end = source.Find("\n", nameEnd);
 		String data = source.SubString(nameEnd, end).RemoveBlankspace();
 
-		float value = (float)atof(*data);
+		float32 value = (float32)atof(*data);
 
 		ShaderGenVariable* variable = new ShaderGenVariable;
 		variable->shader = type;
@@ -125,7 +125,7 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 		source.Remove(start, end);
 
-		for (size_t i = 0; i < variables.GetSize(); i++) {
+		for (uint_t i = 0; i < variables.GetSize(); i++) {
 			if (variables[i]->name == variable->name && variables[i]->shader == type) {
 				FD_WARNING("[ShaderGen] Variable \"%s\" re-definition, saving existing", *variable->name);
 				delete variable;
@@ -141,13 +141,13 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 	//define_r
 	while (true) {
 		while_beginning2:
-		size_t start = source.Find(sg_define_r);
+		uint_t start = source.Find(sg_define_r);
 
-		if (start == (size_t)-1) break;
+		if (start == (uint_t)-1) break;
 
-		size_t nameStart = start + sg_define_r.length;
-		size_t nameEnd = source.Find("\n", nameStart);
-		size_t end = source.Find("\n", nameEnd);
+		uint_t nameStart = start + sg_define_r.length;
+		uint_t nameEnd = source.Find("\n", nameStart);
+		uint_t end = source.Find("\n", nameEnd);
 
 		ShaderGenVariable* variable = new ShaderGenVariable;
 		variable->shader = type;
@@ -156,7 +156,7 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 		source.Remove(start, end);
 
-		for (size_t i = 0; i < variables.GetSize(); i++) {
+		for (uint_t i = 0; i < variables.GetSize(); i++) {
 			if (variables[i]->name == variable->name && variables[i]->shader == type) {
 				FD_WARNING("[ShaderGen] Variable \"%s\" re-definition, saving existing", *variable->name);
 				delete variable;
@@ -171,14 +171,14 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 	//define_b
 	while (true) {
 		while_beginning3:
-		size_t start = source.Find(sg_define_b);
+		uint_t start = source.Find(sg_define_b);
 
-		if (start == (size_t)-1) break;
+		if (start == (uint_t)-1) break;
 
-		size_t nameStart = start + sg_define_b.length;
-		size_t nameEnd = source.Find("\n", nameStart);
-		size_t blockEnd = source.Find(sg_endblock, nameEnd);
-		size_t end = blockEnd + sg_endblock.length;
+		uint_t nameStart = start + sg_define_b.length;
+		uint_t nameEnd = source.Find("\n", nameStart);
+		uint_t blockEnd = source.Find(sg_endblock, nameEnd);
+		uint_t end = blockEnd + sg_endblock.length;
 
 		ShaderGenBlock* block = new ShaderGenBlock;
 		block->shader = type;
@@ -187,7 +187,7 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 		source.Remove(start, end);
 
-		for (size_t i = 0; i < blocks.GetSize(); i++) {
+		for (uint_t i = 0; i < blocks.GetSize(); i++) {
 			if (blocks[i]->name == block->name && blocks[i]->shader == type) {
 				FD_WARNING("[ShaderGen] Block \"%s\" re-definition, saving existing", *block->name);
 				delete block;
@@ -203,26 +203,26 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 	while (true) {
-		size_t start = source.Find(sg_if);
+		uint_t start = source.Find(sg_if);
 
-		if (start == (size_t)-1) break;
+		if (start == (uint_t)-1) break;
 
-		size_t functionStart = start + sg_if.length;
-		size_t functionEnd = source.Find("\n", functionStart);
+		uint_t functionStart = start + sg_if.length;
+		uint_t functionEnd = source.Find("\n", functionStart);
 
 		String function = source.SubString(functionStart, functionEnd).RemoveBlankspace();
 
 		bool res = ShaderGenProcessFunction(function, type);
 
 		if (res) {
-			size_t end = source.Find(sg_endif, start);
+			uint_t end = source.Find(sg_endif, start);
 
-			if (end == (size_t)-1) {
+			if (end == (uint_t)-1) {
 				FD_FATAL("[ShaderGen] No \"endif\" found after \"if\" aborting");
 				return;
 			}
 
-			size_t other = source.Find(sg_shadergen, functionEnd);
+			uint_t other = source.Find(sg_shadergen, functionEnd);
 
 			if (other == end) {
 				source.Remove(end, end+sg_endif.length);
@@ -232,24 +232,24 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 				source.Remove(start, functionEnd);
 			}
 		} else {
-			size_t end = source.Find(sg_endif, start);
+			uint_t end = source.Find(sg_endif, start);
 
-			if (end == (size_t)-1) {
+			if (end == (uint_t)-1) {
 				FD_FATAL("[ShaderGen] No \"endif\" found after \"if\" aborting");
 				return;
 			}
 
-			size_t firstElif = source.Find(sg_elif, functionEnd);
-			size_t firstElse = source.Find(sg_else, functionEnd);
+			uint_t firstElif = source.Find(sg_elif, functionEnd);
+			uint_t firstElse = source.Find(sg_else, functionEnd);
 
 			if (firstElse == firstElif) {
 				source.Remove(start, end + sg_endif.length);
 			} else {
-				List<size_t> elifs;
+				List<uint_t> elifs;
 
-				if (firstElif != (size_t)-1) {
-					size_t elif = firstElif;
-					while (elif < end && elif != (size_t)-1) {
+				if (firstElif != (uint_t)-1) {
+					uint_t elif = firstElif;
+					while (elif < end && elif != (uint_t)-1) {
 						elifs.Push_back(elif);
 						elif = source.Find(sg_elif, elif + sg_elif.length);
 					}
@@ -259,19 +259,19 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 
 				bool result = false;
 
-				for (size_t i = 0; i < elifs.GetSize()-1; i++) {
-					size_t elif = elifs[i];
-					size_t functionStart = elif + sg_elif.length;
-					size_t functionEnd = source.Find("\n", functionStart);
+				for (uint_t i = 0; i < elifs.GetSize()-1; i++) {
+					uint_t elif = elifs[i];
+					uint_t functionStart = elif + sg_elif.length;
+					uint_t functionEnd = source.Find("\n", functionStart);
 
 					String function = source.SubString(functionStart, functionEnd).RemoveBlankspace();
 
 					result = ShaderGenProcessFunction(function, type);
 
-					size_t next = elifs[i + 1];
+					uint_t next = elifs[i + 1];
 					if (result) {
 
-						if (next != (size_t)-1) {
+						if (next != (uint_t)-1) {
 							source.Remove(next, end + sg_endif.length);
 							source.Remove(start, functionEnd);
 						} else {
@@ -281,7 +281,7 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 
 						break;
 					} else {
-						if (next != (size_t)-1) {
+						if (next != (uint_t)-1) {
 							continue;
 						} else {
 							source.Remove(end, end + sg_endif.length);
@@ -304,13 +304,13 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 
 	while (true) {
-		size_t start = source.Find(sg_generate);
+		uint_t start = source.Find(sg_generate);
 
-		if (start == (size_t)-1) break;
+		if (start == (uint_t)-1) break;
 
-		size_t functionStart = start + sg_generate.length;
-		size_t functionEnd = source.Find(")", functionStart)+1;
-		size_t nameEnd = source.Find("\n", functionEnd);
+		uint_t functionStart = start + sg_generate.length;
+		uint_t functionEnd = source.Find(")", functionStart)+1;
+		uint_t nameEnd = source.Find("\n", functionEnd);
 
 		String function = source.SubString(functionStart, functionEnd);
 		String blockName = source.SubString(functionEnd, nameEnd).RemoveBlankspace();
@@ -351,20 +351,20 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 
 			ShaderGenVariable* forVariable = ShaderGenGetVariableInternal(forVariableName, type);
 
-			float forStart = 0, forEnd = 0, forInc = 0;
+			float32 forStart = 0, forEnd = 0, forInc = 0;
 			FD_SHADER_GEN_FUNCTION_TYPE forOp = (FD_SHADER_GEN_FUNCTION_TYPE)0;
 
 			if (ShaderGenIsVariableDefined(forStartName, type)) {
 				forStart = ShaderGenGetVariableInternal(forStartName, type)->data;
 			} else {
-				forStart = (float)atof(*forStartName);
+				forStart = (float32)atof(*forStartName);
 				if (forStart == 0 && forStartName[0] != ' ') {
 					FD_FATAL("[ShaderGen] Variable \"%s\" not defined", *forStartName);
 				}
 			}
 
 
-			for (unsigned int i = FD_EQ; i <= FD_LE; i++) {
+			for (uint32 i = FD_EQ; i <= FD_LE; i++) {
 				if (forOpName == GetFunctionTypeString((FD_SHADER_GEN_FUNCTION_TYPE)i)) forOp = (FD_SHADER_GEN_FUNCTION_TYPE)i;
 			}
 
@@ -376,7 +376,7 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 			if (ShaderGenIsVariableDefined(forEndName, type)) {
 				forEnd = ShaderGenGetVariableInternal(forEndName, type)->data;
 			} else {
-				forEnd = (float)atof(*forEndName);
+				forEnd = (float32)atof(*forEndName);
 				if (forEnd == 0 && forEndName[0] != ' ') {
 					FD_FATAL("[ShaderGen] Variable \"%s\" not defined", *forEndName);
 				}
@@ -386,7 +386,7 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 				ShaderGenVariable* var = ShaderGenGetVariableInternal(forIncName, type);
 				forInc = var->data;
 			} else {
-				forInc = (float)atof(*forIncName);
+				forInc = (float32)atof(*forIncName);
 				if (forInc == 0 && forIncName[0] != ' ') {
 					FD_FATAL("[ShaderGen] Variable \"%s\" not defined", *forIncName);
 				}
@@ -477,24 +477,24 @@ bool Shader::ShaderGenIsVariableDefined(const String& name, FD_SHADER_TYPE type)
 	return ShaderGenGetVariableInternal(name, type) == nullptr ? false : true;
 }
 
-void Shader::ShaderGenGetParametersFromFunction(const String& function, size_t offset...) {
+void Shader::ShaderGenGetParametersFromFunction(const String& function, uint_t offset...) {
 	va_list list;
 	va_start(list, offset);
 
 	String parameters = function.SubString(offset, function.Find(")", offset+1)).RemoveBlankspace();
 
-	size_t comma = parameters.Find(",");
-	size_t numParameters = parameters.Count(",")+1;
+	uint_t comma = parameters.Find(",");
+	uint_t numParameters = parameters.Count(",")+1;
 
 	if (numParameters == 0) {
 		FD_FATAL("[ShaderGen] Function \"%s\" only has 1 or less parameters, min 2 required", *function);
 	}
 
-	size_t start = 0;
+	uint_t start = 0;
 
-	for (size_t i = 0; i < numParameters; i++) {
+	for (uint_t i = 0; i < numParameters; i++) {
 		String* para = va_arg(list, String*);
-		if (comma == (size_t)-1) comma = parameters.length;
+		if (comma == (uint_t)-1) comma = parameters.length;
 		*para = parameters.SubString(start, comma).RemoveBlankspace();
 		start = comma + 1;
 		comma = parameters.Find(",", start);
@@ -504,17 +504,17 @@ void Shader::ShaderGenGetParametersFromFunction(const String& function, size_t o
 }
 
 void Shader::ShaderGenAddVariableData(String& source, FD_SHADER_TYPE type) {
-	size_t size = variables.GetSize();
-	for (size_t i = 0; i < size; i++) {
+	uint_t size = variables.GetSize();
+	for (uint_t i = 0; i < size; i++) {
 		ShaderGenVariable* var = variables[i];
 		if (var->shader != type) continue;
 
 		while (true) {
-			size_t start = source.Find(*var->name);
+			uint_t start = source.Find(*var->name);
 
-			if (start == (size_t)-1) break;
+			if (start == (uint_t)-1) break;
 
-			size_t length = var->name.length;
+			uint_t length = var->name.length;
 
 			source.Remove(start, start + length);
 
@@ -529,7 +529,7 @@ void Shader::ShaderGenAddVariableData(String& source, FD_SHADER_TYPE type) {
 			charBefore[0] = source[start - 1];
 			charBefore[1] = 0;
 
-			if (arithmetic_chars.Find(charBefore) == (size_t)-1) RemoveDecimalsInString(data);
+			if (arithmetic_chars.Find(charBefore) == (uint_t)-1) RemoveDecimalsInString(data);
 			
 			skip_arithmetic_check:
 			InsertString(source, data, start);
@@ -540,11 +540,11 @@ void Shader::ShaderGenAddVariableData(String& source, FD_SHADER_TYPE type) {
 void Shader::ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE type) {
 	//add
 	#define ARITH_OP(func, sig) \
-	size_t start = source.Find(sig); \
+	uint_t start = source.Find(sig); \
  \
-	if (start == (size_t)-1) break; \
+	if (start == (uint_t)-1) break; \
  \
-	size_t end = source.Find(")", start)+1; \
+	uint_t end = source.Find(")", start)+1; \
  \
 	String function = source.SubString(start, end); \
 	source.Remove(start, end); \
@@ -555,15 +555,15 @@ void Shader::ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE
  \
 	if (ShaderGenIsVariableDefined(para1, type)) { \
 		ShaderGenVariable* var1 = ShaderGenGetVariableInternal(para1, type); \
-		float var2 = 0; \
+		float32 var2 = 0; \
  \
 		if (ShaderGenIsVariableDefined(para2, type)) { \
 			var2 = ShaderGenGetVariableInternal(para2, type)->data; \
 		} else { \
-			var2 = (float)atof(*para2); \
+			var2 = (float32)atof(*para2); \
 		} \
  \
-		float result = var1->data func var2; \
+		float32 result = var1->data func var2; \
 	 \
 		char varValue[128]; \
 		sprintf(varValue, "%f", result); \
@@ -575,7 +575,7 @@ void Shader::ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE
 			charBefore[0] = source[start - 1]; \
 			charBefore[1] = 0; \
  \
-			if (arithmetic_chars.Find(charBefore) == (size_t)-1) RemoveDecimalsInString(data); \
+			if (arithmetic_chars.Find(charBefore) == (uint_t)-1) RemoveDecimalsInString(data); \
 		} \
  \
 		InsertString(source, data, start); \
@@ -603,9 +603,9 @@ void Shader::ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE
 	}
 }
 
-void Shader::ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, float data) {
-	size_t size = variables.GetSize();
-	for (size_t i = 0; i < size; i++) {
+void Shader::ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, float32 data) {
+	uint_t size = variables.GetSize();
+	for (uint_t i = 0; i < size; i++) {
 		ShaderGenVariable* variable = variables[i];
 		if (variable->shader == type && variable->name == name) {
 			variable->data = data;
@@ -636,7 +636,7 @@ void Shader::ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type) {
 	FD_DEBUG("[ShaderGen] Undefined variable \"%s\"", *name);
 }
 
-float Shader::ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type) {
+float32 Shader::ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type) {
 	ShaderGenVariable* var = ShaderGenGetVariableInternal(name, type);
 	if (var != nullptr) return var->data;
 	FD_WARNING("[ShaderGen] Variable \"%s\" not found", *name);
@@ -644,8 +644,8 @@ float Shader::ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type) {
 }
 
 String Shader::ShaderGenGetBlock(const String& name, FD_SHADER_TYPE type) {
-	size_t size = blocks.GetSize();
-	for (size_t i = 0; i < size; i++) {
+	uint_t size = blocks.GetSize();
+	for (uint_t i = 0; i < size; i++) {
 		ShaderGenBlock* block = blocks.Get(i);
 		if (block->shader == type && block->name == name) return block->code;
 	}

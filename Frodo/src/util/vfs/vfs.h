@@ -30,7 +30,7 @@ public:
 
 	void Mount(const String& name, const String& path);
 	void UnMount(const String& name);
-	unsigned char* ReadFile(const String& filename, size_t* fileSize = nullptr);
+	byte* ReadFile(const String& filename, uint_t* fileSize = nullptr);
 	String ReadTextFile(const String& filename);
 	
 

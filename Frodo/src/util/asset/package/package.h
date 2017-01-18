@@ -17,9 +17,9 @@ enum FD_ASSET_TYPE {
 struct FD_ASSET {
 	char name[32];
 
-	unsigned int size;
+	uint32 size;
 
-	unsigned long long data;
+	uint64 data;
 
 	FD_ASSET_TYPE type;
 };
@@ -28,10 +28,10 @@ class FDAPI AssetPackage {
 private:
 	struct FD_HEADER {
 		char signature[4]{ 'O', 'Y', 'M', '8' };
-		unsigned short version = 0x0101;
+		uint16 version = 0x0101;
 		char name[32]{ 0 };
-		unsigned int size;
-		unsigned int num_assets;
+		uint32 size;
+		uint32 num_assets;
 	} header;
 private:
 	String name;
@@ -44,14 +44,14 @@ public:
 	AssetPackage() {}
 	~AssetPackage();
 
-	void AddAsset(const String& name, void* data, unsigned int size, FD_ASSET_TYPE type);
+	void AddAsset(const String& name, void* data, uint32 size, FD_ASSET_TYPE type);
 	FD_ASSET GetAsset(const String& name);
 
 	void Write(const String& filename);
 	void Read(const String& filename);
 
-	inline unsigned int GetNumAssets() const { return header.num_assets; }
-	inline unsigned int GetSize() const { return header.size; }
+	inline uint32 GetNumAssets() const { return header.num_assets; }
+	inline uint32 GetSize() const { return header.size; }
 	inline String GetName() const { return name; }
 	inline const List<FD_ASSET>& GetAssets() const { return assets; }
 };

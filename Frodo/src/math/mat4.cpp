@@ -19,7 +19,7 @@ void mat4::LoadColumns(__m128* xmm) const {
 
 mat4::mat4() { memset(m, 0, sizeof(m)); }
 
-mat4::mat4(float diagonal) {
+mat4::mat4(float32 diagonal) {
 	memset(m, 0, sizeof(m));
 	m[0 + 0 * 4] = diagonal;
 	m[1 + 1 * 4] = diagonal;
@@ -40,12 +40,12 @@ mat4 mat4::Translate(const vec3& v) {
 mat4 mat4::Rotate(const vec3& v) {
 	mat4 x(1), y(1), z(1);
 
-	float xcos = cosf((float)FD_TO_RADIANS_F(v.x));
-	float xsin = sinf((float)FD_TO_RADIANS_F(v.x));
-	float ycos = cosf((float)FD_TO_RADIANS_F(v.y));
-	float ysin = sinf((float)FD_TO_RADIANS_F(v.y));
-	float zcos = cosf((float)FD_TO_RADIANS_F(v.z));
-	float zsin = sinf((float)FD_TO_RADIANS_F(v.z));
+	float32 xcos = cosf((float32)FD_TO_RADIANS_F(v.x));
+	float32 xsin = sinf((float32)FD_TO_RADIANS_F(v.x));
+	float32 ycos = cosf((float32)FD_TO_RADIANS_F(v.y));
+	float32 ysin = sinf((float32)FD_TO_RADIANS_F(v.y));
+	float32 zcos = cosf((float32)FD_TO_RADIANS_F(v.z));
+	float32 zsin = sinf((float32)FD_TO_RADIANS_F(v.z));
 
 	x.m[1 + 1 * 4] = xcos;x.m[1 + 2 * 4] = -xsin;
 	x.m[2 + 1 * 4] = xsin;x.m[2 + 2 * 4] = xcos;
@@ -69,12 +69,12 @@ mat4 mat4::Scale(const vec3& v) {
 	return tmp;
 }
 
-mat4 mat4::Perspective(float fov, float aspect, float zNear, float zFar) {
+mat4 mat4::Perspective(float32 fov, float32 aspect, float32 zNear, float32 zFar) {
 	mat4 r(1);
 	
-	float* m = r.m;
+	float32* m = r.m;
 
-	const float tanHalf = tanh(fov / 2);
+	const float32 tanHalf = tanh(fov / 2);
 
 	m[0 + 0 * 4] = 1.0f / (tanHalf * aspect);
 	m[1 + 1 * 4] = 1.0f / tanHalf;
@@ -87,10 +87,10 @@ mat4 mat4::Perspective(float fov, float aspect, float zNear, float zFar) {
 }
 
 
-mat4 mat4::Orthographic(float left, float right, float top, float bottom, float zNear, float zFar) {
+mat4 mat4::Orthographic(float32 left, float32 right, float32 top, float32 bottom, float32 zNear, float32 zFar) {
 	mat4 r;
 	
-	float* m = r.m;
+	float32* m = r.m;
 
 	m[0 + 0 * 4] = 2.0f / (right - left);
 	m[1 + 1 * 4] = 2.0f / (top - bottom);
@@ -112,8 +112,8 @@ mat4 mat4::operator*(const mat4& r) {
 	r.LoadColumns(col);
 	LoadRows(rows);
 	
-	for (int y = 0; y < 4; y++) {
-		for (int x = 0; x < 4; x++) {
+	for (int32 y = 0; y < 4; y++) {
+		for (int32 x = 0; x < 4; x++) {
 			__m128 res = _mm_mul_ps(rows[x], col[y]);
 			tmp.m[x + y * 4] = res.m128_f32[0] + res.m128_f32[1] + res.m128_f32[2] + res.m128_f32[3];
 		}
@@ -136,7 +136,7 @@ vec4 mat4::operator*(const vec4& v) {
 
 	__m128 res = _mm_mul_ps(vec[0], col[0]);
 
-	for (int i = 1; i < 4; i++)
+	for (int32 i = 1; i < 4; i++)
 		res = _mm_fmadd_ps(vec[i], col[i], res);
 
 	return vec4(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2], res.m128_f32[3]);
@@ -155,7 +155,7 @@ vec3 mat4::operator*(const vec3& v) {
 
 	__m128 res = _mm_mul_ps(vec[0], col[0]);
 
-	for (int i = 1; i < 4; i++)
+	for (int32 i = 1; i < 4; i++)
 		res = _mm_fmadd_ps(vec[i], col[i], res);
 
 	return vec3(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2]);

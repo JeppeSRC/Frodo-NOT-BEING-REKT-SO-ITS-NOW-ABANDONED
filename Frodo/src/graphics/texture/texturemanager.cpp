@@ -25,7 +25,7 @@ void TextureManager::Dispose() {
 }
 
 void TextureManager::Add(const String& name, Texture* tex) {
-	for (size_t i = 0; i < textures.GetItems(); i++) {
+	for (uint_t i = 0; i < textures.GetItems(); i++) {
 		String curr(textures.GetKeyList()[i]);
 		if (name == curr) {
 			FD_FATAL("\"%s\" already exist!", *name);
@@ -43,7 +43,7 @@ Texture* TextureManager::Get(const String& name) {
 
 	char* key = nullptr;
 
-	for (size_t i = 0; i < textures.GetItems(); i++) {
+	for (uint_t i = 0; i < textures.GetItems(); i++) {
 		key = textures.GetKeyList()[i];
 		if (name == String(key)) {
 			return textures.Retrieve(key);

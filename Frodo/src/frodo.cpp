@@ -1,7 +1,7 @@
 #include <frodo.h>
 #include <ctime>
 
-FDApplication::FDApplication(const char* title, unsigned int width, unsigned int height) {
+FDApplication::FDApplication(const char* title, uint32 width, uint32 height) {
 	window = new Window(title, width, height);
 	SetUPS(60.0f);
 
@@ -21,7 +21,7 @@ void FDApplication::OnInit() { }
 
 void FDApplication::OnTick() { }
 
-void FDApplication::OnUpdate(float delta) { }
+void FDApplication::OnUpdate(float32 delta) { }
 
 void FDApplication::OnRender() { }
 
@@ -32,18 +32,18 @@ void FDApplication::Run() {
 	TextureManager::Init();
 	OnInit();
 	Window& w = *window;
-	unsigned int lastTime = clock();
-	unsigned int lastTime2 = clock();
-	unsigned int lastTime3 = clock();
+	uint32 lastTime = clock();
+	uint32 lastTime2 = clock();
+	uint32 lastTime3 = clock();
 
-	float delta = 0;
+	float32 delta = 0;
 
 	while (w.IsOpen()) {
 		D3DContext::Clear();
 
-		unsigned int now = clock();
+		uint32 now = clock();
 
-		if ((delta = float(now - lastTime)) > ups) {
+		if ((delta = float32(now - lastTime)) > ups) {
 			lastTime = now;
 			OnUpdate(delta / 1000.0f);
 			Input::Update();

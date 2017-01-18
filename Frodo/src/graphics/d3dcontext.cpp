@@ -80,7 +80,7 @@ void D3DContext::CreateContext(Window* window) {
 
 	SetRenderTargets(1, &pContext->renderTarget, pContext->depthStencilView);
 
-	SetViewPort(0.0f, 0.0f, (float)window->GetWidth(), (float)window->GetHeight());
+	SetViewPort(0.0f, 0.0f, (float32)window->GetWidth(), (float32)window->GetHeight());
 
 	pContext->window = window;
 }
@@ -90,14 +90,14 @@ void D3DContext::Dispose() {
 	delete pContext;
 }
 
-void D3DContext::Present(unsigned int syncInterval, unsigned int flags) {
+void D3DContext::Present(uint32 syncInterval, uint32 flags) {
 	GetSwapChain()->Present(syncInterval, flags);
 }
 
-float col[4]{0, 0, 0, 1};
+float32 col[4]{0, 0, 0, 1};
 
-void D3DContext::Clear(unsigned short numRenderTargets) {
-	for (unsigned short i = 0; i < numRenderTargets; i++)
+void D3DContext::Clear(uint16 numRenderTargets) {
+	for (uint16 i = 0; i < numRenderTargets; i++)
 		GetDeviceContext()->ClearRenderTargetView(GetContext()->activeRenderTargets[i], col);
 
 	GetDeviceContext()->ClearDepthStencilView(GetContext()->activeDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
@@ -110,24 +110,24 @@ void D3DContext::SetRenderTarget(ID3D11RenderTargetView* target) {
 	} else {
 		SetRenderTargets(1, &c.renderTarget, c.depthStencilView);
 
-		c.SetViewPort(0, 0, (float)c.window->GetWidth(), (float)c.window->GetHeight());
+		c.SetViewPort(0, 0, (float32)c.window->GetWidth(), (float32)c.window->GetHeight());
 	}
 }
 
-void D3DContext::SetRenderTargets(unsigned short numRenderTargets, ID3D11RenderTargetView** target, ID3D11DepthStencilView* depthView) {
+void D3DContext::SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetView** target, ID3D11DepthStencilView* depthView) {
 	GetDeviceContext()->OMSetRenderTargets(numRenderTargets, target, depthView);
-	for (unsigned short i = 0; i < numRenderTargets; i++) 
+	for (uint16 i = 0; i < numRenderTargets; i++) 
 		GetContext()->activeRenderTargets[i] = target[i];
 
 	GetContext()->activeDepthStencilView = depthView;
 }
 
-void D3DContext::SetRenderTargets(unsigned short numRenderTargets, ID3D11RenderTargetView** target) {
+void D3DContext::SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetView** target) {
 	SetRenderTargets(numRenderTargets, target, GetContext()->depthStencilView);
 }
 
 
-void D3DContext::SetViewPort(float topLeftX, float topLeftY, float width, float height) {
+void D3DContext::SetViewPort(float32 topLeftX, float32 topLeftY, float32 width, float32 height) {
 	D3D11_VIEWPORT v;
 	v.TopLeftX = topLeftX;
 	v.TopLeftY = topLeftY;
