@@ -197,7 +197,6 @@
     <ClCompile Include="src\graphics\render\renderer\batchrenderer.cpp" />
     <ClCompile Include="src\graphics\render\camera\camera.cpp" />
     <ClCompile Include="src\graphics\render\camera\usercamera.cpp" />
-    <ClCompile Include="src\graphics\render\renderer\deferredrenderer.cpp" />
     <ClCompile Include="src\graphics\render\renderer\fontrenderer.cpp" />
     <ClCompile Include="src\graphics\render\material\material.cpp" />
     <ClCompile Include="src\graphics\render\mesh\meshfactory.cpp" />
@@ -243,7 +242,6 @@
     <ClInclude Include="src\graphics\render\renderer\batchrenderer.h" />
     <ClInclude Include="src\graphics\render\camera\camera.h" />
     <ClInclude Include="src\graphics\render\camera\usercamera.h" />
-    <ClInclude Include="src\graphics\render\renderer\deferredrenderer.h" />
     <ClInclude Include="src\graphics\render\renderer\fontrenderer.h" />
     <ClInclude Include="src\graphics\render\light\light.h" />
     <ClInclude Include="src\graphics\render\material\material.h" />
