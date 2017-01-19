@@ -12,16 +12,16 @@ enum FD_MAP_FLAG {
 
 class FDAPI VertexBuffer : public Buffer {
 private:
-	unsigned int stride;
-	unsigned int size;
+	uint32 stride;
+	uint32 size;
 	
 public:
-	VertexBuffer(unsigned int structSize, unsigned int num);
-	VertexBuffer(void* data, size_t size, unsigned int stride, bool dynamic = false);
+	VertexBuffer(uint32 structSize, uint32 num);
+	VertexBuffer(void* data, uint_t size, uint32 stride, bool dynamic = false);
 
 	void* Map(FD_MAP_FLAG flag);
 	void Unmap();
 
 	void Bind() override;
-	void Bind(unsigned int slot);
+	void Bind(uint32 slot);
 };

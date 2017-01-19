@@ -5,8 +5,8 @@ bool		  Input::keys[FD_INPUT_MAX_KEYS];
 bool		  Input::prevKeys[FD_INPUT_MAX_KEYS];
 Window*		  Input::window = nullptr;
 
-unsigned int  Input::mouseX = 0;
-unsigned int  Input::mouseY = 0;
+uint32  Input::mouseX = 0;
+uint32  Input::mouseY = 0;
 bool		  Input::mouseCaptured = false;
 
 void Input::Init(Window* window) {
@@ -19,11 +19,11 @@ void Input::Update() {
 	if (mouseCaptured) SetMousePos(window->GetWidth() >> 1, window->GetHeight() >> 1);
 }
 
-bool Input::IsKeyDown(unsigned char key) {
+bool Input::IsKeyDown(byte key) {
 	return keys[key];
 }
 
-bool Input::IsKeyDownOnce(unsigned char key) {
+bool Input::IsKeyDownOnce(byte key) {
 	if (keys[key] && !prevKeys[key]) {
 		prevKeys[key] = true;
 		return true;
@@ -32,7 +32,7 @@ bool Input::IsKeyDownOnce(unsigned char key) {
 	return false;
 }
 
-void Input::SetMousePos(unsigned int x, unsigned int y) {
+void Input::SetMousePos(uint32 x, uint32 y) {
 	POINT p;
 	p.x = x;
 	p.y = y;

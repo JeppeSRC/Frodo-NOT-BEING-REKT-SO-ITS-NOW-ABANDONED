@@ -37,11 +37,11 @@ public:
 	};
 
 private:
-	unsigned int button;
+	uint32 button;
 	FD_ACTION action;
 public:
-	EventMouseActionButton(FD_ACTION action, unsigned int button) : EventMouse(action == FD_PRESSED ? FD_MOUSE_ACTION_BUTTON_PRESSED : action == FD_RELEASED ? FD_MOUSE_ACTION_BUTTON_RELEASED : FD_MOUSE_ACTION_BUTTON_HOLD) { this->action = action; }
+	EventMouseActionButton(FD_ACTION action, uint32 button) : EventMouse(action == FD_PRESSED ? FD_MOUSE_ACTION_BUTTON_PRESSED : action == FD_RELEASED ? FD_MOUSE_ACTION_BUTTON_RELEASED : FD_MOUSE_ACTION_BUTTON_HOLD) { this->action = action; }
 
-	inline unsigned int GetButton() const { return button; }
+	inline uint32 GetButton() const { return button; }
 	inline FD_ACTION GetAction() const { return action; }
 };

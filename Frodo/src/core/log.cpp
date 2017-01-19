@@ -8,7 +8,7 @@
 #define FD_LOG_COLOR_WARNING 0b00001110
 #define FD_LOG_COLOR_FATAL 0b00001100
 
-void FDLog(unsigned char level, const char* message...) {
+void FDLog(byte level, const char* message...) {
 
 	HANDLE outhandle = GetStdHandle(STD_OUTPUT_HANDLE);
 

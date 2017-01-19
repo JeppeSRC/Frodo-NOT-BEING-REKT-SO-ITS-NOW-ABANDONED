@@ -7,9 +7,9 @@ template<typename T>
 class List {
 private:
 	T* data;
-	size_t size;
-	size_t allocated;
-	size_t extraReserve;
+	uint_t size;
+	uint_t allocated;
+	uint_t extraReserve;
 
 public:
 	List() {
@@ -19,7 +19,7 @@ public:
 		extraReserve = 1;
 	}
 
-	List(size_t reserve, size_t extra_reserve = 1) {
+	List(uint_t reserve, uint_t extra_reserve = 1) {
 		data = new T[reserve];
 		size = 0;
 		allocated = reserve;
@@ -45,11 +45,11 @@ public:
 		delete[] data;
 	}
 
-	__forceinline T& operator[](size_t index) {
+	__forceinline T& operator[](uint_t index) {
 		return data[index];
 	}
 
-	__forceinline T Get(size_t index) const {
+	__forceinline T Get(uint_t index) const {
 		return data[index];
 	}
 
@@ -93,14 +93,14 @@ public:
 		Push_back(item);
 	}
 
-	inline size_t Find(T item) const {
-		for (size_t i = 0; i < size; i++)
+	inline uint_t Find(T item) const {
+		for (uint_t i = 0; i < size; i++)
 			if (data[i] == item) return i;
 
-		return (size_t)-1;
+		return (uint_t)-1;
 	}
 
-	inline void Reserve(size_t count) {
+	inline void Reserve(uint_t count) {
 		if (count <= allocated) return;
 
 		T* tmp = data;
@@ -113,7 +113,7 @@ public:
 		allocated = count;
 	}
 
-	inline void Resize(size_t count) {
+	inline void Resize(uint_t count) {
 		if (count > allocated)
 			Reserve(count);
 
@@ -121,7 +121,7 @@ public:
 	}
 
 	inline T Remove(T item) {
-		for (size_t i = 0; i < size; i++)
+		for (uint_t i = 0; i < size; i++)
 			if (data[i] == item) {
 				return RemoveIndex(i);
 			}
@@ -129,7 +129,7 @@ public:
 		return T();
 	}
 
-	inline T RemoveIndex(size_t index) {
+	inline T RemoveIndex(uint_t index) {
 		T tmp = data[index];
 
 		size--;
@@ -145,22 +145,22 @@ public:
 
 	inline void Free(bool isArray = false) {
 		if (isArray)
-			for (size_t i = 0; i < size; i++) {
+			for (uint_t i = 0; i < size; i++) {
 				delete[] data[i];
 			}
 		else
-			for (size_t i = 0; i < size; i++) {
+			for (uint_t i = 0; i < size; i++) {
 				delete data[i];
 			}
 	}
 
-	inline void SetExtraReserve(size_t extra) { this->extraReserve = extra; }
+	inline void SetExtraReserve(uint_t extra) { this->extraReserve = extra; }
 
 	inline T* GetData() { return data; }
-	inline const size_t GetSize() const { return size; }
-	inline const size_t GetSizeInBytes() const { return size * sizeof(T); }
-	inline const size_t GetAllocated() const { return allocated; }
-	inline const size_t GetAllocatedInBytes() const { return allocated * sizeof(T); }
+	inline const uint_t GetSize() const { return size; }
+	inline const uint_t GetSizeInBytes() const { return size * sizeof(T); }
+	inline const uint_t GetAllocated() const { return allocated; }
+	inline const uint_t GetAllocatedInBytes() const { return allocated * sizeof(T); }
 
-	inline const size_t GetExtraReserve() const { return extraReserve; }
+	inline const uint_t GetExtraReserve() const { return extraReserve; }
 };

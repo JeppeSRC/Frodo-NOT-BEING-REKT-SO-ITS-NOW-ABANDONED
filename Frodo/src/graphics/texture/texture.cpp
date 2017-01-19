@@ -3,12 +3,12 @@
 #include <util/vfs/vfs.h>
 #include <FreeImage.h>
 
-unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned int* height, unsigned int* bits) {
+byte* Texture::Load(const String& filename, uint32* width, uint32* height, uint32* bits) {
 	FD_ASSERT((width != nullptr && "width parameter nullptr"));
 	FD_ASSERT((height != nullptr && "height parameter nullptr"));
 	FD_ASSERT((bits != nullptr && "bits parameter nullptr"));
 	
-	size_t size = 0;
+	uint_t size = 0;
 	
 	unsigned char* rawData = VFS::Get()->ReadFile(filename, &size);
 
@@ -39,6 +39,7 @@ unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned
 	*height = FreeImage_GetHeight(bitmap);
 	*bits = FreeImage_GetBPP(bitmap);
 	
+
 	unsigned char* pixels = new unsigned char[*width * *height * (*bits / 8)];
 	memcpy(pixels, FreeImage_GetBits(bitmap), *width * *height * (*bits / 8));
 

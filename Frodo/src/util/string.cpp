@@ -18,7 +18,7 @@ String::String(const char* string) {
 	noDelete = false;
 }
 
-String::String(char* string, size_t length, bool noCopy) {
+String::String(char* string, uint_t length, bool noCopy) {
 	if (!string) {
 		this->length = 0;
 		str = nullptr;
@@ -103,7 +103,7 @@ String& String::operator=(String&& string) {
 }
 
 String& String::Append(const String& string) {
-	size_t newlen = length + string.length;
+	uint_t newlen = length + string.length;
 	char* tmpstr = str;
 	str = new char[newlen + 1];
 	str[newlen] = 0;
@@ -117,14 +117,14 @@ String& String::Append(const String& string) {
 }
 
 String& String::Remove(const String& string) {
-	size_t index = Find(string);
+	uint_t index = Find(string);
 	return Remove(index, index + string.length);
 }
 
-String& String::Remove(size_t start, size_t end) {
-	size_t len = end - start;
+String& String::Remove(uint_t start, uint_t end) {
+	uint_t len = end - start;
 	FD_ASSERT((bool)(length > len));
-	size_t newlen = length - len;
+	uint_t newlen = length - len;
 
 	char* tmp = str;
 
@@ -142,7 +142,7 @@ String& String::Remove(size_t start, size_t end) {
 
 String& String::RemoveBlankspace() {
 	
-	size_t start = Find(" ");
+	uint_t start = Find(" ");
 	while (start != -1) {
 		Remove(start, start + 1);
 		start = Find(" ", start);
@@ -151,17 +151,17 @@ String& String::RemoveBlankspace() {
 	return *this;
 }
 
-String String::SubString(size_t start, size_t end) const {
+String String::SubString(uint_t start, uint_t end) const {
 	return String(str + start, end - start);
 }
 
-size_t String::Count(const String& string, size_t offset) const {
-	size_t total = length - string.length;
+uint_t String::Count(const String& string, uint_t offset) const {
+	uint_t total = length - string.length;
 	if (total <= 0) return 0;
-	size_t res = 0;
-	for (size_t i = offset; i < total; i++) {
+	uint_t res = 0;
+	for (uint_t i = offset; i < total; i++) {
 		bool match = true;
-		for (size_t j = 0; j < string.length; j++) {
+		for (uint_t j = 0; j < string.length; j++) {
 			if (str[i + j] != string[j]) {
 				match = false;
 				break;
@@ -174,14 +174,14 @@ size_t String::Count(const String& string, size_t offset) const {
 	return res;
 }
 
-char String::operator[](size_t index) const {
+char String::operator[](uint_t index) const {
 	return str[index];
 }
 
 bool String::operator==(const String& string) const {
 	if (length != string.length) return false;
 
-	for (size_t i = 0; i < length; i++) {
+	for (uint_t i = 0; i < length; i++) {
 		if (str[i] != string.str[i]) return false;
 	}
 
@@ -191,7 +191,7 @@ bool String::operator==(const String& string) const {
 bool String::operator!=(const String& string) const {
 	if (length != string.length) return true;
 
-	for (size_t i = 0; i < length; i++) {
+	for (uint_t i = 0; i < length; i++) {
 		if (str[i] == string.str[i]) return false;
 	}
 
@@ -205,7 +205,7 @@ String String::operator+(const String& string) {
 bool String::StartsWith(const String& string) const {
 	if (length < string.length) return false;
 
-	for (size_t i = 0; i < string.length; i++)
+	for (uint_t i = 0; i < string.length; i++)
 		if (str[i] != string.str[i]) return false;
 
 	return true;
@@ -214,17 +214,17 @@ bool String::StartsWith(const String& string) const {
 bool String::EndsWith(const String& string) const {
 	if (length < string.length) return false;
 
-	for (size_t i = 0; i < string.length; i++)
+	for (uint_t i = 0; i < string.length; i++)
 		if (str[length - i - 1] != string.str[string.length - i - 1]) return false;
 
 	return true;
 }
 
-size_t String::Find(const String& string, size_t offset) const {
-	if (length+offset < string.length) return (size_t)-1;
-	for (size_t i = offset; i < length; i++) {
+uint_t String::Find(const String& string, uint_t offset) const {
+	if (length+offset < string.length) return (uint_t)-1;
+	for (uint_t i = offset; i < length; i++) {
 		bool match = true;
-		for (size_t j = 0; j < string.length; j++) {
+		for (uint_t j = 0; j < string.length; j++) {
 					
 			if (str[i + j] != string.str[j]) {
 				match = false;
@@ -237,7 +237,7 @@ size_t String::Find(const String& string, size_t offset) const {
 		}
 	}
 
-	return (size_t)-1;
+	return (uint_t)-1;
 }
 
 List<String*> String::Split(const char delimiter) const {
@@ -250,9 +250,9 @@ List<String*> String::Split(const char delimiter) const {
 }
 
 void String::Split(const char delimiter, List<String*>& list) const {
-	size_t lastindex = 0;
+	uint_t lastindex = 0;
 
-	for (size_t i = 0; i < length; i++) {
+	for (uint_t i = 0; i < length; i++) {
 		if (str[i] == delimiter) {
 				
 			list << new String(str + lastindex, i - lastindex);

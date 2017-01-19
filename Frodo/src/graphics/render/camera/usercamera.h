@@ -8,15 +8,15 @@
 class FDAPI UserCamera : public Camera, public EventListener {
 private:
 	vec3 dir;
-	float x,  y;
+	float32 x,  y;
 
 public:
 	UserCamera(const vec3& position, const vec3& rotation) : Camera(position, rotation) {  }
 	~UserCamera() { }
 
-	virtual void Update(float delta);
+	virtual void Update(float32 delta);
 	bool OnEvent(const Event* event) override { return false; }
-	bool OnKeyboardActionKeyPressed(unsigned int key) override;
-	bool OnKeyboardActionKeyReleased(unsigned int key) override;
+	bool OnKeyboardActionKeyPressed(uint32 key) override;
+	bool OnKeyboardActionKeyReleased(uint32 key) override;
 	bool OnMouseActionMove(ivec2 position) override;
 };

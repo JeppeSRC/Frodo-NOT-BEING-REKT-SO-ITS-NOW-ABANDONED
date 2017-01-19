@@ -28,7 +28,7 @@ public:
 
 	inline vec3 GetForward() {
 		mat4 rot = mat4::Rotate(rotation);
-		const float* d = rot.GetData();
+		const float32* d = rot.GetData();
 		return vec3(d[2 + 0 * 4], d[2 + 1 * 4], d[2 + 2 * 4]);
 	}
 };

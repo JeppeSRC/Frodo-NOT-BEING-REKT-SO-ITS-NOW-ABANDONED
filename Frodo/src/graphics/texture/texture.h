@@ -14,9 +14,10 @@ enum FD_TEXTURE_FORMAT {
 
 class FDAPI Texture {
 protected:
-	unsigned int width;
-	unsigned int height;
-	unsigned int bits;
+
+	uint32 width;
+	uint32 height;
+	uint32 bits;
 
 	ID3D11ShaderResourceView* resourceView = nullptr;
 
@@ -24,12 +25,12 @@ public:
 	Texture() { resourceView = nullptr; }
 	virtual ~Texture() { DX_FREE(resourceView); }
 
-	virtual void Bind(unsigned int slot = 0) = 0;
+	virtual void Bind(uint32 slot = 0) = 0;
 
-	inline unsigned int GetWidth() const { return width; }
-	inline unsigned int GetHeight() const { return height; }
+	inline uint32 GetWidth() const { return width; }
+	inline uint32 GetHeight() const { return height; }
 
 	inline ID3D11ShaderResourceView* GetResourceView() const { return resourceView; }
-};
 
-extern unsigned char* FDLoadImage(const String& filename, unsigned int* width, unsigned int* height, unsigned int* bits);
+	static byte* Load(const String& filename, uint32* width, uint32* height, uint32* bits);
+};

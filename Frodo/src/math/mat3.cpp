@@ -17,7 +17,7 @@ void mat3::LoadColumns(__m128* xmm) const {
 
 mat3::mat3() { memset(m, 0, sizeof(m)); }
 
-mat3::mat3(float diagonal) {
+mat3::mat3(float32 diagonal) {
 	memset(m, 0, sizeof(m));
 	m[0 + 0 * 3] = diagonal;
 	m[1 + 1 * 3] = diagonal;
@@ -27,12 +27,12 @@ mat3::mat3(float diagonal) {
 mat3 mat3::Rotate(const vec3& v) {
 	mat3 x(1), y(1), z(1);
 
-	float xcos = cosf((float)FD_TO_RADIANS_F(v.x));
-	float xsin = sinf((float)FD_TO_RADIANS_F(v.x));
-	float ycos = cosf((float)FD_TO_RADIANS_F(v.y));
-	float ysin = sinf((float)FD_TO_RADIANS_F(v.y));
-	float zcos = cosf((float)FD_TO_RADIANS_F(v.z));
-	float zsin = sinf((float)FD_TO_RADIANS_F(v.z));
+	float32 xcos = cosf((float32)FD_TO_RADIANS_F(v.x));
+	float32 xsin = sinf((float32)FD_TO_RADIANS_F(v.x));
+	float32 ycos = cosf((float32)FD_TO_RADIANS_F(v.y));
+	float32 ysin = sinf((float32)FD_TO_RADIANS_F(v.y));
+	float32 zcos = cosf((float32)FD_TO_RADIANS_F(v.z));
+	float32 zsin = sinf((float32)FD_TO_RADIANS_F(v.z));
 
 	x.m[1 + 1 * 3] = xcos;x.m[1 + 2 * 3] = -xsin;
 	x.m[2 + 1 * 3] = xsin;x.m[2 + 2 * 3] = xcos;
@@ -64,8 +64,8 @@ mat3 mat3::operator*(const mat3& r) {
 	r.LoadColumns(col);
 	LoadRows(rows);
 
-	for (int y = 0; y < 3; y++) {
-		for (int x = 0; x < 3; x++) {
+	for (int32 y = 0; y < 3; y++) {
+		for (int32 x = 0; x < 3; x++) {
 			__m128 res = _mm_mul_ps(rows[x], col[y]);
 			tmp.m[x + y * 3] = res.m128_f32[0] + res.m128_f32[1] + res.m128_f32[2];
 		}
@@ -86,7 +86,7 @@ vec3 mat3::operator*(const vec3& v) {
 
 	__m128 res = _mm_mul_ps(vec[0], col[0]);
 
-	for (int i = 1; i < 3; i++)
+	for (int32 i = 1; i < 3; i++)
 		res = _mm_fmadd_ps(vec[i], col[i], res);
 
 	return vec3(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2]);

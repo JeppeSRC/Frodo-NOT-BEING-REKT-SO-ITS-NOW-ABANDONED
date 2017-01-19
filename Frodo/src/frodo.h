@@ -27,15 +27,14 @@
 #include <graphics/font/font.h>
 
 #include <graphics/pbr/render/pbrrenderer.h>
-#include <graphics/render/deferredrenderer.h>
-#include <graphics/render/forwardrenderer.h>
-#include <graphics/render/fontrenderer.h>
-#include <graphics/render/batchrenderer.h>
-#include <graphics/render/renderer.h>
+/*#include <graphics/render/deferredrenderer.h>
+#include <graphics/render/forwardrenderer.h>*/
+#include <graphics/render/renderer/fontrenderer.h>
+#include <graphics/render/renderer/batchrenderer.h>
+#include <graphics/render/renderer/renderer.h>
 
 #include <graphics/render/material/material.h>
-#include <graphics/render/model/model.h>
-#include <graphics/render/model/meshfactory.h>
+#include <graphics/render/mesh/meshfactory.h>
 #include <graphics/render/camera/camera.h>
 #include <graphics/render/camera/usercamera.h>
 
@@ -61,7 +60,7 @@ class FDAPI FDApplication {
 private:
 	void Run();
 
-	float ups;
+	float32 ups;
 
 protected:
 	Window* window;
@@ -69,16 +68,16 @@ protected:
 
 	virtual void OnInit();
 	virtual void OnTick();
-	virtual void OnUpdate(float delta);
+	virtual void OnUpdate(float32 delta);
 	virtual void OnRender();
 	virtual void OnExit();
 
 public:
-	FDApplication(const char* title, unsigned int width, unsigned int height);
+	FDApplication(const char* title, uint32 width, uint32 height);
 	virtual ~FDApplication();
 
 
-	inline void start() { Run(); }
+	inline void Start() { Run(); }
 
-	inline void SetUPS(float timesPerSec) { this->ups = 1000.0f / timesPerSec; }
+	inline void SetUPS(float32 timesPerSec) { this->ups = 1000.0f / timesPerSec; }
 };

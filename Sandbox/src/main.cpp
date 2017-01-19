@@ -11,11 +11,8 @@
 int main() {
 
 	PBRTest test;
-	test.start();
+	test.Start();
 
-/*
-	DeferredTest g;
-	g.start();*/
 
 	return 0;
 }

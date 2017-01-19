@@ -31,7 +31,7 @@ String FDReadTextFile(const String& filename) {
 		return String("Failed to open file");
 	}
 
-	FSIZE(size_t length, file);
+	FSIZE(uint_t length, file);
 
 	char* buff = new char[length+1];
 
@@ -43,11 +43,11 @@ String FDReadTextFile(const String& filename) {
 	return String(buff);
 }
 
-unsigned char* FDReadBinaryFile(const String& filename, size_t* fileSize) {
+byte* FDReadBinaryFile(const String& filename, uint_t* fileSize) {
 
 	FILE* file = fopen(*filename, "rb");
 
-	size_t size;
+	uint_t size;
 
 	if (!file) {
 		FD_FATAL("Failed to open file \"%s\"", *filename);
@@ -56,7 +56,7 @@ unsigned char* FDReadBinaryFile(const String& filename, size_t* fileSize) {
 
 	FSIZE(size, file);
 
-	unsigned char* buff = new unsigned char[size];
+	byte* buff = new byte[size];
 
 	FREAD(buff, size, file);
 

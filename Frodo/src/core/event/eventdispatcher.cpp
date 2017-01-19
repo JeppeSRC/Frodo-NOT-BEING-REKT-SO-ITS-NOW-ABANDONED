@@ -12,9 +12,9 @@ void EventDispatcher::RemoveListener(EventListener* listener) {
 }
 
 void EventDispatcher::DispatchEvent(const Event* event) {
-	size_t num = listeners.GetSize();
+	uint_t num = listeners.GetSize();
 
-	for (size_t i = 0; i < num; i++) {
+	for (uint_t i = 0; i < num; i++) {
 		EventListener* listener = listeners[i];
 		listener->OnEvent(event);
 
