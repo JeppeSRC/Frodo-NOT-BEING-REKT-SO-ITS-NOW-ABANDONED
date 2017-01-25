@@ -19,18 +19,18 @@ static uint32 get_size_from_format(DXGI_FORMAT format) {
 }
 
 BufferLayout::~BufferLayout() {
-	
+//	elements.Free();
 }
 
 void BufferLayout::PushElement(const String& name, uint32 size) {
-	elements.Push_back({ name, (DXGI_FORMAT)0, 0, size, offset });
+	elements.Push_back(new BufferLayoutAttrib({ name, (DXGI_FORMAT)0, 0, size, offset }));
 	offset += size;
 }
 
 uint32 BufferLayout::GetElementOffset(const String& name) {
 	uint_t size = elements.GetSize();
 	for (uint_t i = 0; i < size; i++) {
-		BufferLayoutAttrib attrib = elements[i];
+		const BufferLayoutAttrib& attrib = *elements[i];
 		if (attrib.name == name) return attrib.offset;
 	}
 
@@ -43,13 +43,13 @@ uint32 BufferLayout::GetElementOffset(uint32 index) {
 		FD_WARNING("[BufferLayout] Index out of bounds %u", index);
 	}
 
-	return elements[index].offset;
+	return elements[index]->offset;
 }
 
 uint32 BufferLayout::GetElementSize(const String& name) {
 	uint_t size = elements.GetSize();
 	for (uint_t i = 0; i < size; i++) {
-		BufferLayoutAttrib attrib = elements[i];
+		const BufferLayoutAttrib& attrib = *elements[i];
 		if (attrib.name == name) return attrib.size;
 	}
 
@@ -62,13 +62,13 @@ uint32 BufferLayout::GetElementSize(uint32 index) {
 		FD_WARNING("[BufferLayout] Index out of bounds %u", index);
 	}
 
-	return elements[index].size;
+	return elements[index]->size;
 }
 
 void BufferLayout::Push(const String& name, DXGI_FORMAT format, uint32 slot) {
 	uint32 size = get_size_from_format(format);
 	FD_ASSERT(size);
-	elements.Push_back({name, format, slot, size, offset});
+	elements.Push_back(new BufferLayoutAttrib({name, format, slot, size, offset}));
 	offset += size;
 }
 
@@ -79,7 +79,7 @@ void BufferLayout::CreateInputLayout(Shader* shader) {
 	D3D11_INPUT_CLASSIFICATION input;
 
 	for (uint_t i = 0; i < elements.GetSize(); i++) {
-		BufferLayoutAttrib& a = elements[i];
+		BufferLayoutAttrib& a = *elements[i];
 
 		if (a.slot > 0) {
 			stepRate = 1;

@@ -14,10 +14,12 @@ protected:
 
 public:
 	Entity() { mesh = nullptr; }
-	Entity(const vec3& position, const vec3& rotation, const vec3& scale = vec3(1, 1, 1)) : position(position), rotation(rotation), scale(scale) { mesh = nullptr; }
+	Entity(const vec3& position, const vec3& rotation, Mesh* mesh = nullptr, const vec3& scale = vec3(1, 1, 1)) : position(position), rotation(rotation), mesh(mesh), scale(scale) { }
 	virtual ~Entity() { }
 	
 	virtual void Update() {}
+
+	inline void SetMesh(Mesh* mesh) { this->mesh = mesh; }
 
 	inline Mesh* GetMesh() const { return mesh; }
 	inline mat4 GetTransform() const { return mat4::Translate(position) * mat4::Rotate(rotation) * mat4::Scale(scale); }

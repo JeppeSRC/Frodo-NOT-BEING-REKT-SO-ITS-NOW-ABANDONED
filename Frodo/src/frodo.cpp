@@ -10,7 +10,6 @@ FDApplication::FDApplication(const char* title, uint32 width, uint32 height) {
 
 FDApplication::~FDApplication() {
 	OnExit();
-	delete mainRenderer;
 	delete window;
 
 	VFS::Dispose();
@@ -61,4 +60,5 @@ void FDApplication::Run() {
 		w.SwapBuffers();
 	}
 
+	OnExit();
 }

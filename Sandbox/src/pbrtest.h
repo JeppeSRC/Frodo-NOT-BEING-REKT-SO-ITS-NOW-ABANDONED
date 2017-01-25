@@ -11,9 +11,10 @@ protected:
 	void OnExit() override;
 
 private:
-	PBRStaticRenderer* renderer;
+	Scene* scene;
 	UserCamera* camera;
-	
+	uint32 fps;
+	MaterialInstance* skyboxMaterial;
 
 public:
 	PBRTest() : FDApplication("PBR", 1000, 600) {}

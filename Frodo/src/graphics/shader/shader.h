@@ -71,13 +71,57 @@ private:
 	void ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE type);
 
 public:
-	struct ConstantBufferSlot {
+	class ConstantBufferSlot {
+	public:
 		ConstantBufferSlot(uint32 reg = 0, uint32 size = 0, byte* data = nullptr, BufferLayout layout = BufferLayout()) : semRegister(reg), structSize(size), data(data), layout(layout) {}
+	/*	ConstantBufferSlot(const ConstantBufferSlot& slot) {
+			semRegister = slot.semRegister;
+			structSize = slot.structSize;
+			layout = slot.layout;
+			data = new byte[structSize];
+			memcpy(data, slot.data, structSize);
+		}
+
+		ConstantBufferSlot(ConstantBufferSlot&& slot) {
+			data = nullptr;
+			*this = std::move(slot);
+		}
+
+		ConstantBufferSlot& operator=(ConstantBufferSlot& slot) {
+			delete[] data;
+			semRegister = slot.semRegister;
+			structSize = slot.structSize;
+			layout = slot.layout;
+			data = new byte[structSize];
+			memcpy(data, slot.data, structSize);
+			return *this;
+		}
+
+		ConstantBufferSlot& operator=(ConstantBufferSlot&& slot) {
+			if (this != &slot) {
+				delete[] data;
+				semRegister = slot.semRegister;
+				structSize = slot.structSize;
+				layout = slot.layout;
+
+				data = slot.data;
+
+				slot.data = nullptr;
+				slot.semRegister = 0;
+				slot.structSize = 0;
+			}
+
+			return *this;
+		}*/
+		
 		uint32 semRegister;
 		uint32 structSize;
 		byte* data;
 
 		BufferLayout layout;
+
+		void SetElement(const String& name, void* data);
+		void SetElement(uint32 index, void* data);
 	};
 
 	struct TextureSlot {

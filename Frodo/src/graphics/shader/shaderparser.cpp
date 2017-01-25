@@ -21,7 +21,7 @@ inline static String get_field_type_as_string(FD_SHADER_FIELD_TYPE type) {
 	case FD_SHADER_FIELD_TYPE_VEC4: return ("float4");
 	case FD_SHADER_FIELD_TYPE_VEC3: return ("float3");
 	case FD_SHADER_FIELD_TYPE_VEC2: return ("float2");
-	case FD_SHADER_FIELD_TYPE_FLOAT: return ("float32");
+	case FD_SHADER_FIELD_TYPE_FLOAT: return ("float");
 	}
 	return ("ERROR");
 }
@@ -158,13 +158,13 @@ void Shader::ParseTextures(String source) {
 
 		String type = source.SubString(textureStart + 7, source.Find(" ", textureStart + 7)).RemoveBlankspace();
 
-		if (type == "1D ") {
+		if (type == "1D") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE1D;
 		}
-		else if (type == "2D ") {
+		else if (type == "2D") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE2D;
 		}
-		else if (type == "3D ") {
+		else if (type == "3D") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE3D;
 		}
 		else if (type == "1DArray") {

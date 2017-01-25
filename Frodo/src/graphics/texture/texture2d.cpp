@@ -20,6 +20,8 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 	d.MiscFlags = 0;
 	d.Usage = D3D11_USAGE_DEFAULT;
 	d.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	d.SampleDesc.Count = 1;
+	d.SampleDesc.Quality = 0;
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC s;
 	ZeroMemory(&s, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));

@@ -10,6 +10,7 @@
 #include <core/event/eventkayboard.h>
 #include <core/event/eventmouse.h>
 #include <core/event/eventwindow.h>
+#include <core/scene.h>
 
 #include <graphics/d3dcontext.h>
 #include <graphics/buffer/bufferlayout.h>
@@ -64,7 +65,6 @@ private:
 
 protected:
 	Window* window;
-	Renderer* mainRenderer;
 
 	virtual void OnInit();
 	virtual void OnTick();

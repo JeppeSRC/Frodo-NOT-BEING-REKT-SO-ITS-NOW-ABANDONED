@@ -189,7 +189,7 @@ mat4 mat4::Inverse(mat4 m) {
 
 	float determinant = m.m[0] * tmp[0] + m.m[1] * tmp[4] + m.m[2] * tmp[8] + m.m[3] * tmp[12];
 
-	for (size_t i = 0; i < 16; i++)
+	for (uint_t i = 0; i < 16; i++)
 		n.m[i] = tmp[i] * determinant;
 
 	return n;

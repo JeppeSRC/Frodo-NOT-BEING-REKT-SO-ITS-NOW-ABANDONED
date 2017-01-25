@@ -99,6 +99,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <OpenMPSupport>true</OpenMPSupport>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\FreeImage\Lib\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -118,6 +119,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <OpenMPSupport>true</OpenMPSupport>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\FreeImage\Lib\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -184,6 +187,7 @@
     <ClCompile Include="src\core\fdtypes.h" />
     <ClCompile Include="src\core\input.cpp" />
     <ClCompile Include="src\core\log.cpp" />
+    <ClCompile Include="src\core\scene.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\fd.cpp" />
     <ClCompile Include="src\frodo.cpp" />
@@ -192,7 +196,6 @@
     <ClCompile Include="src\graphics\buffer\vertexbuffer.cpp" />
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
     <ClCompile Include="src\graphics\font\font.cpp" />
-    <ClCompile Include="src\graphics\pbr\material\pbrenvironment.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrrenderer.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrstaticrenderer.cpp" />
     <ClCompile Include="src\graphics\render\material\materialinstance.cpp" />
@@ -232,6 +235,7 @@
     <ClInclude Include="src\core\event\eventwindow.h" />
     <ClInclude Include="src\core\input.h" />
     <ClInclude Include="src\core\log.h" />
+    <ClInclude Include="src\core\scene.h" />
     <ClInclude Include="src\core\window.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\fd.h" />
@@ -242,7 +246,6 @@
     <ClInclude Include="src\graphics\buffer\vertexbuffer.h" />
     <ClInclude Include="src\graphics\d3dcontext.h" />
     <ClInclude Include="src\graphics\font\font.h" />
-    <ClInclude Include="src\graphics\pbr\material\pbrenvironment.h" />
     <ClInclude Include="src\graphics\pbr\render\pbrrenderer.h" />
     <ClInclude Include="src\graphics\render\mesh\mesh.h" />
     <ClInclude Include="src\graphics\render\renderer\batchrenderer.h" />
@@ -251,7 +254,6 @@
     <ClInclude Include="src\graphics\render\renderer\fontrenderer.h" />
     <ClInclude Include="src\graphics\render\light\light.h" />
     <ClInclude Include="src\graphics\render\material\material.h" />
-    <ClInclude Include="src\graphics\pbr\material\pbrmaterial.h" />
     <ClInclude Include="src\graphics\render\mesh\meshfactory.h" />
     <ClInclude Include="src\graphics\render\renderer\renderer.h" />
     <ClInclude Include="src\graphics\shader\shader.h" />

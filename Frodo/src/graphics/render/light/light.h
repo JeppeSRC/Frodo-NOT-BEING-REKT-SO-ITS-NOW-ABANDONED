@@ -2,6 +2,7 @@
 
 #include <fd.h>
 #include <math/math.h>
+#include <util/list.h>
 
 enum FD_LIGHT_TYPE {
 	FD_LIGHT_TYPE_NONE,
@@ -83,7 +84,7 @@ private:
 
 public:
 	LightStack() {}
-	~LightStack() { lights.Free(); }
+	~LightStack() { }
 
 	void Add(Light* light) { lights.Push_back(light); }
 	void Remove(Light* light) { lights.Remove(light);  }
