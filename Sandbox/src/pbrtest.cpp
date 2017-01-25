@@ -22,6 +22,7 @@ void PBRTest::OnInit() {
 	l.Push<vec2>("TEXCOORD");
 
 	l.CreateInputLayout(shader);
+	volatile Font* s = new Font("res/arial.ttf", 50, Window::GetMonitorDpi());
 
 	Shader* skyboxShader = new Shader("/shaders/pbr_skybox_v.hlsl", "/shaders/pbr_skybox_p.hlsl");
 	skyboxShader->ShaderGenComplete();
