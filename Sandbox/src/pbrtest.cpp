@@ -90,13 +90,13 @@ void PBRTest::OnInit() {
 	Entity* sky = new Entity();
 	sky->SetMesh(MeshFactory::CreatePlane(2, 2, skyboxMaterial));
 	
-	scene->Add(sky);
+	//scene->Add(sky);
 	scene->Add(e);
 	scene->Add(e2);
 	scene->Add(e3);
 	scene->Add(floor);
 	
-	scene->Add(new PointLight(vec3(0, -0.5f, -0), vec3(1, 1, 1), vec3(0, 0, 0)));
+	scene->Add(new PointLight(vec3(0, -0.25f, -0), vec3(1, 1, 1), vec3(0, 0, 0)));
 }
 
 void PBRTest::OnUpdate(float delta) {

@@ -78,8 +78,8 @@ float3 FresnelSchlickRoughness(float cosTheta, float3 F0, float roughness) {
 float4 psMain(float4 pos : SV_POSITION, float3 position : POSITION, float3 normal : NORMAL, float2 texCoord : TEXCOORD, float3 camPos : CAMPOS) : SV_TARGET0 {
 
 	float3 albedo = lerp(m_Albedo, m_AlbedoMap.Sample(samp, texCoord).xyz, m_AlbedoFactor);
-	float metallic = lerp(m_Metallic, m_MetallicMap.Sample(samp, texCoord).w, m_MetallicFactor);
-	float roughness = lerp(m_Roughness, m_RoughnessMap.Sample(samp, texCoord).w, m_RoughnessFactor);
+	float metallic = lerp(m_Metallic, m_MetallicMap.Sample(samp, texCoord).x, m_MetallicFactor);
+	float roughness = lerp(m_Roughness, m_RoughnessMap.Sample(samp, texCoord).x, m_RoughnessFactor);
 	float ao = lerp(m_AmbientOcclusion, m_AmbientOcclusionMap.Sample(samp, texCoord).w, m_AmbientOcclusionFactor);
 
 	float3 N = normalize(normal);
