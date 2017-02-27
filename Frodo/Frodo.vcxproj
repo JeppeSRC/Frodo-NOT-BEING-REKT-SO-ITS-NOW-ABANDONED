@@ -221,6 +221,12 @@
     <ClCompile Include="src\math\vec2.cpp" />
     <ClCompile Include="src\math\vec3.cpp" />
     <ClCompile Include="src\math\vec4.cpp" />
+    <ClCompile Include="src\physics\aabb.cpp" />
+    <ClCompile Include="src\physics\line.cpp" />
+    <ClCompile Include="src\physics\ray.cpp" />
+    <ClCompile Include="src\physics\sphere.cpp" />
+    <ClCompile Include="src\physics\tmp.cpp" />
+    <ClCompile Include="src\physics\triangle.cpp" />
     <ClCompile Include="src\util\asset\package\package.cpp" />
     <ClCompile Include="src\util\fileutils.cpp" />
     <ClCompile Include="src\util\string.cpp" />
@@ -270,6 +276,12 @@
     <ClInclude Include="src\math\vec2.h" />
     <ClInclude Include="src\math\vec3.h" />
     <ClInclude Include="src\math\vec4.h" />
+    <ClInclude Include="src\physics\aabb.h" />
+    <ClInclude Include="src\physics\collision.h" />
+    <ClInclude Include="src\physics\line.h" />
+    <ClInclude Include="src\physics\ray.h" />
+    <ClInclude Include="src\physics\sphere.h" />
+    <ClInclude Include="src\physics\triangle.h" />
     <ClInclude Include="src\util\asset\package\package.h" />
     <ClInclude Include="src\util\fileutils.h" />
     <ClInclude Include="src\util\list.h" />

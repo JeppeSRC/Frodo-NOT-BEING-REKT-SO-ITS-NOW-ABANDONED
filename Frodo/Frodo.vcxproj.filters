@@ -43,6 +43,11 @@
     <ClCompile Include="src\util\string.cpp" />
     <ClCompile Include="src\util\vfs\vfs.cpp" />
     <ClCompile Include="src\core\scene.cpp" />
+    <ClCompile Include="src\physics\aabb.cpp" />
+    <ClCompile Include="src\physics\triangle.cpp" />
+    <ClCompile Include="src\physics\ray.cpp" />
+    <ClCompile Include="src\physics\line.cpp" />
+    <ClCompile Include="src\physics\sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\event\event.h" />
@@ -94,5 +99,11 @@
     <ClInclude Include="src\util\string.h" />
     <ClInclude Include="src\util\vfs\vfs.h" />
     <ClInclude Include="src\core\scene.h" />
+    <ClInclude Include="src\physics\aabb.h" />
+    <ClInclude Include="src\physics\triangle.h" />
+    <ClInclude Include="src\physics\ray.h" />
+    <ClInclude Include="src\physics\collision.h" />
+    <ClInclude Include="src\physics\line.h" />
+    <ClInclude Include="src\physics\sphere.h" />
   </ItemGroup>
 </Project>
