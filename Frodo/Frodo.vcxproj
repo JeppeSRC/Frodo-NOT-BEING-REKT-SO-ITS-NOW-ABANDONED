@@ -225,7 +225,6 @@
     <ClCompile Include="src\physics\line.cpp" />
     <ClCompile Include="src\physics\ray.cpp" />
     <ClCompile Include="src\physics\sphere.cpp" />
-    <ClCompile Include="src\physics\tmp.cpp" />
     <ClCompile Include="src\physics\triangle.cpp" />
     <ClCompile Include="src\util\asset\package\package.cpp" />
     <ClCompile Include="src\util\fileutils.cpp" />
