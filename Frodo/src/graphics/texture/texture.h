@@ -31,5 +31,6 @@ public:
 	inline ID3D11ShaderResourceView* GetResourceView() const { return resourceView; }
 
 	static byte* Load(const String& filename, uint32* width, uint32* height, uint32* bits);
+	static byte* Load(void* memory, uint32* width, uint32* height, uint32* bits);
 };
 

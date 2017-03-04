@@ -6,17 +6,9 @@
 #define FWRITE(buff, size, file) fwrite(buff, size, 1, file)
 
 
-#ifdef _M_X64
-
 #define FTELL(file) _ftelli64(file)
 #define FSEEK(file, off, org) _fseeki64(file, off, org)
 
-#else
-
-#define FTELL(file) ftell(file)
-#define FSEEK(file, off, org) fseek(file, off, org)
-
-#endif
 
 #define FSIZE(dst, file) FSEEK(file, 0, SEEK_END); \
 dst = FTELL(file); \
@@ -27,7 +19,7 @@ String FDReadTextFile(const String& filename) {
 	FILE* file = fopen(*filename, "rb");
 
 	if (!file) {
-		FD_FATAL("Failed to open file \"%s\"", *filename);
+		FD_FATAL("[FileUtils] Failed to open file \"%s\"", *filename);
 		return String("Failed to open file");
 	}
 
@@ -50,7 +42,7 @@ byte* FDReadBinaryFile(const String& filename, uint_t* fileSize) {
 	uint_t size;
 
 	if (!file) {
-		FD_FATAL("Failed to open file \"%s\"", *filename);
+		FD_FATAL("[FileUtils] Failed to open file \"%s\"", *filename);
 		return nullptr;
 	}
 
@@ -65,4 +57,21 @@ byte* FDReadBinaryFile(const String& filename, uint_t* fileSize) {
 	if (fileSize != nullptr) *fileSize = size;
 
 	return buff;
+}
+
+bool FDWriteFile(FILE* file, const void* buffer, uint64 size) {
+	FWRITE(buffer, size, file);
+}
+
+bool FDWriteFile(FILE* file, const void* buffer, uint64 size, uint64 offset) {
+	FSEEK(file, offset, SEEK_SET);
+	FWRITE(buffer, size, file);
+}
+
+bool FDWriteFile(FILE* file, const void* buffer, uint64 size, uint64* offset) {
+	FSEEK(file, *offset, SEEK_SET);
+
+	*offset += size;
+
+	FWRITE(buffer, size, file);
 }

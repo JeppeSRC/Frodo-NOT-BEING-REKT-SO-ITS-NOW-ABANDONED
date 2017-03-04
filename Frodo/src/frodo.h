@@ -50,7 +50,9 @@
 
 #include <util/vfs/vfs.h>
 
-#include <util/asset/package/package.h>
+#include <util/asset/package.h>
+#include <util/asset/asset.h>
+#include <util/asset/assetmanager.h>
 
 #include <fd.h>
 

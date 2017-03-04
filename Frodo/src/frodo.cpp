@@ -3,6 +3,7 @@
 
 FDApplication::FDApplication(const char* title, uint32 width, uint32 height) {
 	window = new Window(title, width, height);
+	mainRenderer = nullptr;
 	SetUPS(60.0f);
 
 	D3DContext::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
