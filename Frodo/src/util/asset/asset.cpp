@@ -3,6 +3,11 @@
 #include <core/log.h>
 
 Asset::Asset(const Asset* asset) {
+	name = asset->name;
+	folder = asset->folder;
+	packageName = asset->packageName;
+	type = asset->type;
+
 	size = asset->size;
 	data = new byte[size];
 

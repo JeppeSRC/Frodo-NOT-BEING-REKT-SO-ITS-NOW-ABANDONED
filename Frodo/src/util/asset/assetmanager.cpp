@@ -41,9 +41,32 @@ bool AssetManager::LoadPackage(const String& filename) {
 		return false;
 	}
 
-	String packageName((char*)(data + hdr->nameDataOffset), hdr->nameLength);
+	String packageName = String((char*)data + hdr->nameDataOffset, hdr->nameLength);
 
-	
+	uint64 totalSize = 0;
+
+	for (uint32 i = 0; i < hdr->numberOfAssets; i++) {
+		ASSET_DIRECTORY_ENTRY* e = (ASSET_DIRECTORY_ENTRY*)(data + sizeof(PACKAGE_HEADER) + i * sizeof(ASSET_DIRECTORY_ENTRY));
+		Asset* asset = new Asset;
+
+		assets.Push_back(asset);
+
+		asset->name = String((char*)data + e->nameDataOffset, e->nameLength);
+		asset->folder = String((char*)data + e->folderDataOffset, e->folderLength);
+		asset->packageName = packageName;
+
+		asset->type = e->type;
+		asset->size = e->size;
+
+		asset->data = new byte[asset->size];
+		memcpy(asset->data, data + e->dataOffset, asset->size);
+
+		totalSize += asset->size;
+	}
+
+	FD_DEBUG("[AssetManager] Loaded package: Name: \"%s\" Size: %llu Assets: %llu", *packageName, totalSize, hdr->numberOfAssets);
+
+	delete[] data;
 }
 
 void AssetManager::UnloadPackage(const String& packageName) {
@@ -58,9 +81,16 @@ void AssetManager::UnloadPackage(const String& packageName) {
 
 	size = tmp.GetSize();
 
+	if (size == 0) {
+		FD_WARNING("[AssetManager] No package with name \"%s\"", *packageName);
+		return;
+	}
+
 	for (uint_t i = 0; i < size; i++) {
 		delete assets.Remove(tmp[i]);
 	}
+
+	FD_DEBUG("AssetManager] Unloaded package: Name \"%s\"", *packageName);
 }
 
 List<Asset*> AssetManager::GetAssetsByFolder(const String& name) {
@@ -128,16 +158,16 @@ bool AssetManager::ExportPackage(const String& filename, const Package* package)
 		uint64 assetDirectoryStart = sizeof(PACKAGE_HEADER);
 		uint64 dataOffset = assetDirectorySize + assetDirectoryStart;
 
-		FDWriteFile(file, &hdr, sizeof(PACKAGE_HEADER));
 		hdr.nameDataOffset = dataOffset;
 		FDWriteFile(file, *package->name, hdr.nameLength, &dataOffset);
+		FDWriteFile(file, &hdr, sizeof(PACKAGE_HEADER), (uint64)0);
 
 		uint_t size = package->assets.GetSize();
 
 		for (uint_t i = 0; i < size; i++) {
 			ASSET_DIRECTORY_ENTRY e;
 
-			const Asset& a = *assets[i];
+			const Asset& a = *package->assets.Get(i);
 
 			e.type = a.type;
 			e.size = a.size;

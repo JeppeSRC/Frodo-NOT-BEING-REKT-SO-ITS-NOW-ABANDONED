@@ -59,19 +59,19 @@ byte* FDReadBinaryFile(const String& filename, uint_t* fileSize) {
 	return buff;
 }
 
-bool FDWriteFile(FILE* file, const void* buffer, uint64 size) {
-	FWRITE(buffer, size, file);
+uint_t FDWriteFile(FILE* file, const void* buffer, uint64 size) {
+	return FWRITE(buffer, size, file);
 }
 
-bool FDWriteFile(FILE* file, const void* buffer, uint64 size, uint64 offset) {
+uint_t FDWriteFile(FILE* file, const void* buffer, uint64 size, uint64 offset) {
 	FSEEK(file, offset, SEEK_SET);
-	FWRITE(buffer, size, file);
+	return FWRITE(buffer, size, file);
 }
 
-bool FDWriteFile(FILE* file, const void* buffer, uint64 size, uint64* offset) {
+uint_t FDWriteFile(FILE* file, const void* buffer, uint64 size, uint64* offset) {
 	FSEEK(file, *offset, SEEK_SET);
 
 	*offset += size;
 
-	FWRITE(buffer, size, file);
+	return FWRITE(buffer, size, file);
 }
