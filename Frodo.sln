@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FreeType", "Dependencies\FreeType\FreeType.vcxproj", "{567204D9-06C3-4D14-8722-759E9BE9C88D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FrodoCLI", "FrodoCLI\FrodoCLI.vcxproj", "{794462E7-FA35-40C3-9881-F3E06132A559}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -46,6 +48,14 @@ Global
 		{567204D9-06C3-4D14-8722-759E9BE9C88D}.Release|x64.Build.0 = Release|x64
 		{567204D9-06C3-4D14-8722-759E9BE9C88D}.Release|x86.ActiveCfg = Release|Win32
 		{567204D9-06C3-4D14-8722-759E9BE9C88D}.Release|x86.Build.0 = Release|Win32
+		{794462E7-FA35-40C3-9881-F3E06132A559}.Debug|x64.ActiveCfg = Debug|x64
+		{794462E7-FA35-40C3-9881-F3E06132A559}.Debug|x64.Build.0 = Debug|x64
+		{794462E7-FA35-40C3-9881-F3E06132A559}.Debug|x86.ActiveCfg = Debug|Win32
+		{794462E7-FA35-40C3-9881-F3E06132A559}.Debug|x86.Build.0 = Debug|Win32
+		{794462E7-FA35-40C3-9881-F3E06132A559}.Release|x64.ActiveCfg = Release|x64
+		{794462E7-FA35-40C3-9881-F3E06132A559}.Release|x64.Build.0 = Release|x64
+		{794462E7-FA35-40C3-9881-F3E06132A559}.Release|x86.ActiveCfg = Release|Win32
+		{794462E7-FA35-40C3-9881-F3E06132A559}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
