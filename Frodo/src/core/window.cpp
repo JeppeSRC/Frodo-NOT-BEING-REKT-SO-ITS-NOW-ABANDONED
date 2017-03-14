@@ -74,11 +74,11 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 		case WM_KEYDOWN:
 			Input::keys[(byte)w] = true;
 			if (!keys[w]) {
-				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_PRESSED, w);
+				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_PRESSED, (int32)w);
 				keys[w] = true;
 			}
 			else {
-				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_HOLD, w);
+				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_HOLD, (int32)w);
 			}
 			EventDispatcher::DispatchEvent(e);
 			break;
@@ -86,7 +86,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			Input::keys[(byte)w] = false;
 			Input::prevKeys[(byte)w] = false;
 			keys[w] = false;
-			e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_RELEASED, w);
+			e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_RELEASED, (int32)w);
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_MOVE:
@@ -196,7 +196,7 @@ void Window::SetVisible(bool visible) {
 	else
 		ShowWindow(hwnd, SW_HIDE);
 	
-	FD_DEBUG("Window(%d) visibility set to %s", (int32)hwnd, isVisible ? "TRUE" : "FALSE");
+	FD_DEBUG("Window(%s) visibility set to %s", *title, isVisible ? "TRUE" : "FALSE");
 }
 
 

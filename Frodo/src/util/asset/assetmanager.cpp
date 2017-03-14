@@ -67,6 +67,8 @@ bool AssetManager::LoadPackage(const String& filename) {
 	FD_DEBUG("[AssetManager] Loaded package: Name: \"%s\" Size: %llu Assets: %llu", *packageName, totalSize, hdr->numberOfAssets);
 
 	delete[] data;
+
+	return true;
 }
 
 void AssetManager::UnloadPackage(const String& packageName) {
@@ -171,8 +173,8 @@ bool AssetManager::ExportPackage(const String& filename, const Package* package)
 
 			e.type = a.type;
 			e.size = a.size;
-			e.nameLength = a.name.length;
-			e.folderLength = a.folder.length;
+			e.nameLength = (uint32)a.name.length;
+			e.folderLength = (uint32)a.folder.length;
 
 
 			e.nameDataOffset = dataOffset;

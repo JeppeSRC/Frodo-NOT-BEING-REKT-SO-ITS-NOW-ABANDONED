@@ -27,7 +27,7 @@ Font* Asset::GetFont(uint32 size, ivec2 dpi) const {
 		FD_FATAL("[Asset]: Failed to create font, \"%s\" is not of type Font!", *name);
 		return nullptr;
 	}
-	return new Font(data, this->size, size, dpi);
+	return new Font(data, (uint32)this->size, size, dpi);
 }
 
 Shader* Asset::GetShader() const {

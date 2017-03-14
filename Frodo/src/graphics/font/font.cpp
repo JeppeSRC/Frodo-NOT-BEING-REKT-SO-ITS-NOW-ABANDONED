@@ -133,8 +133,8 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 
 			memcpy(glyph.bitmap, bitmap.buffer, bitmap_size);
 
-			if (glyph.bitmapSize.x > segmentWidth)  segmentWidth  = glyph.bitmapSize.x;
-			if (glyph.bitmapSize.y > segmentHeight) segmentHeight = glyph.bitmapSize.y;
+			if (glyph.bitmapSize.x > (int32)segmentWidth)  segmentWidth  = glyph.bitmapSize.x;
+			if (glyph.bitmapSize.y > (int32)segmentHeight) segmentHeight = glyph.bitmapSize.y;
 			
 			charMap.Add(glyph, c);
 		}
