@@ -1,7 +1,7 @@
 #pragma once
 #include <frodo.h>
 
-class Test : public FDApplication {
+class Test : public FD::FDApplication {
 protected:
 
 	void OnInit() override;
@@ -11,8 +11,8 @@ protected:
 	void OnExit() override;
 
 public:
-	FontRenderer* renderer;
-	Font* font;
+	FD::FontRenderer* renderer;
+	FD::Font* font;
 
 	Test() : FDApplication("Title", 1000, 600) {  }
 

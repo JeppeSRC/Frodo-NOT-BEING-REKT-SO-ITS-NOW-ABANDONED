@@ -2,7 +2,7 @@
 
 #include <frodo.h>
 
-class DeferredTest : public FDApplication {
+class DeferredTest : public FD::FDApplication {
 protected:
 
 	void OnInit() override;
@@ -14,20 +14,20 @@ protected:
 private:
 	unsigned int fps;
 
-	String fpsString;
+	FD::String fpsString;
 
-	UserCamera* camera;
+	FD::UserCamera* camera;
 
-	PointLight* spinningLight0;
-	PointLight* spinningLight1;
-	PointLight* spinningLight2;
-	PointLight* spinningLight3;
-	SpotLight* spotLight0;
+	FD::PointLight* spinningLight0;
+	FD::PointLight* spinningLight1;
+	FD::PointLight* spinningLight2;
+	FD::PointLight* spinningLight3;
+	FD::SpotLight* spotLight0;
 
-	Entity* bigSphere;
+	FD::Entity* bigSphere;
 
-	FontRenderer* fontRenderer;
-	Font* font;
+	FD::FontRenderer* fontRenderer;
+	FD::Font* font;
 public:
 
 	DeferredTest() : FDApplication("Kebab ä gött", 1280, 720) { }
