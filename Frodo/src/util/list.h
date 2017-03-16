@@ -2,6 +2,7 @@
 #include <fd.h>
 #include <memory>
 
+namespace FD {
 
 template<typename T>
 class List {
@@ -27,7 +28,7 @@ public:
 	}
 
 	List(const List<T>& list) {
-		
+
 		data = new T[list.allocated];
 
 		size = list.size;
@@ -54,9 +55,9 @@ public:
 	}
 
 	inline List<T>& operator=(const List<T>& list) {
-	
+
 		delete[] data;
-			
+
 		data = new T[list.allocated];
 
 		size = list.size;
@@ -147,11 +148,10 @@ public:
 		if (isArray)
 			for (uint_t i = 0; i < size; i++) {
 				delete[] data[i];
-			}
-		else
-			for (uint_t i = 0; i < size; i++) {
-				delete data[i];
-			}
+			} else
+				for (uint_t i = 0; i < size; i++) {
+					delete data[i];
+				}
 	}
 
 	inline void SetExtraReserve(uint_t extra) { this->extraReserve = extra; }
@@ -164,3 +164,5 @@ public:
 
 	inline const uint_t GetExtraReserve() const { return extraReserve; }
 };
+
+}

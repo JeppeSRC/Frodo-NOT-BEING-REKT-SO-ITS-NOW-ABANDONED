@@ -14,6 +14,8 @@
 dst = FTELL(file); \
 FSEEK(file, 0, SEEK_SET);
 
+namespace FD {
+
 String FDReadTextFile(const String& filename) {
 
 	FILE* file = fopen(*filename, "rb");
@@ -25,7 +27,7 @@ String FDReadTextFile(const String& filename) {
 
 	FSIZE(uint_t length, file);
 
-	char* buff = new char[length+1];
+	char* buff = new char[length + 1];
 
 	FREAD(buff, length, file);
 
@@ -74,4 +76,6 @@ uint_t FDWriteFile(FILE* file, const void* buffer, uint64 size, uint64* offset) 
 	*offset += size;
 
 	return FWRITE(buffer, size, file);
+}
+
 }

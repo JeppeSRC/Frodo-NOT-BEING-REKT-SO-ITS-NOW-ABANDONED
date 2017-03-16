@@ -2,6 +2,8 @@
 #include <core/log.h>
 #include <stdarg.h>
 
+namespace FD {
+
 #define CMP_VARS(op, p1, p2) \
 if (ShaderGenIsVariableDefined(para1, type)) { \
  \
@@ -106,13 +108,13 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 	//define
 	while (true) {
-		while_beginning1:
+	while_beginning1:
 		uint_t start = source.Find(sg_define);
 
 		if (start == (uint_t)-1) break;
 
 		uint_t nameStart = start + sg_define.length;
-		uint_t nameEnd = source.Find(" ", nameStart+1);
+		uint_t nameEnd = source.Find(" ", nameStart + 1);
 		uint_t end = source.Find("\n", nameEnd);
 		String data = source.SubString(nameEnd, end).RemoveBlankspace();
 
@@ -140,7 +142,7 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 	//define_r
 	while (true) {
-		while_beginning2:
+	while_beginning2:
 		uint_t start = source.Find(sg_define_r);
 
 		if (start == (uint_t)-1) break;
@@ -170,7 +172,7 @@ void Shader::ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type) {
 
 	//define_b
 	while (true) {
-		while_beginning3:
+	while_beginning3:
 		uint_t start = source.Find(sg_define_b);
 
 		if (start == (uint_t)-1) break;
@@ -225,7 +227,7 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 			uint_t other = source.Find(sg_shadergen, functionEnd);
 
 			if (other == end) {
-				source.Remove(end, end+sg_endif.length);
+				source.Remove(end, end + sg_endif.length);
 				source.Remove(start, functionEnd);
 			} else {
 				source.Remove(other, end + sg_endif.length);
@@ -259,7 +261,7 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 
 				bool result = false;
 
-				for (uint_t i = 0; i < elifs.GetSize()-1; i++) {
+				for (uint_t i = 0; i < elifs.GetSize() - 1; i++) {
 					uint_t elif = elifs[i];
 					uint_t functionStart = elif + sg_elif.length;
 					uint_t functionEnd = source.Find("\n", functionStart);
@@ -296,7 +298,7 @@ void Shader::ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type) {
 					source.Remove(start, firstElse + sg_else.length);
 				}
 			}
-			
+
 		}
 	}
 }
@@ -309,7 +311,7 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 		if (start == (uint_t)-1) break;
 
 		uint_t functionStart = start + sg_generate.length;
-		uint_t functionEnd = source.Find(")", functionStart)+1;
+		uint_t functionEnd = source.Find(")", functionStart) + 1;
 		uint_t nameEnd = source.Find("\n", functionEnd);
 
 		String function = source.SubString(functionStart, functionEnd);
@@ -321,7 +323,7 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 			FD_FATAL("[ShaderGen] Block \"%s\" not defined", *blockName);
 			continue;
 		}
-		
+
 		String code = ShaderGenGetBlock(blockName, type);
 
 		if (function == "single") {
@@ -330,7 +332,7 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 
 		} else if (function.StartsWith("for(")) {
 			String forVariableName, forStartName, forOpName, forEndName, forIncName;
-			
+
 			ShaderGenGetParametersFromFunction(function, 4, &forVariableName, &forStartName, &forOpName, &forEndName, &forIncName);
 
 			bool isTempVar = false;
@@ -339,7 +341,7 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 			if (!ShaderGenIsVariableDefined(forVariableName, type)) {
 				ShaderGenVariable* tmpVar = new ShaderGenVariable;
 
-		
+
 				tmpVar->name = forVariableName;
 				tmpVar->shader = type;
 				tmpVar->data = 0;
@@ -391,7 +393,7 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 					FD_FATAL("[ShaderGen] Variable \"%s\" not defined", *forIncName);
 				}
 			}
-			
+
 			forVariable->data = forStart;
 
 			while (true) {
@@ -422,7 +424,7 @@ void Shader::ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type) {
 bool Shader::ShaderGenProcessFunction(String function, FD_SHADER_TYPE type) {
 	if (function.StartsWith("defined(")) {
 		return ShaderGenIsVariableDefined(function.SubString(8, function.Find(")", 9)).RemoveBlankspace(), type);
-	}else if (function.StartsWith("true")) {
+	} else if (function.StartsWith("true")) {
 		return true;
 	} else if (function.StartsWith("false")) {
 		return false;
@@ -431,46 +433,46 @@ bool Shader::ShaderGenProcessFunction(String function, FD_SHADER_TYPE type) {
 
 		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
 
-		CMP_VARS(==, para1, para2)
-		
+		CMP_VARS(== , para1, para2)
+
 	} else if (function.StartsWith("neq(")) {
-		String para1, para2;
+			String para1, para2;
 
-		ShaderGenGetParametersFromFunction(function, 4, &para1, &para2);
+			ShaderGenGetParametersFromFunction(function, 4, &para1, &para2);
 
-		CMP_VARS(!= , para1, para2)
-			
-	} else if (function.StartsWith("gr(")) {
-		String para1, para2;
+			CMP_VARS(!= , para1, para2)
 
-		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
+		} else if (function.StartsWith("gr(")) {
+				String para1, para2;
 
-		CMP_VARS(>, para1, para2);
+				ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
 
-	} else if (function.StartsWith("ls(")) {
-		String para1, para2;
+				CMP_VARS(> , para1, para2);
 
-		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
+			} else if (function.StartsWith("ls(")) {
+				String para1, para2;
 
-		CMP_VARS(<, para1, para2)
+				ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
 
-	} else if (function.StartsWith("ge(")) {
-		String para1, para2;
+				CMP_VARS(< , para1, para2)
 
-		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
+			} else if (function.StartsWith("ge(")) {
+					String para1, para2;
 
-		CMP_VARS(>=, para1, para2)
+					ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
 
-	} else if (function.StartsWith("le(")) {
-		String para1, para2;
+					CMP_VARS(>= , para1, para2)
 
-		ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
+				} else if (function.StartsWith("le(")) {
+						String para1, para2;
 
-		CMP_VARS(<=, para1, para2)
-	}
+						ShaderGenGetParametersFromFunction(function, 3, &para1, &para2);
 
-	FD_WARNING("[ShaderGen] Unknown function \"%s\"", *function);
-	return false;
+						CMP_VARS(<= , para1, para2)
+					}
+
+					FD_WARNING("[ShaderGen] Unknown function \"%s\"", *function);
+					return false;
 }
 
 bool Shader::ShaderGenIsVariableDefined(const String& name, FD_SHADER_TYPE type) {
@@ -481,10 +483,10 @@ void Shader::ShaderGenGetParametersFromFunction(const String& function, uint_t o
 	va_list list;
 	va_start(list, offset);
 
-	String parameters = function.SubString(offset, function.Find(")", offset+1)).RemoveBlankspace();
+	String parameters = function.SubString(offset, function.Find(")", offset + 1)).RemoveBlankspace();
 
 	uint_t comma = parameters.Find(",");
-	uint_t numParameters = parameters.Count(",")+1;
+	uint_t numParameters = parameters.Count(",") + 1;
 
 	if (numParameters == 0) {
 		FD_FATAL("[ShaderGen] Function \"%s\" only has 1 or less parameters, min 2 required", *function);
@@ -530,8 +532,8 @@ void Shader::ShaderGenAddVariableData(String& source, FD_SHADER_TYPE type) {
 			charBefore[1] = 0;
 
 			if (arithmetic_chars.Find(charBefore) == (uint_t)-1) RemoveDecimalsInString(data);
-			
-			skip_arithmetic_check:
+
+		skip_arithmetic_check:
 			InsertString(source, data, start);
 		}
 	}
@@ -599,7 +601,7 @@ void Shader::ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE
 	}
 
 	while (true) {
-		ARITH_OP(/, sg_div)
+		ARITH_OP(/ , sg_div)
 	}
 }
 
@@ -663,4 +665,6 @@ void Shader::ShaderGenComplete() {
 
 	FD_DEBUG("[ShaderGen] Shader generation completed, compiling...");
 	Compile(vSource, pSource);
+}
+
 }

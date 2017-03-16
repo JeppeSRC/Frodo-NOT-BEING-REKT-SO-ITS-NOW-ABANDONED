@@ -5,6 +5,8 @@
 
 #include "event.h"
 
+namespace FD {
+
 class FDAPI EventDispatcher {
 private:
 	friend class EventListener;
@@ -18,3 +20,5 @@ public:
 
 	static void DispatchEvent(const Event* event);
 };
+
+}

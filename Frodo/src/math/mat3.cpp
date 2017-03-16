@@ -1,6 +1,8 @@
 #include "math.h"
 #include <memory>
 
+namespace FD {
+
 void mat3::LoadRows(__m128* xmm) const {
 
 	xmm[0] = _mm_set_ps(0, m[0 + 2 * 3], m[0 + 1 * 3], m[0 + 0 * 3]);
@@ -34,14 +36,14 @@ mat3 mat3::Rotate(const vec3& v) {
 	float32 zcos = cosf((float32)FD_TO_RADIANS_F(v.z));
 	float32 zsin = sinf((float32)FD_TO_RADIANS_F(v.z));
 
-	x.m[1 + 1 * 3] = xcos;x.m[1 + 2 * 3] = -xsin;
-	x.m[2 + 1 * 3] = xsin;x.m[2 + 2 * 3] = xcos;
+	x.m[1 + 1 * 3] = xcos; x.m[1 + 2 * 3] = -xsin;
+	x.m[2 + 1 * 3] = xsin; x.m[2 + 2 * 3] = xcos;
 
-	y.m[0 + 0 * 3] = ycos;y.m[0 + 2 * 3] = -ysin;
-	y.m[2 + 0 * 3] = ysin;y.m[2 + 2 * 3] = ycos;
+	y.m[0 + 0 * 3] = ycos; y.m[0 + 2 * 3] = -ysin;
+	y.m[2 + 0 * 3] = ysin; y.m[2 + 2 * 3] = ycos;
 
-	z.m[0 + 0 * 3] = zcos;z.m[0 + 1 * 3] = -zsin;
-	z.m[1 + 0 * 3] = zsin;z.m[1 + 1 * 3] = zcos;
+	z.m[0 + 0 * 3] = zcos; z.m[0 + 1 * 3] = -zsin;
+	z.m[1 + 0 * 3] = zsin; z.m[1 + 1 * 3] = zcos;
 
 	return x * y * z;
 }
@@ -90,4 +92,6 @@ vec3 mat3::operator*(const vec3& v) {
 		res = _mm_fmadd_ps(vec[i], col[i], res);
 
 	return vec3(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2]);
+}
+
 }

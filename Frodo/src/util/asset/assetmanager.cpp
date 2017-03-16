@@ -1,6 +1,8 @@
 #include "assetmanager.h"
 #include <util/fileutils.h>
 
+namespace FD {
+
 List<Asset*> AssetManager::assets;
 
 bool AssetManager::ValidatePackageHeader(PACKAGE_HEADER* hdr, const String& filename) {
@@ -25,7 +27,7 @@ void AssetManager::LoadPackage(const Package* package) {
 }
 
 bool AssetManager::LoadPackage(const String& filename) {
-	
+
 	uint_t fileSize = 0;
 
 	byte* data = FDReadBinaryFile(filename, &fileSize);
@@ -67,6 +69,8 @@ bool AssetManager::LoadPackage(const String& filename) {
 	FD_DEBUG("[AssetManager] Loaded package: Name: \"%s\" Size: %llu Assets: %llu", *packageName, totalSize, hdr->numberOfAssets);
 
 	delete[] data;
+
+	return true;
 }
 
 void AssetManager::UnloadPackage(const String& packageName) {
@@ -171,8 +175,8 @@ bool AssetManager::ExportPackage(const String& filename, const Package* package)
 
 			e.type = a.type;
 			e.size = a.size;
-			e.nameLength = a.name.length;
-			e.folderLength = a.folder.length;
+			e.nameLength = (uint32)a.name.length;
+			e.folderLength = (uint32)a.folder.length;
 
 
 			e.nameDataOffset = dataOffset;
@@ -200,11 +204,13 @@ Package* AssetManager::MakePackage(const String& name, bool exportPackage) {
 
 	p->name = name;
 	uint_t size = assets.GetSize();
-	
+
 	for (uint_t i = 0; i < size; i++)
 		p->AddAsset(assets[i]);
 
 	if (exportPackage) ExportPackage(name, p);
 
 	return p;
+}
+
 }

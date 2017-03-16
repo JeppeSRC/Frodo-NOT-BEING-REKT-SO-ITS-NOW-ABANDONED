@@ -5,6 +5,8 @@
 #include <graphics/buffer/indexbuffer.h>
 #include <graphics/render/material/material.h>
 
+namespace FD {
+
 class FDAPI Mesh {
 protected:
 	VertexBuffer* vBuffer;
@@ -13,7 +15,7 @@ protected:
 	MaterialInstance* material;
 
 public:
-	Mesh(VertexBuffer* vBuffer, IndexBuffer* iBuffer, MaterialInstance* material) : vBuffer(vBuffer), iBuffer(iBuffer), material(material) { }
+	Mesh(VertexBuffer* vBuffer, IndexBuffer* iBuffer, MaterialInstance* material) : vBuffer(vBuffer), iBuffer(iBuffer), material(material) {}
 	~Mesh() { delete material, vBuffer, iBuffer; }
 
 	void Render();
@@ -22,3 +24,5 @@ public:
 	inline IndexBuffer* GetIndexBuffer() { return iBuffer; }
 	inline MaterialInstance* GetMaterial() { return material; }
 };
+
+}

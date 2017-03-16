@@ -1,5 +1,6 @@
 #include "test.h"
 
+using namespace FD;
 
 void Test::OnInit() {
 	window->SetVSync(1);

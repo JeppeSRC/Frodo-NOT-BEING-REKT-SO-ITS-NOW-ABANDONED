@@ -5,6 +5,9 @@
 #include <entity/entity.h>
 #include <graphics/render/light/light.h>
 
+namespace FD {
+
+
 struct RenderCommand {
 	Mesh* mesh;
 	mat4 transform;
@@ -16,7 +19,7 @@ protected:
 	Window* window;
 
 	List<RenderCommand> commandQueue;
-	
+
 	Renderer(Window* window) { this->window = window; }
 public:
 	virtual ~Renderer() {}
@@ -34,3 +37,5 @@ public:
 	inline Window* GetWindow() const { return window; }
 	inline List<RenderCommand> GetCommandQueue() const { return commandQueue; }
 };
+
+}

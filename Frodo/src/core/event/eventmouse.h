@@ -3,6 +3,9 @@
 #include "event.h"
 #include <math/vec2.h>
 
+namespace FD {
+
+
 class EventMouse : public Event {
 protected:
 	EventMouse(FD_TYPE type) : Event(type) {}
@@ -14,7 +17,7 @@ public:
 class EventMouseActionMove : public EventMouse {
 private:
 	ivec2 position;
-	
+
 public:
 	EventMouseActionMove(ivec2 position) : EventMouse(FD_MOUSE_ACTION_MOVE) { this->position = position; }
 
@@ -45,3 +48,5 @@ public:
 	inline uint32 GetButton() const { return button; }
 	inline FD_ACTION GetAction() const { return action; }
 };
+
+}

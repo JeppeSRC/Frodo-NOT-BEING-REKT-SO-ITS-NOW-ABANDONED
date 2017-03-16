@@ -1,5 +1,7 @@
 #pragma once
 
+namespace FD {
+
 class Event {
 public:
 	enum FD_TYPE {
@@ -17,7 +19,7 @@ public:
 		FD_WINDOW_STATE_MAXIMIZED,
 		FD_WINDOW_STATE_FOCUS_GAINED,
 		FD_WINDOW_STATE_FOCUS_LOST,
-		
+
 		FD_KEYBOARD_EVENT,
 		FD_KEYBOARD_ACTION_KEY_PRESSED,
 		FD_KEYBOARD_ACTION_KEY_RELEASED,
@@ -32,3 +34,5 @@ public:
 
 	inline FD_TYPE GetEventType() const { return type; }
 };
+
+}

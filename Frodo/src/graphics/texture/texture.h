@@ -2,6 +2,9 @@
 
 #include <fd.h>
 #include <graphics/d3dcontext.h>
+#include <util/string.h>
+
+namespace FD {
 
 enum FD_TEXTURE_FORMAT {
 	FD_TEXTURE_FORMAT_UNKNOWN,
@@ -34,3 +37,4 @@ public:
 	static byte* Load(void* memory, uint32* width, uint32* height, uint32* bits);
 };
 
+}

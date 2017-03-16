@@ -6,6 +6,8 @@
 #include <util/string.h>
 #include <math/math.h>
 
+namespace FD {
+
 class FDAPI BufferLayout {
 private:
 	friend class Shader;
@@ -47,5 +49,7 @@ public:
 	template<> inline void Push<vec2>(const char* name, uint32 slot) { Push(name, DXGI_FORMAT_R32G32_FLOAT, slot); }
 	template<> inline void Push<vec3>(const char* name, uint32 slot) { Push(name, DXGI_FORMAT_R32G32B32_FLOAT, slot); }
 	template<> inline void Push<vec4>(const char* name, uint32 slot) { Push(name, DXGI_FORMAT_R32G32B32A32_FLOAT, slot); }
-	
+
 };
+
+}

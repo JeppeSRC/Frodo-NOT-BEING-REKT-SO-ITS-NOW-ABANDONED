@@ -1,6 +1,8 @@
 #pragma once
 #include "mathcommon.h"
 
+namespace FD {
+
 class FDAPI mat4 {
 private:
 	friend class mat3;
@@ -33,3 +35,5 @@ public:
 
 	__forceinline const float32* GetData() const { return m; }
 };
+
+}

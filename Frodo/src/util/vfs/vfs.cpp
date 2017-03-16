@@ -2,14 +2,15 @@
 #include <core/log.h>
 #include <util/fileutils.h>
 
+namespace FD {
+
 VFS* VFS::instance = nullptr;
 
 VFS::VFS() {
 	mountPoints.Reserve(FD_VFS_MAX_MOUNT_POINTS);
 }
 
-VFS::~VFS() {
-}
+VFS::~VFS() {}
 
 String VFS::ResolvePath(const String& vpath) {
 
@@ -42,4 +43,6 @@ byte* VFS::ReadFile(const String& filename, uint_t* fileSize) {
 
 String VFS::ReadTextFile(const String& filename) {
 	return FDReadTextFile(ResolvePath(filename));
+}
+
 }

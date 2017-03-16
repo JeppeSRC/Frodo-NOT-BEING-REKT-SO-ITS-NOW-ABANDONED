@@ -8,6 +8,8 @@
 #include <graphics/texture/texture.h>
 #include <graphics/texture/texture2d.h>
 
+namespace FD {
+
 enum FD_ASSET_TYPE {
 	FD_ASSET_TYPE_RAW,
 	FD_ASSET_TYPE_STRING,
@@ -32,9 +34,11 @@ public:
 	Asset(const Asset* asset);
 
 	~Asset() { delete[] data; }
-	
+
 	String GetString() const;
 	Font* GetFont(uint32 size, ivec2 dpi) const;
 	Shader* GetShader() const;
 	Texture* GetTexture() const;
 };
+
+}

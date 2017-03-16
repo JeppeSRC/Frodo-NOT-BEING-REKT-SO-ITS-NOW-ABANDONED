@@ -1,6 +1,8 @@
 #pragma once
 #include "mathcommon.h"
 
+namespace FD {
+
 class FDAPI vec2 {
 public:
 	float32 x;
@@ -86,3 +88,5 @@ public:
 
 	__forceinline ivec2 operator-() { return ivec2(-x, -y); }
 };
+
+}

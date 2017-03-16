@@ -1,7 +1,9 @@
 #pragma once
 #include <fd.h>
 #include <stdio.h>
- 
+
+namespace FD {
+
 class FDAPI String {
 private:
 	template<typename T>
@@ -57,9 +59,10 @@ public:
 
 	inline wchar_t* GetWCHAR() const {
 		wchar_t* tmp = new wchar_t[length + 1];
-		swprintf_s(tmp,length+1,  L"%S", str);
+		swprintf_s(tmp, length + 1, L"%S", str);
 		tmp[length] = '\0';
 		return tmp;
 	}
 };
- 
+
+}

@@ -1,6 +1,7 @@
 #include "material.h"
 #include <core/log.h>
 
+namespace FD {
 
 Material::Material(Shader* shader) : shader(shader) {
 	vCBuffer.data = nullptr;
@@ -94,4 +95,6 @@ void Material::SetPCBufferElement(uint32 index, void* data) {
 	uint32 offset = pCBuffer.layout.GetElementOffset(index);
 	if (offset == (uint32)-1) return;
 	memcpy(pCBuffer.data + offset, data, pCBuffer.layout.GetElementSize(index));
+}
+
 }

@@ -1,6 +1,8 @@
 #include <graphics/texture/framebuffer2d.h>
 #include <core/log.h>
 
+namespace FD {
+
 Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT format, bool createDepthStencil) {
 	this->width = width;
 	this->height = height;
@@ -15,7 +17,7 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 	td.SampleDesc.Count = 1;
 	td.MipLevels = 1;
 	td.Usage = D3D11_USAGE_DEFAULT;
-	
+
 	switch (format) {
 		case FD_TEXTURE_FORMAT_UNKNOWN:
 			FD_ASSERT(FD_TEXTURE_FORMAT_UNKNOWN);
@@ -100,4 +102,6 @@ void Framebuffer2D::Bind(uint32 slot) {
 void Framebuffer2D::BindAsRenderTarget() {
 	D3DContext::SetRenderTargets(1, &renderTargetView, depthStencilView);
 	D3DContext::SetViewPort(0, 0, (float32)width, (float32)height);
+}
+
 }

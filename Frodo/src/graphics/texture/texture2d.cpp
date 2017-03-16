@@ -2,6 +2,8 @@
 #include <core/log.h>
 #include <util/vfs/vfs.h>
 
+namespace FD {
+
 Texture2D::Texture2D(const String& filename) : Texture2D() {
 
 	//TODO: only supports 32bit
@@ -55,7 +57,7 @@ Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT 
 	d.Height = height;
 	d.SampleDesc.Count = 1;
 	d.Usage = D3D11_USAGE_DEFAULT;
-	
+
 	uint32 size = 0;
 
 	switch (format) {
@@ -75,7 +77,7 @@ Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT 
 			size = 1;
 	}
 
-	
+
 
 	D3D11_SUBRESOURCE_DATA s;
 	ZeroMemory(&s, sizeof(D3D11_SUBRESOURCE_DATA));
@@ -86,7 +88,7 @@ Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT 
 	D3DContext::GetDevice()->CreateTexture2D(&d, &s, &resource);
 
 	FD_ASSERT(resource);
-	
+
 	D3DContext::GetDevice()->CreateShaderResourceView(resource, nullptr, &resourceView);
 
 	FD_ASSERT(resourceView);
@@ -98,4 +100,6 @@ Texture2D::~Texture2D() {
 
 void Texture2D::Bind(uint32 slot) {
 	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &resourceView);
+}
+
 }

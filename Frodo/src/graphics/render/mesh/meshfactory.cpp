@@ -4,6 +4,8 @@
 #include <core/log.h>
 #include <util/vfs/vfs.h>
 
+namespace FD {
+
 struct Vertex {
 	vec3 position;
 	vec2 texCoords;
@@ -12,7 +14,7 @@ struct Vertex {
 
 Mesh* MeshFactory::CreatePlane(float32 width, float32 height, MaterialInstance* material) {
 
-	
+
 
 	float32 w = width / 2.0f;
 	float32 h = height / 2.0f;
@@ -220,7 +222,7 @@ Mesh* MeshFactory::LoadFromFile(const String& filename, MaterialInstance* materi
 		List<vec3> vertices, normals;
 		List<vec2> texCoords;
 		List<uint32> indices;
-		
+
 		FD_DEBUG("[MeshFactory] Loading \"%s\"", *filename);
 		FD_DEBUG("[MeshFactory] Loading text file");
 		String text = VFS::Get()->ReadTextFile(filename);
@@ -262,7 +264,7 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 	List<vec2> tmpTexCoords;
 
 
-	
+
 	uint_t numLines = lines.GetSize();
 	FD_DEBUG("[MeshFactory] Parsing text");
 	#pragma omp for
@@ -311,8 +313,10 @@ void MeshFactory::MakeFacesOBJ(List<vec3>& vertices, List<vec3>& tmpVertices, Li
 
 			indices.Push_back(index);
 			vertices[index] = tmpVertices[face[j].vertex - 1];
-			texCoords[index] = tmpTexCoords[face[j].texCoord-1];
-			normals[index] = tmpNormals[face[j].normal-1];
+			texCoords[index] = tmpTexCoords[face[j].texCoord - 1];
+			normals[index] = tmpNormals[face[j].normal - 1];
 		}
 	}
+}
+
 }

@@ -2,6 +2,8 @@
 
 #include "event.h"
 
+namespace FD {
+
 class EventKeyboard : public Event {
 protected:
 	EventKeyboard(FD_TYPE type) : Event(type) {}
@@ -26,3 +28,5 @@ public:
 	inline uint32 GetKey() const { return key; }
 	inline uint32 GetAction() const { return action; }
 };
+
+}

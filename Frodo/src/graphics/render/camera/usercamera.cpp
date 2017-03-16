@@ -2,6 +2,8 @@
 #include <core/input.h>
 #include <core/window.h>
 
+namespace FD {
+
 #define SENSE 8.0f
 
 static vec3 left(-1, 0, 0);
@@ -24,7 +26,7 @@ void UserCamera::Update(float32 delta) {
 
 	}
 
-		position += move.RotateY(rotation.y) * delta;
+	position += move.RotateY(rotation.y) * delta;
 
 	UpdateViewMatrix();
 }
@@ -33,15 +35,13 @@ bool UserCamera::OnKeyboardActionKeyPressed(uint32 key) {
 
 	if (key == 'W') {
 		dir += forward;
-	}
-	else if (key == 'S') {
+	} else if (key == 'S') {
 		dir += back;
 	}
 
 	if (key == 'A') {
 		dir += left;
-	}
-	else if (key == 'D') {
+	} else if (key == 'D') {
 		dir += right;
 	}
 
@@ -58,15 +58,13 @@ bool UserCamera::OnKeyboardActionKeyReleased(uint32 key) {
 
 	if (key == 'W') {
 		dir -= forward;
-	}
-	else if (key == 'S') {
+	} else if (key == 'S') {
 		dir -= back;
 	}
 
 	if (key == 'A') {
 		dir -= left;
-	}
-	else if (key == 'D') {
+	} else if (key == 'D') {
 		dir -= right;
 	}
 
@@ -78,4 +76,6 @@ bool UserCamera::OnMouseActionMove(ivec2 position) {
 	y = (float32)position.y;
 
 	return false;
+}
+
 }

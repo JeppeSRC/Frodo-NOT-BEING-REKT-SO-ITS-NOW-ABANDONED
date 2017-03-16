@@ -8,6 +8,8 @@
 
 #define FD_VFS_MAX_MOUNT_POINTS 128
 
+namespace FD {
+
 class FDAPI VFS {
 private:
 	static VFS* instance;
@@ -21,7 +23,7 @@ public:
 
 private:
 	Map<String, String> mountPoints;
-	
+
 	String ResolvePath(const String& vpath);
 
 public:
@@ -32,6 +34,8 @@ public:
 	void UnMount(const String& name);
 	byte* ReadFile(const String& filename, uint_t* fileSize = nullptr);
 	String ReadTextFile(const String& filename);
-	
+
 
 };
+
+}

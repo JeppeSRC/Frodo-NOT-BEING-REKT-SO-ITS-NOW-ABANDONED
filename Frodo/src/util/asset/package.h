@@ -5,6 +5,8 @@
 
 #include "asset.h"
 
+namespace FD {
+
 class FDAPI Package {
 public:
 	String name;
@@ -12,3 +14,5 @@ public:
 
 	void AddAsset(Asset* asset);
 };
+
+}

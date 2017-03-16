@@ -8,6 +8,8 @@
 #define FD_LOG_COLOR_WARNING 0b00001110
 #define FD_LOG_COLOR_FATAL 0b00001100
 
+namespace FD {
+
 void FDLog(byte level, const char* message...) {
 
 	HANDLE outhandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -49,5 +51,7 @@ void FDLog(byte level, const char* message...) {
 	SetConsoleTextAttribute(outhandle, info.wAttributes);
 
 	va_end(args);
+
+}
 
 }

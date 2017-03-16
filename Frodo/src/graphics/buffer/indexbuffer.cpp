@@ -1,6 +1,8 @@
 #include "indexbuffer.h"
 #include <core/log.h>
 
+namespace FD {
+
 inline static DXGI_FORMAT get_buffer_format(FD_INDEXBUFFER_FORMAT format) {
 	switch (format) {
 		case FD_INDEXBUFFER_FORMAT_UNKNOWN:
@@ -54,4 +56,6 @@ IndexBuffer::IndexBuffer(int16* data, uint32 count) : IndexBuffer(data, count * 
 
 void IndexBuffer::Bind() {
 	D3DContext::GetDeviceContext()->IASetIndexBuffer(buffer, format, 0);
+}
+
 }

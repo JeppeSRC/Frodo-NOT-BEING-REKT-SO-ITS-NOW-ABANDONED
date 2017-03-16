@@ -1,6 +1,8 @@
 #pragma once
 #include "mathcommon.h"
 
+namespace FD {
+
 class FDAPI vec3 {
 private:
 	friend class vec2;
@@ -100,3 +102,5 @@ public:
 
 	__forceinline ivec3 operator-() { return ivec3(-x, -y, -z); }
 };
+
+}

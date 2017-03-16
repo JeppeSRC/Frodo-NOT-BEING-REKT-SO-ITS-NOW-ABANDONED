@@ -9,6 +9,7 @@
 
 #include <graphics/d3dcontext.h>
 
+namespace FD {
 
 class FDAPI Window : public EventListener {
 private:
@@ -39,7 +40,7 @@ public:
 
 	bool OnWindowActionResize(ivec2 size) override;
 
-	inline void SetClearColor(float32 r, float32 g, float32 b) { clearColor[0] = r;clearColor[1] = g;clearColor[2] = b;}
+	inline void SetClearColor(float32 r, float32 g, float32 b) { clearColor[0] = r; clearColor[1] = g; clearColor[2] = b; }
 	inline bool IsOpen() const { return isOpen; }
 	inline int32 GetWidth() const { return width; }
 	inline int32 GetHeight() const { return height; }
@@ -52,3 +53,5 @@ public:
 public:
 	static ivec2 GetMonitorDpi();
 };
+
+}

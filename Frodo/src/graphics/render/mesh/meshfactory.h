@@ -4,6 +4,8 @@
 #include <graphics/render/material/material.h>
 #include <util/list.h>
 
+namespace FD {
+
 class FDAPI MeshFactory {
 private:
 
@@ -23,10 +25,12 @@ private:
 public:
 
 	static inline Mesh* CreatePlane(const vec2& size, MaterialInstance* material) { return CreatePlane(size.x, size.y, material); }
-	static inline Mesh* CreateCube(const vec3& size, MaterialInstance* material) { return CreateCube(size.x, size.y, size.z, material); }
+	static inline Mesh* CreateCube(const vec3& size,  MaterialInstance* material) { return CreateCube(size.x, size.y, size.z, material); }
 
 	static Mesh* CreatePlane(float32 width, float32 height, MaterialInstance* material);
 	static Mesh* CreateCube(float32 width, float32 height, float32 depth, MaterialInstance* material);
-		   
+
 	static Mesh* LoadFromFile(const String& filename, MaterialInstance* material);
 };
+
+}
