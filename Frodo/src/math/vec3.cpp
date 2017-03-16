@@ -2,6 +2,8 @@
 #include <core/log.h>
 #include <memory>
 
+namespace FD {
+
 #pragma region vec3
 
 //vec3::vec3(__m128 xmm) : _xmm(xmm) { }
@@ -196,3 +198,5 @@ ivec3& ivec3::Divide(int32 v) {
 }
 
 #pragma endregion
+
+}

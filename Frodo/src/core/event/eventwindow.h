@@ -3,6 +3,8 @@
 #include "event.h"
 #include <math/vec2.h>
 
+namespace FD {
+
 class EventWindow : public Event {
 protected:
 	EventWindow(FD_TYPE type) : Event(type) {}
@@ -44,7 +46,9 @@ private:
 	FD_ACTION action;
 
 public:
-	EventWindowState(FD_ACTION action) : EventWindow(action == FD_MAXIMIZED? FD_WINDOW_STATE_MAXIMIZED : action == FD_MINIMIZED ? FD_WINDOW_STATE_MINIMIZED : action == FD_FOCUS_GAINED ? FD_WINDOW_STATE_FOCUS_GAINED : FD_WINDOW_STATE_FOCUS_LOST) { this->action = action; }
+	EventWindowState(FD_ACTION action) : EventWindow(action == FD_MAXIMIZED ? FD_WINDOW_STATE_MAXIMIZED : action == FD_MINIMIZED ? FD_WINDOW_STATE_MINIMIZED : action == FD_FOCUS_GAINED ? FD_WINDOW_STATE_FOCUS_GAINED : FD_WINDOW_STATE_FOCUS_LOST) { this->action = action; }
 
 	inline FD_ACTION GetAction() const { return action; }
 };
+
+}

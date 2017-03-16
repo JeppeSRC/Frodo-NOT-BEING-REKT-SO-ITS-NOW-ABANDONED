@@ -3,11 +3,13 @@
 #include <core/log.h>
 #include <math/vec4.h>
 
+namespace FD {
+
 Map<char*, Texture*> TextureManager::textures;
 
 void TextureManager::Init() {
 	textures.Reserve(256);
-	
+
 	vec4 a[4]{
 		vec4(1, 1, 1, 1),
 		vec4(1, 1, 1, 1),
@@ -16,7 +18,7 @@ void TextureManager::Init() {
 	};
 
 	String s("default");
-	
+
 	Add(s, new Texture2D(a, 2, 2, FD_TEXTURE_FORMAT_FLOAT_32_32_32_32));
 }
 
@@ -53,4 +55,6 @@ Texture* TextureManager::Get(const String& name) {
 	FD_FATAL("Couldn't find texture \"%s\"", *name);
 
 	return nullptr;
+}
+
 }

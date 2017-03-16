@@ -9,10 +9,11 @@
 
 #define DX_FREE(x) if (x != nullptr) { x->Release(); x = nullptr;}
 
+namespace FD {
+
 class FDAPI D3DContext {
 private:
 	friend class Window;
-	friend class String;
 private:
 	static D3DContext* pContext;
 
@@ -44,7 +45,7 @@ public:
 	static void SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetView** target);
 	static void SetViewPort(float32 topLeftX, float32 topLeftY, float32 width, float32 height);
 	static void SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology);
-	
+
 	__forceinline static void SetActiveDeviceContext(ID3D11DeviceContext* context) { pContext->activeContext = context != nullptr ? context : pContext->context; }
 
 	inline static ID3D11DepthStencilView* GetDefaultDepthStencilView() { return D3DContext::GetContext()->depthStencilView; }
@@ -53,9 +54,11 @@ public:
 	inline static Window* GetWindow() { return pContext->window; }
 
 	__forceinline static D3DContext* GetContext() { return pContext; }
-	__forceinline static ID3D11Device* GetDevice() {return pContext->device;}
+	__forceinline static ID3D11Device* GetDevice() { return pContext->device; }
 	__forceinline static ID3D11DeviceContext* GetDeviceContext() { return pContext->activeContext; }
 	__forceinline static IDXGISwapChain* GetSwapChain() { return  pContext->swapChain; }
 
 
 };
+
+}

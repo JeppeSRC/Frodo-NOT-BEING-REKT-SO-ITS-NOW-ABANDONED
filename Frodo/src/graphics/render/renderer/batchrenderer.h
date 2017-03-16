@@ -14,6 +14,8 @@
 
 #define FD_FONT_MAX_SIMULTANEOUS_TEXTURES 16
 
+namespace FD {
+
 class FDAPI BatchRenderer : public Renderer {
 protected:
 	friend struct Vertex;
@@ -59,3 +61,4 @@ public:
 
 };
 
+}

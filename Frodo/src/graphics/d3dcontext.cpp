@@ -2,16 +2,18 @@
 #include <core/window.h>
 #include <core/log.h>
 
+namespace FD {
+
 D3DContext* D3DContext::pContext = nullptr;
 
-D3DContext::D3DContext() { }
+D3DContext::D3DContext() {}
 
 D3DContext::~D3DContext() {
 	DX_FREE(depthStencilView)
-	DX_FREE(renderTarget)
-	DX_FREE(context)
-	DX_FREE(device)
-	DX_FREE(swapChain)
+		DX_FREE(renderTarget)
+		DX_FREE(context)
+		DX_FREE(device)
+		DX_FREE(swapChain)
 }
 
 
@@ -40,11 +42,11 @@ void D3DContext::CreateContext(Window* window) {
 	scd.SampleDesc.Quality = 0;
 	scd.Windowed = true;
 
-#ifdef _DEBUG
+	#ifdef _DEBUG
 	D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, &scd, &pContext->swapChain, &pContext->device, 0, &pContext->context);
-#else
+	#else
 	D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, 0, 0, 0, D3D11_SDK_VERSION, &scd, &pContext->swapChain, &pContext->device, 0, &pContext->context);
-#endif
+	#endif
 
 	pContext->activeContext = pContext->context;
 
@@ -55,7 +57,7 @@ void D3DContext::CreateContext(Window* window) {
 
 	DX_FREE(tmp)
 
-	D3D11_TEXTURE2D_DESC td;
+		D3D11_TEXTURE2D_DESC td;
 	ZeroMemory(&td, sizeof(D3D11_TEXTURE2D_DESC));
 
 	td.ArraySize = 1;
@@ -75,10 +77,10 @@ void D3DContext::CreateContext(Window* window) {
 	dsd.Format = DXGI_FORMAT_D32_FLOAT;
 
 	pContext->device->CreateDepthStencilView(tmp, &dsd, &pContext->depthStencilView);
-	
+
 	DX_FREE(tmp)
 
-	SetRenderTargets(1, &pContext->renderTarget, pContext->depthStencilView);
+		SetRenderTargets(1, &pContext->renderTarget, pContext->depthStencilView);
 
 	SetViewPort(0.0f, 0.0f, (float32)window->GetWidth(), (float32)window->GetHeight());
 
@@ -94,7 +96,7 @@ void D3DContext::Present(uint32 syncInterval, uint32 flags) {
 	GetSwapChain()->Present(syncInterval, flags);
 }
 
-float32 col[4]{0, 0, 0, 1};
+float32 col[4]{ 0, 0, 0, 1 };
 
 void D3DContext::Clear(uint16 numRenderTargets) {
 	for (uint16 i = 0; i < numRenderTargets; i++)
@@ -116,7 +118,7 @@ void D3DContext::SetRenderTarget(ID3D11RenderTargetView* target) {
 
 void D3DContext::SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetView** target, ID3D11DepthStencilView* depthView) {
 	GetDeviceContext()->OMSetRenderTargets(numRenderTargets, target, depthView);
-	for (uint16 i = 0; i < numRenderTargets; i++) 
+	for (uint16 i = 0; i < numRenderTargets; i++)
 		GetContext()->activeRenderTargets[i] = target[i];
 
 	GetContext()->activeDepthStencilView = depthView;
@@ -136,10 +138,12 @@ void D3DContext::SetViewPort(float32 topLeftX, float32 topLeftY, float32 width, 
 	v.MinDepth = 0.0f;
 	v.MaxDepth = 1.0f;
 
-	
+
 	GetDeviceContext()->RSSetViewports(1, &v);
 }
 
 void D3DContext::SetTopology(D3D11_PRIMITIVE_TOPOLOGY topology) {
 	GetDeviceContext()->IASetPrimitiveTopology(topology);
+}
+
 }

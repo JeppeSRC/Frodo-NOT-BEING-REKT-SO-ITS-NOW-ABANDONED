@@ -1,6 +1,8 @@
 #pragma once
 #include "buffer.h"
 
+namespace FD {
+
 enum FD_MAP_FLAG {
 	FD_MAP_WRITE = D3D11_MAP_WRITE,
 	FD_MAP_WRITE_NO_OVERWRITE = D3D11_MAP_WRITE_NO_OVERWRITE,
@@ -14,7 +16,7 @@ class FDAPI VertexBuffer : public Buffer {
 private:
 	uint32 stride;
 	uint32 size;
-	
+
 public:
 	VertexBuffer(uint32 structSize, uint32 num);
 	VertexBuffer(void* data, uint_t size, uint32 stride, bool dynamic = false);
@@ -25,3 +27,5 @@ public:
 	void Bind() override;
 	void Bind(uint32 slot);
 };
+
+}

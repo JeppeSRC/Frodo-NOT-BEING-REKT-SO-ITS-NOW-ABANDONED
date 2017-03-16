@@ -2,6 +2,8 @@
 #include <math/math.h>
 #include <core/log.h>
 
+namespace FD {
+
 enum FD_SHADER_FIELD_TYPE {
 	FD_SHADER_FIELD_TYPE_UNKOWN,
 	FD_SHADER_FIELD_TYPE_MAT4,
@@ -15,26 +17,26 @@ enum FD_SHADER_FIELD_TYPE {
 
 inline static String get_field_type_as_string(FD_SHADER_FIELD_TYPE type) {
 	switch (type) {
-	case FD_SHADER_FIELD_TYPE_UNKOWN: return ("UNKOWN");
-	case FD_SHADER_FIELD_TYPE_MAT4: return ("float4x4");
-	case FD_SHADER_FIELD_TYPE_MAT3: return ("float3x3");
-	case FD_SHADER_FIELD_TYPE_VEC4: return ("float4");
-	case FD_SHADER_FIELD_TYPE_VEC3: return ("float3");
-	case FD_SHADER_FIELD_TYPE_VEC2: return ("float2");
-	case FD_SHADER_FIELD_TYPE_FLOAT: return ("float32");
+		case FD_SHADER_FIELD_TYPE_UNKOWN: return ("UNKOWN");
+		case FD_SHADER_FIELD_TYPE_MAT4: return ("float4x4");
+		case FD_SHADER_FIELD_TYPE_MAT3: return ("float3x3");
+		case FD_SHADER_FIELD_TYPE_VEC4: return ("float4");
+		case FD_SHADER_FIELD_TYPE_VEC3: return ("float3");
+		case FD_SHADER_FIELD_TYPE_VEC2: return ("float2");
+		case FD_SHADER_FIELD_TYPE_FLOAT: return ("float32");
 	}
 	return ("ERROR");
 }
 
 inline static uint32 get_field_type_size(FD_SHADER_FIELD_TYPE type) {
 	switch (type) {
-	case FD_SHADER_FIELD_TYPE_UNKOWN: return 0;
-	case FD_SHADER_FIELD_TYPE_MAT4: return sizeof(mat4);
-	case FD_SHADER_FIELD_TYPE_MAT3: return sizeof(mat3);
-	case FD_SHADER_FIELD_TYPE_VEC4: return sizeof(vec4);
-	case FD_SHADER_FIELD_TYPE_VEC3: return sizeof(vec3);
-	case FD_SHADER_FIELD_TYPE_VEC2: return sizeof(vec2);
-	case FD_SHADER_FIELD_TYPE_FLOAT: return sizeof(float32);
+		case FD_SHADER_FIELD_TYPE_UNKOWN: return 0;
+		case FD_SHADER_FIELD_TYPE_MAT4: return sizeof(mat4);
+		case FD_SHADER_FIELD_TYPE_MAT3: return sizeof(mat3);
+		case FD_SHADER_FIELD_TYPE_VEC4: return sizeof(vec4);
+		case FD_SHADER_FIELD_TYPE_VEC3: return sizeof(vec3);
+		case FD_SHADER_FIELD_TYPE_VEC2: return sizeof(vec2);
+		case FD_SHADER_FIELD_TYPE_FLOAT: return sizeof(float32);
 	}
 
 	return 0;
@@ -84,19 +86,19 @@ void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 		cbuffer->name = name;
 		cbuffer->semRegister = atoi(*source + regIndex);
 
-		
+
 
 		CalcStructSize(source, cbufferStart - 7, cbuffer);
 
 		switch (type) {
-		case FD_SHADER_TYPE_VERTEXSHADER:
-			vCBuffers.Push_back(cbuffer);
-			FD_DEBUG("[ShaderParser] Found vCBuffer <NAME: %s> <SIZE: %u> <SLOT: %u>", *cbuffer->name, cbuffer->structSize, cbuffer->semRegister);
-			break;
-		case FD_SHADER_TYPE_PIXELSHADER:
-			pCBuffers.Push_back(cbuffer);
-			FD_DEBUG("[ShaderParser] Found pCBuffer <NAME: %s> <SIZE: %u> <SLOT: %u>", *cbuffer->name, cbuffer->structSize, cbuffer->semRegister);
-			break;
+			case FD_SHADER_TYPE_VERTEXSHADER:
+				vCBuffers.Push_back(cbuffer);
+				FD_DEBUG("[ShaderParser] Found vCBuffer <NAME: %s> <SIZE: %u> <SLOT: %u>", *cbuffer->name, cbuffer->structSize, cbuffer->semRegister);
+				break;
+			case FD_SHADER_TYPE_PIXELSHADER:
+				pCBuffers.Push_back(cbuffer);
+				FD_DEBUG("[ShaderParser] Found pCBuffer <NAME: %s> <SIZE: %u> <SLOT: %u>", *cbuffer->name, cbuffer->structSize, cbuffer->semRegister);
+				break;
 		}
 	}
 
@@ -160,26 +162,19 @@ void Shader::ParseTextures(String source) {
 
 		if (type == "1D ") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE1D;
-		}
-		else if (type == "2D ") {
+		} else if (type == "2D ") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE2D;
-		}
-		else if (type == "3D ") {
+		} else if (type == "3D ") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE3D;
-		}
-		else if (type == "1DArray") {
+		} else if (type == "1DArray") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE1D_ARRAY;
-		}
-		else if (type == "2DArray") {
+		} else if (type == "2DArray") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE2D_ARRAY;
-		}
-		else if (type == "CubeArray") {
+		} else if (type == "CubeArray") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURECUBE_ARRAY;
-		}
-		else if (type == "Cube") {
+		} else if (type == "Cube") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURECUBE;
-		}
-		else {
+		} else {
 			break;
 		}
 
@@ -199,15 +194,17 @@ void Shader::ParseTextures(String source) {
 		String sem = source.SubString(regStart, end);
 
 		tex->semRegister = atoi(*sem);
-		
+
 		uint_t subCompStart = sem.Find("[");
 		if (subCompStart != (uint_t)-1) {
-			tex->numTextures = atoi(*sem + subCompStart+1);
+			tex->numTextures = atoi(*sem + subCompStart + 1);
 		}
 
-		source.Remove(textureStart, end+1);
+		source.Remove(textureStart, end + 1);
 
 		pTextures.Push_back(tex);
 	}
+
+}
 
 }

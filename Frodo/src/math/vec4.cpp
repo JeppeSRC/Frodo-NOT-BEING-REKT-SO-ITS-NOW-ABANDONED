@@ -1,17 +1,19 @@
 #include "math.h"
 #include <memory>
 
+namespace FD {
+
 #pragma region _vec4
 
 //vec4::vec4(__m128 xmm) : _xmm(xmm) { }
 
-vec4::vec4() : vec4(0, 0, 0, 0) { }
+vec4::vec4() : vec4(0, 0, 0, 0) {}
 
-vec4::vec4(const vec2& v, float32 z, float32 w) : x(v.x), y(v.y), z(z), w(w) { }
+vec4::vec4(const vec2& v, float32 z, float32 w) : x(v.x), y(v.y), z(z), w(w) {}
 
 vec4::vec4(const vec3& v, float32 w) : x(v.x), y(v.y), z(v.z), w(w) {}
 
-vec4::vec4(float32 x, float32 y, float32 z, float32 w) : x(x), y(y), z(z), w(w) { }
+vec4::vec4(float32 x, float32 y, float32 z, float32 w) : x(x), y(y), z(z), w(w) {}
 
 vec4& vec4::Add(const vec4& v) {
 	__m128 vxmm = _mm_set_ps(v.w, v.z, v.y, v.x);
@@ -78,13 +80,13 @@ vec4& vec4::Divide(float32 v) {
 #pragma region ivec4
 
 
-ivec4::ivec4() : ivec4(0, 0, 0, 0) { }
+ivec4::ivec4() : ivec4(0, 0, 0, 0) {}
 
-ivec4::ivec4(const ivec2& v, int32 z, int32 w) : x(v.x), y(v.y), z(z), w(w) { }
+ivec4::ivec4(const ivec2& v, int32 z, int32 w) : x(v.x), y(v.y), z(z), w(w) {}
 
 ivec4::ivec4(const ivec3& v, int32 w) : x(v.x), y(v.y), z(v.z), w(w) {}
 
-ivec4::ivec4(int32 x, int32 y, int32 z, int32 w) : x(x), y(y), z(z), w(w) { }
+ivec4::ivec4(int32 x, int32 y, int32 z, int32 w) : x(x), y(y), z(z), w(w) {}
 
 ivec4& ivec4::Add(const ivec4& v) {
 	__m128i vxmm = _mm_set_epi32(v.w, v.z, v.y, v.x);
@@ -154,3 +156,5 @@ ivec4& ivec4::Divide(int32 v) {
 }
 
 #pragma endregion 
+
+}

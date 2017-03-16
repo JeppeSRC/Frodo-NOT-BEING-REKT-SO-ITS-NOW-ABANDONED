@@ -3,6 +3,8 @@
 #include <graphics/texture/texture.h>
 #include <fd.h>
 
+namespace FD {
+
 class FDAPI Framebuffer2D : Texture {
 private:
 	ID3D11Texture2D* resource;
@@ -32,7 +34,7 @@ private:
 	Framebuffer2D* renderTargets[C];
 
 public:
-	FramebufferMRT() { }
+	FramebufferMRT() {}
 	FramebufferMRT(uint32 width, uint32 height, FD_TEXTURE_FORMAT format, bool createDepthStencil = true) {
 		Init(width, height, format, createDepthStencil);
 	}
@@ -76,3 +78,5 @@ public:
 
 	inline Framebuffer2D* operator[](uint32 index) const { return renderTargets[index]; }
 };
+
+}

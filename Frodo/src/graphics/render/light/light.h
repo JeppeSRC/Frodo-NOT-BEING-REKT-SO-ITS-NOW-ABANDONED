@@ -3,6 +3,8 @@
 #include <fd.h>
 #include <math/math.h>
 
+namespace FD {
+
 enum FD_LIGHT_TYPE {
 	FD_LIGHT_TYPE_NONE,
 	FD_LIGHT_TYPE_DIRECTIONAL,
@@ -24,7 +26,7 @@ public:
 
 	inline vec3& GetColor() { return color; }
 
-	inline uint32 GetLightType() const {return lightType; }
+	inline uint32 GetLightType() const { return lightType; }
 };
 
 class FDAPI DirectionalLight : public Light {
@@ -51,7 +53,7 @@ protected:
 public:
 
 	PointLight(const vec3& position, const vec3& color, const vec3& attenuation) : Light(color), position(position), attenuation(attenuation) { lightType = FD_LIGHT_TYPE_POINT; }
-	
+
 	inline vec3& GetPosition() { return position; }
 	inline vec3& GetAttenuation() { return attenuation; }
 };
@@ -64,7 +66,7 @@ protected:
 	vec2 pad4;
 
 public:
-	SpotLight(const vec3& position, const vec3& color, const vec3& direction, const vec3& attenuation, vec2 cutoffExponent) : PointLight(position, color, attenuation), direction(direction) { 
+	SpotLight(const vec3& position, const vec3& color, const vec3& direction, const vec3& attenuation, vec2 cutoffExponent) : PointLight(position, color, attenuation), direction(direction) {
 		this->cutoffExponent.x = (float32)cosf(FD_TO_RADIANS_F(cutoffExponent.x));
 		this->cutoffExponent.y = cutoffExponent.y;
 		lightType = FD_LIGHT_TYPE_SPOT;
@@ -86,8 +88,10 @@ public:
 	~LightStack() { lights.Free(); }
 
 	void Add(Light* light) { lights.Push_back(light); }
-	void Remove(Light* light) { lights.Remove(light);  }
+	void Remove(Light* light) { lights.Remove(light); }
 
 	inline List<Light*> GetLights() const { return lights; }
-	
+
 };
+
+}

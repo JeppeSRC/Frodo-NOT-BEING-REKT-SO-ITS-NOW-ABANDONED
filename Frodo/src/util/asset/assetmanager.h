@@ -7,10 +7,12 @@
 
 #define FD_ASSETMANAGER_VERSION 0x0001
 
+namespace FD {
+
 class FDAPI AssetManager {
 private:
 	struct PACKAGE_HEADER {
-		char signature[4]{'P', 'H', 'D', 'R'};
+		char signature[4]{ 'P', 'H', 'D', 'R' };
 		uint16 version;
 		uint32 nameLength;
 		uint64 nameDataOffset;
@@ -42,5 +44,7 @@ public:
 	static Asset* GetAsset(const String& name);
 	static bool ExportPackage(const String& filename, const Package* package);
 	static Package* MakePackage(const String& name, bool exportPackage);
-	
+
 };
+
+}

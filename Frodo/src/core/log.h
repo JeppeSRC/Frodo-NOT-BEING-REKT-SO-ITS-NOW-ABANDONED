@@ -3,6 +3,7 @@
 #include <fd.h>
 #include <util/string.h>
 
+namespace FD {
 
 #define FD_LOG_LEVEL_INFO    0x01
 #define FD_LOG_LEVEL_DEBUG   0x02
@@ -32,3 +33,5 @@ if (!x) { \
 
 
 void FDAPI FDLog(byte level, const char* message...);
+
+}

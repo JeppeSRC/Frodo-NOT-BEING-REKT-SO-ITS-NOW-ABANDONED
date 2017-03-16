@@ -3,13 +3,15 @@
 #include <util/vfs/vfs.h>
 #include <FreeImage.h>
 
+namespace FD {
+
 byte* Texture::Load(const String& filename, uint32* width, uint32* height, uint32* bits) {
 	FD_ASSERT((width != nullptr && "width parameter nullptr"));
 	FD_ASSERT((height != nullptr && "height parameter nullptr"));
 	FD_ASSERT((bits != nullptr && "bits parameter nullptr"));
-	
+
 	uint_t size = 0;
-	
+
 	FIMEMORY data;
 	data.data = VFS::Get()->ReadFile(filename, &size);
 
@@ -37,7 +39,7 @@ byte* Texture::Load(const String& filename, uint32* width, uint32* height, uint3
 	*width = FreeImage_GetWidth(bitmap);
 	*height = FreeImage_GetHeight(bitmap);
 	*bits = FreeImage_GetBPP(bitmap);
-	
+
 	byte* pixels = FreeImage_GetBits(bitmap);
 
 	FreeImage_Unload(bitmap);
@@ -83,4 +85,6 @@ byte* Texture::Load(void* memory, uint32* width, uint32* height, uint32* bits) {
 	FreeImage_Unload(bitmap);
 
 	return pixels;
+}
+
 }

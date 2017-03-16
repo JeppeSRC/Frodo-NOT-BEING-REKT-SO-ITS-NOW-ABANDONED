@@ -3,6 +3,8 @@
 #include <fd.h>
 #include <math/math.h>
 
+namespace FD {
+
 class FDAPI Camera {
 protected:
 	vec3 position;
@@ -33,3 +35,4 @@ public:
 	}
 };
 
+}

@@ -3,6 +3,7 @@
 #include <string>
 #include <core/log.h>
 
+namespace FD {
 
 String::String(const char* string) {
 	if (!string) {
@@ -112,7 +113,7 @@ String& String::Append(const String& string) {
 	length = newlen;
 
 	delete[] tmpstr;
-			
+
 	return *this;
 }
 
@@ -141,7 +142,7 @@ String& String::Remove(uint_t start, uint_t end) {
 }
 
 String& String::RemoveBlankspace() {
-	
+
 	uint_t start = Find(" ");
 	while (start != -1) {
 		Remove(start, start + 1);
@@ -167,7 +168,7 @@ uint_t String::Count(const String& string, uint_t offset) const {
 				break;
 			}
 		}
-		
+
 		if (match)res++;
 	}
 
@@ -221,11 +222,11 @@ bool String::EndsWith(const String& string) const {
 }
 
 uint_t String::Find(const String& string, uint_t offset) const {
-	if (length+offset < string.length) return (uint_t)-1;
+	if (length + offset < string.length) return (uint_t)-1;
 	for (uint_t i = offset; i < length; i++) {
 		bool match = true;
 		for (uint_t j = 0; j < string.length; j++) {
-					
+
 			if (str[i + j] != string.str[j]) {
 				match = false;
 				break;
@@ -243,7 +244,7 @@ uint_t String::Find(const String& string, uint_t offset) const {
 List<String*> String::Split(const char delimiter) const {
 
 	List<String*> list(128, 32);
-		
+
 	Split(delimiter, list);
 
 	return list;
@@ -254,7 +255,7 @@ void String::Split(const char delimiter, List<String*>& list) const {
 
 	for (uint_t i = 0; i < length; i++) {
 		if (str[i] == delimiter) {
-				
+
 			list << new String(str + lastindex, i - lastindex);
 			lastindex = i + 1;
 		}
@@ -265,4 +266,4 @@ void String::Split(const char delimiter, List<String*>& list) const {
 
 }
 
- 
+}

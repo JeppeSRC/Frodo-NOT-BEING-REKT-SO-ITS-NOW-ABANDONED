@@ -1,6 +1,8 @@
 #include "math.h"
 #include <memory>
 
+namespace FD {
+
 void mat4::LoadRows(__m128* xmm) const {
 
 	xmm[0] = _mm_set_ps(m[0 + 3 * 4], m[0 + 2 * 4], m[0 + 1 * 4], m[0 + 0 * 4]);
@@ -29,7 +31,7 @@ mat4::mat4(float32 diagonal) {
 
 mat4 mat4::Translate(const vec3& v) {
 	mat4 tmp(1);
-	
+
 	tmp.m[0 + 3 * 4] = v.x;
 	tmp.m[1 + 3 * 4] = v.y;
 	tmp.m[2 + 3 * 4] = v.z;
@@ -47,15 +49,15 @@ mat4 mat4::Rotate(const vec3& v) {
 	float32 zcos = cosf((float32)FD_TO_RADIANS_F(v.z));
 	float32 zsin = sinf((float32)FD_TO_RADIANS_F(v.z));
 
-	x.m[1 + 1 * 4] = xcos;x.m[1 + 2 * 4] = -xsin;
-	x.m[2 + 1 * 4] = xsin;x.m[2 + 2 * 4] = xcos;
+	x.m[1 + 1 * 4] = xcos; x.m[1 + 2 * 4] = -xsin;
+	x.m[2 + 1 * 4] = xsin; x.m[2 + 2 * 4] = xcos;
 
-	y.m[0 + 0 * 4] = ycos;y.m[0 + 2 * 4] = -ysin;
-	y.m[2 + 0 * 4] = ysin;y.m[2 + 2 * 4] = ycos;
+	y.m[0 + 0 * 4] = ycos; y.m[0 + 2 * 4] = -ysin;
+	y.m[2 + 0 * 4] = ysin; y.m[2 + 2 * 4] = ycos;
 
-	z.m[0 + 0 * 4] = zcos;z.m[0 + 1 * 4] = -zsin;
-	z.m[1 + 0 * 4] = zsin;z.m[1 + 1 * 4] = zcos;
-	
+	z.m[0 + 0 * 4] = zcos; z.m[0 + 1 * 4] = -zsin;
+	z.m[1 + 0 * 4] = zsin; z.m[1 + 1 * 4] = zcos;
+
 	return x * y * z;
 }
 
@@ -71,7 +73,7 @@ mat4 mat4::Scale(const vec3& v) {
 
 mat4 mat4::Perspective(float32 fov, float32 aspect, float32 zNear, float32 zFar) {
 	mat4 r(1);
-	
+
 	float32* m = r.m;
 
 	const float32 tanHalf = tanh(fov / 2);
@@ -89,7 +91,7 @@ mat4 mat4::Perspective(float32 fov, float32 aspect, float32 zNear, float32 zFar)
 
 mat4 mat4::Orthographic(float32 left, float32 right, float32 top, float32 bottom, float32 zNear, float32 zFar) {
 	mat4 r;
-	
+
 	float32* m = r.m;
 
 	m[0 + 0 * 4] = 2.0f / (right - left);
@@ -100,7 +102,7 @@ mat4 mat4::Orthographic(float32 left, float32 right, float32 top, float32 bottom
 	m[1 + 3 * 4] = -((top + bottom) / (top - bottom));
 	m[2 + 3 * 4] = -((zFar + zNear) / (zNear - zFar));
 	m[3 + 3 * 4] = 1;
-	
+
 	return r;
 }
 
@@ -111,7 +113,7 @@ mat4 mat4::operator*(const mat4& r) {
 
 	r.LoadColumns(col);
 	LoadRows(rows);
-	
+
 	for (int32 y = 0; y < 4; y++) {
 		for (int32 x = 0; x < 4; x++) {
 			__m128 res = _mm_mul_ps(rows[x], col[y]);
@@ -159,4 +161,6 @@ vec3 mat4::operator*(const vec3& v) {
 		res = _mm_fmadd_ps(vec[i], col[i], res);
 
 	return vec3(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2]);
+}
+
 }

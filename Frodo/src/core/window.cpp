@@ -3,6 +3,8 @@
 #include "input.h"
 #include <core/event/eventdispatcher.h>
 
+namespace FD {
+
 Map<HWND, Window*> Window::window_handels;
 
 LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
@@ -21,8 +23,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			if (!buttons[EventMouseActionButton::FD_BUTTON_LEFT]) {
 				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_LEFT);
 				buttons[EventMouseActionButton::FD_BUTTON_LEFT] = true;
-			}
-			else {
+			} else {
 				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_LEFT);
 			}
 			EventDispatcher::DispatchEvent(e);
@@ -36,8 +37,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			if (!buttons[EventMouseActionButton::FD_BUTTON_MIDDLE]) {
 				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_MIDDLE);
 				buttons[EventMouseActionButton::FD_BUTTON_MIDDLE] = true;
-			}
-			else {
+			} else {
 				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_MIDDLE);
 			}
 			EventDispatcher::DispatchEvent(e);
@@ -51,8 +51,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			if (!buttons[EventMouseActionButton::FD_BUTTON_RIGHT]) {
 				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_RIGHT);
 				buttons[EventMouseActionButton::FD_BUTTON_RIGHT] = true;
-			}
-			else {
+			} else {
 				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_RIGHT);
 			}
 			EventDispatcher::DispatchEvent(e);
@@ -76,8 +75,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			if (!keys[w]) {
 				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_PRESSED, (int32)w);
 				keys[w] = true;
-			}
-			else {
+			} else {
 				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_HOLD, (int32)w);
 			}
 			EventDispatcher::DispatchEvent(e);
@@ -105,8 +103,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			if ((w & 0xFFF0) == SC_MINIMIZE) {
 				e = new EventWindowState(EventWindowState::FD_MINIMIZED);
 				EventDispatcher::DispatchEvent(e);
-			}
-			else if ((w & 0xFFF0) == SC_MAXIMIZE) {
+			} else if ((w & 0xFFF0) == SC_MAXIMIZE) {
 				e = new EventWindowState(EventWindowState::FD_MAXIMIZED);
 				EventDispatcher::DispatchEvent(e);
 			}
@@ -147,7 +144,7 @@ Window::Window(const String& title, int32 width, int32 height) : title(title), w
 		return;
 	}
 
-	RECT r = {0,0,width, height};
+	RECT r = { 0,0,width, height };
 
 	AdjustWindowRect(&r, WS_OVERLAPPEDWINDOW, FALSE);
 
@@ -195,7 +192,7 @@ void Window::SetVisible(bool visible) {
 		ShowWindow(hwnd, SW_SHOW);
 	else
 		ShowWindow(hwnd, SW_HIDE);
-	
+
 	FD_DEBUG("Window(%s) visibility set to %s", *title, isVisible ? "TRUE" : "FALSE");
 }
 
@@ -228,4 +225,6 @@ bool Window::OnWindowActionResize(ivec2 size) {
 	height = size.y;
 
 	return false;
+}
+
 }

@@ -2,6 +2,8 @@
 
 #include <core/log.h>
 
+namespace FD {
+
 MaterialInstance::MaterialInstance(Material* material) : parent(material) {
 	vCBuffer = material->GetVCBuffer();
 	vCBuffer.data = new byte[vCBuffer.structSize];
@@ -103,4 +105,6 @@ void MaterialInstance::SetPCBufferElement(uint32 index, void* data) {
 	uint32 offset = pCBuffer.layout.GetElementOffset(index);
 	if (offset == (uint32)-1) return;
 	memcpy(pCBuffer.data + offset, data, pCBuffer.layout.GetElementSize(index));
+}
+
 }

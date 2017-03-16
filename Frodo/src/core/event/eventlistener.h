@@ -7,12 +7,14 @@
 #include "eventwindow.h"
 #include "eventdispatcher.h"
 
+namespace FD {
+
 class FDAPI EventListener {
 public:
 	EventListener() { EventDispatcher::AddListener(this); }
 	~EventListener() { EventDispatcher::RemoveListener(this); }
 
-	virtual bool OnEvent(const Event* event) { return false;  }
+	virtual bool OnEvent(const Event* event) { return false; }
 
 	virtual bool OnEvent(const EventMouseActionMove* event) { return false; }
 	virtual bool OnMouseActionMove(ivec2 position) { return false; }
@@ -37,3 +39,6 @@ public:
 	virtual bool OnKeyboardActionKeyReleased(uint32 key) { return false; }
 	virtual bool OnKeyboardActionKeyHold(uint32 key) { return false; }
 };
+
+
+}

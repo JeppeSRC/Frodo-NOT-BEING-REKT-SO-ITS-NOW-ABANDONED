@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+namespace FD {
+
 void Renderer::Submit(const RenderCommand& cmd) {
 	commandQueue.Push_back(cmd);
 }
@@ -14,4 +16,6 @@ void Renderer::Submit(Mesh* mesh, mat4 transform) {
 	cmd.shader = mesh->GetMaterial()->GetShader();
 	cmd.transform = transform;
 	Submit(cmd);
+}
+
 }

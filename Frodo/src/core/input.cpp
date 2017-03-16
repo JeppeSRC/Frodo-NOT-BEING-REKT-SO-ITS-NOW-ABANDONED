@@ -1,12 +1,14 @@
 #include "input.h"
 #include <memory>
 
+namespace FD {
+
 bool		  Input::keys[FD_INPUT_MAX_KEYS];
 bool		  Input::prevKeys[FD_INPUT_MAX_KEYS];
 Window*		  Input::window = nullptr;
 
-uint32  Input::mouseX = 0;
-uint32  Input::mouseY = 0;
+uint32		  Input::mouseX = 0;
+uint32		  Input::mouseY = 0;
 bool		  Input::mouseCaptured = false;
 
 void Input::Init(Window* window) {
@@ -40,4 +42,6 @@ void Input::SetMousePos(uint32 x, uint32 y) {
 	ClientToScreen(window->GetHWND(), &p);
 
 	SetCursorPos(p.x, p.y);
+}
+
 }

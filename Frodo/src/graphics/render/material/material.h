@@ -7,6 +7,8 @@
 #include <graphics/shader/shader.h>
 #include <graphics/buffer/bufferlayout.h>
 
+namespace FD {
+
 class FDAPI Material {
 protected:
 	Shader* shader;
@@ -47,7 +49,7 @@ protected:
 	Shader::ConstantBufferSlot vCBuffer;
 	Shader::ConstantBufferSlot pCBuffer;
 
-	Map<uint32, Texture*> textures;
+	Map<uint32, Texture* > textures;
 public:
 	MaterialInstance(Material* material);
 	virtual ~MaterialInstance();
@@ -71,3 +73,5 @@ public:
 
 	inline const Map<uint32, Texture*>& GetTextures() const { return textures; }
 };
+
+}

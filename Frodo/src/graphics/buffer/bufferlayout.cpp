@@ -2,6 +2,8 @@
 #include <graphics/shader/shader.h>
 #include <Windows.h>
 
+namespace FD {
+
 static uint32 get_size_from_format(DXGI_FORMAT format) {
 	switch (format) {
 		case DXGI_FORMAT_R32_FLOAT: return sizeof(float32);
@@ -14,12 +16,12 @@ static uint32 get_size_from_format(DXGI_FORMAT format) {
 		default:
 			FD_ASSERT(false && "UNKNOWN FORMAT");
 	}
-	
+
 	return 0;
 }
 
 BufferLayout::~BufferLayout() {
-	
+
 }
 
 void BufferLayout::PushElement(const String& name, uint32 size) {
@@ -68,7 +70,7 @@ uint32 BufferLayout::GetElementSize(uint32 index) {
 void BufferLayout::Push(const String& name, DXGI_FORMAT format, uint32 slot) {
 	uint32 size = get_size_from_format(format);
 	FD_ASSERT(size);
-	elements.Push_back({name, format, slot, size, offset});
+	elements.Push_back({ name, format, slot, size, offset });
 	offset += size;
 }
 
@@ -89,7 +91,7 @@ void BufferLayout::CreateInputLayout(Shader* shader) {
 			input = D3D11_INPUT_PER_VERTEX_DATA;
 		}
 
-		desc[i] = {*a.name, 0, a.format, a.slot, a.offset, input, stepRate};
+		desc[i] = { *a.name, 0, a.format, a.slot, a.offset, input, stepRate };
 	}
 
 	ID3D11InputLayout* tmp = nullptr;
@@ -98,4 +100,6 @@ void BufferLayout::CreateInputLayout(Shader* shader) {
 	shader->SetInputLayout(tmp);
 
 	delete[] desc;
+}
+
 }

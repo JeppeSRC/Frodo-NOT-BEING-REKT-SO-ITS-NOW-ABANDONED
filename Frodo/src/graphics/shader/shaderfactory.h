@@ -3,6 +3,8 @@
 #include <fd.h>
 #include "shader.h"
 
+namespace FD {
+
 enum FD_SHADERFACTORY_SHADER_TYPE {
 	FD_DEFERRED_SHADER_UNKNOWN,
 	FD_DEFERRED_SHADER_GEOMETRY,
@@ -22,3 +24,5 @@ public:
 
 	static Shader* GetShader(FD_SHADERFACTORY_SHADER_TYPE shader);
 };
+
+}

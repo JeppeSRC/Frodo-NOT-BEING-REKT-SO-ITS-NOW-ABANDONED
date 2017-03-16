@@ -1,6 +1,8 @@
 #pragma once
 #include "mathcommon.h"
 
+namespace FD {
+
 class FDAPI vec4 {
 private:
 	friend class vec3;
@@ -10,7 +12,7 @@ public:
 	float32 y;
 	float32 z;
 	float32 w;
-	
+
 public:
 	vec4();
 	vec4(const vec2& v, float32 z = 0, float32 w = 0);
@@ -97,3 +99,5 @@ public:
 
 	__forceinline ivec4 operator-() { return ivec4(-x, -y, -z, -w); }
 };
+
+}

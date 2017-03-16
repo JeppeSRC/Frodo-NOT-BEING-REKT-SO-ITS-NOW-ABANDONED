@@ -6,6 +6,8 @@
 #include <util/list.h>
 #include <graphics/buffer/bufferlayout.h>
 
+namespace FD {
+
 enum FD_SHADER_TYPE {
 	FD_SHADER_TYPE_UNKOWN,
 	FD_SHADER_TYPE_VERTEXSHADER,
@@ -114,7 +116,7 @@ private:
 	void ParseTextures(String source);
 
 	void CreateBuffers();
-	
+
 
 private:
 	String vSourceOriginal;
@@ -133,7 +135,7 @@ private:
 	List<ShaderStructInfo*> pCBuffers;
 
 	List<ShaderTextureInfo*> pTextures;
-	
+
 	ID3D11InputLayout* inputLayout;
 
 	void SetVSConstantBufferSlotInternal(uint32 slot, void* data);
@@ -175,8 +177,10 @@ public:
 	inline const void* GetVSBufferPointer() const { return vByteCode->GetBufferPointer(); }
 	inline uint_t GetVSBufferSize() const { return vByteCode->GetBufferSize(); }
 	inline ID3D11InputLayout* GetInputLayout() { return inputLayout; }
-	
+
 	inline void SetInputLayout(ID3D11InputLayout* layout) { DX_FREE(inputLayout); inputLayout = layout; }
 
 	static String GetFunctionTypeString(FD_SHADER_GEN_FUNCTION_TYPE type);
 };
+
+}

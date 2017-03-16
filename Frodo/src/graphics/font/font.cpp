@@ -8,6 +8,8 @@
 
 #include <stdio.h>
 
+namespace FD {
+
 
 Texture2D* GetCharFromFont(const String& fontName, uint32 character) {
 
@@ -41,18 +43,18 @@ Texture2D* GetCharFromFont(const String& fontName, uint32 character) {
 
 	Texture2D* tex = new Texture2D(glyph->bitmap.buffer, glyph->bitmap.width, glyph->bitmap.rows, FD_TEXTURE_FORMAT_UINT_8);
 
-	FT_Load_Glyph(face, glyph_index+1, 0);
+	FT_Load_Glyph(face, glyph_index + 1, 0);
 
 	return tex;
 }
 
 
-Font::Font(const String& fontFile, uint32 size, ivec2 dpi) { 
+Font::Font(const String& fontFile, uint32 size, ivec2 dpi) {
 	uint_t memory_size = 0;
 	byte* data = VFS::Get()->ReadFile(fontFile, &memory_size);
 
 	FD_RANGE<> r;
-	
+
 	r.start = 0x21;
 	r.end = 0x7E;
 
@@ -133,13 +135,13 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 
 			memcpy(glyph.bitmap, bitmap.buffer, bitmap_size);
 
-			if (glyph.bitmapSize.x > (int32)segmentWidth)  segmentWidth  = glyph.bitmapSize.x;
+			if (glyph.bitmapSize.x > (int32)segmentWidth)  segmentWidth = glyph.bitmapSize.x;
 			if (glyph.bitmapSize.y > (int32)segmentHeight) segmentHeight = glyph.bitmapSize.y;
-			
+
 			charMap.Add(glyph, c);
 		}
 	}
-	
+
 	uint32 bitmapSquareSize = (uint32)ceilf(sqrtf((float32)numCharacters));
 	uint32 bitmapWidth = bitmapSquareSize * segmentWidth;
 	uint32 bitmapHeight = bitmapSquareSize * segmentHeight;
@@ -174,7 +176,7 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 					bitmapData[xa + ya * bitmapWidth] = glyph.bitmap[x + y * glyph.bitmapSize.x];
 				}
 			}
-			
+
 			currentGlyph++;
 			delete[] glyph.bitmap;
 		}
@@ -183,7 +185,7 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 	texture = new Texture2D(bitmapData, bitmapWidth, bitmapHeight, FD_TEXTURE_FORMAT_UINT_8);
 
 	delete[] bitmapData;
-	
+
 	return true;
 }
 
@@ -209,11 +211,13 @@ ivec2 Font::GetFontMetrics(const String& string) const {
 		}
 
 		const FD_GLYPH& glyph = charMap.Retrieve((uint32)string[i]);
-		
-		total.x += glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0));
+
+		total.x += glyph.offset.x + (glyph.advance.x * (i < len - 1 ? 1 : 0));
 	}
 
 	total.y = size;
 
 	return total;
+}
+
 }

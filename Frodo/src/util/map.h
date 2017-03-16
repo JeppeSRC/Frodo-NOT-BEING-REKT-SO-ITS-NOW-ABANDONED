@@ -2,6 +2,8 @@
 #include <fd.h>
 #include "list.h"
 
+namespace FD {
+
 template<typename K, typename D>
 struct FD_MAP_PAIR {
 	K key;
@@ -30,7 +32,7 @@ public:
 	}
 
 	~Map() {
-		
+
 	}
 
 	inline Map<K, D>& operator=(const Map<K, D>& map) {
@@ -69,7 +71,7 @@ public:
 
 	__forceinline D Retrieve(K key) const {
 		uint_t index = keys.Find(key);
-		
+
 		if (index == (uint_t)-1) return D();
 
 		return data.Get(index);
@@ -83,3 +85,5 @@ public:
 
 	inline FD_MAP_PAIR<K, D> GetPair(uint_t index) { return { keys[index], data[index] }; }
 };
+
+}

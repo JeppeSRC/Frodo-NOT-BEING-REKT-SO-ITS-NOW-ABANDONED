@@ -6,6 +6,8 @@
 
 #define FD_INPUT_MAX_KEYS 65535
 
+namespace FD {
+
 class FDAPI Input {
 private:
 	static Window* window;
@@ -22,7 +24,7 @@ public:
 
 	inline static void CaptureMouse() { mouseCaptured = true; ShowCursor(FALSE); }
 	inline static void ReleaseMouse() { mouseCaptured = false; ShowCursor(TRUE); }
-	
+
 	static inline bool IsMouseCaptured() { return mouseCaptured; }
 	static inline uint32 GetMouseX() { return mouseX; }
 	static inline uint32 GetMouseY() { return mouseY; }
@@ -35,3 +37,5 @@ public:
 	static uint32 mouseY;
 	static bool mouseCaptured;
 };
+
+}

@@ -2,6 +2,8 @@
 
 #include <core/log.h>
 
+namespace FD {
+
 Asset::Asset(const Asset* asset) {
 	name = asset->name;
 	folder = asset->folder;
@@ -37,7 +39,7 @@ Shader* Asset::GetShader() const {
 	}
 
 	char* b = (char*)data;
-	
+
 	String v(b);
 	b += v.length + 1;
 
@@ -47,7 +49,7 @@ Shader* Asset::GetShader() const {
 }
 
 Texture* Asset::GetTexture() const {
-	
+
 	if (type == FD_ASSET_TYPE_TEXTURE2D) {
 		uint32 w = 0;
 		uint32 h = 0;
@@ -70,4 +72,6 @@ Texture* Asset::GetTexture() const {
 
 	FD_FATAL("[Asset]: Failed to create texture, \"%s\" is not of type Texture2D or TextureCube!", *name);
 	return nullptr;
+}
+
 }

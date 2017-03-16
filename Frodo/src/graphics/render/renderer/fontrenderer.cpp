@@ -6,6 +6,8 @@
 
 #define FD_FONT_SHOW_TEXTURE 0
 
+namespace FD {
+
 struct Vertex {
 	vec2 position;
 	vec2 texCoords;
@@ -13,9 +15,9 @@ struct Vertex {
 	float32 tid;
 };
 
-FontRenderer::FontRenderer(Window* window, uint32 max_glyphs) : BatchRenderer(window, max_glyphs) { 
-	blending = true; 
-	depthTesting = false; 
+FontRenderer::FontRenderer(Window* window, uint32 max_glyphs) : BatchRenderer(window, max_glyphs) {
+	blending = true;
+	depthTesting = false;
 
 	BufferLayout layout;
 
@@ -24,7 +26,7 @@ FontRenderer::FontRenderer(Window* window, uint32 max_glyphs) : BatchRenderer(wi
 	layout.Push<vec4>("COLOR");
 	layout.Push<float32>("TID");
 
-	
+
 
 	shader = ShaderFactory::GetShader(FD_FONT_DEFAULT);
 
@@ -32,15 +34,15 @@ FontRenderer::FontRenderer(Window* window, uint32 max_glyphs) : BatchRenderer(wi
 
 	shader->ShaderGenComplete();
 
-#if FD_FONT_SHOW_TEXTURE
+	#if FD_FONT_SHOW_TEXTURE
 	shader->SetVSConstantBuffer("view_data", &mat4::Identity());
-#else
+	#else
 	shader->SetVSConstantBuffer("view_data", &mat4::Orthographic(0.0f, (float32)window->GetWidth(), 0.0f, (float32)window->GetHeight(), -0.1f, 0.1f));
-#endif
+	#endif
 
 	layout.CreateInputLayout(shader);
 
-	
+
 	uint32* indices = new uint32[max_glyphs * 6];
 
 	for (uint32 i = 0; i < max_glyphs; i++) {
@@ -66,7 +68,7 @@ FontRenderer::~FontRenderer() {
 }
 
 void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec4 color) {
-	float32 tid  = SubmitTexture(font->GetTexture());
+	float32 tid = SubmitTexture(font->GetTexture());
 
 	uint_t textLength = text.length;
 	float32 size = (float32)font->GetSize();
@@ -91,7 +93,7 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 		float32 xa = xPos + glyph.offset.x;
 		float32 ya = yPos - glyph.offset.y;
 
-#if (!FD_FONT_SHOW_TEXTURE)
+		#if (!FD_FONT_SHOW_TEXTURE)
 
 		buffer->position = vec2(xa, ya);
 		buffer->texCoords = vec2(glyph.u0, glyph.v0);
@@ -117,8 +119,8 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 		buffer->tid = tid;
 		buffer++;
 
-#else
-	
+		#else
+
 
 		buffer->position = vec2(-1, 1);
 		buffer->texCoords = vec2(0, 0);
@@ -140,7 +142,7 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 		buffer->tid = tid;
 		buffer++;
 
-#endif
+		#endif
 
 		indexCount += 6;
 
@@ -148,4 +150,6 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 
 		prevGlyph = glyph;
 	}
+}
+
 }

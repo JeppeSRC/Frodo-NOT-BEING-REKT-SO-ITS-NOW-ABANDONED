@@ -3,6 +3,8 @@
 #include <fd.h>
 #include <graphics/d3dcontext.h>
 
+namespace FD {
+
 enum FD_INDEXBUFFER_FORMAT {
 	FD_INDEXBUFFER_FORMAT_UNKNOWN,
 	FD_INDEXBUFFER_FORMAT_UINT32,
@@ -27,3 +29,5 @@ public:
 
 	__forceinline uint32 GetCount() const { return count; }
 };
+
+}

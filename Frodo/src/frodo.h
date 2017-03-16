@@ -56,6 +56,8 @@
 
 #include <fd.h>
 
+namespace FD {
+
 class FDAPI FDApplication {
 private:
 	void Run();
@@ -81,3 +83,5 @@ public:
 
 	inline void SetUPS(float32 timesPerSec) { this->ups = 1000.0f / timesPerSec; }
 };
+
+}

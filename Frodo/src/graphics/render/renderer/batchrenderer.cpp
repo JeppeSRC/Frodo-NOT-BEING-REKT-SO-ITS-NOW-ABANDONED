@@ -2,6 +2,8 @@
 
 #include <graphics/shader/shaderfactory.h>
 
+namespace FD {
+
 
 void BatchRenderer::SetBlendingInternal(bool enable_blending) {
 	float32 factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -108,8 +110,7 @@ float32 BatchRenderer::SubmitTexture(Texture2D* texture) {
 		tids.Push_back(texture);
 		tid = (float32)numTids + 1.0f;
 
-	}
-	else {
+	} else {
 		tid = (float32)tids.Find(texture) + 1.0f;
 	}
 
@@ -148,4 +149,6 @@ void BatchRenderer::Present() {
 	ibo->Bind();
 
 	D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
+}
+
 }

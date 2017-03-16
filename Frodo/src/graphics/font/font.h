@@ -6,20 +6,22 @@
 #include <math/vec2.h>
 #include <graphics/texture/texture2d.h>
 
+struct FT_LibraryRec_;
+struct FT_FaceRec_;
+
+namespace FD {
+
 FDAPI Texture2D* GetCharFromFont(const String& fontName, uint32 character);
 
 class FDAPI Font {
-private:
-	friend struct FT_LibraryRec_;
-	friend struct FT_FaceRec_;
 public:
-	
+
 	template<typename T = int32>
 	struct FD_RANGE {
 		T start;
 		T end;
 
-		inline T GetDistance() const { 
+		inline T GetDistance() const {
 			return end - start;
 		}
 	};
@@ -71,3 +73,4 @@ public:
 	inline FD_GLYPH GetGlyph(uint32 unicodeCharacter) { return charMap.Retrieve(unicodeCharacter); }
 };
 
+}

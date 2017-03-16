@@ -1,6 +1,7 @@
 #include "vertexbuffer.h"
 #include <core/log.h>
 
+namespace FD {
 
 VertexBuffer::VertexBuffer(uint32 structSize, uint32 num) {
 	D3D11_BUFFER_DESC bd;
@@ -62,4 +63,6 @@ void VertexBuffer::Bind() {
 void VertexBuffer::Bind(uint32 slot) {
 	uint32 offset = 0;
 	D3DContext::GetDeviceContext()->IASetVertexBuffers(slot, 1, &buffer, &stride, &offset);
+}
+
 }

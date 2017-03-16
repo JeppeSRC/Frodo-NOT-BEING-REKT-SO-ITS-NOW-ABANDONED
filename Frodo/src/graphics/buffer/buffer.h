@@ -2,6 +2,8 @@
 #include <fd.h>
 #include <graphics/d3dcontext.h>
 
+namespace FD {
+
 static uint32 numBuffers = 0;
 
 class FDAPI Buffer {
@@ -19,3 +21,5 @@ public:
 	inline uint_t GetSize() const { return size; }
 	inline ID3D11Buffer* GetBuffer() const { return buffer; }
 };
+
+}

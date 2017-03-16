@@ -4,6 +4,8 @@
 #include <util/vfs/vfs.h>
 #include <math/math.h>
 
+namespace FD {
+
 String Shader::GetFunctionTypeString(FD_SHADER_GEN_FUNCTION_TYPE type) {
 	switch (type) {
 		case FD_TRUE:
@@ -48,7 +50,7 @@ void Shader::CreateBuffers() {
 		D3DContext::GetDevice()->CreateBuffer(&desc, 0, &cbuffer->buffer);
 
 	}
-	
+
 	for (uint_t i = 0; i < pCBuffers.GetSize(); i++) {
 		ShaderStructInfo* cbuffer = pCBuffers[i];
 
@@ -302,4 +304,6 @@ uint32 Shader::GetPSTextureSlotByName(const String& textureName) {
 
 	FD_FATAL("[Shader] Texture not found \"%s\"", *textureName);
 	return -1;
+}
+
 }

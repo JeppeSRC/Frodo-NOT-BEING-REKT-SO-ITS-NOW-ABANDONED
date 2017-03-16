@@ -1,6 +1,8 @@
 #include <frodo.h>
 #include <ctime>
 
+namespace FD {
+
 FDApplication::FDApplication(const char* title, uint32 width, uint32 height) {
 	window = new Window(title, width, height);
 	mainRenderer = nullptr;
@@ -18,15 +20,15 @@ FDApplication::~FDApplication() {
 	TextureManager::Dispose();
 }
 
-void FDApplication::OnInit() { }
+void FDApplication::OnInit() {}
 
-void FDApplication::OnTick() { }
+void FDApplication::OnTick() {}
 
-void FDApplication::OnUpdate(float32 delta) { }
+void FDApplication::OnUpdate(float32 delta) {}
 
-void FDApplication::OnRender() { }
+void FDApplication::OnRender() {}
 
-void FDApplication::OnExit() { }
+void FDApplication::OnExit() {}
 
 void FDApplication::Run() {
 	VFS::Init();
@@ -61,5 +63,7 @@ void FDApplication::Run() {
 
 		w.SwapBuffers();
 	}
+
+}
 
 }

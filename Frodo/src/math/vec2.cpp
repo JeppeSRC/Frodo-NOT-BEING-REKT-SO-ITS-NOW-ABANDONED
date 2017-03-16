@@ -1,6 +1,8 @@
 #include "math.h"
 #include <memory>
 
+namespace FD {
+
 #pragma region vec2
 
 vec2::vec2() { x = 0; y = 0; }
@@ -134,3 +136,5 @@ ivec2& ivec2::Divide(int32 v) {
 }
 
 #pragma endregion
+
+}
