@@ -97,10 +97,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Frodo/src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Frodo/src;src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -108,10 +109,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Frodo/src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Frodo/src;src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,11 +123,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Frodo/src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Frodo/src;src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -135,18 +138,30 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Frodo/src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Frodo/src;src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\assembly.cpp" />
+    <ClCompile Include="src\util\asset\cliasset.cpp" />
+    <ClCompile Include="src\util\asset\cliassetmanager.cpp" />
+    <ClCompile Include="src\util\asset\clipackage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\clicore.h" />
+    <ClInclude Include="src\util\asset\cliassetmanager.h" />
+    <ClInclude Include="src\util\asset\cliasset.h" />
+    <ClInclude Include="src\util\asset\clipackage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Frodo\Frodo.vcxproj">
+      <Project>{08d9dce5-d732-43ba-aac0-e58595d81df2}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

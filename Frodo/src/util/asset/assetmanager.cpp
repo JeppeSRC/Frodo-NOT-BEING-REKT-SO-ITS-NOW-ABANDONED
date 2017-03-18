@@ -66,7 +66,7 @@ bool AssetManager::LoadPackage(const String& filename) {
 		totalSize += asset->size;
 	}
 
-	FD_DEBUG("[AssetManager] Loaded package: Name: \"%s\" Size: %llu Assets: %llu", *packageName, totalSize, hdr->numberOfAssets);
+	FD_DEBUG("[AssetManager] Loaded package: Name: \"%s\" Size: %llu Assets: %u", *packageName, totalSize, hdr->numberOfAssets);
 
 	delete[] data;
 
@@ -121,7 +121,7 @@ List<Asset*> AssetManager::GetAssetsByType(FD_ASSET_TYPE type) {
 	}
 
 	return tmp;
-}
+}//0x0000029e54efcea0
 
 List<Asset*> AssetManager::GetAssetsByPackage(const String& name) {
 	List<Asset*> tmp;
@@ -199,7 +199,7 @@ bool AssetManager::ExportPackage(const String& filename, const Package* package)
 	return false;
 }
 
-Package* AssetManager::MakePackage(const String& name, bool exportPackage) {
+Package* AssetManager::MakePackage(const String& name) {
 	Package* p = new Package;
 
 	p->name = name;
@@ -207,8 +207,6 @@ Package* AssetManager::MakePackage(const String& name, bool exportPackage) {
 
 	for (uint_t i = 0; i < size; i++)
 		p->AddAsset(assets[i]);
-
-	if (exportPackage) ExportPackage(name, p);
 
 	return p;
 }

@@ -1,29 +1,35 @@
 #pragma once
 
-#include <msclr/marshal.h>
+#include <msclr/marshal_cppstd.h>
 #include <util/string.h>
 #include <string>
+
+namespace FDCLI {
 
 template<typename T>
 public ref class CLIClass {
 protected:
 	T* instance;
 
+	bool keepInstance;
+
 public:
 	CLIClass() {
 		instance = nullptr;
+		keepInstance = false;
 	}
 
-	CLIClass(T* instance) {
+	CLIClass(T* instance, bool keepInstance) {
 		this->instance = instance;
+		this->keepInstance = keepInstance;
 	}
 
 	virtual ~CLIClass() {
-		delete instance;
+		if (!keepInstance) delete instance;
 	}
 
 	!CLIClass() {
-		delete instance;
+		if (!keepInstance) delete instance;
 	}
 
 	T* GetHandle() {
@@ -32,10 +38,12 @@ public:
 };
 
 
-inline static String system_string_to_string(System::String^ string) {
-	return String(msclr::interop::marshal_as<std::string>(string).c_str());
+inline static FD::String system_string_to_string(System::String^ string) {
+	return FD::String(msclr::interop::marshal_as<std::string>(string).c_str());
 }
 
-inline static System::String^ string_to_system_string(String string) {
+inline static System::String^ string_to_system_string(FD::String string) {
 	return gcnew System::String(*string);
+}
+
 }

@@ -43,7 +43,7 @@ public:
 	static List<Asset*> GetAssetsByPackage(const String& name);
 	static Asset* GetAsset(const String& name);
 	static bool ExportPackage(const String& filename, const Package* package);
-	static Package* MakePackage(const String& name, bool exportPackage);
+	static Package* MakePackage(const String& name);
 
 };
 

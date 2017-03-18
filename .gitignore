@@ -29,6 +29,7 @@
 
 #visual studio
 bin/
+bin
 *.vs
 *.sdf
 *.opendb
