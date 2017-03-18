@@ -30,6 +30,7 @@
 #visual studio
 bin/
 bin
+obj/
 *.vs
 *.sdf
 *.opendb
