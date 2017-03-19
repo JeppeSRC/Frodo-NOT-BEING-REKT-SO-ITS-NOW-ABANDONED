@@ -31,12 +31,12 @@ private:
 
 	static bool ValidatePackageHeader(PACKAGE_HEADER* hdr, const String& filename);
 
-private:
+public:
 	static List<Asset*> assets;
 
 public:
 	static void LoadPackage(const Package* package);
-	static bool LoadPackage(const String& filename);
+	static bool LoadPackage(const String& filename, String* packageName = nullptr);
 	static void UnloadPackage(const String& packageName);
 	static List<Asset*> GetAssetsByFolder(const String& name);
 	static List<Asset*> GetAssetsByType(FD_ASSET_TYPE type);

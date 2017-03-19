@@ -26,7 +26,7 @@ void AssetManager::LoadPackage(const Package* package) {
 		assets.Push_back(package->assets.Get(i));
 }
 
-bool AssetManager::LoadPackage(const String& filename) {
+bool AssetManager::LoadPackage(const String& filename, String* packageNameOut) {
 
 	uint_t fileSize = 0;
 
@@ -43,7 +43,9 @@ bool AssetManager::LoadPackage(const String& filename) {
 		return false;
 	}
 
-	String packageName = String((char*)data + hdr->nameDataOffset, hdr->nameLength);
+	String packageName((char*)data + hdr->nameDataOffset, hdr->nameLength);
+
+	if (packageNameOut) *packageNameOut = packageName;
 
 	uint64 totalSize = 0;
 
