@@ -10,8 +10,28 @@ bool AssetManager::LoadPackage(System::String^ filename) {
 	return FD::AssetManager::LoadPackage(system_string_to_string(filename));
 }
 
+bool AssetManager::LoadPackage(System::String^ filename, System::String^% packageName) {
+	FD::String pName;
+
+	bool res = FD::AssetManager::LoadPackage(system_string_to_string(filename), &pName);
+	packageName = string_to_system_string(pName);
+
+	return res;
+}
+
 void AssetManager::UnloadPackage(System::String^ packageName) {
 	FD::AssetManager::UnloadPackage(system_string_to_string(packageName));
+}
+
+array<Asset^>^ AssetManager::GetAssets() {
+	uint_t size = FD::AssetManager::assets.GetSize();
+
+	array<Asset^>^ assets = gcnew array<Asset^>(size);
+
+	for (uint_t i = 0; i < size; i++)
+		assets[i] = gcnew Asset(FD::AssetManager::assets[i]);
+
+	return assets;
 }
 
 array<Asset^>^ AssetManager::GetAssetsByFolder(System::String^ name) {

@@ -5,10 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FDPE"
         mc:Ignorable="d"
-        Title="MainWindow" Width="800" Height="525">
+        Title="Frodo Package Editor" Width="800" Height="636">
     <Grid Margin="10">
-        <TreeView x:Name="treeView" HorizontalAlignment="Left" Height="454" Margin="10,10,0,0" VerticalAlignment="Top" Width="241"/>
-        
-
+        <TreeView x:Name="tvLoadedPackages" HorizontalAlignment="Left" Height="505" Margin="416,10,0,0" VerticalAlignment="Top" Width="345" RenderTransformOrigin="2.373,0.73">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:AssetFolder}" ItemsSource="{Binding folders}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text=" "/>
+                        <TextBlock Text="{Binding name}"/>
+                        <TextBlock Text=" (Folders: "/>
+                        <TextBlock Text="{Binding numFolders}"/>
+                        <TextBlock Text=" Files: "/>
+                        <TextBlock Text="{Binding numEntries}"/>
+                        <TextBlock Text=" Size: "/>
+                        <TextBlock Text="{Binding totalSize}"/>
+                        <TextBlock Text=")"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type local:AssetEntry}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding name}"/>
+                        <TextBlock Text=" ("/>
+                        <TextBlock Text=" Size: "/>
+                        <TextBlock Text="{Binding size}"/>
+                        <TextBlock Text=" Type: "/>
+                        <TextBlock Text="{Binding type}"/>
+                        <TextBlock Text=" Package: "/>
+                        <TextBlock Text="{Binding packageName}"/>
+                        <TextBlock Text=")"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>
+        </TreeView>
     </Grid>
 </Window>
