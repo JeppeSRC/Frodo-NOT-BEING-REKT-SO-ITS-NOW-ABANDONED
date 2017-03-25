@@ -19,30 +19,72 @@ using FDCLI;
 namespace FDPE {
 
     public partial class MainWindow : Window {
-        private AssetFolder root;
 
-        private List<ExplorerBaseType> loadedPackages = new List<ExplorerBaseType>();
+        private enum FILE_TYPE {
+            UNKNOWN,
+            //Image types
+            JPG,
+            PNG,
+            TGA,
+            BMP,
+
+            //Model types
+            OBJ,
+
+            //Shader types
+            HLSL,
+
+            //Font types
+            TTF,
+            OTF,
+
+            //Misc
+            TXT,
+            BIN,
+
+            NUM_TYPES
+
+        }
+
+        private AssetFolder loadedPackagesRoot;
+        private AssetFolder selectedFolder_newPackages = null;
+        private AssetEntry selectedEntry_newPackages = null;
+        private AssetFolder selectedFolder_loadedPackages = null;
+        private AssetEntry selectedEntry_loadedPackages = null;
+
+        private List<AssetFolder> selectedFolders_newPackages = new List<AssetFolder>();
+        private List<AssetEntry> selectedEntries_newPackages = new List<AssetEntry>();
+        private List<AssetFolder> selectedFolders_loadedPackages = new List<AssetFolder>();
+        private List<AssetEntry> selectedEntries_loadedPackages = new List<AssetEntry>();
+
+        private bool listSelect = false;
+
+        private ObservableCollection<ExplorerBaseType> loadedPackages = new ObservableCollection<ExplorerBaseType>();
+        private ObservableCollection<ExplorerBaseType> newPackages = new ObservableCollection<ExplorerBaseType>();
 
         public MainWindow() {
             InitializeComponent();
 
+            loadedPackagesRoot = new AssetFolder("None");
+            loadedPackages.Add(loadedPackagesRoot);
+
             LoadPackage("Test.pkg");
 
             tvLoadedPackages.ItemsSource = loadedPackages;
+            tvNewPackages.ItemsSource = newPackages;
         }
 
         private bool LoadPackage(String filename) {
             String packageName = "";
 
-           if (!AssetManager.LoadPackage(filename, ref packageName)) {
+            if (!AssetManager.LoadPackage(filename, ref packageName)) {
                 return false;
             }
 
             Asset[] assets = AssetManager.GetAssets();
 
-            if (root == null) {
-                root = new AssetFolder("All");
-                loadedPackages.Add(root);
+            if (loadedPackagesRoot.name == "None") {
+                loadedPackagesRoot.name = "All";
             }
 
             AssetFolder packageRoot = new AssetFolder(packageName);
@@ -50,7 +92,7 @@ namespace FDPE {
             loadedPackages.Add(packageRoot);
 
             for (uint i = 0; i < assets.Length; i++) {
-                root.Add(new AssetEntry(assets[i]));
+                loadedPackagesRoot.Add(new AssetEntry(assets[i]));
 
                 FindFolder(packageRoot, assets[i].folder, true).Add(new AssetEntry(assets[i]));
             }
@@ -63,11 +105,31 @@ namespace FDPE {
                     packageRoot.numEntries += f.numEntries;
                     packageRoot.numFolders += f.numFolders;
                 }
-                
-                
+
+
             }
 
             return true;
+        }
+
+        private AssetFolder CreateNewPackage(String name) {
+
+            for (int i = 0; i < newPackages.Count; i++)
+                if (newPackages[i].name == name) {
+                    Log.WARNING("[FDPE] Package Already Exists: \"" + tbName.Text + "\"");
+                    return newPackages[i] as AssetFolder;
+                }
+
+            AssetFolder root = new AssetFolder(name);
+            newPackages.Add(root);
+
+            Log.DEBUG("[FDPE] New Package: \"" + name + "\"");
+
+            return root;
+        }
+
+        private AssetFolder CreateNewFolder(String name, AssetFolder parent) {
+            return null;
         }
 
         private AssetFolder FindFolder(AssetFolder root, String folder, bool create) {
@@ -80,119 +142,249 @@ namespace FDPE {
                 tmp[i] = folderNames[tmp.Length - i - 1];
             }
 
-            return root.FindFolder(tmp, tmp.Length-1, create);
-        }
-    }
-
-    public class ExplorerBaseType {
-
-
-    }
-
-    public class AssetEntry : ExplorerBaseType {
-
-        private Asset asset;
-
-        public String name {
-            get {
-                return asset.name;
-            }
+            return root.FindFolder(tmp, tmp.Length - 1, create);
         }
 
-        public ulong size {
-            get {
-                return asset.size;
-            }
-        }
-        
-        public String packageName {
-            get {
-                return asset.packageName;
-            }
-        }
+        private void tvSelectedItem_Changed(object sender, RoutedEventArgs e) {
+            if ((TreeView)sender == tvNewPackages) {
+                if (tvNewPackages.SelectedItem == null) return;
+                selectedEntry_newPackages = null;
+                selectedFolder_newPackages = null;
+                selectedFolder_newPackages = tvNewPackages.SelectedItem is AssetFolder ? tvNewPackages.SelectedItem as AssetFolder : (selectedEntry_newPackages = (tvNewPackages.SelectedItem as AssetEntry)).parent;
 
-        public String type {
-            get {
-                switch(asset.type) {
-                    case FD_ASSET_TYPE.FD_ASSET_TYPE_RAW:
-                        return "RAW";
-                    case FD_ASSET_TYPE.FD_ASSET_TYPE_STRING:
-                        return "STRING";
-                    case FD_ASSET_TYPE.FD_ASSET_TYPE_FONT:
-                        return "FONT";
-                    case FD_ASSET_TYPE.FD_ASSET_TYPE_TEXTURE2D:
-                        return "TEXTURE2D";
-                    case FD_ASSET_TYPE.FD_ASSET_TYPE_TEXTURECUBE:
-                        return "TEXTURECUBE";
+                if (listSelect) {
+                    if (tvNewPackages.SelectedItem is AssetEntry)
+                        selectedEntries_newPackages.Add(selectedEntry_newPackages);
+                    else
+                        selectedFolders_newPackages.Add(selectedFolder_newPackages);
+                } else {
+                    selectedEntries_newPackages.Clear();
+                    selectedFolders_newPackages.Clear();
                 }
 
-                return "UNKNOWN";
+            } else if ((TreeView)sender == tvLoadedPackages) {
+                if (tvLoadedPackages.SelectedItem == null) return;
+                selectedEntry_loadedPackages = null;
+                selectedFolder_loadedPackages = null;
+                selectedFolder_loadedPackages = tvLoadedPackages.SelectedItem is AssetFolder ? tvLoadedPackages.SelectedItem as AssetFolder : (selectedEntry_loadedPackages = (tvLoadedPackages.SelectedItem as AssetEntry)).parent;
+
+                if (listSelect) {
+                    if (tvLoadedPackages.SelectedItem is AssetEntry)
+                        selectedEntries_loadedPackages.Add(selectedEntry_loadedPackages);
+                    else
+                        selectedFolders_loadedPackages.Add(selectedFolder_loadedPackages);
+                } else {
+                    selectedEntries_loadedPackages.Clear();
+                    selectedFolders_loadedPackages.Clear();
+                }
             }
         }
-        
-        public AssetEntry(Asset asset) {
-            this.asset = asset;
-        }
-    }
 
-    public class AssetFolder : ExplorerBaseType {
-
-        public String name { get; set; }
-
-        public AssetFolder parentFolder;
-
-        public ObservableCollection<ExplorerBaseType> folders { get; set; }
-
-        public uint numEntries { get; set; }
-        public uint numFolders { get; set; }
-        public ulong totalSize { get; set; }
-
-        public AssetFolder(String name) {
-            this.name = name;
-            parentFolder = null;
-            folders = new ObservableCollection<ExplorerBaseType>();
-
-            numEntries = 0;
-            numFolders = 0;
-            totalSize = 0;
+        private void Key_Down(object sender, KeyEventArgs e) {
+            if (e.Key == Key.LeftCtrl) {
+                listSelect = true;
+            }   
         }
 
-        public void Add(AssetFolder folder) {
-            folder.parentFolder = this;
-            folders.Add(folder);
-            numFolders++;
-            totalSize += folder.totalSize;
+        private void Key_Up(object sender, KeyEventArgs e) {
+            if (e.Key == Key.LeftCtrl) {
+                listSelect = false;
+            }
         }
 
-        public void Add(AssetEntry entry) {
-            folders.Add(entry);
-            numEntries++;
-            totalSize += entry.size;
+        private void btnClick_MoveSelected(object sender, RoutedEventArgs e) {
+
+            if (selectedFolders_loadedPackages.Count == 0) {
+                if (selectedFolder_loadedPackages != null) selectedFolders_loadedPackages.Add(selectedFolder_loadedPackages);
+            }
+
+            if (selectedEntries_loadedPackages.Count == 0) {
+                if (selectedEntry_loadedPackages != null) selectedEntries_loadedPackages.Add(selectedEntry_loadedPackages);
+            }
+
+            AssetFolder location = selectedFolder_newPackages;
+
+            if (selectedFolders_loadedPackages.Count == 0 && selectedEntries_loadedPackages.Count == 0 || location == null) {
+                Log.WARNING("[FDPE] Move Selected requires a destination package and at least one source asset/folder to be selected!");
+                return;
+            }
+
+
+            if (chbKeepFolders.IsChecked == true) {
+                location = location.GetRootParent();
+
+                for (int i = 0; i < selectedFolders_loadedPackages.Count; i++) {
+                    location.Add(selectedFolders_loadedPackages[i]);
+                }
+
+                for (int i = 0; i < selectedEntries_loadedPackages.Count; i++) {
+                    AssetEntry c = selectedEntries_loadedPackages[i];
+
+                    FindFolder(location, c.folder, true).Add(c);
+                }
+            } else {
+
+                for (int i = 0; i < selectedFolders_loadedPackages.Count; i++) {
+                    selectedFolders_loadedPackages[i].AddAllEntriesTo(location);
+                }
+
+                for (int i = 0; i < selectedEntries_loadedPackages.Count; i++) {
+                    location.Add(selectedEntries_loadedPackages[i]);
+                }
+
+            }
         }
 
-        public AssetFolder FindFolder(String[] folder, int index, bool create) {
-            
-            for (int i = 0; i < folders.Count; i++) {
-                if (folders[i] is AssetFolder) {
-                    AssetFolder curr = folders[i] as AssetFolder;
-                    if (curr.name == folder[index]) {
-                        if (index == 0) return curr;
+        private void btnClick_MoveAll(object sender, RoutedEventArgs e) {
+            AssetFolder location = null;
 
-                        return curr.FindFolder(folder, index-1, create);
+            if (selectedFolder_newPackages == null) {
+                Log.WARNING("[FDPE] Move All requires a destination package to be selected!");
+                return;
+            }
+
+            if (chbKeepFolders.IsChecked == true) {
+                location = selectedFolder_newPackages.GetRootParent();
+
+                for (int i = 1; i < loadedPackages.Count; i++) {
+                    AssetFolder curr = loadedPackages[i] as AssetFolder;
+                    for (int j = 0; j < curr.folders.Count; j++) {
+                        location.Add(curr.folders[j]);
                     }
                 }
+
+            } else {
+
+                location = selectedFolder_newPackages;
+
+                for (int i = 0; i < loadedPackagesRoot.folders.Count; i++)
+                    location.Add(loadedPackagesRoot.folders[i]);
             }
 
-            if (create) {
-                Add(new AssetFolder(folder[index]));
-                if (index == 0) {
-                    return folders[folders.Count - 1] as AssetFolder;
-                } else {
-                    (folders[folders.Count - 1] as AssetFolder).FindFolder(folder, index - 1, create);
+            location.SortFolders();
+        }
+
+        private void btnClick_NewPackage(object sender, RoutedEventArgs e) {
+            if (tbName.Text == "") return;
+            CreateNewPackage(tbName.Text);
+        }
+
+        private void btnClick_NewFolder(object sender, RoutedEventArgs e) {
+            if (tbName.Text == "" || selectedFolder_newPackages == null) return;
+            selectedFolder_newPackages.Add(new AssetFolder(tbName.Text));
+            selectedFolder_newPackages.SortFolders();
+            Log.DEBUG("[FDPE] New Folder: \"" + tbName.Text + "\" in \"" + selectedFolder_newPackages.name + "\"");
+        }
+
+        private void btnClick_Remove(object sender, RoutedEventArgs e) {
+
+            if (selectedEntry_newPackages != null) {
+                selectedEntry_newPackages.parent.folders.Remove(selectedEntry_newPackages);
+            } else if (selectedFolder_newPackages != null) {
+                if (selectedFolder_newPackages.parent == null)
+                    newPackages.Remove(selectedFolder_newPackages);
+                else
+                    selectedFolder_newPackages.parent.folders.Remove(selectedFolder_newPackages);
+            }
+            else
+                return;
+
+            if (selectedEntry_newPackages != null) {
+                Log.DEBUG("[FDPE] Removed Entry: \"" + selectedEntry_newPackages.name + "\"");
+            } else if (selectedFolder_newPackages.parent != null){
+                Log.DEBUG("[FDPE] Removed Folder: \"" + selectedFolder_newPackages.name + "\"");
+            } else {
+                Log.DEBUG("[FDPE] Removed Package: \"" + selectedFolder_newPackages.name + "\"");
+            }
+
+            selectedEntry_newPackages = null;
+            selectedFolder_newPackages = null;
+        }
+
+        private void btnClick_OpenFiles(object sender, RoutedEventArgs e) {
+            String[] files = OpenFileBrowser();
+
+            if (files == null) return;
+
+            for (int i = 0; i < files.Length; i++) {
+                String path = files[i];
+                if (!LoadPackage(files[i])) {
+                    Asset asset = new Asset();
+                    asset.name = GetNameFromPath(path);
+                    asset.type = GetAssetTypeFromFileExension(GetFileExtension(path));
+                    asset.SetData(path);
+
+                    loadedPackagesRoot.Add(new AssetEntry(asset));
                 }
+            }
+        }
+
+        private void btnClick_Export(object sender, RoutedEventArgs e) {
+            if (selectedFolder_newPackages == null) return;
+
+            Package package = new Package();
+            package.name = selectedFolder_newPackages.name;
+
+            for (int i = 0; i < selectedFolder_newPackages.folders.Count; i++) {
+
+            }
+        }
+
+        private FD_ASSET_TYPE GetAssetTypeFromFileExension(String extension) {
+            switch (GetFileTypeFromString(extension)) {
+                case FILE_TYPE.JPG:
+                case FILE_TYPE.PNG:
+                case FILE_TYPE.TGA:
+                case FILE_TYPE.BMP:
+                    return FD_ASSET_TYPE.FD_ASSET_TYPE_TEXTURE2D;
+                case FILE_TYPE.HLSL:
+                    return FD_ASSET_TYPE.FD_ASSET_TYPE_SHADER;
+                case FILE_TYPE.OBJ:
+                    return FD_ASSET_TYPE.FD_ASSET_TYPE_MODEL;
+                case FILE_TYPE.OTF:
+                case FILE_TYPE.TTF:
+                    return FD_ASSET_TYPE.FD_ASSET_TYPE_FONT;
+                case FILE_TYPE.TXT:
+                    return FD_ASSET_TYPE.FD_ASSET_TYPE_STRING;
+                case FILE_TYPE.BIN:
+                    return FD_ASSET_TYPE.FD_ASSET_TYPE_RAW;
+            }
+
+            return FD_ASSET_TYPE.FD_ASSET_TYPE_RAW;
+        }
+
+        private FILE_TYPE GetFileTypeFromString(String extension) {
+            for (int i = 1; i < (int)FILE_TYPE.NUM_TYPES; i++) {
+                if (((FILE_TYPE)i).ToString().Equals(extension, StringComparison.OrdinalIgnoreCase) == true) {
+                    return (FILE_TYPE)i;
+                }
+            }
+
+            return FILE_TYPE.UNKNOWN;
+        } 
+
+        private String[] OpenFileBrowser() {
+            System.Windows.Forms.OpenFileDialog diag = new System.Windows.Forms.OpenFileDialog();
+            diag.Multiselect = true;
+            System.Windows.Forms.DialogResult res = diag.ShowDialog();
+
+            if (res == System.Windows.Forms.DialogResult.OK) {
+                return diag.FileNames;
             }
 
             return null;
+        }
+
+       private static String GetNameFromPath(String path) {
+            String[] split = path.Split('\\', '.');
+
+            return split[split.Length - 2];
+        }
+
+        private static String GetFileExtension(String file) {
+            String[] split = file.Split('.');
+
+            return split[split.Length - 1];
         }
     }
 }

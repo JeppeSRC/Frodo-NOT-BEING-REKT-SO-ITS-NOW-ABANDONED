@@ -5,11 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FDPE"
         mc:Ignorable="d"
-        Title="Frodo Package Editor" Width="800" Height="636">
+        Title="Frodo Package Editor" Width="803" Height="657"
+        ResizeMode="NoResize"
+        KeyDown="Key_Down"
+        KeyUp="Key_Up">
     <Grid Margin="10">
-        <TreeView x:Name="tvLoadedPackages" HorizontalAlignment="Left" Height="505" Margin="416,10,0,0" VerticalAlignment="Top" Width="345" RenderTransformOrigin="2.373,0.73">
+        <TreeView x:Name="tvLoadedPackages" 
+                  HorizontalAlignment="Left" 
+                  Height="485" 
+                  Margin="450,30,0,0" 
+                  VerticalAlignment="Top" 
+                  Width="315" 
+                  RenderTransformOrigin="2.373,0.73"
+                  SelectedItemChanged="tvSelectedItem_Changed">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type local:AssetFolder}" ItemsSource="{Binding folders}">
+                <HierarchicalDataTemplate DataType="{x:Type local:MainWindow}" ItemsSource="{Binding folders}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text=" "/>
                         <TextBlock Text="{Binding name}"/>
@@ -22,14 +32,14 @@
                         <TextBlock Text=")"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type local:AssetEntry}">
+                <DataTemplate DataType="{x:Type local:MainWindow}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding name}"/>
                         <TextBlock Text=" ("/>
                         <TextBlock Text=" Size: "/>
                         <TextBlock Text="{Binding size}"/>
                         <TextBlock Text=" Type: "/>
-                        <TextBlock Text="{Binding type}"/>
+                        <TextBlock Text="{Binding typeAsString}"/>
                         <TextBlock Text=" Package: "/>
                         <TextBlock Text="{Binding packageName}"/>
                         <TextBlock Text=")"/>
@@ -37,5 +47,56 @@
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
+
+        <TreeView x:Name="tvNewPackages" 
+                  HorizontalAlignment="Left" 
+                  Height="485" 
+                  Margin="10,30,0,0" 
+                  VerticalAlignment="Top" 
+                  Width="320" 
+                  RenderTransformOrigin="-1.75,-1.8" 
+                  SelectedItemChanged="tvSelectedItem_Changed">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:MainWindow}" ItemsSource="{Binding folders}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text=" "/>
+                        <TextBlock Text="{Binding name}"/>
+                        <TextBlock Text=" (Folders: "/>
+                        <TextBlock Text="{Binding numFolders}"/>
+                        <TextBlock Text=" Files: "/>
+                        <TextBlock Text="{Binding numEntries}"/>
+                        <TextBlock Text=" Size: "/>
+                        <TextBlock Text="{Binding totalSize}"/>
+                        <TextBlock Text=")"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type local:MainWindow}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding name}"/>
+                        <TextBlock Text=" ("/>
+                        <TextBlock Text=" Size: "/>
+                        <TextBlock Text="{Binding size}"/>
+                        <TextBlock Text=" Type: "/>
+                        <TextBlock Text="{Binding typeAsString}"/>
+                        <TextBlock Text=" Package: "/>
+                        <TextBlock Text="{Binding packageName}"/>
+                        <TextBlock Text=")"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+        <Button x:Name="btnMoveSelected" Content="Move Selected" HorizontalAlignment="Center" Margin="340,100,339,0" VerticalAlignment="Top" Width="98" Click="btnClick_MoveSelected"/>
+        <Button x:Name="btnMoveAll" Content="Move All" HorizontalAlignment="Center" Margin="340,130,339,0" VerticalAlignment="Top" Width="98" Click="btnClick_MoveAll"/>
+        <TextBox x:Name="tbName" HorizontalAlignment="Left" Height="23" Margin="60,522,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="270"/>
+        <Label x:Name="label" Content="Name:" HorizontalAlignment="Left" Margin="10,520,0,0" VerticalAlignment="Top" Width="97" Height="25"/>
+        <Button x:Name="btnNewPackage" Content="New Package" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_NewPackage"/>
+        <CheckBox x:Name="chbKeepFolders" Content="Keep Folders" HorizontalAlignment="Left" Margin="340,170,0,0" VerticalAlignment="Top" Width="96"/>
+        <Button x:Name="btnNewFolder" Content="New Folder" HorizontalAlignment="Left" Margin="123,555,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_NewFolder"/>
+        <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="233,555,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_Remove"/>
+        <Label x:Name="lblNewPackages" Content="New Packages:" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="25" Width="90"/>
+        <Label x:Name="lblLoadedPackages" Content="Loaded Packages/Assets:" HorizontalAlignment="Left" Margin="450,0,0,0" VerticalAlignment="Top" Height="25" Width="145"/>
+        <Button x:Name="btnOpenFiles" Content="Open Files" HorizontalAlignment="Left" Margin="450,555,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_OpenFiles"/>
+        <Button x:Name="btnExport" Content="Export" HorizontalAlignment="Left" Margin="10,580,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_Export"/>
+
     </Grid>
 </Window>

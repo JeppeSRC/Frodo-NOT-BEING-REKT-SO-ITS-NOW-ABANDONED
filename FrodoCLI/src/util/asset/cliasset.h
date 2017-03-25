@@ -12,7 +12,9 @@ public enum class FD_ASSET_TYPE {
 	FD_ASSET_TYPE_SHADER,
 
 	FD_ASSET_TYPE_TEXTURE2D,
-	FD_ASSET_TYPE_TEXTURECUBE
+	FD_ASSET_TYPE_TEXTURECUBE,
+
+	FD_ASSET_TYPE_MODEL
 };
 
 
@@ -73,10 +75,6 @@ public:
 	Asset();
 
 	bool SetData(System::String^ filename);
-
-
-	//tmp 
-	System::String^ GetDataAsString();
 };
 
 }

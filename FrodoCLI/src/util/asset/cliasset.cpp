@@ -26,9 +26,4 @@ bool Asset::SetData(System::String^ filename) {
 
 	return true;
 }
-
-System::String^ Asset::GetDataAsString() {
-	return string_to_system_string(FD::String((char*)instance->data, instance->size));
-}
-
 }

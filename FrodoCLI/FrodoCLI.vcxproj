@@ -149,12 +149,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\assembly.cpp" />
+    <ClCompile Include="src\core\clilog.cpp" />
     <ClCompile Include="src\util\asset\cliasset.cpp" />
     <ClCompile Include="src\util\asset\cliassetmanager.cpp" />
     <ClCompile Include="src\util\asset\clipackage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\clicore.h" />
+    <ClInclude Include="src\core\clilog.h" />
     <ClInclude Include="src\util\asset\cliassetmanager.h" />
     <ClInclude Include="src\util\asset\cliasset.h" />
     <ClInclude Include="src\util\asset\clipackage.h" />
