@@ -123,7 +123,7 @@ List<Asset*> AssetManager::GetAssetsByType(FD_ASSET_TYPE type) {
 	}
 
 	return tmp;
-}//0x0000029e54efcea0
+}
 
 List<Asset*> AssetManager::GetAssetsByPackage(const String& name) {
 	List<Asset*> tmp;
