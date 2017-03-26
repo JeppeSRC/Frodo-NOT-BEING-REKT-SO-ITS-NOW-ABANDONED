@@ -24,7 +24,7 @@ namespace FDPE {
             }
         }
 
-        public ulong size {
+        public override ulong size {
             get {
                 return asset.size;
             }
@@ -88,8 +88,8 @@ namespace FDPE {
             this.asset = asset;
         }
 
-        public void UpdateFolderFromParent() {
-            folder = parent.GetFolderPath();
+        public void UpdateFolderFromParent(bool skipAbsoluteRoot) {
+            folder = parent.GetFolderPath(skipAbsoluteRoot);
         }
     }
 }

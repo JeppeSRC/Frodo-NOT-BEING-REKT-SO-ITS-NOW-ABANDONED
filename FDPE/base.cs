@@ -10,9 +10,8 @@ namespace FDPE {
     public class ExplorerBaseType : INotifyPropertyChanged {
         public AssetFolder parent = null;
 
-        private String _name;
-
-        public virtual String name { get { return _name; } set { _name = value; OnPropertyChanged(); } }
+        public virtual String name { get; set; }
+        public virtual ulong size { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

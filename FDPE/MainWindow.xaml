@@ -19,7 +19,7 @@
                   RenderTransformOrigin="2.373,0.73"
                   SelectedItemChanged="tvSelectedItem_Changed">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type local:MainWindow}" ItemsSource="{Binding folders}">
+                <HierarchicalDataTemplate DataType="{x:Type local:AssetFolder}" ItemsSource="{Binding folders}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text=" "/>
                         <TextBlock Text="{Binding name}"/>
@@ -28,11 +28,11 @@
                         <TextBlock Text=" Files: "/>
                         <TextBlock Text="{Binding numEntries}"/>
                         <TextBlock Text=" Size: "/>
-                        <TextBlock Text="{Binding totalSize}"/>
+                        <TextBlock Text="{Binding size}"/>
                         <TextBlock Text=")"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type local:MainWindow}">
+                <DataTemplate DataType="{x:Type local:AssetEntry}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding name}"/>
                         <TextBlock Text=" ("/>
@@ -57,7 +57,7 @@
                   RenderTransformOrigin="-1.75,-1.8" 
                   SelectedItemChanged="tvSelectedItem_Changed">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type local:MainWindow}" ItemsSource="{Binding folders}">
+                <HierarchicalDataTemplate DataType="{x:Type local:AssetFolder}" ItemsSource="{Binding folders}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text=" "/>
                         <TextBlock Text="{Binding name}"/>
@@ -66,11 +66,11 @@
                         <TextBlock Text=" Files: "/>
                         <TextBlock Text="{Binding numEntries}"/>
                         <TextBlock Text=" Size: "/>
-                        <TextBlock Text="{Binding totalSize}"/>
+                        <TextBlock Text="{Binding size}"/>
                         <TextBlock Text=")"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type local:MainWindow}">
+                <DataTemplate DataType="{x:Type local:AssetEntry}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding name}"/>
                         <TextBlock Text=" ("/>
@@ -95,7 +95,7 @@
         <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="233,555,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_Remove"/>
         <Label x:Name="lblNewPackages" Content="New Packages:" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="25" Width="90"/>
         <Label x:Name="lblLoadedPackages" Content="Loaded Packages/Assets:" HorizontalAlignment="Left" Margin="450,0,0,0" VerticalAlignment="Top" Height="25" Width="145"/>
-        <Button x:Name="btnOpenFiles" Content="Open Files" HorizontalAlignment="Left" Margin="450,555,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_OpenFiles"/>
+        <Button x:Name="btnOpenFiles" Content="Open File(s)" HorizontalAlignment="Left" Margin="450,555,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_OpenFiles"/>
         <Button x:Name="btnExport" Content="Export" HorizontalAlignment="Left" Margin="10,580,0,0" VerticalAlignment="Top" Width="97" Click="btnClick_Export"/>
 
     </Grid>

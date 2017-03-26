@@ -81,7 +81,7 @@ namespace FDPE {
                 return false;
             }
 
-            Asset[] assets = AssetManager.GetAssets();
+            Asset[] assets = AssetManager.GetAssetsByPackage(packageName);
 
             if (loadedPackagesRoot.name == "None") {
                 loadedPackagesRoot.name = "All";
@@ -101,7 +101,7 @@ namespace FDPE {
                 if (packageRoot.folders[i] is AssetFolder) {
                     AssetFolder f = packageRoot.folders[i] as AssetFolder;
 
-                    packageRoot.totalSize += f.totalSize;
+                    packageRoot.size += f.size;
                     packageRoot.numEntries += f.numEntries;
                     packageRoot.numFolders += f.numFolders;
                 }
@@ -153,13 +153,17 @@ namespace FDPE {
                 selectedFolder_newPackages = tvNewPackages.SelectedItem is AssetFolder ? tvNewPackages.SelectedItem as AssetFolder : (selectedEntry_newPackages = (tvNewPackages.SelectedItem as AssetEntry)).parent;
 
                 if (listSelect) {
-                    if (tvNewPackages.SelectedItem is AssetEntry)
+                    if (tvNewPackages.SelectedItem is AssetEntry) { 
                         selectedEntries_newPackages.Add(selectedEntry_newPackages);
-                    else
+                        Log.DEBUG("[FDPE] List select new packages: added entry \"" + selectedEntry_newPackages.name + "\"");
+                    } else { 
                         selectedFolders_newPackages.Add(selectedFolder_newPackages);
-                } else {
+                        Log.DEBUG("[FDPE] List select new packages: added folder \"" + selectedFolder_newPackages.name + "\"");
+                    }
+                } else if (selectedEntries_newPackages.Count != 0 || selectedFolders_newPackages.Count != 0) {
                     selectedEntries_newPackages.Clear();
                     selectedFolders_newPackages.Clear();
+                    Log.DEBUG("[FDPE] Cleared list new packages");
                 }
 
             } else if ((TreeView)sender == tvLoadedPackages) {
@@ -169,13 +173,17 @@ namespace FDPE {
                 selectedFolder_loadedPackages = tvLoadedPackages.SelectedItem is AssetFolder ? tvLoadedPackages.SelectedItem as AssetFolder : (selectedEntry_loadedPackages = (tvLoadedPackages.SelectedItem as AssetEntry)).parent;
 
                 if (listSelect) {
-                    if (tvLoadedPackages.SelectedItem is AssetEntry)
+                    if (tvLoadedPackages.SelectedItem is AssetEntry) {
                         selectedEntries_loadedPackages.Add(selectedEntry_loadedPackages);
-                    else
+                        Log.DEBUG("[FDPE] List select loaded packages: added entry \"" + selectedEntry_loadedPackages.name + "\"");
+                    } else {
                         selectedFolders_loadedPackages.Add(selectedFolder_loadedPackages);
-                } else {
+                        Log.DEBUG("[FDPE] List select loaded packages: added folder \"" + selectedFolder_loadedPackages.name + "\"");
+                    }
+                } else if (selectedEntries_loadedPackages.Count != 0 || selectedFolders_loadedPackages.Count != 0) {
                     selectedEntries_loadedPackages.Clear();
                     selectedFolders_loadedPackages.Clear();
+                    Log.DEBUG("[FDPE] Cleared list loaded packages");
                 }
             }
         }
@@ -194,12 +202,12 @@ namespace FDPE {
 
         private void btnClick_MoveSelected(object sender, RoutedEventArgs e) {
 
-            if (selectedFolders_loadedPackages.Count == 0) {
-                if (selectedFolder_loadedPackages != null) selectedFolders_loadedPackages.Add(selectedFolder_loadedPackages);
-            }
-
             if (selectedEntries_loadedPackages.Count == 0) {
-                if (selectedEntry_loadedPackages != null) selectedEntries_loadedPackages.Add(selectedEntry_loadedPackages);
+                if (selectedEntry_loadedPackages != null) {
+                    selectedEntries_loadedPackages.Add(selectedEntry_loadedPackages);
+                } else if (selectedFolders_loadedPackages.Count == 0) {
+                    if (selectedFolder_loadedPackages != null) selectedFolders_loadedPackages.Add(selectedFolder_loadedPackages);
+                }
             }
 
             AssetFolder location = selectedFolder_newPackages;
@@ -279,26 +287,21 @@ namespace FDPE {
         private void btnClick_Remove(object sender, RoutedEventArgs e) {
 
             if (selectedEntry_newPackages != null) {
-                selectedEntry_newPackages.parent.folders.Remove(selectedEntry_newPackages);
+                Log.DEBUG("[FDPE] Removed Entry: \"" + selectedEntry_newPackages.name + "\"");
+                selectedEntry_newPackages.parent.Remove(selectedEntry_newPackages);
             } else if (selectedFolder_newPackages != null) {
-                if (selectedFolder_newPackages.parent == null)
+                if (selectedFolder_newPackages.parent == null) {
+                    Log.DEBUG("[FDPE] Removed Package: \"" + selectedFolder_newPackages.name + "\"");
                     newPackages.Remove(selectedFolder_newPackages);
-                else
-                    selectedFolder_newPackages.parent.folders.Remove(selectedFolder_newPackages);
-            }
-            else
+                } else {
+                    Log.DEBUG("[FDPE] Removed Folder: \"" + selectedFolder_newPackages.name + "\"");
+                    selectedFolder_newPackages.parent.Remove(selectedFolder_newPackages);
+                }
+            } else
                 return;
 
-            if (selectedEntry_newPackages != null) {
-                Log.DEBUG("[FDPE] Removed Entry: \"" + selectedEntry_newPackages.name + "\"");
-            } else if (selectedFolder_newPackages.parent != null){
-                Log.DEBUG("[FDPE] Removed Folder: \"" + selectedFolder_newPackages.name + "\"");
-            } else {
-                Log.DEBUG("[FDPE] Removed Package: \"" + selectedFolder_newPackages.name + "\"");
-            }
-
             selectedEntry_newPackages = null;
-            selectedFolder_newPackages = null;
+           // selectedFolder_newPackages = null;
         }
 
         private void btnClick_OpenFiles(object sender, RoutedEventArgs e) {
@@ -322,12 +325,32 @@ namespace FDPE {
         private void btnClick_Export(object sender, RoutedEventArgs e) {
             if (selectedFolder_newPackages == null) return;
 
+            AssetFolder packageRoot = selectedFolder_newPackages.GetRootParent();
+
             Package package = new Package();
-            package.name = selectedFolder_newPackages.name;
+            package.name = packageRoot.name;
 
-            for (int i = 0; i < selectedFolder_newPackages.folders.Count; i++) {
+            List<AssetEntry> assets = new List<AssetEntry>();
 
+            packageRoot.AddAllEntriesTo(ref assets);
+
+            for (int i = 0; i < assets.Count; i++) {
+                AssetEntry c = assets[i];
+
+                c.UpdateFolderFromParent(true);
+                package.AddAsset(ref c.asset);
             }
+
+            String filename = SaveFileExplorer();
+
+            if (filename == null) {
+                Log.WARNING("[FDPE] Export failed: no location");
+                return;
+            }
+
+            AssetManager.ExportPackage(filename, ref package);
+
+            Log.DEBUG("[FDPE] Exported Package: \"" + package.name + "\" at \"" + filename + "\"");
         }
 
         private FD_ASSET_TYPE GetAssetTypeFromFileExension(String extension) {
@@ -370,6 +393,17 @@ namespace FDPE {
 
             if (res == System.Windows.Forms.DialogResult.OK) {
                 return diag.FileNames;
+            }
+
+            return null;
+        }
+
+        private String SaveFileExplorer() {
+            System.Windows.Forms.SaveFileDialog diag = new System.Windows.Forms.SaveFileDialog();
+            System.Windows.Forms.DialogResult res = diag.ShowDialog();
+
+            if (res == System.Windows.Forms.DialogResult.OK) {
+                return diag.FileName;
             }
 
             return null;

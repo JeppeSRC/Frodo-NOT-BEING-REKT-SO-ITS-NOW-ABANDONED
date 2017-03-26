@@ -10,13 +10,15 @@ namespace FDPE {
 
         public ObservableCollection<ExplorerBaseType> folders { get; set; }
 
+        private String _name;
         private uint _numEntries;
         private uint _numFolders;
         private ulong _totalSize;
 
         public uint numEntries { get { return _numEntries; } set { _numEntries = value; OnPropertyChanged(); } }
         public uint numFolders { get { return _numFolders; } set { _numFolders = value; OnPropertyChanged(); } }
-        public ulong totalSize { get { return _totalSize; } set { _totalSize = value; OnPropertyChanged(); } }
+        public override ulong size { get { return _totalSize; } set { _totalSize = value; OnPropertyChanged(); } }
+        public override String name { get { return _name; } set { _name = value; OnPropertyChanged(); } }
 
         public AssetFolder(String name) {
             this.name = name;
@@ -25,7 +27,17 @@ namespace FDPE {
 
             numEntries = 0;
             numFolders = 0;
-            totalSize = 0;
+            size = 0;
+        }
+
+        private void UpdateProperties() {
+            size = 0;
+
+            for (int i = 0; i < folders.Count; i++) {
+                size += folders[i].size;
+            }
+
+            parent?.UpdateProperties();
         }
 
         public void Add(ExplorerBaseType asset) {
@@ -43,7 +55,8 @@ namespace FDPE {
             folder.parent = this;
             folders.Add(folder);
             numFolders++;
-            totalSize += folder.totalSize;
+            size += folder.size;
+            parent?.UpdateProperties();
         }
 
         public void Add(AssetEntry entry) {
@@ -54,7 +67,8 @@ namespace FDPE {
             entry.parent = this;
             folders.Add(entry);
             numEntries++;
-            totalSize += entry.size;
+            size += entry.size;
+            parent?.UpdateProperties();
         }
 
         public void Remove(ExplorerBaseType asset) {
@@ -67,13 +81,15 @@ namespace FDPE {
         public void Remove(AssetFolder folder) {
             folders.Remove(folder);
             numFolders--;
-            totalSize -= folder.totalSize;
+            size -= folder.size;
+            parent?.UpdateProperties();
         }
 
         public void Remove(AssetEntry entry) {
             folders.Remove(entry);
             numEntries--;
-            totalSize -= entry.size;
+            size -= entry.size;
+            parent?.UpdateProperties();
         }
 
         public void AddAllEntriesTo(AssetFolder root) {
@@ -83,6 +99,14 @@ namespace FDPE {
                 } else {
                     (folders[i] as AssetFolder).AddAllEntriesTo(root);
                 }
+            }
+        }
+
+        public void AddAllEntriesTo(ref List<AssetEntry> list) {
+            for (int i = 0; i < folders.Count; i++) {
+                ExplorerBaseType c = folders[i];
+                if (c is AssetEntry) list.Add(c as AssetEntry);
+                else (c as AssetFolder).AddAllEntriesTo(ref list);
             }
         }
 
@@ -150,10 +174,13 @@ namespace FDPE {
             }
         }
 
-        public String GetFolderPath() {
+        public String GetFolderPath(bool skipAbsoluteRoot) {
+            if (skipAbsoluteRoot == true) {
+                if (parent.parent == null) return name;
+            }
             if (parent == null) return name;
 
-            return parent.GetFolderPath() + "/";
+            return parent.GetFolderPath(skipAbsoluteRoot) + "/";
         }
     }
 }
