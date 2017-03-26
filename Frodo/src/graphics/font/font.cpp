@@ -10,6 +10,7 @@
 
 namespace FD {
 
+Font* Font::defaultFont = nullptr;
 
 Texture2D* GetCharFromFont(const String& fontName, uint32 character) {
 
@@ -198,24 +199,34 @@ ivec2 Font::GetKerning(uint32 left, uint32 right) {
 	return ivec2(kerning.x, kerning.y);
 }
 
-ivec2 Font::GetFontMetrics(const String& string) const {
-	uint_t len = string.length;
 
-	ivec2 total;
+vec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
+	size_t len = string.length;
+
+	vec2 total(0, ((float)size * scale.y));
+
+	float maxLength = 0;
 
 	for (uint_t i = 0; i < len; i++) {
 		uint32 c = string[i];
 		if (c == ' ') {
-			total.x += size >> 1;
+			total.x += (((float)size * scale.x) / 2.0f);
 			continue;
 		}
+		else if (c == '\n') {
+			total.y += ((float)size * scale.y);
+			maxLength = MAX(maxLength, total.x);
+			total.x = 0;
+		}
+
 
 		const FD_GLYPH& glyph = charMap.Retrieve((uint32)string[i]);
+		
+		total.x += (float32(glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0))) * scale.x);
 
-		total.x += glyph.offset.x + (glyph.advance.x * (i < len - 1 ? 1 : 0));
 	}
 
-	total.y = size;
+	total.x = MAX(maxLength, total.x);
 
 	return total;
 }

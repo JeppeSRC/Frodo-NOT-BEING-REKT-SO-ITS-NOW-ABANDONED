@@ -14,6 +14,11 @@ namespace FD {
 FDAPI Texture2D* GetCharFromFont(const String& fontName, uint32 character);
 
 class FDAPI Font {
+private:
+	friend struct FT_LibraryRec_;
+	friend struct FT_FaceRec_;
+
+	static Font* defaultFont;
 public:
 
 	template<typename T = int32>
@@ -65,12 +70,15 @@ public:
 	~Font();
 
 	ivec2 GetKerning(uint32 left, uint32 right);
-	ivec2 GetFontMetrics(const String& string) const;
+	vec2 GetFontMetrics(const String& string, vec2 scale = vec2(1, 1)) const;
 
 	inline const String& GetName() const { return name; }
 	inline uint32 GetSize() const { return size; }
 	inline Texture2D* GetTexture() const { return texture; }
 	inline FD_GLYPH GetGlyph(uint32 unicodeCharacter) { return charMap.Retrieve(unicodeCharacter); }
+
+	static inline Font* GetDefaultFont() { return defaultFont; }
+	static inline void SetDefaultFont(Font* font) { Font::defaultFont = font; }
 };
 
 }

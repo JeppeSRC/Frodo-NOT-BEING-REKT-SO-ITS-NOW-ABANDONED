@@ -28,6 +28,10 @@ private:
 
 	FD::FontRenderer* fontRenderer;
 	FD::Font* font;
+
+	FD::MenuRenderer* menuRenderer;
+	FD::UIHandler* handler;
+
 public:
 
 	DeferredTest() : FDApplication("Kebab ä gött", 1280, 720) { }

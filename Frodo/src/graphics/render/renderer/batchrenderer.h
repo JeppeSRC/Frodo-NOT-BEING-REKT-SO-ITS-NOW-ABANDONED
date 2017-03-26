@@ -38,6 +38,8 @@ protected:
 	bool blending;
 	bool depthTesting;
 
+	unsigned int maxSimultaneousTextures;
+
 protected:
 	void SetBlendingInternal(bool enable_blending);
 	void SetDepthInternal(bool enable_depthtesting);
@@ -48,6 +50,8 @@ protected:
 	float32 SubmitTexture(Texture2D* texture);
 
 	BatchRenderer(Window* window, uint32 max_vertices);
+	BatchRenderer(Window* window, unsigned int max_vertices, unsigned int max_simultaneous_textures);
+
 
 public:
 	virtual ~BatchRenderer();
@@ -56,8 +60,12 @@ public:
 	virtual void Submit(const LightStack& lights) {}
 	void End() override;
 
+
 	void Present() override;
 
+
+	inline unsigned int GetMaxSimultaneousTextures() const { return maxSimultaneousTextures; }
+	inline void SetMaxSimultaneousTextures(unsigned int num) { this->maxSimultaneousTextures = num; }
 
 };
 

@@ -184,6 +184,11 @@
     <ClCompile Include="src\core\fdtypes.h" />
     <ClCompile Include="src\core\input.cpp" />
     <ClCompile Include="src\core\log.cpp" />
+    <ClCompile Include="src\core\ui\uibutton.cpp" />
+    <ClCompile Include="src\core\ui\uigroup.cpp" />
+    <ClCompile Include="src\core\ui\uihandler.cpp" />
+    <ClCompile Include="src\core\ui\uislider.cpp" />
+    <ClCompile Include="src\core\ui\uislider_handle.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\fd.cpp" />
     <ClCompile Include="src\frodo.cpp" />
@@ -201,6 +206,7 @@
     <ClCompile Include="src\graphics\render\material\material.cpp" />
     <ClCompile Include="src\graphics\render\mesh\meshfactory.cpp" />
     <ClCompile Include="src\graphics\render\renderer\renderer.cpp" />
+    <ClCompile Include="src\graphics\render\renderer\menurenderer.cpp" />
     <ClCompile Include="src\graphics\shader\shader.cpp" />
     <ClCompile Include="src\graphics\shader\shaderfactory.cpp" />
     <ClCompile Include="src\graphics\shader\shadergen.cpp" />
@@ -230,6 +236,12 @@
     <ClInclude Include="src\core\event\eventwindow.h" />
     <ClInclude Include="src\core\input.h" />
     <ClInclude Include="src\core\log.h" />
+    <ClInclude Include="src\core\ui\ui.h" />
+    <ClInclude Include="src\core\ui\uibutton.h" />
+    <ClInclude Include="src\core\ui\uigroup.h" />
+    <ClInclude Include="src\core\ui\uihandler.h" />
+    <ClInclude Include="src\core\ui\uiitem.h" />
+    <ClInclude Include="src\core\ui\uislider.h" />
     <ClInclude Include="src\core\window.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\fd.h" />
@@ -249,6 +261,7 @@
     <ClInclude Include="src\graphics\render\material\material.h" />
     <ClInclude Include="src\graphics\render\mesh\meshfactory.h" />
     <ClInclude Include="src\graphics\render\renderer\renderer.h" />
+    <ClInclude Include="src\graphics\render\renderer\menurenderer.h" />
     <ClInclude Include="src\graphics\shader\shader.h" />
     <ClInclude Include="src\graphics\shader\shaderfactory.h" />
     <ClInclude Include="src\graphics\texture\framebuffer2d.h" />
@@ -259,6 +272,7 @@
     <ClInclude Include="src\math\mat4.h" />
     <ClInclude Include="src\math\math.h" />
     <ClInclude Include="src\math\mathcommon.h" />
+    <ClInclude Include="src\math\valueinterpolation.h" />
     <ClInclude Include="src\math\vec2.h" />
     <ClInclude Include="src\math\vec3.h" />
     <ClInclude Include="src\math\vec4.h" />
