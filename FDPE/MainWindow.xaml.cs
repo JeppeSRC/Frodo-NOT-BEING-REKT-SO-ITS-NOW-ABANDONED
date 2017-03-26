@@ -68,8 +68,6 @@ namespace FDPE {
             loadedPackagesRoot = new AssetFolder("None");
             loadedPackages.Add(loadedPackagesRoot);
 
-            LoadPackage("Test.pkg");
-
             tvLoadedPackages.ItemsSource = loadedPackages;
             tvNewPackages.ItemsSource = newPackages;
         }
