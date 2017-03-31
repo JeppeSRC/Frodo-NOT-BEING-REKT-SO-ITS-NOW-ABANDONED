@@ -31,6 +31,7 @@ MenuRenderer::MenuRenderer(Window* window, unsigned int max_items) : BatchRender
 	delete[] indices;
 
 	shader = ShaderFactory::GetShader(FD_UI_DEFAULT);
+	shader->ShaderGenComplete();
 
 	shader->SetVSConstantBuffer("view_data", &mat4::Orthographic(0.0f, (float)window->GetWidth(), 0.0f, (float)window->GetHeight(), -1.0f, 1.0f));
 
@@ -87,13 +88,12 @@ void MenuRenderer::Submit(const UIHandler* handler) {
 
 			float finalScale = MIN(difference.x, difference.y);
 
-			titleSize -= margin;
-
 			vec2 scale(finalScale, finalScale);
 
-			titleSize = font->GetFontMetrics(title, scale);
+			titleSize += margin * 0.5f;
+			titleSize *= scale;
 
-			fontRenderer->SubmitText(title, font, (position + (size / 2.0f)) - (titleSize / 2.0f) + item->GetTitleOffset() * scale, item->GetTitleColor(), scale);
+			fontRenderer->SubmitText(title, font, position + (size / 2.0f) - (titleSize / 2.0f) + item->GetTitleOffset() * scale, item->GetTitleColor(), scale);
 		} else {
 			fontRenderer->SubmitText(title, font, position + item->GetTitleOffset(), item->GetTitleColor(), item->GetTtitleScale());
 		}

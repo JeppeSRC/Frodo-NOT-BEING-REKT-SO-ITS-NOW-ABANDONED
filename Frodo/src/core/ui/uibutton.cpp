@@ -10,8 +10,7 @@ UIButton::UIButton(const String& title, vec2 position, vec2 size) : UIItem(posit
 	SetTexture(nullptr);
 	SetInteractable(true);
 	SetVisible(true);
-	SetTitleMargin(vec2(70, 50));
-	SetTitleOffset(vec2(0, -5));
+
 	SetTitleColor(vec4(1, 1, 1, 1.0f));
 }
 

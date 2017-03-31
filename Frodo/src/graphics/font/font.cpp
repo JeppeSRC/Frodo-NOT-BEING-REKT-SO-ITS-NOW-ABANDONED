@@ -220,7 +220,7 @@ vec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 		}
 
 
-		const FD_GLYPH& glyph = charMap.Retrieve((uint32)string[i]);
+		const FD_GLYPH& glyph = charMap.Retrieve(c);
 		
 		total.x += (float32(glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0))) * scale.x);
 
