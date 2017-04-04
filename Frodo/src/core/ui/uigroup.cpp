@@ -10,7 +10,7 @@ UIGroup::UIGroup(vec2 position, const String& title) : UIItem(position, vec2(0, 
 
 void UIGroup::Add(UIItem* item) {
 	if (handler == nullptr) {
-		FD_FATAL("[UIGroup] UIHandler in \"%s\" is not set. Add group to the handler before adding items to the group", *title);
+		FD_FATAL("[UIGroup] UIHandler in \"%s\" is not set. Add group to the handler before adding items to the group", *name);
 		return;
 	}
 

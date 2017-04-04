@@ -11,7 +11,7 @@ private:
 	friend class UIItem;
 private:
 	List<UIItem*> items;
-
+	UIItem* inFocus;
 
 public:
 	UIHandler();
@@ -30,6 +30,8 @@ public:
 	bool OnMouseActionButtonPressed(unsigned int button) override;
 	bool OnMouseActionButtonReleased(unsigned int button) override;
 	bool OnMouseActionMove(ivec2 position) override;
+
+	bool OnKeyboardActionKeyPressed(uint32 key) override;
 };
 
 }

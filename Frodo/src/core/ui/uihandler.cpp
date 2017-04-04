@@ -6,7 +6,7 @@
 namespace FD {
 
 UIHandler::UIHandler() {
-
+	inFocus = nullptr;
 }
 
 UIHandler::~UIHandler() {
@@ -20,20 +20,23 @@ void UIHandler::Add(UIItem* item) {
 }
 
 void UIHandler::Update() {
-	size_t size = items.GetSize();
-	for (size_t i = 0; i < size; i++) {
+	uint_t size = items.GetSize();
+	for (uint_t i = 0; i < size; i++) {
 		items[i]->Update();
 	}
 }
 
 bool UIHandler::OnMouseActionButtonPressed(unsigned int button) {
-	size_t size = items.GetSize();
-	for (size_t i = 0; i < size; i++) {
+	inFocus = nullptr;
+	uint_t size = items.GetSize();
+	for (uint_t i = 0; i < size; i++) {
 		UIItem* item = items[i];
 		if (!item->IsMouseOnTop() || !item->IsInteractable()) continue;
 
 		item->SetPressed(true);
 		item->OnPressed(vec2((float)Input::mouseX, (float)Input::mouseY) - item->GetAbsolutePosition());
+
+		inFocus = item;
 	}
 
 
@@ -41,8 +44,8 @@ bool UIHandler::OnMouseActionButtonPressed(unsigned int button) {
 }
 
 bool UIHandler::OnMouseActionButtonReleased(unsigned int button) {
-	size_t size = items.GetSize();
-	for (size_t i = 0; i < size; i++) {
+	uint_t size = items.GetSize();
+	for (uint_t i = 0; i < size; i++) {
 		UIItem* item = items[i];
 		if (!item->IsMouseOnTop() || !item->IsInteractable()) continue;
 
@@ -54,7 +57,7 @@ bool UIHandler::OnMouseActionButtonReleased(unsigned int button) {
 }
 
 bool UIHandler::OnMouseActionMove(ivec2 position) {
-	size_t size = items.GetSize();
+	uint_t size = items.GetSize();
 	for (size_t i = 0; i < size; i++) {
 		UIItem* item = items[i];
 
@@ -78,6 +81,11 @@ bool UIHandler::OnMouseActionMove(ivec2 position) {
 		}
 	}
 
+	return false;
+}
+
+bool UIHandler::OnKeyboardActionKeyPressed(uint32 key) {
+	if (inFocus) inFocus->OnKey(key);
 	return false;
 }
 }

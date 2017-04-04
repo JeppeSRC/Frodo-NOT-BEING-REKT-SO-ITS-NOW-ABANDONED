@@ -14,6 +14,9 @@ public:
 	FD::FontRenderer* renderer;
 	FD::Font* font;
 
+	FD::MenuRenderer* menuRenderer;
+	FD::UIHandler* handler;
+
 	Test() : FDApplication("Title", 1000, 600) {  }
 
 

@@ -5,17 +5,13 @@ namespace FD {
 UISlider::UISlider(const String& name, vec2 position, vec2 size, ValueAction* action) : UIItem(position, size, name), action(action) {
 	SetInteractable(true);
 	SetVisible(true);
-	SetAutoTextAdjustment(false);
-	SetTitle("");
 	sliderMargin = vec2(20, 0);
 
 	float sliderPos = ((size.x - (sliderMargin.x * 2)) * action->GetInterpolation()) + sliderMargin.x;
 
 	handle = new UISlider_Handle(vec2(sliderPos, (size.y / 2.0f) - 15), vec2(10, 30));
-	handle->SetAutoTextAdjustment(false);
 	handle->SetParent(this);
 	handle->SetColor(vec4(1, 0, 1, 1));
-
 }
 
 void UISlider::OnEntered() {

@@ -33,7 +33,6 @@ public:
 	virtual bool OnEvent(const EventWindowState* event) { return false; }
 	virtual bool OnWindowStateChanged(EventWindowState::FD_ACTION action) { return false; }
 
-
 	virtual bool OnEvent(const EventKeyboardActionKey* event) { return false; }
 	virtual bool OnKeyboardActionKeyPressed(uint32 key) { return false; }
 	virtual bool OnKeyboardActionKeyReleased(uint32 key) { return false; }

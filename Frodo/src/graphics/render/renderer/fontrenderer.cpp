@@ -69,7 +69,7 @@ FontRenderer::~FontRenderer() {
 }
 
 
-void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec4 color, vec2 scale) {
+void FontRenderer::SubmitTextAlignLeft(const String& text, Font* font, vec2 position, vec4 color, vec2 scale) {
 	//if (buffer == nullptr) Begin();
 	float32 tid  = SubmitTexture(font->GetTexture());
 	//float btid = SubmitTexture(background);
@@ -103,7 +103,85 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 		float32 xa = xPos + ((float32)glyph.offset.x * scale.x);
 		float32 ya = yPos - ((float32)glyph.offset.y * scale.y);
 
-		#if (!FD_FONT_SHOW_TEXTURE)
+		buffer->position = vec2(xa, ya);
+		buffer->texCoords = vec2(glyph.u0, glyph.v0);
+		buffer->color = color;
+		buffer->tid = tid;
+		buffer++;
+
+		buffer->position = vec2(xa + sizeX, ya);
+		buffer->texCoords = vec2(glyph.u1, glyph.v0);
+		buffer->color = color;
+		buffer->tid = tid;
+		buffer++;
+
+		buffer->position = vec2(xa + sizeX, ya + sizeY);
+		buffer->texCoords = vec2(glyph.u1, glyph.v1);
+		buffer->color = color;
+		buffer->tid = tid;
+		buffer++;
+
+		buffer->position = vec2(xa, ya + sizeY);
+		buffer->texCoords = vec2(glyph.u0, glyph.v1);
+		buffer->color = color;
+		buffer->tid = tid;
+		buffer++;
+
+		indexCount += 6;
+
+		xPos += (float)glyph.advance.x * scale.x;
+	}
+}
+
+void FontRenderer::SubmitTextAlignRight(const String& text, Font* font, vec2 position, vec4 color, vec2 scale) {
+	//if (buffer == nullptr) Begin();
+	float32 tid = SubmitTexture(font->GetTexture());
+	//float btid = SubmitTexture(background);
+
+	uint_t textLength = text.length;
+	float32 sizeX = (float32)font->GetSize() * scale.x;
+	float32 sizeY = (float32)font->GetSize() * scale.y;
+
+	ivec2 dpi = window->GetMonitorDpi();
+
+	uint_t lineLength = text.Find("\n", 0);
+	uint_t lastNewLine = lineLength+1;
+
+	if (lineLength == (uint_t)-1) {
+		lineLength = font->GetFontMetrics(text, scale).x;
+	} else {
+		lineLength = font->GetFontMetrics(text.SubString(0, lineLength + 1), scale).x;
+	}
+
+	float32 xPos = position.x - lineLength;
+	float32 yPos = position.y;
+
+	Font::FD_GLYPH glyph;
+
+	for (uint_t i = 0; i < textLength; i++) {
+		uint32 c = text[i];
+		if (c == ' ') {
+			xPos += sizeX / 2.0f;
+			continue;
+		} else if (c == '\n') {
+			lineLength = text.Find("\n", lastNewLine);
+
+			if (lineLength == (uint_t)-1) {
+				lineLength = font->GetFontMetrics(text.SubString(lastNewLine, textLength - lastNewLine), scale).x;
+			} else {
+				lineLength = font->GetFontMetrics(text.SubString(lastNewLine, lineLength + 1), scale).x;
+			}
+
+			lastNewLine = lineLength + 1;
+
+			xPos = position.x - lineLength;
+			yPos += sizeY;
+		}
+
+		glyph = font->GetGlyph(c);
+
+		float32 xa = xPos + ((float32)glyph.offset.x * scale.x);
+		float32 ya = yPos - ((float32)glyph.offset.y * scale.y);
 
 		buffer->position = vec2(xa, ya);
 		buffer->texCoords = vec2(glyph.u0, glyph.v0);
@@ -129,35 +207,89 @@ void FontRenderer::SubmitText(const String& text, Font* font, vec2 position, vec
 		buffer->tid = tid;
 		buffer++;
 
-		#else
-
-
-		buffer->position = vec2(-1, 1);
-		buffer->texCoords = vec2(0, 0);
-		buffer->tid = tid;
-		buffer++;
-
-		buffer->position = vec2(1, 1);
-		buffer->texCoords = vec2(1, 0);
-		buffer->tid = tid;
-		buffer++;
-
-		buffer->position = vec2(1, -1);
-		buffer->texCoords = vec2(1, 1);
-		buffer->tid = tid;
-		buffer++;
-
-		buffer->position = vec2(-1, -1);
-		buffer->texCoords = vec2(0, 1);
-		buffer->tid = tid;
-		buffer++;
-
-		#endif
-
 		indexCount += 6;
 
 		xPos += (float)glyph.advance.x * scale.x;
 	}
 }
 
+void FontRenderer::SubmitTextAlignCenter(const String& text, Font* font, vec2 position, vec4 color, vec2 scale) {
+	//if (buffer == nullptr) Begin();
+	float32 tid = SubmitTexture(font->GetTexture());
+	//float btid = SubmitTexture(background);
+
+	uint_t textLength = text.length;
+	float32 sizeX = (float32)font->GetSize() * scale.x;
+	float32 sizeY = (float32)font->GetSize() * scale.y;
+
+	ivec2 dpi = window->GetMonitorDpi();
+
+	uint_t lineLength = text.Find("\n", 0);
+	uint_t lastNewLine = lineLength + 1;
+
+	if (lineLength == (uint_t)-1) {
+		lineLength = font->GetFontMetrics(text, scale).x;
+	} else {
+		lineLength = font->GetFontMetrics(text.SubString(0, lineLength + 1), scale).x;
+	}
+
+	float32 xPos = position.x - (lineLength >> 1);
+	float32 yPos = position.y;
+
+	Font::FD_GLYPH glyph;
+
+	for (uint_t i = 0; i < textLength; i++) {
+		uint32 c = text[i];
+		if (c == ' ') {
+			xPos += sizeX / 2.0f;
+			continue;
+		} else if (c == '\n') {
+			lineLength = text.Find("\n", lastNewLine);
+
+			if (lineLength == (uint_t)-1) {
+				lineLength = font->GetFontMetrics(text.SubString(lastNewLine, textLength - lastNewLine), scale).x;
+			} else {
+				lineLength = font->GetFontMetrics(text.SubString(lastNewLine, lineLength + 1), scale).x;
+			}
+
+			lastNewLine = lineLength + 1;
+
+			xPos = position.x - (lineLength >> 1);
+			yPos += sizeY;
+		}
+
+		glyph = font->GetGlyph(c);
+
+		float32 xa = xPos + ((float32)glyph.offset.x * scale.x);
+		float32 ya = yPos - ((float32)glyph.offset.y * scale.y);
+
+		buffer->position = vec2(xa, ya);
+		buffer->texCoords = vec2(glyph.u0, glyph.v0);
+		buffer->color = color;
+		buffer->tid = tid;
+		buffer++;
+
+		buffer->position = vec2(xa + sizeX, ya);
+		buffer->texCoords = vec2(glyph.u1, glyph.v0);
+		buffer->color = color;
+		buffer->tid = tid;
+		buffer++;
+
+		buffer->position = vec2(xa + sizeX, ya + sizeY);
+		buffer->texCoords = vec2(glyph.u1, glyph.v1);
+		buffer->color = color;
+		buffer->tid = tid;
+		buffer++;
+
+		buffer->position = vec2(xa, ya + sizeY);
+		buffer->texCoords = vec2(glyph.u0, glyph.v1);
+		buffer->color = color;
+		buffer->tid = tid;
+		buffer++;
+
+		indexCount += 6;
+
+		xPos += (float)glyph.advance.x * scale.x;
+	}
+}
 }

@@ -5,14 +5,37 @@
 
 namespace FD {
 
+enum FD_TEXT_ALIGNMENT {
+	FD_TEXT_ALIGN_CENTER,
+	FD_TEXT_ALIGN_LEFT,
+	FD_TEXT_ALIGN_RIGHT
+};
+
 class FDAPI FontRenderer : public BatchRenderer {
-protected:
+private:
+
 
 public:
 	FontRenderer(Window* window, uint32 max_glyphs);
 	~FontRenderer();
 
-	void SubmitText(const String& text, Font* font, vec2 position, vec4 color = vec4(1, 1, 1, 1), vec2 scale = vec2(1, 1));
+	inline void SubmitText(const String& text, Font* font, vec2 position, vec4 color, vec2 scale, FD_TEXT_ALIGNMENT alignment) {
+		switch (alignment) {
+		case FD_TEXT_ALIGN_LEFT:
+			SubmitTextAlignLeft(text, font, position, color, scale);
+			break;
+		case FD_TEXT_ALIGN_RIGHT:
+			SubmitTextAlignRight(text, font, position, color, scale);
+			break;
+		case FD_TEXT_ALIGN_CENTER:
+			SubmitTextAlignCenter(text, font, position, color, scale);
+			break;
+		}
+	}
+
+	void SubmitTextAlignLeft(const String& text, Font* font, vec2 position, vec4 color, vec2 scale);
+	void SubmitTextAlignRight(const String& text, Font* font, vec2 position, vec4 color, vec2 scale);
+	void SubmitTextAlignCenter(const String& text, Font* font, vec2 position, vec4 color, vec2 scale);
 
 	void Submit(Entity* e) { }
 };
