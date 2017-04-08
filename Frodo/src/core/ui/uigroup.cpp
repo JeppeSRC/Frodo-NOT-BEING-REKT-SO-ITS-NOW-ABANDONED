@@ -3,7 +3,7 @@
 
 namespace FD {
 
-UIGroup::UIGroup(vec2 position, const String& title) : UIItem(position, vec2(0, 0), title) {
+UIGroup::UIGroup(const String& name, vec2 position) : UIItem(name, position, vec2(0, 0)) {
 	SetInteractable(false);
 	SetVisible(false);
 }

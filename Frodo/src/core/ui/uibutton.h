@@ -6,11 +6,9 @@
 namespace FD {
 
 class FDAPI UIButton : public UIItem {
-private:
-	UITextAutoResize* text;
 public:
-	UIButton(const String& title, vec2 position, vec2 size);
-	~UIButton() { delete text; }
+	UIButton(const String& name, vec2 position, vec2 size, const String& text);
+	~UIButton() { }
 
 	virtual void OnEntered() override;
 	virtual void OnLeft() override;

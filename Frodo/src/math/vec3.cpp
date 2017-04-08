@@ -126,6 +126,14 @@ vec3& vec3::RotateZ(float32 angle) {
 	return *this;
 }
 
+bool vec3::operator==(const vec3& v) const {
+	return FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y) && FLOAT_CMP(z, v.z);
+}
+
+bool vec3::operator!=(const vec3& v) const {
+	return !(FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y) && FLOAT_CMP(z, v.z));
+}
+
 #pragma endregion
 
 #pragma region ivec3
@@ -195,6 +203,14 @@ ivec3& ivec3::Divide(int32 v) {
 	y /= v;
 	z /= v;
 	return *this;
+}
+
+bool ivec3::operator==(const ivec3& v) const {
+	return x == v.x && y == v.y && z == v.z;
+}
+
+bool ivec3::operator!=(const ivec3& v) const {
+	return !(x == v.x && y == v.y && z == v.z);
 }
 
 #pragma endregion

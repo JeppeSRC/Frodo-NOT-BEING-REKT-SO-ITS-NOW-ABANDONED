@@ -101,6 +101,15 @@ public:
 		return (uint_t)-1;
 	}
 
+	template<typename K = T>
+	inline uint_t Find(bool(*CMP_FUNC)(T item, K other), K other) const {
+		for (uint_t i = 0; i < size; i++) {
+			if (CMP_FUNC(data[i], other)) return i;
+		}
+
+		return (uint_t)-1;
+	}
+
 	inline void Reserve(uint_t count) {
 		if (count <= allocated) return;
 

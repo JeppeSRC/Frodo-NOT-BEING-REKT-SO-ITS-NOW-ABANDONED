@@ -210,7 +210,7 @@ vec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 	for (uint_t i = 0; i < len; i++) {
 		uint32 c = string[i];
 		if (c == ' ') {
-			total.x += (((float)size * scale.x) / 2.0f);
+			total.x += (((float)size * scale.x) * 0.5f);
 			continue;
 		}
 		else if (c == '\n') {

@@ -7,7 +7,7 @@ class FDAPI UIGroup : public UIItem {
 private:
 
 public:
-	UIGroup(vec2 position, const String& title);
+	UIGroup(const String& name, vec2 position);
 
 	void Add(UIItem* item);
 };

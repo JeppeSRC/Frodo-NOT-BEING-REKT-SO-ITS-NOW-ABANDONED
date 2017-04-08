@@ -2,7 +2,7 @@
 
 namespace FD {
 
-UISlider::UISlider(const String& name, vec2 position, vec2 size, ValueAction* action) : UIItem(position, size, name), action(action) {
+UISlider::UISlider(const String& name, vec2 position, vec2 size, ValueAction* action) : UIItem(name, position, size), action(action) {
 	SetInteractable(true);
 	SetVisible(true);
 	sliderMargin = vec2(20, 0);
@@ -15,17 +15,14 @@ UISlider::UISlider(const String& name, vec2 position, vec2 size, ValueAction* ac
 }
 
 void UISlider::OnEntered() {
-	if (mouseOnTexture != nullptr) activeTexture = mouseOnTexture;
+
 }
 
 void UISlider::OnLeft() {
-	activeTexture = defaultTexture;
 	grabbed = -1.0f;
 }
 
 void UISlider::OnPressed(vec2 position) {
-	if (pressedTexture != nullptr) activeTexture = pressedTexture;
-
 	vec2& hPos = handle->GetPosition();
 	vec2& hSize = handle->GetSize();
 
@@ -37,7 +34,6 @@ void UISlider::OnPressed(vec2 position) {
 }
 
 void UISlider::OnReleased() {
-	activeTexture = defaultTexture;
 	grabbed = -1.0f;
 }
 

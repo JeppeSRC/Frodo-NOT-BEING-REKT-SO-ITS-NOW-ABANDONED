@@ -79,7 +79,7 @@ void MenuRenderer::Submit(const UIHandler* handler) {
 		for (uint_t i = 0; i < numText; i++) {
 			UIText* t = text[i];
 
-			fontRenderer->SubmitText(t->GetText(), t->GetFont(), position + t->GetPosition(), t->GetColor(), t->GetScale(), t->GetTextAlignment());
+			fontRenderer->SubmitText(t->GetText(), t->GetFont(), position + t->GetPosition() + t->GetOffset() * t->GetScale(), t->GetColor(), t->GetScale(), t->GetTextAlignment());
 		}
 		
 

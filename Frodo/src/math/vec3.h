@@ -53,6 +53,9 @@ public:
 	__forceinline void operator*=(float32 v) { Multiply(v); }
 	__forceinline void operator/=(float32 v) { Divide(v); }
 
+	bool operator==(const vec3& v) const;
+	bool operator!=(const vec3& v) const;
+
 	__forceinline vec3 operator-() { return vec3(-x, -y, -z); }
 };
 
@@ -99,6 +102,9 @@ public:
 	__forceinline void operator-=(int32 v) { Subtract(v); }
 	__forceinline void operator*=(int32 v) { Multiply(v); }
 	__forceinline void operator/=(int32 v) { Divide(v); }
+
+	bool operator==(const ivec3& v) const;
+	bool operator!=(const ivec3& v) const;
 
 	__forceinline ivec3 operator-() { return ivec3(-x, -y, -z); }
 };

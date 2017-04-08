@@ -68,6 +68,14 @@ vec2& vec2::Divide(float32 v) {
 	return *this;
 }
 
+bool vec2::operator==(const vec2& v) const {
+	return FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y);
+}
+
+bool vec2::operator!=(const vec2& v) const {
+	return !(FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y));
+}
+
 #pragma endregion 
 
 
@@ -134,6 +142,15 @@ ivec2& ivec2::Divide(int32 v) {
 	y /= v;
 	return *this;
 }
+
+bool ivec2::operator==(const ivec2& v) const {
+	return x == v.x && y == v.y;
+}
+
+bool ivec2::operator!=(const ivec2& v) const {
+	return !(x == v.x && y == v.y);
+}
+
 
 #pragma endregion
 

@@ -43,7 +43,7 @@ public:
 
 	bool operator==(const String& string) const;
 	bool operator!=(const String& string) const;
-	String operator+(const String& string);
+	String operator+(const String& string) const;
 	__forceinline void operator+=(const String& string) { Append(string); }
 
 	bool StartsWith(const String& string) const;

@@ -75,6 +75,14 @@ vec4& vec4::Divide(float32 v) {
 	return *this;
 }
 
+bool vec4::operator==(const vec4& v) const {
+	return FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y) && FLOAT_CMP(z, v.z) && FLOAT_CMP(w, v.w);
+}
+
+bool vec4::operator!=(const vec4& v) const {
+	return !(FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y) && FLOAT_CMP(z, v.z) && FLOAT_CMP(w, v.w));
+}
+
 #pragma endregion 
 
 #pragma region ivec4
@@ -153,6 +161,14 @@ ivec4& ivec4::Divide(int32 v) {
 	z /= v;
 	w /= v;
 	return *this;
+}
+
+bool ivec4::operator==(const ivec4& v) const {
+	return x == v.x && y == v.y && z == v.z && w == v.w;
+}
+
+bool ivec4::operator!=(const ivec4& v) const {
+	return !(x == v.x && y == v.y && z == v.z && w == v.w);
 }
 
 #pragma endregion 

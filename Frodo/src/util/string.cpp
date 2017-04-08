@@ -199,7 +199,7 @@ bool String::operator!=(const String& string) const {
 	return true;
 }
 
-String String::operator+(const String& string) {
+String String::operator+(const String& string) const {
 	return String(this).Append(string);
 }
 
