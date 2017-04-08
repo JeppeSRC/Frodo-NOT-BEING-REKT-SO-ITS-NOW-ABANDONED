@@ -4,6 +4,8 @@ using namespace FD;
 
 float value = 0;
 
+UIItem* a;
+
 void Test::OnInit() {
 	window->SetVSync(1);
 
@@ -14,10 +16,12 @@ void Test::OnInit() {
 	menuRenderer = new MenuRenderer(window, 128);
 	handler = new UIHandler;
 
-	UIButton* button = new UIButton("Button", vec2(100, 300), vec2(250, 50));
+	UIItem* button = new UIButton("Button", vec2(100, 300), vec2(350, 50), "Button");
 	button->SetFont(font);
+	button->GetText("title")->SetColor(vec4(1, 0, 1, 1));
+	button->GetText("title")->SetOffset(vec2(0, -5));
 
-	
+	a = button;
 
 	UISlider* slider = new UISlider("Slider", vec2(100, 400), vec2(400, 55), new ValueInterpolation<float>(&value, 0.0f, 1.0f));
 	slider->SetFont(font);
