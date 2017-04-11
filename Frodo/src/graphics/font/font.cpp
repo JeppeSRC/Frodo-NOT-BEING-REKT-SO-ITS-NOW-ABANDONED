@@ -231,4 +231,9 @@ vec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 	return total;
 }
 
+vec2 Font::GetScaleFromSize(uint32 size) const {
+	float scale = (float)size / this->size;
+	return vec2(scale, scale);
+}
+
 }

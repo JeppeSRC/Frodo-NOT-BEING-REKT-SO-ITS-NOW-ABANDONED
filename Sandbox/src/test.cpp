@@ -2,31 +2,30 @@
 
 using namespace FD;
 
-float value = 0;
-
-UIItem* a;
+float value = 0.5f;
 
 void Test::OnInit() {
 	window->SetVSync(1);
 
 	renderer = new FontRenderer(window, 1000);
-	font = new Font("res/arial.ttf", 64, Window::GetMonitorDpi());
+	font = new Font("res/arial.ttf", 128, Window::GetMonitorDpi());
 	Font::SetDefaultFont(font);
 
 	menuRenderer = new MenuRenderer(window, 128);
 	handler = new UIHandler;
 
-	UIItem* button = new UIButton("Button", vec2(100, 300), vec2(350, 50), "Button");
+	UIButton* button = new UIButton("Button", vec2(100, 300), vec2(350, 50), "Button");
 	button->SetFont(font);
 	button->GetText("title")->SetColor(vec4(1, 0, 1, 1));
-	button->GetText("title")->SetOffset(vec2(0, -5));
-
-	a = button;
+	button->GetText("title")->SetOffset(vec2(-5, -20));
 
 	UISlider* slider = new UISlider("Slider", vec2(100, 400), vec2(400, 55), new ValueInterpolation<float>(&value, 0.0f, 1.0f));
 	slider->SetFont(font);
 
+	textbox = new UITextBox("TextBox", vec2(400, 100), vec2(400, 50));
+	textbox->SetText("Kebab");
 
+	handler->Add(textbox);
 	handler->Add(slider);
 	handler->Add(button);
 }
@@ -41,7 +40,7 @@ void Test::OnTick() {
 
 void Test::OnRender() {
 	renderer->Begin(nullptr);
-	renderer->SubmitText("Test Text", font, vec2(10, 100), vec4(value, 0, 0, 1), vec2(1, 1), FD_TEXT_ALIGN_LEFT);
+	renderer->SubmitText("Test Text", font, vec2(10, 100), vec4(value, 0, 0, 1), font->GetScaleFromSize(64), FD_TEXT_ALIGN_LEFT);
 	renderer->End();
 	renderer->Present();
 

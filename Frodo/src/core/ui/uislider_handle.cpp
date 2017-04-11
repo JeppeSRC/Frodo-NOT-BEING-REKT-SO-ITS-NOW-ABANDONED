@@ -1,3 +1,4 @@
+#include "uiitem.h"
 #include "uislider.h"
 
 namespace FD {

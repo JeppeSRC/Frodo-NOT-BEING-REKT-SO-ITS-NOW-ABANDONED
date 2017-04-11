@@ -1,5 +1,6 @@
 #include "menurenderer.h"
 #include <graphics/shader/shaderfactory.h>
+#include <core/ui/uitext.h>
 
 namespace FD {
 

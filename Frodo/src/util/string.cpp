@@ -103,6 +103,20 @@ String& String::operator=(String&& string) {
 	return *this;
 }
 
+String& String::Append(const char character) {
+	char* tmpstr = str;
+	str = new char[length + 2];
+	str[length+1] = 0;
+	memcpy(str, tmpstr, length);
+	str[length] = character;
+
+	length++;
+
+	delete[] tmpstr;
+
+	return *this;
+}
+
 String& String::Append(const String& string) {
 	uint_t newlen = length + string.length;
 	char* tmpstr = str;

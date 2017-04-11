@@ -75,7 +75,9 @@ public:
 	inline const String& GetName() const { return name; }
 	inline uint32 GetSize() const { return size; }
 	inline Texture2D* GetTexture() const { return texture; }
-	inline FD_GLYPH GetGlyph(uint32 unicodeCharacter) { return charMap.Retrieve(unicodeCharacter); }
+	inline FD_GLYPH GetGlyph(uint32 unicodeCharacter) const { return charMap.Retrieve(unicodeCharacter); }
+
+	vec2 GetScaleFromSize(uint32 size) const;
 
 	static inline Font* GetDefaultFont() { return defaultFont; }
 	static inline void SetDefaultFont(Font* font) { Font::defaultFont = font; }

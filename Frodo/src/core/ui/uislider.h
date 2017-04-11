@@ -6,7 +6,7 @@ namespace FD {
 
 class FDAPI UISlider : public UIItem {
 private:
-	class FDAPI UISlider_Handle : public UIItem {
+	class UISlider_Handle : public UIItem {
 	public:
 		UISlider_Handle(vec2 position, vec2 size);
 

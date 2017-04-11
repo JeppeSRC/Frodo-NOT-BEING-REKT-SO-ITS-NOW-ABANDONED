@@ -17,6 +17,8 @@ public:
 	FD::MenuRenderer* menuRenderer;
 	FD::UIHandler* handler;
 
+	FD::UITextBox* textbox;
+
 	Test() : FDApplication("Title", 1000, 600) {  }
 
 

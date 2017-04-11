@@ -1,6 +1,8 @@
 #include "uibutton.h"
 #include <core/log.h>
 #include <graphics/texture/texturemanager.h>
+#include "uitext.h"
+
 
 namespace FD {
 

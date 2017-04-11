@@ -78,9 +78,6 @@ void FontRenderer::SubmitTextAlignLeft(const String& text, Font* font, vec2 posi
 	float32 sizeX = (float32)font->GetSize() * scale.x;
 	float32 sizeY = (float32)font->GetSize() * scale.y;
 
-
-	ivec2 dpi = window->GetMonitorDpi();
-
 	float32 xPos = position.x;
 	float32 yPos = position.y;
 
@@ -141,8 +138,6 @@ void FontRenderer::SubmitTextAlignRight(const String& text, Font* font, vec2 pos
 	uint_t textLength = text.length;
 	float32 sizeX = (float32)font->GetSize() * scale.x;
 	float32 sizeY = (float32)font->GetSize() * scale.y;
-
-	ivec2 dpi = window->GetMonitorDpi();
 
 	uint_t lineLength = text.Find("\n", 0);
 	uint_t lastNewLine = lineLength+1;
@@ -221,8 +216,6 @@ void FontRenderer::SubmitTextAlignCenter(const String& text, Font* font, vec2 po
 	uint_t textLength = text.length;
 	float32 sizeX = (float32)font->GetSize() * scale.x;
 	float32 sizeY = (float32)font->GetSize() * scale.y;
-
-	ivec2 dpi = window->GetMonitorDpi();
 
 	uint_t lineLength = text.Find("\n", 0);
 	uint_t lastNewLine = lineLength + 1;

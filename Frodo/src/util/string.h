@@ -26,8 +26,10 @@ public:
 	String& operator=(const String& string);
 	String& operator=(String&& string);
 
+	String& Append(const char character);
 	String& Append(const String& string);
 	__forceinline String& operator<<(const String& string) { return Append(string); }
+	__forceinline String& operator<<(const char character) { return Append(character); }
 
 	String& Remove(const String& string);
 	String& Remove(uint_t start, uint_t end);
@@ -45,6 +47,7 @@ public:
 	bool operator!=(const String& string) const;
 	String operator+(const String& string) const;
 	__forceinline void operator+=(const String& string) { Append(string); }
+	__forceinline void operator+=(const char character) { Append(character); }
 
 	bool StartsWith(const String& string) const;
 	bool EndsWith(const String& string) const;

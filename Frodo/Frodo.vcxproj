@@ -187,10 +187,14 @@
     <ClCompile Include="src\core\ui\uibutton.cpp" />
     <ClCompile Include="src\core\ui\uigroup.cpp" />
     <ClCompile Include="src\core\ui\uihandler.cpp" />
+    <ClCompile Include="src\core\ui\uiitem.cpp" />
     <ClCompile Include="src\core\ui\uislider.cpp" />
     <ClCompile Include="src\core\ui\uislider_handle.cpp" />
     <ClCompile Include="src\core\ui\uitext.cpp" />
     <ClCompile Include="src\core\ui\uitextbox.cpp" />
+    <ClCompile Include="src\core\ui\uitext_autoresize.cpp" />
+    <ClCompile Include="src\core\ui\uitext_horizontal_scroll.cpp" />
+    <ClCompile Include="src\core\ui\uitext_horizontal_scroll_cursor.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\fd.cpp" />
     <ClCompile Include="src\frodo.cpp" />
@@ -244,6 +248,7 @@
     <ClInclude Include="src\core\ui\uihandler.h" />
     <ClInclude Include="src\core\ui\uiitem.h" />
     <ClInclude Include="src\core\ui\uislider.h" />
+    <ClInclude Include="src\core\ui\uitext.h" />
     <ClInclude Include="src\core\ui\uitextbox.h" />
     <ClInclude Include="src\core\window.h" />
     <ClInclude Include="src\entity\entity.h" />

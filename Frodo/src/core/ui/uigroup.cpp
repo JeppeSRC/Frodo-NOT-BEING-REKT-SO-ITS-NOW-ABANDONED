@@ -1,3 +1,4 @@
+#include "uiitem.h"
 #include "uigroup.h"
 #include <core/log.h>
 
