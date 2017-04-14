@@ -1,4 +1,4 @@
-#include "uitextbox.h"
+#include "ui.h"
 
 namespace FD {
 
@@ -15,6 +15,8 @@ UITextBox::UITextBox(const String& name, vec2 position, vec2 size) : UIItem(name
 	SetTexture(nullptr);
 	SetVisible(true);
 	SetInteractable(true);
+
+	GetText<UITextAutoResize>("content")->SetMargin(vec2(10, 20));
 }
 
 void UITextBox::OnKey(uint32 key) {

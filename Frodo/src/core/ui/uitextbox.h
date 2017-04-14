@@ -17,7 +17,7 @@ public:
 
 	inline void SetText(const String& text) { this->text->SetText(text); }
 
-	inline const String& GetText() const { return text->GetText(); }
+	inline const String& GetTextContent() const { return text->GetText(); }
 };
 
 }

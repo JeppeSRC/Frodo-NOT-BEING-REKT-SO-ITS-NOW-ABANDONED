@@ -3,8 +3,10 @@
 #include "core/fdtypes.h"
 
 #ifdef FD_BUILD
+#define FD_EXTERN_TEMPLATE
 #define FDAPI __declspec(dllexport)
 #else
+#define FD_EXTERN_TEMPLATE extern
 #define FDAPI __declspec(dllimport)
 #endif
 

@@ -55,7 +55,8 @@ public:
 	inline vec2 GetSize() const { return size; }
 	inline const String& GetName() const { return name; }
 
-	UIText* GetText(const String& name);
+	template<typename T = UIText>
+	T* GetText(const String& name);
 
 	inline List<UIText*>& GetTexts() { return texts; }
 	inline void AddText(UIText* text) { texts.Push_back(text); }

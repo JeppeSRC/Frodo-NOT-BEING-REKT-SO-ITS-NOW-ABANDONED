@@ -104,4 +104,9 @@ public:
 	inline void SetCursorLocation(uint32 cursorLocation) { this->cursorLocation = cursorLocation; }
 };
 
+#ifndef FD_BUILD
+extern template UIText* UIItem::GetText<UIText>(const String&);
+
+#endif
+
 }
