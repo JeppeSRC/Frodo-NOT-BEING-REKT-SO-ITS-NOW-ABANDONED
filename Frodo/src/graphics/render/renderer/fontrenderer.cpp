@@ -74,7 +74,7 @@ void FontRenderer::SubmitTextAlignLeft(const String& text, Font* font, vec2 posi
 	float32 tid  = SubmitTexture(font->GetTexture());
 	//float btid = SubmitTexture(background);
 
-	size_t textLength = text.length;
+	uint_t textLength = text.length;
 	float32 sizeX = (float32)font->GetSize() * scale.x;
 	float32 sizeY = (float32)font->GetSize() * scale.y;
 

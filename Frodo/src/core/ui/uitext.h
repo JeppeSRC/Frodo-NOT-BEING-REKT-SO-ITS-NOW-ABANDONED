@@ -38,7 +38,7 @@ public:
 	inline vec4 GetColor() const { return color; }
 	inline FD_TEXT_ALIGNMENT GetTextAlignment() const { return alignment; }
 
-	inline void SetParent(UIItem* parent) { this->parent = parent; }
+	virtual void SetParent(UIItem* parent) { this->parent = parent; }
 	inline void SetName(const String& name) { this->name = name; }
 	virtual void SetText(const String& name) { this->text = text; }
 	inline void SetFont(Font* font) { this->font = font; }
@@ -54,7 +54,9 @@ protected:
 	enum FD_SCALE_MODE {
 		FD_SCALE_XY,
 		FD_SCALE_ONLY_X,
-		FD_SCALE_ONLY_Y
+		FD_SCALE_ONLY_Y,
+		FD_SCALE_ONLY_X_ADD_MARGIN,
+		FD_SCALE_ONLY_Y_ADD_MARGIN
 	};
 
 	void RecalculateScale(FD_SCALE_MODE mode);
@@ -64,9 +66,9 @@ protected:
 
 	vec2 margin;
 	vec2 adjustSize;
-
 public:
 	UITextAutoResize(const String& name, vec2 position, vec2 adjustSize, Font* font, const String& text);
+	virtual ~UITextAutoResize() {}
 
 	inline vec2 GetAdjustSize() const { return adjustSize; }
 
@@ -81,32 +83,45 @@ private:
 	friend class UIItem;
 
 	class UITextHorizontalScroll_Cursor : public UIItem {
+	private:
+		UITextHorizontalScroll* text;
+
+		float timer;
+		uint32 location;
 	public:
-		UITextHorizontalScroll_Cursor(const String& name, vec2 position, vec2 size);
+		UITextHorizontalScroll_Cursor(const String& name, uint32 location, vec2 size, UITextHorizontalScroll* text);
+
+		void Update(float delta) override;
+
+		inline void SetLocation(uint32 location) { this->location = location; }
+
+		inline uint32 GetLocation() const { return location; }
 	};
 
-private:
-	uint32 cursorLocation;
+	UITextHorizontalScroll_Cursor* cursor;
 
+private:
 	String orgText;
 
 	void CalculateString();
 
 public:
 	UITextHorizontalScroll(const String& name, vec2 position, vec2 size, Font* font);
+	~UITextHorizontalScroll() { delete cursor; }
 
 	void Append(const String& text);
 	void Append(const char character);
 
+	void Remove(const String& text);
+	void Remove(uint_t start, uint_t end);
+	void Remove();
+
 	void SetText(const String& text) override;
-	inline uint32 GetCursorLocation() const { return cursorLocation; }
 
-	inline void SetCursorLocation(uint32 cursorLocation) { this->cursorLocation = cursorLocation; }
+	void SetParent(UIItem* parent) override;
+
+	inline uint32 GetCursorLocation() const { return cursor->GetLocation(); }
+
+	inline void SetCursorLocation(uint32 cursorLocation) { cursor->SetLocation(cursorLocation); }
 };
-
-#ifndef FD_BUILD
-extern template UIText* UIItem::GetText<UIText>(const String&);
-
-#endif
-
 }

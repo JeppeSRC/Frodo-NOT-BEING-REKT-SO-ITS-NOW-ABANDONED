@@ -19,10 +19,10 @@ void UIHandler::Add(UIItem* item) {
 	item->OnAdd();
 }
 
-void UIHandler::Update() {
+void UIHandler::Update(float delta) {
 	uint_t size = items.GetSize();
 	for (uint_t i = 0; i < size; i++) {
-		items[i]->Update();
+		items[i]->Update(delta);
 	}
 }
 
@@ -58,7 +58,7 @@ bool UIHandler::OnMouseActionButtonReleased(unsigned int button) {
 
 bool UIHandler::OnMouseActionMove(ivec2 position) {
 	uint_t size = items.GetSize();
-	for (size_t i = 0; i < size; i++) {
+	for (uint_t i = 0; i < size; i++) {
 		UIItem* item = items[i];
 
 		if (!item->IsInteractable()) continue;

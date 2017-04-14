@@ -61,9 +61,9 @@ void MenuRenderer::Begin(Camera* camera) {
 }
 
 void MenuRenderer::Submit(const UIHandler* handler) {
-	size_t items = handler->GetSize();
+	uint_t items = handler->GetSize();
 
-	for (size_t i = 0; i < items; i++) {
+	for (uint_t i = 0; i < items; i++) {
 		UIItem* item = (*handler)[i];
 
 		if (!item->IsVisible()) continue;

@@ -14,6 +14,7 @@ public:
 	UITextBox(const String& name, vec2 position, vec2 size);
 
 	void OnKey(uint32 key) override;
+	void OnAdd() override;
 
 	inline void SetText(const String& text) { this->text->SetText(text); }
 

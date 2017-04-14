@@ -21,9 +21,11 @@ void UITextAutoResize::RecalculateScale(FD_SCALE_MODE mode) {
 	case FD_SCALE_XY:
 		finalScale = MIN(difference.x, difference.y);
 		break;
+	case FD_SCALE_ONLY_X_ADD_MARGIN:
 	case FD_SCALE_ONLY_X:
 		finalScale = difference.x;
 		break;
+	case FD_SCALE_ONLY_Y_ADD_MARGIN:
 	case FD_SCALE_ONLY_Y:
 		finalScale = difference.y;
 		break;
@@ -43,9 +45,27 @@ void UITextAutoResize::RecalculateScale(FD_SCALE_MODE mode) {
 		titleSize.x = 0;
 		titleSize.y = ((parent != nullptr ? parent->GetSize().y : 0.0f) * 0.5f) - (titleSize.y * 0.5f);
 		position = orgPosition - titleSize * 0.5f;
+
+		switch (mode) {
+		case FD_SCALE_ONLY_X_ADD_MARGIN:
+			position.y += margin.y * 0.5f;
+			break;
+		case FD_SCALE_ONLY_Y_ADD_MARGIN:
+			position.x += margin.x * 0.5f;
+			break;
+		}
 		break;
 	case FD_TEXT_ALIGN_RIGHT:
 		position = orgPosition - titleSize;
+
+		switch (mode) {
+		case FD_SCALE_ONLY_X_ADD_MARGIN:
+			position.y += margin.y * 0.5f;
+			break;
+		case FD_SCALE_ONLY_Y_ADD_MARGIN:
+			position.x -= margin.x * 0.5f;
+			break;
+		}
 		break;
 	}
 	

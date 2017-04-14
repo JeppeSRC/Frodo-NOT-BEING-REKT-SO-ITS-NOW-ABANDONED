@@ -19,11 +19,11 @@ public:
 
 	void Add(UIItem* item);
 
-	void Update();
+	void Update(float delta);
 
-	inline UIItem* operator[](size_t index) const { return items.Get(index); }
+	inline UIItem* operator[](uint_t index) const { return items.Get(index); }
 
-	inline size_t GetSize() const { return items.GetSize(); }
+	inline uint_t GetSize() const { return items.GetSize(); }
 	inline const List<UIItem*>& GetItems() const { return items; }
 
 public:

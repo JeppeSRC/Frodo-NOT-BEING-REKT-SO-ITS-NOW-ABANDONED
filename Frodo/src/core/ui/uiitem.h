@@ -47,7 +47,7 @@ public:
 	virtual void OnKey(uint32 key) {}
 	virtual void OnAdd() {}
 
-	virtual void Update() {}
+	virtual void Update(float delta) {}
 
 	inline UIHandler* GetHandler() const { return handler; }
 	inline vec2 GetPosition() const { return position; }

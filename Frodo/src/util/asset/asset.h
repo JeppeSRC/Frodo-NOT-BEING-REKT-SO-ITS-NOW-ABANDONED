@@ -38,7 +38,7 @@ public:
 	~Asset() { delete[] data; }
 
 	String GetString() const;
-	Font* GetFont(uint32 size, ivec2 dpi) const;
+	Font* GetFont(uint32 size, ivec2 dpi, Font::FD_RANGE<>* range, uint32 num_ranges) const;
 	Shader* GetShader() const;
 	Texture* GetTexture() const;
 };

@@ -4,10 +4,7 @@ namespace FD {
 
 UITextBox::UITextBox(const String& name, vec2 position, vec2 size) : UIItem(name, position, size) {
 	text = new UITextHorizontalScroll("content", vec2(0, 0), size, Font::GetDefaultFont());
-	text->SetParent(this);
 	text->SetTextAlignment(FD_TEXT_ALIGN_LEFT);
-	text->SetMargin(vec2(10, 10));
-//	text->SetOffset(vec2(0, -10));
 
 	texts.Push_back(text);
 
@@ -15,12 +12,27 @@ UITextBox::UITextBox(const String& name, vec2 position, vec2 size) : UIItem(name
 	SetTexture(nullptr);
 	SetVisible(true);
 	SetInteractable(true);
-
-	GetText<UITextAutoResize>("content")->SetMargin(vec2(10, 20));
 }
 
 void UITextBox::OnKey(uint32 key) {
-	text->Append((char)key);
+	if (key == VK_BACK) {
+		text->Remove();
+	} else {
+		Font* font = text->GetFont();
+		for (uint_t i = 0; i < font->GetNumRanges(); i++) {
+			Font::FD_RANGE<> r = font->GetRanges()[i];
+			if (key >= r.start && key <= r.end) {
+				text->Append((const char)key);
+				break;
+			}
+		}
+	}
+
+	
+}
+
+void UITextBox::OnAdd() {
+	text->SetParent(this);
 }
 
 }

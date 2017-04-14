@@ -5,21 +5,39 @@ namespace FD {
 
 void UITextHorizontalScroll::CalculateString() {
 	text = orgText;
-	RecalculateScale(FD_SCALE_ONLY_Y);
+	RecalculateScale(FD_SCALE_ONLY_Y_ADD_MARGIN);
 
 	vec2 size = font->GetFontMetrics(text, scale);
 
-	if (size.x > adjustSize.x) {
+	if (size.x > adjustSize.x - margin.x) {
 		float averageCharSize = size.x / text.length;
 
-		uint32 charSlots = (uint32)(adjustSize.x / averageCharSize);
+		uint32 charSlots = (uint32)((adjustSize.x - margin.x) / averageCharSize);
 
 		text = orgText.SubString(orgText.length - charSlots, orgText.length);
+
+		bool sizeAdjusted = false;
+
+		while (true) {
+			size = font->GetFontMetrics(text, scale);
+
+			if (size.x < adjustSize.x - margin.x) {
+				sizeAdjusted = true;
+				text = orgText.SubString(orgText.length - ++charSlots, orgText.length);
+			} else if (sizeAdjusted) {
+				text.Remove(0, 1);
+				break;
+			} else {
+				break;
+			}
+		}
+
+		RecalculateScale(FD_SCALE_ONLY_Y_ADD_MARGIN);
 	}
 }
 
 UITextHorizontalScroll::UITextHorizontalScroll(const String& name, vec2 position, vec2 adjustSize, Font* font) : UITextAutoResize(name, position, adjustSize, font, "") {
-	
+	cursor = new UITextHorizontalScroll_Cursor(name, 0, vec2(5, adjustSize.y - margin.y), this);
 }
 
 void UITextHorizontalScroll::SetText(const String& text) {
@@ -35,6 +53,29 @@ void UITextHorizontalScroll::Append(const String& text) {
 void UITextHorizontalScroll::Append(const char character) {
 	orgText += character;
 	CalculateString();
+}
+
+void UITextHorizontalScroll::Remove(const String& text) {
+	orgText.Remove(text);
+	CalculateString();
+}
+
+void UITextHorizontalScroll::Remove(uint_t start, uint_t end) {
+	orgText.Remove(start, end);
+	CalculateString();
+}
+
+void UITextHorizontalScroll::Remove() {
+	if (orgText.length != 0) orgText.Remove(orgText.length - 1, orgText.length);
+	CalculateString();
+}
+
+void UITextHorizontalScroll::SetParent(UIItem* parent) {
+	UIText::SetParent(parent);
+
+	parent->GetHandler()->Add(cursor);
+	cursor->SetParent(parent);
+
 }
 
 }

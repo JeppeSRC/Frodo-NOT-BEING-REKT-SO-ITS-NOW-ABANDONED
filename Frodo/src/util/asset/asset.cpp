@@ -24,12 +24,12 @@ String Asset::GetString() const {
 	return String((char*)data);
 }
 
-Font* Asset::GetFont(uint32 size, ivec2 dpi) const {
+Font* Asset::GetFont(uint32 size, ivec2 dpi, Font::FD_RANGE<>* range, uint32 num_ranges) const {
 	if (type != FD_ASSET_TYPE_FONT) {
 		FD_FATAL("[Asset]: Failed to create font, \"%s\" is not of type Font!", *name);
 		return nullptr;
 	}
-	return new Font(data, (uint32)this->size, size, dpi);
+	return new Font(data, (uint32)this->size, size, dpi, range, num_ranges);
 }
 
 Shader* Asset::GetShader() const {

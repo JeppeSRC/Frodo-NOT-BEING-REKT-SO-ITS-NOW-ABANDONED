@@ -60,13 +60,16 @@ private:
 	FT_LibraryRec_* library;
 	FT_FaceRec_* face;
 
+	FD_RANGE<>* ranges;
+	uint32 num_ranges;
+
 	bool initialized;
 
 	bool LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, ivec2 dpi, FD_RANGE<>* ranges, uint32 num_ranges);
 
 public:
-	Font(const String& fontFile, uint32 size, ivec2 dpi);
-	Font(void* memory, uint32 memory_size, uint32 size, ivec2 dpi);
+	Font(const String& fontFile, uint32 size, ivec2 dpi, FD_RANGE<>* range, uint32 num_ranges);
+	Font(void* memory, uint32 memory_size, uint32 size, ivec2 dpi, FD_RANGE<>* range, uint32 num_ranges);
 	~Font();
 
 	ivec2 GetKerning(uint32 left, uint32 right);
@@ -76,6 +79,8 @@ public:
 	inline uint32 GetSize() const { return size; }
 	inline Texture2D* GetTexture() const { return texture; }
 	inline FD_GLYPH GetGlyph(uint32 unicodeCharacter) const { return charMap.Retrieve(unicodeCharacter); }
+	inline FD_RANGE<>* GetRanges() const { return ranges; }
+	inline uint32 GetNumRanges() const { return num_ranges; }
 
 	vec2 GetScaleFromSize(uint32 size) const;
 
