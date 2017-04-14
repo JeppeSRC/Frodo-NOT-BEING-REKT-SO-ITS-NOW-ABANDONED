@@ -127,11 +127,11 @@ vec3& vec3::RotateZ(float32 angle) {
 }
 
 bool vec3::operator==(const vec3& v) const {
-	return FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y) && FLOAT_CMP(z, v.z);
+	return FLOAT32_CMP(x, v.x) && FLOAT32_CMP(y, v.y) && FLOAT32_CMP(z, v.z);
 }
 
 bool vec3::operator!=(const vec3& v) const {
-	return !(FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y) && FLOAT_CMP(z, v.z));
+	return !(FLOAT32_CMP(x, v.x) && FLOAT32_CMP(y, v.y) && FLOAT32_CMP(z, v.z));
 }
 
 #pragma endregion

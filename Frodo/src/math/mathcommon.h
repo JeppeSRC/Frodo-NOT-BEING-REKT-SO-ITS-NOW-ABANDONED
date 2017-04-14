@@ -19,6 +19,9 @@
 #define MAX(a, b) (a > b ? a : b)
 #define MIN(a, b) (a < b ? a : b)
 
-#define FLOAT_CMP(a, b) (*((uint_t*)&a) == *((uint_t*)&b))
+#define FLOAT_CMP(a, b, type) (*((type*)&a) == *((type*)&b))
+
+#define FLOAT32_CMP(a, b) FLOAT_CMP(a, b, uint32)
+#define FLOAT64_CMP(a, b) FLOAT_CMP(a, b, uint64)
 
 

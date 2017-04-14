@@ -76,11 +76,11 @@ vec4& vec4::Divide(float32 v) {
 }
 
 bool vec4::operator==(const vec4& v) const {
-	return FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y) && FLOAT_CMP(z, v.z) && FLOAT_CMP(w, v.w);
+	return FLOAT32_CMP(x, v.x) && FLOAT32_CMP(y, v.y) && FLOAT32_CMP(z, v.z) && FLOAT32_CMP(w, v.w);
 }
 
 bool vec4::operator!=(const vec4& v) const {
-	return !(FLOAT_CMP(x, v.x) && FLOAT_CMP(y, v.y) && FLOAT_CMP(z, v.z) && FLOAT_CMP(w, v.w));
+	return !(FLOAT32_CMP(x, v.x) && FLOAT32_CMP(y, v.y) && FLOAT32_CMP(z, v.z) && FLOAT32_CMP(w, v.w));
 }
 
 #pragma endregion 
