@@ -8,13 +8,19 @@ void Test::OnInit() {
 	window->SetVSync(1);
 
 	renderer = new FontRenderer(window, 1000);
-	font = new Font("res/arial.ttf", 128, Window::GetMonitorDpi());
+
+	Font::FD_RANGE<> r;
+
+	r.start = 0x20;
+	r.end = 0x7E;
+
+	font = new Font("res/arial.ttf", 128, Window::GetMonitorDpi(), &r, 1);
 	Font::SetDefaultFont(font);
 
 	menuRenderer = new MenuRenderer(window, 128);
 	handler = new UIHandler;
 
-	UIButton* button = new UIButton("Button", vec2(100, 300), vec2(350, 50), "Button");
+	UIItem* button = new UIButton("Button", vec2(100, 300), vec2(350, 50), "Button");
 	button->SetFont(font);
 	button->GetText("title")->SetColor(vec4(1, 0, 1, 1));
 	button->GetText("title")->SetOffset(vec2(-5, -20));
@@ -23,7 +29,9 @@ void Test::OnInit() {
 	slider->SetFont(font);
 
 	textbox = new UITextBox("TextBox", vec2(400, 100), vec2(400, 50));
-	textbox->SetText("Kebab");
+	
+	
+	textbox->GetText<UITextAutoResize>("content")->SetMargin(vec2(20, 60));
 
 	handler->Add(textbox);
 	handler->Add(slider);
@@ -31,7 +39,7 @@ void Test::OnInit() {
 }
 
 void Test::OnUpdate(float delta) {
-	handler->Update();
+	handler->Update(delta);
 }
 
 void Test::OnTick() {
