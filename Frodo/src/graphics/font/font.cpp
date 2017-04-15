@@ -128,7 +128,7 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 			glyph.unicodeCharacter = c;
 			glyph.advance.x = glyphSlot->advance.x >> 6;
 			glyph.offset.x = metrics.horiBearingX >> 6;
-			glyph.offset.y = (metrics.horiBearingY >> 6) - (metrics.height >> 6);
+			glyph.offset.y = (metrics.horiBearingY  - metrics.height) >> 6;
 			glyph.bitmapSize.x = bitmap.width;
 			glyph.bitmapSize.y = bitmap.rows;
 
@@ -205,7 +205,7 @@ ivec2 Font::GetKerning(uint32 left, uint32 right) {
 vec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 	uint_t len = string.length;
 
-	vec2 total(0, ((float)size * scale.y));
+	vec2 total(0, ((float32)size * scale.y));
 
 	float maxLength = 0;
 
@@ -224,7 +224,7 @@ vec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 
 		const FD_GLYPH& glyph = charMap.Retrieve(c);
 		
-		total.x += (float32(glyph.offset.x + (glyph.advance.x * (i < len-1 ? 1 : 0))) * scale.x);
+		total.x += ((float32)glyph.advance.x * scale.x);
 
 	}
 
@@ -233,8 +233,14 @@ vec2 Font::GetFontMetrics(const String& string, vec2 scale) const {
 	return total;
 }
 
+vec2 Font::GetFontMetrics(const char character, vec2 scale) const {
+	const FD_GLYPH& glyph = charMap.Retrieve(character);
+
+	return vec2((float32)glyph.advance.x * scale.x, (float32)size * scale.y);
+}
+
 vec2 Font::GetScaleFromSize(uint32 size) const {
-	float scale = (float)size / this->size;
+	float32 scale = (float32)size / this->size;
 	return vec2(scale, scale);
 }
 

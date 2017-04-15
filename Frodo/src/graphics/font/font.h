@@ -74,6 +74,7 @@ public:
 
 	ivec2 GetKerning(uint32 left, uint32 right);
 	vec2 GetFontMetrics(const String& string, vec2 scale = vec2(1, 1)) const;
+	vec2 GetFontMetrics(const char character, vec2 scale = vec2(1, 1)) const;
 
 	inline const String& GetName() const { return name; }
 	inline uint32 GetSize() const { return size; }
