@@ -23,12 +23,30 @@ void UITextHorizontalScroll::UITextHorizontalScroll_Cursor::Update(float delta) 
 		SetVisible(!isVisible);
 	}
 
-	size = vec2(2, text->adjustSize.y - (text->margin.y * 0.5f) + 10);
-	position.y = (text->adjustSize.y * 0.5f) - (size.y * 0.5f);
+	const UITextHorizontalScroll& text = *this->text;
 
-	float length = text->GetFont()->GetFontMetrics(text->text, text->scale).x;
+	size = vec2(2, text.adjustSize.y - (text.margin.y * 0.5f) + 10);
+	position.y = (text.adjustSize.y * 0.5f) - (size.y * 0.5f);
 
-	position.x = text->position.x + length;	
+	CalculateCursurPosition();
 }
 
+void UITextHorizontalScroll::UITextHorizontalScroll_Cursor::CalculateCursurPosition() {
+	const UITextHorizontalScroll& text = *this->text;
+
+	if (location == 0) {
+		position.x = text.position.x + text.position.x;
+		return;
+	} 
+
+	if (location >= text.text.length) {
+		location = text.text.length;
+		position.x = text.font->GetFontMetrics(text.text, text.scale).x + text.position.x;
+		return;
+	}
+
+	String substr = text.text.SubString(0, location);
+
+	position.x = text.font->GetFontMetrics(substr, text.scale).x + text.position.x;
+}
 }

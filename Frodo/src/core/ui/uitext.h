@@ -83,19 +83,19 @@ private:
 	friend class UIItem;
 
 	class UITextHorizontalScroll_Cursor : public UIItem {
-	private:
+	public:
 		UITextHorizontalScroll* text;
 
 		float timer;
 		uint32 location;
+		uint32 offset;
+
+		void CalculateCursurPosition();
+
 	public:
 		UITextHorizontalScroll_Cursor(const String& name, uint32 location, vec2 size, UITextHorizontalScroll* text);
 
 		void Update(float delta) override;
-
-		inline void SetLocation(uint32 location) { this->location = location; }
-
-		inline uint32 GetLocation() const { return location; }
 	};
 
 	UITextHorizontalScroll_Cursor* cursor;
@@ -120,8 +120,8 @@ public:
 
 	void SetParent(UIItem* parent) override;
 
-	inline uint32 GetCursorLocation() const { return cursor->GetLocation(); }
+	inline uint32 GetCursorLocation() const { return cursor->location; }
 
-	inline void SetCursorLocation(uint32 cursorLocation) { cursor->SetLocation(cursorLocation); }
+	inline void SetCursorLocation(uint32 cursorLocation) { cursor->location = cursorLocation; }
 };
 }

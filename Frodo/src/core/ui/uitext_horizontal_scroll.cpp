@@ -14,7 +14,9 @@ void UITextHorizontalScroll::CalculateString() {
 
 		uint32 charSlots = (uint32)((adjustSize.x - margin.x) / averageCharSize);
 
-		text = orgText.SubString(orgText.length - charSlots, orgText.length);
+		cursor->offset = orgText.length - charSlots;
+
+		text = orgText.SubString(cursor->offset, orgText.length);
 
 		bool sizeAdjusted = false;
 
@@ -47,26 +49,33 @@ void UITextHorizontalScroll::SetText(const String& text) {
 
 void UITextHorizontalScroll::Append(const String& text) {
 	orgText += text;
+	cursor->location += text.length;
 	CalculateString();
 }
 
 void UITextHorizontalScroll::Append(const char character) {
 	orgText += character;
+	cursor->location++;
 	CalculateString();
 }
 
 void UITextHorizontalScroll::Remove(const String& text) {
 	orgText.Remove(text);
+	cursor->location -= text.length;
 	CalculateString();
 }
 
 void UITextHorizontalScroll::Remove(uint_t start, uint_t end) {
 	orgText.Remove(start, end);
+	cursor->location -= end - start;
 	CalculateString();
 }
 
 void UITextHorizontalScroll::Remove() {
-	if (orgText.length != 0) orgText.Remove(orgText.length - 1, orgText.length);
+	if (orgText.length != 0) {
+		orgText.Remove(orgText.length - 1, orgText.length);
+		cursor->location--;
+	}
 	CalculateString();
 }
 
