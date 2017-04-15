@@ -74,17 +74,23 @@ void UITextHorizontalScroll::Remove(uint_t start, uint_t end) {
 void UITextHorizontalScroll::Remove() {
 	if (orgText.length != 0) {
 		orgText.Remove(orgText.length - 1, orgText.length);
-		cursor->location--;
+		if (cursor->offset == 0) cursor->location--;
 	}
 	CalculateString();
 }
 
-void UITextHorizontalScroll::SetParent(UIItem* parent) {
-	UIText::SetParent(parent);
+void UITextHorizontalScroll::EnableCursor() {
+	if (parent) {
+		parent->GetHandler()->Add(cursor);
+		cursor->SetParent(parent);
+	}
+	else {
+		FD_WARNING("[UITextHorizontalScroll] Can't enable cursor, parent null in \"%s\"", *name);
+	}
+}
 
-	parent->GetHandler()->Add(cursor);
-	cursor->SetParent(parent);
-
+void UITextHorizontalScroll::DisableCursor() {
+	parent->GetHandler()->Remove(cursor);
 }
 
 }

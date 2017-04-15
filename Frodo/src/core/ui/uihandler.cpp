@@ -19,6 +19,10 @@ void UIHandler::Add(UIItem* item) {
 	item->OnAdd();
 }
 
+void UIHandler::Remove(UIItem* item) {
+	items.Remove(item);
+}
+
 void UIHandler::Update(float delta) {
 	uint_t size = items.GetSize();
 	for (uint_t i = 0; i < size; i++) {
@@ -27,8 +31,9 @@ void UIHandler::Update(float delta) {
 }
 
 bool UIHandler::OnMouseActionButtonPressed(unsigned int button) {
-	inFocus = nullptr;
 	uint_t size = items.GetSize();
+
+	bool inFocusSet = false;
 	for (uint_t i = 0; i < size; i++) {
 		UIItem* item = items[i];
 		if (!item->IsMouseOnTop() || !item->IsInteractable()) continue;
@@ -36,9 +41,20 @@ bool UIHandler::OnMouseActionButtonPressed(unsigned int button) {
 		item->SetPressed(true);
 		item->OnPressed(vec2((float)Input::mouseX, (float)Input::mouseY) - item->GetAbsolutePosition());
 
+		if (inFocus == item) goto skip_on_focus;
+		
+		if (inFocus) inFocus->OnFocusLost();
 		inFocus = item;
+		inFocus->OnFocus();
+
+		skip_on_focus:
+		inFocusSet = true;
 	}
 
+	if (!inFocusSet && inFocus) {
+		inFocus->OnFocusLost();
+		inFocus = nullptr;
+	}
 
 	return false;
 }

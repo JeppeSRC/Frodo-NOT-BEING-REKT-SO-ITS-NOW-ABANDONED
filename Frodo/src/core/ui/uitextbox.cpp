@@ -5,6 +5,7 @@ namespace FD {
 UITextBox::UITextBox(const String& name, vec2 position, vec2 size) : UIItem(name, position, size) {
 	text = new UITextHorizontalScroll("content", vec2(0, 0), size, Font::GetDefaultFont());
 	text->SetTextAlignment(FD_TEXT_ALIGN_LEFT);
+	text->SetParent(this);
 
 	texts.Push_back(text);
 
@@ -31,8 +32,12 @@ void UITextBox::OnKey(uint32 key) {
 	
 }
 
-void UITextBox::OnAdd() {
-	text->SetParent(this);
+void UITextBox::OnFocus() {
+	text->EnableCursor();
+}
+
+void UITextBox::OnFocusLost() {
+	text->DisableCursor();
 }
 
 }

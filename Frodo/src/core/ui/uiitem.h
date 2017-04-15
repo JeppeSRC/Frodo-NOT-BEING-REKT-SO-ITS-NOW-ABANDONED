@@ -44,6 +44,8 @@ public:
 	virtual void OnHover() {}
 	virtual void OnEntered() {}
 	virtual void OnLeft() {}
+	virtual void OnFocus() {}
+	virtual void OnFocusLost() {}
 	virtual void OnKey(uint32 key) {}
 	virtual void OnAdd() {}
 

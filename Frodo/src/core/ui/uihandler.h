@@ -18,6 +18,7 @@ public:
 	~UIHandler();
 
 	void Add(UIItem* item);
+	void Remove(UIItem* item);
 
 	void Update(float delta);
 

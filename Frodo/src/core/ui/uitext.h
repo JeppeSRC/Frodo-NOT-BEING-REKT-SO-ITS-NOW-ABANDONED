@@ -118,10 +118,7 @@ public:
 
 	void SetText(const String& text) override;
 
-	void SetParent(UIItem* parent) override;
-
-	inline uint32 GetCursorLocation() const { return cursor->location; }
-
-	inline void SetCursorLocation(uint32 cursorLocation) { cursor->location = cursorLocation; }
+	void EnableCursor();
+	void DisableCursor();
 };
 }
