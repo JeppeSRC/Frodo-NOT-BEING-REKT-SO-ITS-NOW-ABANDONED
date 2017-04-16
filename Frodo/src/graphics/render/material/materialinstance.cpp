@@ -6,14 +6,15 @@ namespace FD {
 
 MaterialInstance::MaterialInstance(Material* material) : parent(material) {
 	vCBuffer = material->GetVCBuffer();
-	vCBuffer.data = new byte[vCBuffer.structSize];
+	vCBuffer.data = vCBuffer.structSize == 0 ? nullptr : new byte[vCBuffer.structSize];
 	memcpy(vCBuffer.data, material->GetVCBuffer().data, vCBuffer.structSize);
 
 	pCBuffer = material->GetPCBuffer();
-	pCBuffer.data = new byte[pCBuffer.structSize];
+	pCBuffer.data = pCBuffer.structSize == 0 ? nullptr : new byte[pCBuffer.structSize];
 	memcpy(pCBuffer.data, material->GetPCBuffer().data, pCBuffer.structSize);
 
 	textures = material->GetTextures();
+	shader = material->GetShader();
 }
 
 MaterialInstance::~MaterialInstance() {
@@ -22,8 +23,8 @@ MaterialInstance::~MaterialInstance() {
 }
 
 void MaterialInstance::Bind() {
-	shader->SetVSConstantBuffer(vCBuffer);
-	shader->SetPSConstantBuffer(pCBuffer);
+	if (vCBuffer.data) shader->SetVSConstantBuffer(vCBuffer);
+	if (pCBuffer.data) shader->SetPSConstantBuffer(pCBuffer);
 
 	uint_t size = textures.GetKeyList().GetSize();
 
@@ -84,27 +85,19 @@ void MaterialInstance::SetPCBuffer(const String& name, void* data) {
 
 
 void MaterialInstance::SetVCBufferElement(const String& name, void* data) {
-	uint32 offset = vCBuffer.layout.GetElementOffset(name);
-	if (offset == (uint32)-1) return;
-	memcpy(vCBuffer.data + offset, data, vCBuffer.layout.GetElementSize(name));
+	vCBuffer.SetElement(name, data);
 }
 
 void MaterialInstance::SetPCBufferElement(const String& name, void* data) {
-	uint32 offset = pCBuffer.layout.GetElementOffset(name);
-	if (offset == (uint32)-1) return;
-	memcpy(pCBuffer.data + offset, data, pCBuffer.layout.GetElementSize(name));
+	pCBuffer.SetElement(name, data);
 }
 
 void MaterialInstance::SetVCBufferElement(uint32 index, void* data) {
-	uint32 offset = vCBuffer.layout.GetElementOffset(index);
-	if (offset == (uint32)-1) return;
-	memcpy(vCBuffer.data + offset, data, vCBuffer.layout.GetElementSize(index));
+	vCBuffer.SetElement(index, data);
 }
 
 void MaterialInstance::SetPCBufferElement(uint32 index, void* data) {
-	uint32 offset = pCBuffer.layout.GetElementOffset(index);
-	if (offset == (uint32)-1) return;
-	memcpy(pCBuffer.data + offset, data, pCBuffer.layout.GetElementSize(index));
+	pCBuffer.SetElement(index, data);
 }
 
 }

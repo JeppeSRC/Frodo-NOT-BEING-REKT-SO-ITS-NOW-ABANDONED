@@ -21,7 +21,7 @@ private:
 	};
 
 private:
-	List<BufferLayoutAttrib> elements;
+	List<BufferLayoutAttrib*> elements;
 
 	uint32 offset;
 

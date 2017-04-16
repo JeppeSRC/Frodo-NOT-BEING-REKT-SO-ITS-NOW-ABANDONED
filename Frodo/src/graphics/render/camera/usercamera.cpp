@@ -6,10 +6,12 @@ namespace FD {
 
 #define SENSE 8.0f
 
-static vec3 left(-1, 0, 0);
-static vec3 right(1, 0, 0);
-static vec3 forward(0, 0, 1);
-static vec3 back(0, 0, -1);
+#define SPEED 2.0f
+
+static vec3 left(-SPEED, 0, 0);
+static vec3 right(SPEED, 0, 0);
+static vec3 forward(0, 0, SPEED);
+static vec3 back(0, 0, -SPEED);
 
 void UserCamera::Update(float32 delta) {
 

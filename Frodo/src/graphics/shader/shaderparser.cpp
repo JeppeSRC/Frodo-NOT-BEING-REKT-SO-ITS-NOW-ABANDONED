@@ -160,7 +160,7 @@ void Shader::ParseTextures(String source) {
 
 		String type = source.SubString(textureStart + 7, source.Find(" ", textureStart + 7)).RemoveBlankspace();
 
-		if (type == "1D ") {
+		if (type == "1D") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE1D;
 		} else if (type == "2D ") {
 			tex->type = FD_SHADER_TEXTURE_TYPE_TEXTURE2D;

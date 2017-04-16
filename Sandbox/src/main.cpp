@@ -9,8 +9,9 @@
 
 
 int main() {
-	Test t;
-	t.Start();
+
+	Test test;
+	test.Start();
 
 	return 0;
 }

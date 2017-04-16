@@ -8,8 +8,8 @@ namespace FD {
 
 struct Vertex {
 	vec3 position;
-	vec2 texCoords;
 	vec3 normals;
+	vec2 texCoords;
 };
 
 Mesh* MeshFactory::CreatePlane(float32 width, float32 height, MaterialInstance* material) {

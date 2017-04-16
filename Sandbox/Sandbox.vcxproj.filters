@@ -21,10 +21,22 @@
     <ClCompile Include="src\test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\pbrtest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\pbrtest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="res\pbr\shaders\pbr_lighting_v.hlsl" />
+    <FxCompile Include="res\pbr\shaders\pbr_lighting_p.hlsl" />
+    <FxCompile Include="res\pbr\shaders\pbr_skybox_v.hlsl" />
+    <FxCompile Include="res\pbr\shaders\pbr_skybox_p.hlsl" />
   </ItemGroup>
 </Project>

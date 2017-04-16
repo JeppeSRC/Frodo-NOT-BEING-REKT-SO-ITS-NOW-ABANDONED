@@ -8,24 +8,24 @@ namespace FD {
 
 String Shader::GetFunctionTypeString(FD_SHADER_GEN_FUNCTION_TYPE type) {
 	switch (type) {
-		case FD_TRUE:
-			return "true";
-		case FD_FALSE:
-			return "false";
-		case FD_DEFINED:
-			return "defined";
-		case FD_EQ:
-			return "eq";
-		case FD_NEQ:
-			return "neq";
-		case FD_GR:
-			return "gr";
-		case FD_LS:
-			return "ls";
-		case FD_GE:
-			return "ge";
-		case FD_LE:
-			return "le";
+	case FD_TRUE:
+		return "true";
+	case FD_FALSE:
+		return "false";
+	case FD_DEFINED:
+		return "defined";
+	case FD_EQ:
+		return "eq";
+	case FD_NEQ:
+		return "neq";
+	case FD_GR:
+		return "gr";
+	case FD_LS:
+		return "ls";
+	case FD_GE:
+		return "ge";
+	case FD_LE:
+		return "le";
 	}
 
 	FD_WARNING("[Shader] Unknown function type %d", (int32)type);
@@ -189,8 +189,10 @@ void Shader::SetPSConstantBufferSlotInternal(uint32 slot, void* data) {
 void Shader::SetVSConstantBuffer(const String& bufferName, void* data) {
 	uint_t size = vCBuffers.GetSize();
 	for (uint_t i = 0; i < size; i++) {
-		if (vCBuffers[i]->name == bufferName) SetVSConstantBufferSlotInternal((uint32)i, data);
-		return;
+		if (vCBuffers[i]->name == bufferName) {
+			SetVSConstantBufferSlotInternal((uint32)i, data);
+			return;
+		}
 	}
 
 	FD_WARNING("[Shader] Buffer not found \"%s\"", *bufferName);
@@ -199,8 +201,10 @@ void Shader::SetVSConstantBuffer(const String& bufferName, void* data) {
 void Shader::SetPSConstantBuffer(const String& bufferName, void* data) {
 	uint_t size = pCBuffers.GetSize();
 	for (uint_t i = 0; i < size; i++) {
-		if (pCBuffers[i]->name == bufferName) SetPSConstantBufferSlotInternal((uint32)i, data);
-		return;
+		if (pCBuffers[i]->name == bufferName) {
+			SetPSConstantBufferSlotInternal((uint32)i, data);
+			return;
+		}
 	}
 
 	FD_WARNING("[Shader] Buffer not found \"%s\"", *bufferName);
@@ -210,7 +214,7 @@ void Shader::SetVSConstantBuffer(uint32 slot, void* data) {
 	uint_t size = vCBuffers.GetSize();
 	for (uint_t i = 0; i < size; i++) {
 		if (vCBuffers[i]->semRegister == slot) {
-			SetVSConstantBufferSlotInternal(slot, data);
+			SetVSConstantBufferSlotInternal((uint32)i, data);
 			return;
 		}
 	}
@@ -231,11 +235,11 @@ void Shader::SetPSConstantBuffer(uint32 slot, void* data) {
 }
 
 void Shader::SetVSConstantBuffer(Shader::ConstantBufferSlot vCBuffer) {
-	SetVSConstantBufferSlotInternal(vCBuffer.semRegister, vCBuffer.data);
+	SetVSConstantBuffer(vCBuffer.semRegister, vCBuffer.data);
 }
 
 void Shader::SetPSConstantBuffer(Shader::ConstantBufferSlot pCBuffer) {
-	SetPSConstantBufferSlotInternal(pCBuffer.semRegister, pCBuffer.data);
+	SetPSConstantBuffer(pCBuffer.semRegister, pCBuffer.data);
 }
 
 void Shader::SetTexture(uint32 slot, const Texture* tex) {
@@ -304,6 +308,18 @@ uint32 Shader::GetPSTextureSlotByName(const String& textureName) {
 
 	FD_FATAL("[Shader] Texture not found \"%s\"", *textureName);
 	return -1;
+}
+
+void Shader::ConstantBufferSlot::SetElement(const String& name, void* data) {
+	uint32 offset = layout.GetElementOffset(name);
+	if (offset == (uint32)-1) return;
+	memcpy(this->data + offset, data, layout.GetElementSize(name));
+}
+
+void Shader::ConstantBufferSlot::SetElement(uint32 index, void* data) {
+	uint32 offset = layout.GetElementOffset(index);
+	if (offset == (uint32)-1) return;
+	memcpy(this->data + offset, data, layout.GetElementSize(index));
 }
 
 }

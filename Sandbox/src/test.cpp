@@ -18,7 +18,7 @@ void Test::OnInit() {
 
 	font = new Font("res/arial.ttf", 128, Window::GetMonitorDpi(), &r, 1);
 	Font::SetDefaultFont(font);
-	Texture2D* mountains = new Texture2D("res/cube.png");
+	Texture2D* mountains = new Texture2D("res/mountains.jpg");
 	menuRenderer = new MenuRenderer(window, 128);
 	spriteRenderer = new SpriteRenderer(window, 500000, 64);
 	handler = new UIHandler;
@@ -28,7 +28,7 @@ void Test::OnInit() {
 	button->GetText("title")->SetColor(vec4(1, 0, 1, 1));
 	button->GetText("title")->SetOffset(vec2(-5, -20));
 
-	Sprite* sprite = new Sprite(vec3(400, 200, 0), vec2(100, 100), vec4(1, 0.5f, 0.25f, 1));
+	Sprite* sprite = new Sprite(vec3(400, 200, 0), vec2(100, 100), mountains);
 	UISlider* slider = new UISlider("Slider", vec2(100, 400), vec2(400, 55), new ValueInterpolation<float>((float*)&sprite->GetPosition().x, 0.0f, (float32)window->GetWidth() - sprite->GetSize().x));
 	slider->SetFont(font);
 
@@ -39,7 +39,7 @@ void Test::OnInit() {
 
 	for (uint32 x = 0; x < window->GetWidth(); x+=3) {
 		for (uint32 y = 0; y < window->GetHeight(); y+=3) {
-			sprites.Push_back(new Sprite(vec3(x, y, 0), vec2(2, 2), mountains));
+			sprites.Push_back(new Sprite(vec3(x, y, 0), vec2(2, 2), vec4(1, 0, 1, 1)));
 		}
 	}
 

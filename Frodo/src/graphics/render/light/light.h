@@ -2,6 +2,7 @@
 
 #include <fd.h>
 #include <math/math.h>
+#include <util/list.h>
 
 namespace FD {
 
@@ -85,7 +86,7 @@ private:
 
 public:
 	LightStack() {}
-	~LightStack() { lights.Free(); }
+	~LightStack() { }
 
 	void Add(Light* light) { lights.Push_back(light); }
 	void Remove(Light* light) { lights.Remove(light); }

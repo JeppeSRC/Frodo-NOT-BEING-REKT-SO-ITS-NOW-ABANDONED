@@ -16,6 +16,8 @@ float4 psMain(float4 position : SV_POSITION, float2 texCoords : TEXCOORDS, float
 	float4 texColor = float4(1, 1, 1, 1);	
 
 	switch(tid) {
+	case 0:
+		break;
 #shaderGen define_b block2
 	case var:
 		texColor = texvar.Sample(samp, texCoords);

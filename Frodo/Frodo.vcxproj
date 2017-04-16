@@ -97,7 +97,7 @@
       <StructMemberAlignment>Default</StructMemberAlignment>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
@@ -119,7 +119,7 @@
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <OpenMPSupport>false</OpenMPSupport>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
@@ -153,6 +153,7 @@
       <OpenMPSupport>true</OpenMPSupport>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -185,6 +186,7 @@
       <OpenMPSupport>true</OpenMPSupport>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -212,6 +214,7 @@
     <ClCompile Include="src\core\ui\uitext_autoresize.cpp" />
     <ClCompile Include="src\core\ui\uitext_horizontal_scroll.cpp" />
     <ClCompile Include="src\core\ui\uitext_horizontal_scroll_cursor.cpp" />
+    <ClCompile Include="src\core\scene.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\fd.cpp" />
     <ClCompile Include="src\frodo.cpp" />
@@ -220,6 +223,8 @@
     <ClCompile Include="src\graphics\buffer\vertexbuffer.cpp" />
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
     <ClCompile Include="src\graphics\font\font.cpp" />
+    <ClCompile Include="src\graphics\pbr\render\pbrrenderer.cpp" />
+    <ClCompile Include="src\graphics\pbr\render\pbrstaticrenderer.cpp" />
     <ClCompile Include="src\graphics\render\material\materialinstance.cpp" />
     <ClCompile Include="src\graphics\render\mesh\mesh.cpp" />
     <ClCompile Include="src\graphics\render\renderer\batchrenderer.cpp" />
@@ -238,6 +243,7 @@
     <ClCompile Include="src\graphics\texture\framebuffer2d.cpp" />
     <ClCompile Include="src\graphics\texture\texture.cpp" />
     <ClCompile Include="src\graphics\texture\texture2d.cpp" />
+    <ClCompile Include="src\graphics\texture\texturecube.cpp" />
     <ClCompile Include="src\graphics\texture\texturemanager.cpp" />
     <ClCompile Include="src\math\mat3.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
@@ -247,6 +253,11 @@
     <ClCompile Include="src\util\asset\asset.cpp" />
     <ClCompile Include="src\util\asset\assetmanager.cpp" />
     <ClCompile Include="src\util\asset\package.cpp" />
+    <ClCompile Include="src\physics\aabb.cpp" />
+    <ClCompile Include="src\physics\line.cpp" />
+    <ClCompile Include="src\physics\ray.cpp" />
+    <ClCompile Include="src\physics\sphere.cpp" />
+    <ClCompile Include="src\physics\triangle.cpp" />
     <ClCompile Include="src\util\fileutils.cpp" />
     <ClCompile Include="src\util\string.cpp" />
     <ClCompile Include="src\util\vfs\vfs.cpp" />
@@ -268,6 +279,7 @@
     <ClInclude Include="src\core\ui\uislider.h" />
     <ClInclude Include="src\core\ui\uitext.h" />
     <ClInclude Include="src\core\ui\uitextbox.h" />
+    <ClInclude Include="src\core\scene.h" />
     <ClInclude Include="src\core\window.h" />
     <ClInclude Include="src\entity\entity.h" />
     <ClInclude Include="src\fd.h" />
@@ -278,6 +290,7 @@
     <ClInclude Include="src\graphics\buffer\vertexbuffer.h" />
     <ClInclude Include="src\graphics\d3dcontext.h" />
     <ClInclude Include="src\graphics\font\font.h" />
+    <ClInclude Include="src\graphics\pbr\render\pbrrenderer.h" />
     <ClInclude Include="src\graphics\render\mesh\mesh.h" />
     <ClInclude Include="src\graphics\render\renderer\batchrenderer.h" />
     <ClInclude Include="src\graphics\render\camera\camera.h" />
@@ -294,6 +307,7 @@
     <ClInclude Include="src\graphics\texture\framebuffer2d.h" />
     <ClInclude Include="src\graphics\texture\texture.h" />
     <ClInclude Include="src\graphics\texture\texture2d.h" />
+    <ClInclude Include="src\graphics\texture\texturecube.h" />
     <ClInclude Include="src\graphics\texture\texturemanager.h" />
     <ClInclude Include="src\math\mat3.h" />
     <ClInclude Include="src\math\mat4.h" />
@@ -306,6 +320,12 @@
     <ClInclude Include="src\util\asset\asset.h" />
     <ClInclude Include="src\util\asset\assetmanager.h" />
     <ClInclude Include="src\util\asset\package.h" />
+    <ClInclude Include="src\physics\aabb.h" />
+    <ClInclude Include="src\physics\collision.h" />
+    <ClInclude Include="src\physics\line.h" />
+    <ClInclude Include="src\physics\ray.h" />
+    <ClInclude Include="src\physics\sphere.h" />
+    <ClInclude Include="src\physics\triangle.h" />
     <ClInclude Include="src\util\fileutils.h" />
     <ClInclude Include="src\util\list.h" />
     <ClInclude Include="src\util\map.h" />

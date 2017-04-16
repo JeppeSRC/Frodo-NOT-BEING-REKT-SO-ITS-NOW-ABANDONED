@@ -17,10 +17,12 @@ enum FD_TEXTURE_FORMAT {
 
 class FDAPI Texture {
 protected:
+
 	uint32 width;
 	uint32 height;
+	uint32 bits;
 
-	ID3D11ShaderResourceView* resourceView;
+	ID3D11ShaderResourceView* resourceView = nullptr;
 
 public:
 	Texture() { resourceView = nullptr; }
@@ -33,8 +35,9 @@ public:
 
 	inline ID3D11ShaderResourceView* GetResourceView() const { return resourceView; }
 
-	static byte* Load(const String& filename, uint32* width, uint32* height, uint32* bits);
-	static byte* Load(void* memory, uint32* width, uint32* height, uint32* bits);
+	static byte* Load(const String& filename, uint32* width, uint32* height, uint32* bits, bool flipY = false);
+	static byte* Load(void* memory, uint32* width, uint32* height, uint32* bits, bool flipY = false);
 };
 
 }
+

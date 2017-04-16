@@ -29,8 +29,10 @@ public:
 	virtual void Begin(Camera* camera) = 0;
 	virtual void Submit(const LightStack& lights) = 0;
 	virtual void Submit(const RenderCommand& cmd);
+
 	virtual void Submit(Entity3D* e);
-	virtual void Submit(Mesh* mesn, mat4 transform);
+	virtual void Submit(Mesh* mesh, mat4 transform);
+
 	virtual void End() = 0;
 
 

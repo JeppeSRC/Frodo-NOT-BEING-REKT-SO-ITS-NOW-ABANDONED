@@ -39,7 +39,7 @@ public:
 
 	uint_t Count(const String& string, uint_t offset = 0) const;
 
-	inline bool IsNull() const { return (str == nullptr && length == 0); }
+	inline bool IsNull() const { return (str == nullptr || length == 0); }
 
 	char operator[](uint_t index) const;
 

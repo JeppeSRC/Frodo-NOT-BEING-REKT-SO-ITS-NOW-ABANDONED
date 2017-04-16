@@ -71,7 +71,134 @@ mat4 mat4::Scale(const vec3& v) {
 	return tmp;
 }
 
+mat4 mat4::Inverse(mat4 m) {
+
+	float tmp[16];
+
+	tmp[0] = m.m[5] * m.m[10] * m.m[15] -
+		m.m[5] * m.m[11] * m.m[14] -
+		m.m[9] * m.m[6] * m.m[15] +
+		m.m[9] * m.m[7] * m.m[14] +
+		m.m[13] * m.m[6] * m.m[11] -
+		m.m[13] * m.m[7] * m.m[10];
+
+	tmp[4] = -m.m[4] * m.m[10] * m.m[15] +
+		m.m[4] * m.m[11] * m.m[14] +
+		m.m[8] * m.m[6] * m.m[15] -
+		m.m[8] * m.m[7] * m.m[14] -
+		m.m[12] * m.m[6] * m.m[11] +
+		m.m[12] * m.m[7] * m.m[10];
+
+	tmp[8] = m.m[4] * m.m[9] * m.m[15] -
+		m.m[4] * m.m[11] * m.m[13] -
+		m.m[8] * m.m[5] * m.m[15] +
+		m.m[8] * m.m[7] * m.m[13] +
+		m.m[12] * m.m[5] * m.m[11] -
+		m.m[12] * m.m[7] * m.m[9];
+
+	tmp[12] = -m.m[4] * m.m[9] * m.m[14] +
+		m.m[4] * m.m[10] * m.m[13] +
+		m.m[8] * m.m[5] * m.m[14] -
+		m.m[8] * m.m[6] * m.m[13] -
+		m.m[12] * m.m[5] * m.m[10] +
+		m.m[12] * m.m[6] * m.m[9];
+
+	tmp[1] = -m.m[1] * m.m[10] * m.m[15] +
+		m.m[1] * m.m[11] * m.m[14] +
+		m.m[9] * m.m[2] * m.m[15] -
+		m.m[9] * m.m[3] * m.m[14] -
+		m.m[13] * m.m[2] * m.m[11] +
+		m.m[13] * m.m[3] * m.m[10];
+
+	tmp[5] = m.m[0] * m.m[10] * m.m[15] -
+		m.m[0] * m.m[11] * m.m[14] -
+		m.m[8] * m.m[2] * m.m[15] +
+		m.m[8] * m.m[3] * m.m[14] +
+		m.m[12] * m.m[2] * m.m[11] -
+		m.m[12] * m.m[3] * m.m[10];
+
+	tmp[9] = -m.m[0] * m.m[9] * m.m[15] +
+		m.m[0] * m.m[11] * m.m[13] +
+		m.m[8] * m.m[1] * m.m[15] -
+		m.m[8] * m.m[3] * m.m[13] -
+		m.m[12] * m.m[1] * m.m[11] +
+		m.m[12] * m.m[3] * m.m[9];
+
+	tmp[13] = m.m[0] * m.m[9] * m.m[14] -
+		m.m[0] * m.m[10] * m.m[13] -
+		m.m[8] * m.m[1] * m.m[14] +
+		m.m[8] * m.m[2] * m.m[13] +
+		m.m[12] * m.m[1] * m.m[10] -
+		m.m[12] * m.m[2] * m.m[9];
+
+	tmp[2] = m.m[1] * m.m[6] * m.m[15] -
+		m.m[1] * m.m[7] * m.m[14] -
+		m.m[5] * m.m[2] * m.m[15] +
+		m.m[5] * m.m[3] * m.m[14] +
+		m.m[13] * m.m[2] * m.m[7] -
+		m.m[13] * m.m[3] * m.m[6];
+
+	tmp[6] = -m.m[0] * m.m[6] * m.m[15] +
+		m.m[0] * m.m[7] * m.m[14] +
+		m.m[4] * m.m[2] * m.m[15] -
+		m.m[4] * m.m[3] * m.m[14] -
+		m.m[12] * m.m[2] * m.m[7] +
+		m.m[12] * m.m[3] * m.m[6];
+
+	tmp[10] = m.m[0] * m.m[5] * m.m[15] -
+		m.m[0] * m.m[7] * m.m[13] -
+		m.m[4] * m.m[1] * m.m[15] +
+		m.m[4] * m.m[3] * m.m[13] +
+		m.m[12] * m.m[1] * m.m[7] -
+		m.m[12] * m.m[3] * m.m[5];
+
+	tmp[14] = -m.m[0] * m.m[5] * m.m[14] +
+		m.m[0] * m.m[6] * m.m[13] +
+		m.m[4] * m.m[1] * m.m[14] -
+		m.m[4] * m.m[2] * m.m[13] -
+		m.m[12] * m.m[1] * m.m[6] +
+		m.m[12] * m.m[2] * m.m[5];
+
+	tmp[3] = -m.m[1] * m.m[6] * m.m[11] +
+		m.m[1] * m.m[7] * m.m[10] +
+		m.m[5] * m.m[2] * m.m[11] -
+		m.m[5] * m.m[3] * m.m[10] -
+		m.m[9] * m.m[2] * m.m[7] +
+		m.m[9] * m.m[3] * m.m[6];
+
+	tmp[7] = m.m[0] * m.m[6] * m.m[11] -
+		m.m[0] * m.m[7] * m.m[10] -
+		m.m[4] * m.m[2] * m.m[11] +
+		m.m[4] * m.m[3] * m.m[10] +
+		m.m[8] * m.m[2] * m.m[7] -
+		m.m[8] * m.m[3] * m.m[6];
+
+	tmp[11] = -m.m[0] * m.m[5] * m.m[11] +
+		m.m[0] * m.m[7] * m.m[9] +
+		m.m[4] * m.m[1] * m.m[11] -
+		m.m[4] * m.m[3] * m.m[9] -
+		m.m[8] * m.m[1] * m.m[7] +
+		m.m[8] * m.m[3] * m.m[5];
+
+	tmp[15] = m.m[0] * m.m[5] * m.m[10] -
+		m.m[0] * m.m[6] * m.m[9] -
+		m.m[4] * m.m[1] * m.m[10] +
+		m.m[4] * m.m[2] * m.m[9] +
+		m.m[8] * m.m[1] * m.m[6] -
+		m.m[8] * m.m[2] * m.m[5];
+
+	mat4 n;
+
+	float determinant = m.m[0] * tmp[0] + m.m[1] * tmp[4] + m.m[2] * tmp[8] + m.m[3] * tmp[12];
+
+	for (uint_t i = 0; i < 16; i++)
+		n.m[i] = tmp[i] * determinant;
+
+	return n;
+}
+
 mat4 mat4::Perspective(float32 fov, float32 aspect, float32 zNear, float32 zFar) {
+
 	mat4 r(1);
 
 	float32* m = r.m;

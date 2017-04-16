@@ -23,7 +23,7 @@ public:
 	inline void SetRotation(const vec3& rotation) { this->rotation = rotation; UpdateViewMatrix(); }
 	inline void SetProjection(const mat4& matrix) { this->projectionMatrix = matrix; }
 
-	inline const mat4& GetProjectionMatrix() const { return projectionMatrix; }
+	inline mat4 GetProjectionMatrix() const { return projectionMatrix; }
 	inline mat4 GetViewMatrix() { return viewMatrix; }
 	inline vec3 GetPosition() const { return position; }
 	inline vec3 GetRotation() const { return rotation; }

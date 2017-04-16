@@ -74,27 +74,19 @@ void Material::SetPCBuffer(const String& name, void* data) {
 }
 
 void Material::SetVCBufferElement(const String& name, void* data) {
-	uint32 offset = vCBuffer.layout.GetElementOffset(name);
-	if (offset == (uint32)-1) return;
-	memcpy(vCBuffer.data + offset, data, vCBuffer.layout.GetElementSize(name));
+	vCBuffer.SetElement(name, data);
 }
 
 void Material::SetPCBufferElement(const String& name, void* data) {
-	uint32 offset = pCBuffer.layout.GetElementOffset(name);
-	if (offset == (uint32)-1) return;
-	memcpy(pCBuffer.data + offset, data, pCBuffer.layout.GetElementSize(name));
+	pCBuffer.SetElement(name, data);
 }
 
 void Material::SetVCBufferElement(uint32 index, void* data) {
-	uint32 offset = vCBuffer.layout.GetElementOffset(index);
-	if (offset == (uint32)-1) return;
-	memcpy(vCBuffer.data + offset, data, vCBuffer.layout.GetElementSize(index));
+	vCBuffer.SetElement(index, data);
 }
 
 void Material::SetPCBufferElement(uint32 index, void* data) {
-	uint32 offset = pCBuffer.layout.GetElementOffset(index);
-	if (offset == (uint32)-1) return;
-	memcpy(pCBuffer.data + offset, data, pCBuffer.layout.GetElementSize(index));
+	pCBuffer.SetElement(index, data);
 }
 
 }

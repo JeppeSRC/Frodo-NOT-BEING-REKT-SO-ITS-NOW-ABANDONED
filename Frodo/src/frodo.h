@@ -12,6 +12,7 @@
 #include <core/event/eventkayboard.h>
 #include <core/event/eventmouse.h>
 #include <core/event/eventwindow.h>
+#include <core/scene.h>
 
 #include <graphics/d3dcontext.h>
 #include <graphics/buffer/bufferlayout.h>
@@ -22,11 +23,13 @@
 #include <graphics/shader/shaderfactory.h>
 
 #include <graphics/texture/texture2d.h>
+#include <graphics/texture/texturecube.h>
 #include <graphics/texture/framebuffer2d.h>
 #include <graphics/texture/texturemanager.h>
 
 #include <graphics/font/font.h>
 
+#include <graphics/pbr/render/pbrrenderer.h>
 /*#include <graphics/render/deferredrenderer.h>
 #include <graphics/render/forwardrenderer.h>*/
 #include <graphics/render/renderer/fontrenderer.h>
@@ -71,7 +74,6 @@ private:
 
 protected:
 	Window* window;
-	Renderer* mainRenderer;
 
 	virtual void OnInit();
 	virtual void OnTick();
