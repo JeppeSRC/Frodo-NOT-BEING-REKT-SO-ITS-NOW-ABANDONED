@@ -226,6 +226,7 @@
     <ClCompile Include="src\graphics\render\mesh\meshfactory.cpp" />
     <ClCompile Include="src\graphics\render\renderer\renderer.cpp" />
     <ClCompile Include="src\graphics\render\renderer\menurenderer.cpp" />
+    <ClCompile Include="src\graphics\render\renderer\spriterenderer.cpp" />
     <ClCompile Include="src\graphics\shader\shader.cpp" />
     <ClCompile Include="src\graphics\shader\shaderfactory.cpp" />
     <ClCompile Include="src\graphics\shader\shadergen.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="src\graphics\render\mesh\meshfactory.h" />
     <ClInclude Include="src\graphics\render\renderer\renderer.h" />
     <ClInclude Include="src\graphics\render\renderer\menurenderer.h" />
+    <ClInclude Include="src\graphics\render\renderer\spriterenderer.h" />
     <ClInclude Include="src\graphics\shader\shader.h" />
     <ClInclude Include="src\graphics\shader\shaderfactory.h" />
     <ClInclude Include="src\graphics\texture\framebuffer2d.h" />
