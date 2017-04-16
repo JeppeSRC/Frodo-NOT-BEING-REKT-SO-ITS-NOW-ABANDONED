@@ -1,5 +1,6 @@
 #include "spriterenderer.h"
 
+#include <graphics/shader/shaderfactory.h>
 
 namespace FD {
 
@@ -20,7 +21,15 @@ SpriteRenderer::SpriteRenderer(Window* window, uint32 max_sprites, uint32 max_si
 	l.Push<vec4>("COLOR");
 	l.Push<float32>("TID");
 
+	shader = ShaderFactory::GetShader(FD_SPRITE_DEFAULT);
 
+	shader->ShaderGenSetVariable("maxTextures", FD_SHADER_TYPE_PIXELSHADER, (float32)maxSimultaneousTextures);
+
+	shader->ShaderGenComplete();
+
+	shader->SetVSConstantBuffer("view_data", &mat4::Orthographic(0, (float32)window->GetWidth(), 0, (float32)window->GetHeight(), -1, 1));
+
+	l.CreateInputLayout(shader);
 
 	uint32* indices = new uint32[max_sprites * 6];
 

@@ -33,6 +33,7 @@
 #include <graphics/render/renderer/batchrenderer.h>
 #include <graphics/render/renderer/renderer.h>
 #include <graphics/render/renderer/menurenderer.h>
+#include <graphics/render/renderer/spriterenderer.h>
 
 
 #include <graphics/render/material/material.h>

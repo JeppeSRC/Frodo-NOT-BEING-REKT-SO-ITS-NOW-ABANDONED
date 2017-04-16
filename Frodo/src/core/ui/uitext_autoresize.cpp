@@ -6,7 +6,6 @@ namespace FD {
 void UITextAutoResize::RecalculateScale(FD_SCALE_MODE mode) {
 	if (position != lastPosition) {
 		orgPosition = position;
-		FD_DEBUG("GG");
 	}
 
 	vec2 titleSize = font->GetFontMetrics(text);

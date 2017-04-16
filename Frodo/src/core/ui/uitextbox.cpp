@@ -18,6 +18,8 @@ UITextBox::UITextBox(const String& name, vec2 position, vec2 size) : UIItem(name
 void UITextBox::OnKey(uint32 key) {
 	if (key == VK_BACK) {
 		text->Remove();
+	} else if (key == VK_LEFT) {
+	} else if (key == VK_RIGHT) {
 	} else {
 		Font* font = text->GetFont();
 		for (uint_t i = 0; i < font->GetNumRanges(); i++) {

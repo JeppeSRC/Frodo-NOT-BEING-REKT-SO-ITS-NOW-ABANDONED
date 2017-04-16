@@ -3,6 +3,14 @@
 
 namespace FD {
 
+static const char* sprite_default_v =
+#include "shaders/sprite_default_v.hlsl"
+;
+
+static const char* sprite_default_p =
+#include "shaders/sprite_default_p.hlsl"
+;
+
 static const char* deferred_geometrypass_v =
 #include "shaders/deferred_geometrypass_v.hlsl"
 ;
@@ -79,6 +87,8 @@ Shader* ShaderFactory::GetShader(FD_SHADERFACTORY_SHADER_TYPE shader) {
 			return new Shader(font_default_v, font_default_p, true);
 		case FD_UI_DEFAULT:
 			return new Shader(ui_default_v, ui_default_p, true);
+		case FD_SPRITE_DEFAULT:
+			return new Shader(sprite_default_v, sprite_default_p, true);
 	}
 
 	FD_WARNING("FD_SHADER_TYPE_UNKNOWN: Unknown shader returning nullptr");

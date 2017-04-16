@@ -6,7 +6,7 @@ void Renderer::Submit(const RenderCommand& cmd) {
 	commandQueue.Push_back(cmd);
 }
 
-void Renderer::Submit(Entity* e) {
+void Renderer::Submit(Entity3D* e) {
 	Submit(e->GetMesh(), e->GetTransform());
 }
 

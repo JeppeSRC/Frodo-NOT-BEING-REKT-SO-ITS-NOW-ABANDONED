@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fd.h>
+#include <graphics/texture/texture2d.h>
 #include <graphics/render/mesh/mesh.h>
 #include <graphics/render/material/material.h>
 

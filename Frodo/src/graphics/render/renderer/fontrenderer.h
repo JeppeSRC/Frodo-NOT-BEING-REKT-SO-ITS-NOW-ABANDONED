@@ -37,7 +37,7 @@ public:
 	void SubmitTextAlignRight(const String& text, Font* font, vec2 position, vec4 color, vec2 scale);
 	void SubmitTextAlignCenter(const String& text, Font* font, vec2 position, vec4 color, vec2 scale);
 
-	void Submit(Entity* e) { }
+	void Submit(Entity3D* e) { }
 };
 
 }

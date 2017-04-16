@@ -25,7 +25,7 @@ protected:
 
 	FD_TEXT_ALIGNMENT alignment;
 public:
-	UIText(const String& name, vec2 position, Font* font, const String& text) : name(name), text(text), font(font), position(position), scale(vec2(1, 1)), color(vec4(1, 1, 1, 1)) {}
+	UIText(const String& name, vec2 position, Font* font, const String& text) : name(name), text(text), font(font), position(position), scale(vec2(1, 1)), color(vec4(1, 1, 1, 1)) { parent = nullptr; }
 	virtual ~UIText() {}
 
 	inline UIItem* GetParent() const { return parent; }

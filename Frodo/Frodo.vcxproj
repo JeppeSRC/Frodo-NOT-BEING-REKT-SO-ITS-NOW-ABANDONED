@@ -151,7 +151,7 @@
       <AssemblerOutput>NoListing</AssemblerOutput>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OpenMPSupport>true</OpenMPSupport>
-      <ExceptionHandling>false</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
       <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
@@ -183,7 +183,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CallingConvention>FastCall</CallingConvention>
       <OpenMPSupport>true</OpenMPSupport>
-      <ExceptionHandling>false</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
       <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>

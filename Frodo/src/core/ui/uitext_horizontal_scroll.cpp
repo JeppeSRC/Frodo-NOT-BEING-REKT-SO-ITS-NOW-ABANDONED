@@ -14,8 +14,10 @@ void UITextHorizontalScroll::CalculateString() {
 
 		uint32 charSlots = (uint32)((adjustSize.x - margin.x) / averageCharSize);
 
-		cursor->offset = orgText.length - charSlots;
+		uint32 totalOffset = charSlots;
 
+
+		cursor->offset = orgText.length - totalOffset;
 		text = orgText.SubString(cursor->offset, orgText.length);
 
 		bool sizeAdjusted = false;
@@ -25,9 +27,11 @@ void UITextHorizontalScroll::CalculateString() {
 
 			if (size.x < adjustSize.x - margin.x) {
 				sizeAdjusted = true;
-				text = orgText.SubString(orgText.length - ++charSlots, orgText.length);
+				cursor->offset = orgText.length - ++charSlots;
+				text = orgText.SubString(cursor->offset, orgText.length);
 			} else if (sizeAdjusted) {
 				text.Remove(0, 1);
+				cursor->offset--;
 				break;
 			} else {
 				break;
@@ -92,5 +96,4 @@ void UITextHorizontalScroll::EnableCursor() {
 void UITextHorizontalScroll::DisableCursor() {
 	parent->GetHandler()->Remove(cursor);
 }
-
 }
