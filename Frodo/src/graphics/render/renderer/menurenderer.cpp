@@ -83,7 +83,7 @@ void MenuRenderer::Submit(const UIHandler* handler) {
 			fontRenderer->SubmitText(t->GetText(), t->GetFont(), position + t->GetPosition() + t->GetOffset() * t->GetScale(), t->GetColor(), t->GetScale(), t->GetTextAlignment());
 		}
 		
-
+		
 		float tid = SubmitTexture(texture);
 
 		buffer->position = position;

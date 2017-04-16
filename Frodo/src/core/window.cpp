@@ -14,7 +14,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 	static uint32 y = 0;
 	static bool keys[65535];
 	static bool buttons[3];
-
+	
 	switch (msg) {
 		case WM_CLOSE:
 			window->isOpen = false;
@@ -64,14 +64,12 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 		case WM_MOUSEMOVE:
 			x = LOWORD(l);
 			y = HIWORD(l);
-			Input::mouseX = x;
-			Input::mouseY = y;
+
 
 			e = new EventMouseActionMove(ivec2(x, y));
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYDOWN:
-			Input::keys[(byte)w] = true;
 			if (!keys[w]) {
 				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_PRESSED, (int32)w);
 				keys[w] = true;
@@ -81,8 +79,6 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYUP:
-			Input::keys[(byte)w] = false;
-			Input::prevKeys[(byte)w] = false;
 			keys[w] = false;
 			e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_RELEASED, (int32)w);
 			EventDispatcher::DispatchEvent(e);
@@ -125,7 +121,7 @@ Window::Window(const String& title, int32 width, int32 height) : title(title), w
 	FD_DEBUG("Creating window Title<%s> Width<%d> Height<%d>!", *title, width, height);
 
 	WNDCLASSEX ws;
-
+	
 	ws.cbClsExtra = 0;
 	ws.cbSize = sizeof(WNDCLASSEX);
 	ws.cbWndExtra = 0;
@@ -158,7 +154,7 @@ Window::Window(const String& title, int32 width, int32 height) : title(title), w
 	isOpen = true;
 	SetVisible(true);
 	SetVSync(0);
-	Input::Init(this);
+	Input::InitializeDirectInput();
 
 	window_handels.Add(this, hwnd);
 

@@ -3,45 +3,34 @@
 
 namespace FD {
 
-bool		  Input::keys[FD_INPUT_MAX_KEYS];
-bool		  Input::prevKeys[FD_INPUT_MAX_KEYS];
-Window*		  Input::window = nullptr;
+List<FD_DIRECTINPUT_DEVICE*> Input::inputDevices;
+IDirectInput8* Input::dinput;
 
-uint32		  Input::mouseX = 0;
-uint32		  Input::mouseY = 0;
-bool		  Input::mouseCaptured = false;
-
-void Input::Init(Window* window) {
-	Input::window = window;
-	memset(prevKeys, 0, FD_INPUT_MAX_KEYS);
-	memset(keys, 0, FD_INPUT_MAX_KEYS);
-}
-
-void Input::Update() {
-	if (mouseCaptured) SetMousePos(window->GetWidth() >> 1, window->GetHeight() >> 1);
-}
-
-bool Input::IsKeyDown(byte key) {
-	return keys[key];
-}
-
-bool Input::IsKeyDownOnce(byte key) {
-	if (keys[key] && !prevKeys[key]) {
-		prevKeys[key] = true;
-		return true;
+void Input::InitializeDirectInput() {
+	if (DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&dinput, nullptr) != DI_OK) {
+		FD_FATAL("[DirectInput] Failed to intialize DirectInput");
+		return;
 	}
 
-	return false;
-}
+	auto callback = [](LPCDIDEVICEINSTANCE dev, LPVOID param) -> BOOL {
+		List<FD_DIRECTINPUT_DEVICE*>& list = *(List<FD_DIRECTINPUT_DEVICE*>*)param;
 
-void Input::SetMousePos(uint32 x, uint32 y) {
-	POINT p;
-	p.x = x;
-	p.y = y;
+		FD_DIRECTINPUT_DEVICE* d = new FD_DIRECTINPUT_DEVICE;
 
-	ClientToScreen(window->GetHWND(), &p);
+		d->guidInstance = dev->guidInstance;
+		d->type = dev->dwDevType;
+		d->instanceName = dev->tszInstanceName;
+		d->productName = dev->tszProductName;
 
-	SetCursorPos(p.x, p.y);
+		list.Push_back(d);
+
+		return true;
+	};
+
+	dinput->EnumDevices(DI8DEVCLASS_ALL, callback, &inputDevices, DIEDFL_ALLDEVICES);
+
+
+
 }
 
 }

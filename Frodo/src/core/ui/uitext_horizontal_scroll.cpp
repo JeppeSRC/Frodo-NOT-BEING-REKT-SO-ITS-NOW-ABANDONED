@@ -43,7 +43,7 @@ void UITextHorizontalScroll::CalculateString() {
 }
 
 UITextHorizontalScroll::UITextHorizontalScroll(const String& name, vec2 position, vec2 adjustSize, Font* font) : UITextAutoResize(name, position, adjustSize, font, "") {
-	cursor = new UITextHorizontalScroll_Cursor(name, 0, vec2(5, adjustSize.y - margin.y), this);
+	cursor = new UITextHorizontalScroll_Cursor(name, 0, vec2(5, 100), this);
 }
 
 void UITextHorizontalScroll::SetText(const String& text) {

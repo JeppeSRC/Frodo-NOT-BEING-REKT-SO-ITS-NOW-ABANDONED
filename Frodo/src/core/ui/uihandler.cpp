@@ -39,7 +39,8 @@ bool UIHandler::OnMouseActionButtonPressed(unsigned int button) {
 		if (!item->IsMouseOnTop() || !item->IsInteractable()) continue;
 
 		item->SetPressed(true);
-		item->OnPressed(vec2((float)Input::mouseX, (float)Input::mouseY) - item->GetAbsolutePosition());
+		//TODO: mouse pos
+		item->OnPressed(vec2((float)0, (float)0) - item->GetAbsolutePosition());
 
 		if (inFocus == item) goto skip_on_focus;
 		

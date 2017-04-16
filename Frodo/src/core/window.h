@@ -1,6 +1,5 @@
 #pragma once
 #include <math/vec2.h>
-
 #include <fd.h>
 #include <util/string.h>
 #include <util/map.h>
@@ -27,6 +26,10 @@ private:
 	HWND hwnd;
 
 	float32 clearColor[4];
+
+private:
+
+
 
 public:
 	Window(const String& title, int32 width, int32 height);

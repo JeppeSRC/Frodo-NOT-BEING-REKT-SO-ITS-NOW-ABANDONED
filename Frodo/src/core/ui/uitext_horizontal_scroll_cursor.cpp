@@ -25,7 +25,7 @@ void UITextHorizontalScroll::UITextHorizontalScroll_Cursor::Update(float delta) 
 
 	const UITextHorizontalScroll& text = *this->text;
 
-	size = vec2(2, text.adjustSize.y - (text.margin.y * 0.5f) + 10);
+	size = vec2(2, text.font->GetSize() * text.scale.y);
 	position.y = (text.adjustSize.y * 0.5f) - (size.y * 0.5f);
 
 	CalculateCursurPosition();

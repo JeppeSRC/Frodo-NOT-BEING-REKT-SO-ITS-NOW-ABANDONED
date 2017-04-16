@@ -16,8 +16,8 @@ static vec3 back(0, 0, -SPEED);
 void UserCamera::Update(float32 delta) {
 
 	vec3 move(dir);
-
-	if (Input::mouseCaptured) {
+	//TODO: mouse
+	/*if (Input::mouseCaptured) {
 
 		Window& window = *D3DContext::GetWindow();
 
@@ -26,7 +26,7 @@ void UserCamera::Update(float32 delta) {
 
 		rotation += vec3(-xRot, yRot, 0);
 
-	}
+	}*/
 
 	position += move.RotateY(rotation.y) * delta;
 
@@ -48,10 +48,7 @@ bool UserCamera::OnKeyboardActionKeyPressed(uint32 key) {
 	}
 
 	if (key == 'Q')
-		if (Input::mouseCaptured)
-			Input::ReleaseMouse();
-		else
-			Input::CaptureMouse();
+		//TODO: mouse capture
 
 	return false;
 }

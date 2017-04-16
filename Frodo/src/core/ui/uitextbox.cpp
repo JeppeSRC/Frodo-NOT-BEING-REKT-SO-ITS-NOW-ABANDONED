@@ -9,7 +9,6 @@ UITextBox::UITextBox(const String& name, vec2 position, vec2 size) : UIItem(name
 
 	texts.Push_back(text);
 
-	SetColor(vec4(1, 0.5f, 0, 1));
 	SetTexture(nullptr);
 	SetVisible(true);
 	SetInteractable(true);
