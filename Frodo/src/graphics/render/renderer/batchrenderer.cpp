@@ -101,7 +101,7 @@ float32 BatchRenderer::SubmitTexture(Texture2D* texture) {
 	float32 tid = 0;
 
 	if (tids.Find(texture) == (uint_t)-1) {
-		if (tids.GetSize() == maxSimultaneousTextures) {
+		if (tids.GetSize() == maxSimultaneousTextures-1) {
 
 			End();
 			Present();
@@ -124,11 +124,16 @@ BatchRenderer::BatchRenderer(Window* window, uint32 max_vertices) : BatchRendere
 
 }
 
-BatchRenderer::BatchRenderer(Window* window, unsigned int max_vertices, unsigned int max_simultaneous_textures) : Renderer(window) {
+BatchRenderer::BatchRenderer(Window* window, uint32 max_vertices, uint32 max_simultaneous_textures) : Renderer(window) {
 	this->maxVertices = max_vertices;
 	this->indexCount = 0;
 	this->maxSimultaneousTextures = max_simultaneous_textures;
 	this->buffer = nullptr;
+
+	if (this->maxSimultaneousTextures > D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT) {
+		FD_WARNING("[BatchRenderer] Max simultaneous textures set to %u max allowed %u", max_simultaneous_textures, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT);
+		this->maxSimultaneousTextures = D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
+	}
 }
 
 BatchRenderer::~BatchRenderer() {

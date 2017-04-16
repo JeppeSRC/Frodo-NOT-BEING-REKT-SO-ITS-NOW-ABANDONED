@@ -38,7 +38,7 @@ protected:
 	bool blending;
 	bool depthTesting;
 
-	unsigned int maxSimultaneousTextures;
+	uint32 maxSimultaneousTextures;
 
 protected:
 	void SetBlendingInternal(bool enable_blending);
@@ -50,7 +50,7 @@ protected:
 	float32 SubmitTexture(Texture2D* texture);
 
 	BatchRenderer(Window* window, uint32 max_vertices);
-	BatchRenderer(Window* window, unsigned int max_vertices, unsigned int max_simultaneous_textures);
+	BatchRenderer(Window* window, uint32 max_vertices, uint32 max_simultaneous_textures);
 
 
 public:
@@ -65,7 +65,7 @@ public:
 
 
 	inline unsigned int GetMaxSimultaneousTextures() const { return maxSimultaneousTextures; }
-	inline void SetMaxSimultaneousTextures(unsigned int num) { this->maxSimultaneousTextures = num; }
+	inline void SetMaxSimultaneousTextures(uint32 num) { this->maxSimultaneousTextures = num; }
 
 };
 

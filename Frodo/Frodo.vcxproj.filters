@@ -171,6 +171,9 @@
     <ClCompile Include="src\core\ui\uitext_horizontal_scroll_cursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\render\renderer\spriterenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\frodo.h">
@@ -345,6 +348,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\ui\uitext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\render\renderer\spriterenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
