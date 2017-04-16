@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "test.h"
+#include "pbrtest.h"
 #include <core/log.h>
 #include <string>
 #include <util/vfs/vfs.h>
