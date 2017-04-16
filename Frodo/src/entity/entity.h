@@ -17,7 +17,9 @@ public:
 
 	virtual void Update() {}
 
-	inline vec3& GetPosition() { return position; }
+	inline void SetPosition(const vec3& position) { this->position = position; }
+
+	inline const vec3& GetPosition() const { return position; }
 
 };
 
@@ -33,10 +35,13 @@ public:
 
 	inline void SetMesh(Mesh* mesh) { this->mesh = mesh; }
 
+	inline void SetRotation(const vec3& rotation) { this->rotation = rotation; }
+	inline void SetScale(const vec3& scale) { this->scale = scale; }
+
 	inline Mesh* GetMesh() const { return mesh; }
 	inline mat4 GetTransform() const { return mat4::Translate(position) * mat4::Rotate(rotation) * mat4::Scale(scale); }
-	inline vec3& GetRotation() { return rotation; }
-	inline vec3& GetScale() { return scale; }
+	inline const vec3& GetRotation() const { return rotation; }
+	inline const vec3& GetScale() const { return scale; }
 
 };
 
@@ -50,8 +55,11 @@ public:
 	Sprite(const vec3& position, const vec2& size, Texture2D* texture) : Entity(position), size(size), texture(texture), color(vec4(1, 1, 1, 1)) {}
 	Sprite(const vec3& position, const vec2& size, const vec4& color) : Entity(position), size(size), texture(nullptr), color(color) {}
 
-	inline vec2& GetSize() { return size; }
-	inline vec4& GetColor() { return color; }
+	inline void SetSize(const vec2& size) { this->size = size; }
+	inline void SetColor(const vec4& color) { this->color = color; }
+
+	inline const vec2& GetSize() const { return size; }
+	inline const vec4& GetColor() const { return color; }
 	inline Texture2D* GetTexture() const { return texture; }
 
 };
