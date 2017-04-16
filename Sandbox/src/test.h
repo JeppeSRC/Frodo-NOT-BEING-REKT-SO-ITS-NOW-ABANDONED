@@ -14,10 +14,14 @@ public:
 	FD::FontRenderer* renderer;
 	FD::Font* font;
 
+	FD::SpriteRenderer* spriteRenderer;
+
 	FD::MenuRenderer* menuRenderer;
 	FD::UIHandler* handler;
 
 	FD::UITextBox* textbox;
+
+	FD::List<FD::Sprite*> sprites;
 
 	Test() : FDApplication("Title", 1000, 600) {  }
 
