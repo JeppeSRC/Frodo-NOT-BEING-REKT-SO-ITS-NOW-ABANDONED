@@ -96,9 +96,9 @@
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
       <StructMemberAlignment>Default</StructMemberAlignment>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <OpenMPSupport>true</OpenMPSupport>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\FreeImage\Lib\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -118,9 +118,9 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <OpenMPSupport>true</OpenMPSupport>
+      <OpenMPSupport>false</OpenMPSupport>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>
@@ -148,9 +148,11 @@
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
       <StructMemberAlignment>Default</StructMemberAlignment>
-      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerOutput>NoListing</AssemblerOutput>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OpenMPSupport>true</OpenMPSupport>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -181,6 +183,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CallingConvention>FastCall</CallingConvention>
       <OpenMPSupport>true</OpenMPSupport>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
