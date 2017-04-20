@@ -7,7 +7,7 @@ namespace FD {
 
 class EventWindow : public Event {
 protected:
-	EventWindow(FD_TYPE type) : Event(type) {}
+	EventWindow(FD_EVENT_TYPE type) : Event(type) {}
 
 public:
 	EventWindow() : EventWindow(FD_WINDOW_EVENT) {}
@@ -34,21 +34,13 @@ public:
 };
 
 class EventWindowState : public EventWindow {
-public:
-	enum FD_ACTION {
-		FD_FOCUS_GAINED,
-		FD_FOCUS_LOST,
-		FD_MINIMIZED,
-		FD_MAXIMIZED
-	};
-
 private:
-	FD_ACTION action;
+	FD_EVENT_ACTION action;
 
 public:
-	EventWindowState(FD_ACTION action) : EventWindow(action == FD_MAXIMIZED ? FD_WINDOW_STATE_MAXIMIZED : action == FD_MINIMIZED ? FD_WINDOW_STATE_MINIMIZED : action == FD_FOCUS_GAINED ? FD_WINDOW_STATE_FOCUS_GAINED : FD_WINDOW_STATE_FOCUS_LOST) { this->action = action; }
+	EventWindowState(FD_EVENT_ACTION action) : EventWindow(action == FD_MAXIMIZED ? FD_WINDOW_STATE_MAXIMIZED : action == FD_MINIMIZED ? FD_WINDOW_STATE_MINIMIZED : action == FD_FOCUS_GAINED ? FD_WINDOW_STATE_FOCUS_GAINED : FD_WINDOW_STATE_FOCUS_LOST) { this->action = action; }
 
-	inline FD_ACTION GetAction() const { return action; }
+	inline FD_EVENT_ACTION GetAction() const { return action; }
 };
 
 }

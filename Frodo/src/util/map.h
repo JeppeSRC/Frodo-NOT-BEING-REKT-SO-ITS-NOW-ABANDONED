@@ -63,7 +63,7 @@ public:
 		return Add(key);
 	}
 
-	__forceinline void Add(D item, K key) {
+	__forceinline void Add(K key, D item) {
 
 		data << item;
 		keys << key;
@@ -77,6 +77,7 @@ public:
 		return data.Get(index);
 	}
 
+	inline void Clear() { data.Clear(); keys.Clear(); }
 
 	inline uint_t GetItems() const { return keys.GetSize(); }
 

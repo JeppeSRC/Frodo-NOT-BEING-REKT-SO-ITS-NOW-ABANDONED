@@ -4,7 +4,7 @@
 
 namespace FD {
 
-#define SENSE 8.0f
+#define SENSE 0.65f
 
 #define SPEED 2.0f
 
@@ -33,7 +33,7 @@ void UserCamera::Update(float32 delta) {
 	UpdateViewMatrix();
 }
 
-bool UserCamera::OnKeyboardActionKeyPressed(uint32 key) {
+bool UserCamera::OnKeyboardActionKeyPressed(FD_KEY key) {
 
 	if (key == 'W') {
 		dir += forward;
@@ -48,12 +48,12 @@ bool UserCamera::OnKeyboardActionKeyPressed(uint32 key) {
 	}
 
 	if (key == 'Q')
-		//TODO: mouse capture
+		Input::ToggleMouseAcquisition();
 
 	return false;
 }
 
-bool UserCamera::OnKeyboardActionKeyReleased(uint32 key) {
+bool UserCamera::OnKeyboardActionKeyReleased(FD_KEY key) {
 
 	if (key == 'W') {
 		dir -= forward;
@@ -70,9 +70,9 @@ bool UserCamera::OnKeyboardActionKeyReleased(uint32 key) {
 	return false;
 }
 
-bool UserCamera::OnMouseActionMove(ivec2 position) {
-	x = (float32)position.x;
-	y = (float32)position.y;
+bool UserCamera::OnMouseActionMoveRelative(ivec2 position) {
+	rotation.x -= (float32)position.y * SENSE;
+	rotation.y += (float32)position.x * SENSE;
 
 	return false;
 }

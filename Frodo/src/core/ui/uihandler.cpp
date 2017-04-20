@@ -39,8 +39,10 @@ bool UIHandler::OnMouseActionButtonPressed(unsigned int button) {
 		if (!item->IsMouseOnTop() || !item->IsInteractable()) continue;
 
 		item->SetPressed(true);
-		//TODO: mouse pos
-		item->OnPressed(vec2((float)0, (float)0) - item->GetAbsolutePosition());
+		
+		ivec2 pos = Input::GetMousePos();
+
+		item->OnPressed(vec2((float32)pos.x, (float32)pos.y) - item->GetAbsolutePosition());
 
 		if (inFocus == item) goto skip_on_focus;
 		
@@ -73,7 +75,7 @@ bool UIHandler::OnMouseActionButtonReleased(unsigned int button) {
 	return false;
 }
 
-bool UIHandler::OnMouseActionMove(ivec2 position) {
+bool UIHandler::OnMouseActionMoveAbsolute(ivec2 position) {
 	uint_t size = items.GetSize();
 	for (uint_t i = 0; i < size; i++) {
 		UIItem* item = items[i];
@@ -101,7 +103,7 @@ bool UIHandler::OnMouseActionMove(ivec2 position) {
 	return false;
 }
 
-bool UIHandler::OnKeyboardActionKeyPressed(uint32 key) {
+bool UIHandler::OnKeyboardActionKeyPressed(FD_KEY key) {
 	if (inFocus) inFocus->OnKey(key);
 	return false;
 }

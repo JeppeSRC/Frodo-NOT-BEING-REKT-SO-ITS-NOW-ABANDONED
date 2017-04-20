@@ -3,6 +3,8 @@
 #include "input.h"
 #include <core/event/eventdispatcher.h>
 
+#define FD_USE_LEGACY_INPUT 0
+
 namespace FD {
 
 Map<HWND, Window*> Window::window_handels;
@@ -19,47 +21,48 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 		case WM_CLOSE:
 			window->isOpen = false;
 			break;
+			#if FD_USE_LEGACY_INPUT
 		case WM_LBUTTONDOWN:
-			if (!buttons[EventMouseActionButton::FD_BUTTON_LEFT]) {
-				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_LEFT);
-				buttons[EventMouseActionButton::FD_BUTTON_LEFT] = true;
+			if (!buttons[FD_MOUSE_BUTTON_LEFT]) {
+				e = new EventMouseActionButton(FD_PRESSED, FD_MOUSE_BUTTON_LEFT);
+				buttons[FD_MOUSE_BUTTON_LEFT] = true;
 			} else {
-				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_LEFT);
+				e = new EventMouseActionButton(FD_HOLD, FD_MOUSE_BUTTON_LEFT);
 			}
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_LBUTTONUP:
-			e = new EventMouseActionButton(EventMouseActionButton::FD_RELEASED, EventMouseActionButton::FD_BUTTON_LEFT);
+			e = new EventMouseActionButton(FD_RELEASED, FD_MOUSE_BUTTON_LEFT);
 			EventDispatcher::DispatchEvent(e);
-			buttons[EventMouseActionButton::FD_BUTTON_LEFT] = false;
+			buttons[FD_MOUSE_BUTTON_LEFT] = false;
 			break;
 		case WM_MBUTTONDOWN:
-			if (!buttons[EventMouseActionButton::FD_BUTTON_MIDDLE]) {
-				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_MIDDLE);
-				buttons[EventMouseActionButton::FD_BUTTON_MIDDLE] = true;
+			if (!buttons[FD_MOUSE_BUTTON_MIDDLE]) {
+				e = new EventMouseActionButton(FD_PRESSED, FD_MOUSE_BUTTON_MIDDLE);
+				buttons[FD_MOUSE_BUTTON_MIDDLE] = true;
 			} else {
-				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_MIDDLE);
+				e = new EventMouseActionButton(FD_HOLD, FD_MOUSE_BUTTON_MIDDLE);
 			}
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_MBUTTONUP:
-			e = new EventMouseActionButton(EventMouseActionButton::FD_RELEASED, EventMouseActionButton::FD_BUTTON_MIDDLE);
+			e = new EventMouseActionButton(FD_RELEASED, FD_MOUSE_BUTTON_MIDDLE);
 			EventDispatcher::DispatchEvent(e);
-			buttons[EventMouseActionButton::FD_BUTTON_MIDDLE] = false;
+			buttons[FD_MOUSE_BUTTON_MIDDLE] = false;
 			break;
 		case WM_RBUTTONDOWN:
-			if (!buttons[EventMouseActionButton::FD_BUTTON_RIGHT]) {
-				e = new EventMouseActionButton(EventMouseActionButton::FD_PRESSED, EventMouseActionButton::FD_BUTTON_RIGHT);
-				buttons[EventMouseActionButton::FD_BUTTON_RIGHT] = true;
+			if (!buttons[FD_MOUSE_BUTTON_RIGHT]) {
+				e = new EventMouseActionButton(FD_PRESSED, FD_MOUSE_BUTTON_RIGHT);
+				buttons[FD_MOUSE_BUTTON_RIGHT] = true;
 			} else {
-				e = new EventMouseActionButton(EventMouseActionButton::FD_HOLD, EventMouseActionButton::FD_BUTTON_RIGHT);
+				e = new EventMouseActionButton(FD_HOLD, FD_MOUSE_BUTTON_RIGHT);
 			}
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_RBUTTONUP:
-			e = new EventMouseActionButton(EventMouseActionButton::FD_RELEASED, EventMouseActionButton::FD_BUTTON_RIGHT);
+			e = new EventMouseActionButton(FD_RELEASED, FD_MOUSE_BUTTON_RIGHT);
 			EventDispatcher::DispatchEvent(e);
-			buttons[EventMouseActionButton::FD_BUTTON_RIGHT] = false;
+			buttons[FD_MOUSE_BUTTON_RIGHT] = false;
 			break;
 		case WM_MOUSEMOVE:
 			x = LOWORD(l);
@@ -70,19 +73,21 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYDOWN:
+			FD_DEBUG("Key down: %c", (char)w);
 			if (!keys[w]) {
-				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_PRESSED, (int32)w);
+				e = new EventKeyboardActionKey(FD_PRESSED, (int32)w);
 				keys[w] = true;
 			} else {
-				e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_HOLD, (int32)w);
+				e = new EventKeyboardActionKey(FD_HOLD, (int32)w);
 			}
 			EventDispatcher::DispatchEvent(e);
 			break;
 		case WM_KEYUP:
 			keys[w] = false;
-			e = new EventKeyboardActionKey(EventKeyboardActionKey::FD_RELEASED, (int32)w);
+			e = new EventKeyboardActionKey(FD_RELEASED, (int32)w);
 			EventDispatcher::DispatchEvent(e);
 			break;
+			#endif
 		case WM_MOVE:
 			x = LOWORD(l);
 			y = HIWORD(l);
@@ -97,20 +102,24 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 			break;
 		case WM_SYSCOMMAND:
 			if ((w & 0xFFF0) == SC_MINIMIZE) {
-				e = new EventWindowState(EventWindowState::FD_MINIMIZED);
+				e = new EventWindowState(FD_MINIMIZED);
 				EventDispatcher::DispatchEvent(e);
 			} else if ((w & 0xFFF0) == SC_MAXIMIZE) {
-				e = new EventWindowState(EventWindowState::FD_MAXIMIZED);
+				e = new EventWindowState(FD_MAXIMIZED);
 				EventDispatcher::DispatchEvent(e);
 			}
 			break;
 		case WM_SETFOCUS:
-			e = new EventWindowState(EventWindowState::FD_FOCUS_GAINED);
+			e = new EventWindowState(FD_FOCUS_GAINED);
 			EventDispatcher::DispatchEvent(e);
+			Input::AcquireMouse();
+			Input::AcquireKeyboard();
 			break;
 		case WM_KILLFOCUS:
-			e = new EventWindowState(EventWindowState::FD_FOCUS_LOST);
+			e = new EventWindowState(FD_FOCUS_LOST);
 			EventDispatcher::DispatchEvent(e);
+			Input::UnacquireMouse();
+			Input::UnacquireKeyboard();
 			break;
 	}
 
@@ -150,13 +159,15 @@ Window::Window(const String& title, int32 width, int32 height) : title(title), w
 	}
 
 	D3DContext::CreateContext(this);
-
+	
 	isOpen = true;
 	SetVisible(true);
 	SetVSync(0);
-	Input::InitializeDirectInput();
+	Input::InitializeDirectInput(this);
+	Input::InitializeMouse("Mouse");
+	Input::InitializeKeyboard("Keyboard");
 
-	window_handels.Add(this, hwnd);
+	window_handels.Add(hwnd, this);
 
 	clearColor[3] = 1;
 }

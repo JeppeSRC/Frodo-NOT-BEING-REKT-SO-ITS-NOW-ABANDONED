@@ -38,7 +38,7 @@ void TextureManager::Add(const String& name, Texture* tex) {
 	char* tmp = new char[name.length + 1];
 	memcpy(tmp, name.str, name.length + 1);
 
-	textures.Add(tex, tmp);
+	textures.Add(tmp, tex);
 }
 
 Texture* TextureManager::Get(const String& name) {

@@ -9,9 +9,12 @@
 #include <core/event/event.h>
 #include <core/event/eventdispatcher.h>
 #include <core/event/eventlistener.h>
-#include <core/event/eventkayboard.h>
+#include <core/event/eventkeyboard.h>
 #include <core/event/eventmouse.h>
 #include <core/event/eventwindow.h>
+
+#include <core/event/fd_key.h>
+
 #include <core/scene.h>
 
 #include <graphics/d3dcontext.h>

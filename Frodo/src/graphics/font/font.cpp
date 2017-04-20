@@ -112,7 +112,7 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 		for (int32 c = range.start; c < range.end; c++) {
 
 			uint32 index = FT_Get_Char_Index(face, c);
-
+	
 			if (index == 0) continue;
 
 			FT_Load_Glyph(face, index, 0);
@@ -141,7 +141,7 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 			if (glyph.bitmapSize.x > (int32)segmentWidth)  segmentWidth = glyph.bitmapSize.x;
 			if (glyph.bitmapSize.y > (int32)segmentHeight) segmentHeight = glyph.bitmapSize.y;
 
-			charMap.Add(glyph, c);
+			charMap.Add(c, glyph);
 		}
 	}
 
@@ -242,6 +242,15 @@ vec2 Font::GetFontMetrics(const char character, vec2 scale) const {
 vec2 Font::GetScaleFromSize(uint32 size) const {
 	float32 scale = (float32)size / this->size;
 	return vec2(scale, scale);
+}
+
+bool Font::IsCharLoaded(uint32 c) const {
+	for (uint_t i = 0; i < num_ranges; i++) {
+		FD_RANGE<> r = ranges[i];
+		if (c >= r.start && c <= r.end) return true;
+	}
+
+	return false;
 }
 
 }

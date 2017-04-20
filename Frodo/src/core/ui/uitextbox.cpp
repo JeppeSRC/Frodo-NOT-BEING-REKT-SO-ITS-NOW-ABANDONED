@@ -1,4 +1,6 @@
 #include "ui.h"
+#include <core/event/fd_key.h>
+#include <core/input.h>
 
 namespace FD {
 
@@ -15,18 +17,12 @@ UITextBox::UITextBox(const String& name, vec2 position, vec2 size) : UIItem(name
 }
 
 void UITextBox::OnKey(uint32 key) {
-	if (key == VK_BACK) {
+	if (key == FD_KEY_BACK) {
 		text->Remove();
-	} else if (key == VK_LEFT) {
-	} else if (key == VK_RIGHT) {
 	} else {
-		Font* font = text->GetFont();
-		for (uint_t i = 0; i < font->GetNumRanges(); i++) {
-			Font::FD_RANGE<> r = font->GetRanges()[i];
-			if (key >= r.start && key <= r.end) {
-				text->Append((const char)key);
-				break;
-			}
+		uint32 c = KeyMap::GetChar((FD_KEY)key, Input::GetModifiers());
+		if (text->GetFont()->IsCharLoaded(c)) {
+			text->Append((const char)c);
 		}
 	}
 

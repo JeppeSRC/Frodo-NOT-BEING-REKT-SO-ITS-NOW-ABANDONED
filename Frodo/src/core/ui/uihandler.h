@@ -30,9 +30,9 @@ public:
 public:
 	bool OnMouseActionButtonPressed(unsigned int button) override;
 	bool OnMouseActionButtonReleased(unsigned int button) override;
-	bool OnMouseActionMove(ivec2 position) override;
+	bool OnMouseActionMoveAbsolute(ivec2 position) override;
 
-	bool OnKeyboardActionKeyPressed(uint32 key) override;
+	bool OnKeyboardActionKeyPressed(FD_KEY key) override;
 };
 
 }

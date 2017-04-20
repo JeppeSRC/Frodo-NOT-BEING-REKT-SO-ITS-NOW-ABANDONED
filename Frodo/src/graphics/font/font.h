@@ -76,6 +76,8 @@ public:
 	vec2 GetFontMetrics(const String& string, vec2 scale = vec2(1, 1)) const;
 	vec2 GetFontMetrics(const char character, vec2 scale = vec2(1, 1)) const;
 
+	bool IsCharLoaded(uint32 c) const;
+
 	inline const String& GetName() const { return name; }
 	inline uint32 GetSize() const { return size; }
 	inline Texture2D* GetTexture() const { return texture; }

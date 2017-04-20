@@ -29,7 +29,7 @@ String VFS::ResolvePath(const String& vpath) {
 }
 
 void VFS::Mount(const String& name, const String& path) {
-	mountPoints.Add(path, name);
+	mountPoints.Add(name, path);
 }
 
 void VFS::UnMount(const String& name) {
