@@ -69,6 +69,38 @@ void Shader::RemoveComments(String& source) {
 
 void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 
+	//struct
+	while (true) {
+		uint_t cstructStart = source.Find("struct ") + 7;
+
+		if (cstructStart < 7) break;
+
+		uint_t space = source.Find(" ", cstructStart + 1);
+
+		String name = source.SubString(cstructStart, space).RemoveBlankspace();
+
+		StructDefinition* def = new StructDefinition;
+
+		def->name = name;
+
+		uint_t end = source.Find("};", cstructStart) + 2;
+
+		CalcStructSize(source.SubString(source.Find("{", cstructStart) + 1, end - 2).RemoveChars("\t\n\r", true), &def->structSize, &def->layout, type);
+
+		source.Remove(cstructStart - 7, end);
+
+		switch (type) {
+		case FD_SHADER_TYPE_VERTEXSHADER:
+			vStructs.Push_back(def);
+			FD_DEBUG("[ShaderParser] Found vStruct <NAME: %s> <SIZE: %u>", *name, def->structSize);
+			break;
+		case FD_SHADER_TYPE_PIXELSHADER:
+			pStructs.Push_back(def);
+			FD_DEBUG("[ShaderParser] Found pStruct <NAME: %s> <SIZE: %u>", *name, def->structSize);
+			break;
+		}
+	}
+
 
 	//cbuffer
 	while (true) {
@@ -104,87 +136,6 @@ void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 				break;
 		}
 	}
-
-	//struct
-	while (true) {
-		uint_t cstructStart = source.Find("struct ") + 7;
-
-		if (cstructStart < 7) break;
-
-		uint_t space = source.Find(" ", cstructStart + 1);
-
-		String name = source.SubString(cstructStart, space).RemoveBlankspace();
-
-		StructDefinition* def = new StructDefinition;
-
-		def->name = name;
-
-		uint_t end = source.Find("};", cstructStart) + 2;
-
-		CalcStructSize(source.SubString(source.Find("{", cstructStart)+1, end-2).RemoveChars("\t\n\r", true), &def->structSize, &def->layout, type);
-
-		source.Remove(cstructStart - 7, end);
-
-		switch (type) {
-		case FD_SHADER_TYPE_VERTEXSHADER:
-			vStructs.Push_back(def);
-			FD_DEBUG("[ShaderParser] Found vStruct <NAME: %s> <SIZE: %u>", *name, def->structSize);
-			break;
-		case FD_SHADER_TYPE_PIXELSHADER:
-			pStructs.Push_back(def);
-			FD_DEBUG("[ShaderParser] Found pStruct <NAME: %s> <SIZE: %u>", *name, def->structSize);
-			break;
-		}
-	}
-
-
-	
-	//<struct> <name> : register
-	List<StructDefinition*>& structs = type == FD_SHADER_TYPE_VERTEXSHADER ? vStructs : pStructs;
-
-	for (uint_t i = 0; i < structs.GetSize(); i++) {
-		uint_t offset = 0;
-		StructDefinition* def = structs[i];
-		while (true) {
-			uint_t start = source.Find(def->name, offset);
-
-			if (start == (uint_t)-1) break;
-
-			uint_t space = start + def->name.length;
-			uint_t colon = source.Find(':', space);
-			uint_t semicolon = source.Find(';', colon);
-
-			if (source.SubString(space, semicolon).Count("register(b") != 1) {
-				offset = semicolon;
-				continue;
-			}
-
-			uint_t regIndex = source.Find("register(b", colon) + 10;
-
-			String name = source.SubString(space, colon).RemoveBlankspace();
-
-			ShaderStructInfo* buffer = new ShaderStructInfo;
-
-			buffer->name = name;
-			buffer->semRegister = (uint32)atoi(*source + regIndex);
-			buffer->structSize = def->layout.GetSize();
-			buffer->layout = def->layout;
-
-			source.Remove(start, semicolon + 1);
-
-			switch (type) {
-			case FD_SHADER_TYPE_VERTEXSHADER:
-				FD_DEBUG("[ShaderParser] Found vStruct \"%s\" mapped to register %u with name \"%s\"", *def->name, buffer->semRegister, *name);
-				vCBuffers.Push_back(buffer);
-				break;
-			case FD_SHADER_TYPE_PIXELSHADER:
-				FD_DEBUG("[ShaderParser] Found pStruct \"%s\" mapped to register %u with name \"%s\"", *def->name, buffer->semRegister, *name);
-				pCBuffers.Push_back(buffer);
-				break;
-			}
-		}
-	}
-
 }
 
 Shader::ShaderStructFieldType Shader::GetStructFieldType(const String& typeName, FD_SHADER_TYPE type) {
