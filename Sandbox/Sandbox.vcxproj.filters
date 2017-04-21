@@ -33,10 +33,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="res\pbr\shaders\pbr_lighting_p.hlsl" />
-    <FxCompile Include="res\pbr\shaders\pbr_lighting_v.hlsl" />
-    <FxCompile Include="res\pbr\shaders\pbr_skybox_p.hlsl" />
-    <FxCompile Include="res\pbr\shaders\pbr_skybox_v.hlsl" />
-  </ItemGroup>
 </Project>

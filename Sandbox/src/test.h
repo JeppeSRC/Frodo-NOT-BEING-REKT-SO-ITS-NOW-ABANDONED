@@ -23,6 +23,8 @@ public:
 
 	FD::List<FD::Sprite*> sprites;
 
+	FD::Sprite* cursor;
+
 	Test() : FDApplication("Title", 1000, 600) {  }
 
 

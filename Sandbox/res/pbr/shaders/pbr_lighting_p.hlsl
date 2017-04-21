@@ -17,17 +17,21 @@ cbuffer Light : register(b0) {
 	float pad2;
 };
 
-cbuffer Material : register(b10) {
-	float3 m_Albedo;
-	float m_AlbedoFactor;
-	float m_Metallic;
-	float m_MetallicFactor;
-	float m_Roughness;
-	float m_RoughnessFactor;
-	float m_AmbientOcclusion;
-	float m_AmbientOcclusionFactor;
+struct Material {
+	float3 Albedo;
+	float AlbedoFactor;
+	float Metallic;
+	float MetallicFactor;
+	float Roughness;
+	float RoughnessFactor;
+	float AmbientOcclusion;
+	float AmbientOcclusionFactor;
 
 	float2 m_Pad0;
+};
+
+cbuffer Material : register(b10) {
+	Material m;
 };
 
 TextureCube m_EnvironmentMap : register(t1);
@@ -77,10 +81,10 @@ float3 FresnelSchlickRoughness(float cosTheta, float3 F0, float roughness) {
 
 float4 psMain(float4 pos : SV_POSITION, float3 position : POSITION, float3 normal : NORMAL, float2 texCoord : TEXCOORD, float3 camPos : CAMPOS) : SV_TARGET0 {
 
-	float3 albedo = lerp(m_Albedo, m_AlbedoMap.Sample(samp, texCoord).xyz, m_AlbedoFactor);
-	float metallic = lerp(m_Metallic, m_MetallicMap.Sample(samp, texCoord).x, m_MetallicFactor);
-	float roughness = lerp(m_Roughness, m_RoughnessMap.Sample(samp, texCoord).x, m_RoughnessFactor);
-	float ao = lerp(m_AmbientOcclusion, m_AmbientOcclusionMap.Sample(samp, texCoord).w, m_AmbientOcclusionFactor);
+	float3 albedo = lerp(m.Albedo, m_AlbedoMap.Sample(samp, texCoord).xyz, m.AlbedoFactor);
+	float metallic = lerp(m.Metallic, m_MetallicMap.Sample(samp, texCoord).x, m.MetallicFactor);
+	float roughness = lerp(m.Roughness, m_RoughnessMap.Sample(samp, texCoord).x, m.RoughnessFactor);
+	float ao = lerp(m.AmbientOcclusion, m_AmbientOcclusionMap.Sample(samp, texCoord).w, m.AmbientOcclusionFactor);
 
 	float3 N = normalize(normal);
 	float3 V = normalize(camPos - position);
@@ -94,25 +98,40 @@ float4 psMain(float4 pos : SV_POSITION, float3 position : POSITION, float3 norma
 	kD *= 1 - metallic;
 
 	float3 Lo = float3(0, 0, 0);
-	for(int i = 0; i < 1; i++) {
+	
+	float3 L;
+	float3 H;
 
-		float3 L = normalize(l_Position - position);
-		float3 H = normalize(V + L);
+	float distance;
+	float attenuation;
+	float3 radiance;
 
-		float distance = length(l_Position - position);
-		float attenuation = 1.0 / (distance * distance);
-		float3 radiance = l_Color * attenuation;
+	float NDF;
+	float G;
 
-		float NDF = DistributionGGX(N, H, roughness);
-		float G = GeometrySmith(N, V, L, roughness);
+	float3 nominator;
+	float denominator;
+	float3 brdf;
+	float NdotL;
 
-		float3 nominator = NDF * G * F;
-		float denominator = 1 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0) + 0.000001;
-		float3 brdf = nominator / denominator;
+	L = normalize(l_Position - position);
+	H = normalize(V + L);
 
-		float NdotL = max(dot(N, L), 0.0);
-		Lo += (kD * albedo / PI + brdf) * radiance * NdotL;
-	}
+	distance = length(l_Position - position);
+	attenuation = 1.0 / (distance * distance);
+	radiance = l_Color * attenuation;
+
+	NDF = DistributionGGX(N, H, roughness);
+	G = GeometrySmith(N, V, L, roughness);
+
+	nominator = NDF * G * F;
+	denominator = 1 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0) + 0.000001;
+	brdf = nominator / denominator;
+
+	NdotL = max(dot(N, L), 0.0);
+	Lo += (kD * albedo / PI + brdf) * radiance * NdotL;
+	
+
 
 	float3 ambient = float3(0.03, 0.03, 0.03) * albedo * ao;
 	float3 color = ambient + Lo;

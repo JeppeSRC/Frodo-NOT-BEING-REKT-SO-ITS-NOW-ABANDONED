@@ -11,7 +11,7 @@
 
 int main() {
 
-	Test test;
+	PBRTest test;
 	test.Start();
 
 	return 0;
