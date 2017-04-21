@@ -31,6 +31,7 @@ public:
 	__forceinline String& operator<<(const String& string) { return Append(string); }
 	__forceinline String& operator<<(const char character) { return Append(character); }
 
+	String& RemoveChars(const String& chars, bool iterate);
 	String& Remove(const String& string);
 	String& Remove(uint_t start, uint_t end);
 	String& RemoveBlankspace();
@@ -52,6 +53,7 @@ public:
 	bool StartsWith(const String& string) const;
 	bool EndsWith(const String& string) const;
 	uint_t Find(const String& string, uint_t offset = 0) const;
+	uint_t Find(const char c, uint_t offset = 0) const;
 
 	List<String*> Split(const char delimiter) const;
 	void Split(const char delimiter, List<String*>& list) const;

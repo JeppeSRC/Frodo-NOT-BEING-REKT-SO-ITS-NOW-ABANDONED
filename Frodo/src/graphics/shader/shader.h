@@ -73,6 +73,14 @@ private:
 	void ShaderGenProcessArithmeticOperations(String& source, FD_SHADER_TYPE type);
 
 public:
+	struct StructDefinition {
+		String name;
+
+		uint32 structSize;
+
+		BufferLayout layout;
+	};
+
 	class ConstantBufferSlot {
 	public:
 		ConstantBufferSlot(uint32 reg = 0, uint32 size = 0, byte* data = nullptr, BufferLayout layout = BufferLayout()) : semRegister(reg), structSize(size), data(data), layout(layout) {}
@@ -113,13 +121,25 @@ private:
 		FD_SHADER_TEXTURE_TYPE type;
 	};
 
+	enum FD_STRUCT_FIELD_TYPE {
+		FD_STRUCT_FIELD_TYPE_UNKNOWN,
+		FD_STRUCT_FIELD_TYPE_PRIMITVE,
+		FD_STRUCT_FIELD_TYPE_STRUCT
+	};
+
+	struct ShaderStructFieldType {
+		FD_STRUCT_FIELD_TYPE type;
+
+		uint32 size;
+
+		BufferLayout layout;
+	};
+
+	ShaderStructFieldType GetStructFieldType(const String& typeName, FD_SHADER_TYPE type);
 	void RemoveComments(String& source);
-
 	void ParseStructs(String source, FD_SHADER_TYPE type);
-	void CalcStructSize(String& structSource, uint_t offset, ShaderStructInfo* cbuffer);
-
+	void CalcStructSize(String fields, uint32* size, BufferLayout* layout, FD_SHADER_TYPE type);
 	void ParseTextures(String source);
-
 	void CreateBuffers();
 
 
@@ -135,6 +155,9 @@ private:
 	ID3DBlob* pByteCode;
 	ID3D11VertexShader* vertexShader;
 	ID3D11PixelShader* pixelShader;
+
+	List<StructDefinition*> vStructs;
+	List<StructDefinition*> pStructs;
 
 	List<ShaderStructInfo*> vCBuffers;
 	List<ShaderStructInfo*> pCBuffers;

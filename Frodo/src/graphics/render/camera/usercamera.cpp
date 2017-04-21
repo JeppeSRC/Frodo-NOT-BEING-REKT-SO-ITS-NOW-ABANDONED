@@ -4,7 +4,7 @@
 
 namespace FD {
 
-#define SENSE 0.65f
+#define SENSE 0.25f
 
 #define SPEED 2.0f
 
@@ -16,17 +16,6 @@ static vec3 back(0, 0, -SPEED);
 void UserCamera::Update(float32 delta) {
 
 	vec3 move(dir);
-	//TODO: mouse
-	/*if (Input::mouseCaptured) {
-
-		Window& window = *D3DContext::GetWindow();
-
-		float32 yRot = (x - (window.GetWidth() >> 1)) * delta * SENSE;
-		float32 xRot = (y - (window.GetHeight() >> 1)) * delta * SENSE;
-
-		rotation += vec3(-xRot, yRot, 0);
-
-	}*/
 
 	position += move.RotateY(rotation.y) * delta;
 
@@ -35,19 +24,19 @@ void UserCamera::Update(float32 delta) {
 
 bool UserCamera::OnKeyboardActionKeyPressed(FD_KEY key) {
 
-	if (key == 'W') {
+	if (key == FD_KEY_W) {
 		dir += forward;
-	} else if (key == 'S') {
+	} else if (key == FD_KEY_S) {
 		dir += back;
 	}
 
-	if (key == 'A') {
+	if (key == FD_KEY_A) {
 		dir += left;
-	} else if (key == 'D') {
+	} else if (key == FD_KEY_D) {
 		dir += right;
 	}
 
-	if (key == 'Q')
+	if (key == FD_KEY_Q)
 		Input::ToggleMouseAcquisition();
 
 	return false;
@@ -55,15 +44,15 @@ bool UserCamera::OnKeyboardActionKeyPressed(FD_KEY key) {
 
 bool UserCamera::OnKeyboardActionKeyReleased(FD_KEY key) {
 
-	if (key == 'W') {
+	if (key == FD_KEY_W) {
 		dir -= forward;
-	} else if (key == 'S') {
+	} else if (key == FD_KEY_S) {
 		dir -= back;
 	}
 
-	if (key == 'A') {
+	if (key == FD_KEY_A) {
 		dir -= left;
-	} else if (key == 'D') {
+	} else if (key == FD_KEY_D) {
 		dir -= right;
 	}
 

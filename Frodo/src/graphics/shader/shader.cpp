@@ -140,6 +140,9 @@ Shader::~Shader() {
 	DX_FREE(vByteCode);
 	DX_FREE(pByteCode);
 
+	vStructs.Free();
+	pStructs.Free();
+
 	vCBuffers.Free();
 	pCBuffers.Free();
 	pTextures.Free();

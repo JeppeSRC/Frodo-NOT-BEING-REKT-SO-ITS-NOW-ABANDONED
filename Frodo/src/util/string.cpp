@@ -131,6 +131,29 @@ String& String::Append(const String& string) {
 	return *this;
 }
 
+String& String::RemoveChars(const String& chars, bool iterate) {
+
+	uint_t start = 0;
+
+	uint_t failCount = 0;
+
+	do {
+		for (uint_t c = 0; c < chars.length; c++) {
+			start = Find(chars[c]);
+			if (start != (uint_t)-1) {
+				Remove(start, start + 1);
+				continue;
+			}
+			failCount++;
+		}
+
+		if (failCount >= chars.length) break;
+		else failCount = 0;
+	} while (iterate);
+
+	return *this;
+}
+
 String& String::Remove(const String& string) {
 	uint_t index = Find(string);
 	return Remove(index, index + string.length);
@@ -163,6 +186,24 @@ String& String::RemoveBlankspace() {
 		start = Find(" ", start);
 	}
 
+	start = Find("\n");
+	while (start != -1) {
+		Remove(start, start + 1);
+		start = Find("\n", start);
+	}
+
+	start = Find("\r");
+	while (start != -1) {
+		Remove(start, start + 1);
+		start = Find("\r", start);
+	}
+
+	start = Find("\t");
+	while (start != -1) {
+		Remove(start, start + 1);
+		start = Find("\t", start);
+	}
+
 	return *this;
 }
 
@@ -171,7 +212,7 @@ String String::SubString(uint_t start, uint_t end) const {
 }
 
 uint_t String::Count(const String& string, uint_t offset) const {
-	uint_t total = length - string.length;
+	uint_t total = length - string.length+1;
 	if (total <= 0) return 0;
 	uint_t res = 0;
 	for (uint_t i = offset; i < total; i++) {
@@ -250,6 +291,14 @@ uint_t String::Find(const String& string, uint_t offset) const {
 		if (match) {
 			return i;
 		}
+	}
+
+	return (uint_t)-1;
+}
+
+uint_t String::Find(const char c, uint_t offset) const {
+	for (uint_t i = offset; i < length; i++) {
+		if (str[i] == c) return i;
 	}
 
 	return (uint_t)-1;

@@ -197,6 +197,9 @@
       <MapFileName>
       </MapFileName>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\core\event\eventdispatcher.cpp" />

@@ -11,7 +11,7 @@ namespace FD {
 class FDAPI BufferLayout {
 private:
 	friend class Shader;
-private:
+public:
 	struct BufferLayoutAttrib {
 		String name;
 		DXGI_FORMAT format;
@@ -39,6 +39,8 @@ public:
 	uint32 GetElementSize(const String& name);
 	uint32 GetElementSize(uint32 index);
 	uint32 GetSize() const { return offset; }
+
+	inline const List<BufferLayoutAttrib*>& GetElements() const { return elements; }
 
 	template<typename T>
 	inline void Push(const char* name, uint32 slot = 0) { FD_FATAL("Unsupported format"); }

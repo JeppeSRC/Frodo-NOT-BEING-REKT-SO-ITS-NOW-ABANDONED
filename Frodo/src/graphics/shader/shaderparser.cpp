@@ -69,26 +69,29 @@ void Shader::RemoveComments(String& source) {
 
 void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 
-	while (true) {
-		uint_t cbufferStart = source.Find("cbuffer") + 7;
 
-		if (cbufferStart < 7) break;
+	//cbuffer
+	while (true) {
+		uint_t cbufferStart = source.Find("cbuffer ") + 8;
+
+		if (cbufferStart < 8) break;
 
 		uint_t colon = source.Find(":", cbufferStart);
 
-		String name(source.str + cbufferStart, colon - cbufferStart);
-		name.RemoveBlankspace();
+		String name = source.SubString(cbufferStart, colon).RemoveBlankspace();
 
 		uint_t regIndex = source.Find("register", colon) + 10;
 
 		ShaderStructInfo* cbuffer = new ShaderStructInfo;
 
 		cbuffer->name = name;
-		cbuffer->semRegister = atoi(*source + regIndex);
+		cbuffer->semRegister = (uint32)atoi(*source + regIndex);
 
+		uint_t end = source.Find("};", cbufferStart) + 2;
 
+		CalcStructSize(source.SubString(source.Find("{", cbufferStart)+1, end-2).RemoveChars("\t\n\r", true), &cbuffer->structSize, &cbuffer->layout, type);
 
-		CalcStructSize(source, cbufferStart - 7, cbuffer);
+		source.Remove(cbufferStart - 8, end);
 
 		switch (type) {
 			case FD_SHADER_TYPE_VERTEXSHADER:
@@ -102,50 +105,186 @@ void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 		}
 	}
 
+	//struct
+	while (true) {
+		uint_t cstructStart = source.Find("struct ") + 7;
+
+		if (cstructStart < 7) break;
+
+		uint_t space = source.Find(" ", cstructStart + 1);
+
+		String name = source.SubString(cstructStart, space).RemoveBlankspace();
+
+		StructDefinition* def = new StructDefinition;
+
+		def->name = name;
+
+		uint_t end = source.Find("};", cstructStart) + 2;
+
+		CalcStructSize(source.SubString(source.Find("{", cstructStart)+1, end-2).RemoveChars("\t\n\r", true), &def->structSize, &def->layout, type);
+
+		source.Remove(cstructStart - 7, end);
+
+		switch (type) {
+		case FD_SHADER_TYPE_VERTEXSHADER:
+			vStructs.Push_back(def);
+			FD_DEBUG("[ShaderParser] Found vStruct <NAME: %s> <SIZE: %u>", *name, def->structSize);
+			break;
+		case FD_SHADER_TYPE_PIXELSHADER:
+			pStructs.Push_back(def);
+			FD_DEBUG("[ShaderParser] Found pStruct <NAME: %s> <SIZE: %u>", *name, def->structSize);
+			break;
+		}
+	}
+
+
+	
+	//<struct> <name> : register
+	List<StructDefinition*>& structs = type == FD_SHADER_TYPE_VERTEXSHADER ? vStructs : pStructs;
+
+	for (uint_t i = 0; i < structs.GetSize(); i++) {
+		uint_t offset = 0;
+		StructDefinition* def = structs[i];
+		while (true) {
+			uint_t start = source.Find(def->name, offset);
+
+			if (start == (uint_t)-1) break;
+
+			uint_t space = start + def->name.length;
+			uint_t colon = source.Find(':', space);
+			uint_t semicolon = source.Find(';', colon);
+
+			if (source.SubString(space, semicolon).Count("register(b") != 1) {
+				offset = semicolon;
+				continue;
+			}
+
+			uint_t regIndex = source.Find("register(b", colon) + 10;
+
+			String name = source.SubString(space, colon).RemoveBlankspace();
+
+			ShaderStructInfo* buffer = new ShaderStructInfo;
+
+			buffer->name = name;
+			buffer->semRegister = (uint32)atoi(*source + regIndex);
+			buffer->structSize = def->layout.GetSize();
+			buffer->layout = def->layout;
+
+			source.Remove(start, semicolon + 1);
+
+			switch (type) {
+			case FD_SHADER_TYPE_VERTEXSHADER:
+				FD_DEBUG("[ShaderParser] Found vStruct \"%s\" mapped to register %u with name \"%s\"", *def->name, buffer->semRegister, *name);
+				vCBuffers.Push_back(buffer);
+				break;
+			case FD_SHADER_TYPE_PIXELSHADER:
+				FD_DEBUG("[ShaderParser] Found pStruct \"%s\" mapped to register %u with name \"%s\"", *def->name, buffer->semRegister, *name);
+				pCBuffers.Push_back(buffer);
+				break;
+			}
+		}
+	}
 
 }
 
-void Shader::CalcStructSize(String& structSource, uint_t offset, ShaderStructInfo* cbuffer) {
-
-	FD_SHADER_FIELD_TYPE types[6]{
+Shader::ShaderStructFieldType Shader::GetStructFieldType(const String& typeName, FD_SHADER_TYPE type) {
+	static FD_SHADER_FIELD_TYPE types[6]{
 		FD_SHADER_FIELD_TYPE_MAT4,
 		FD_SHADER_FIELD_TYPE_MAT3,
 		FD_SHADER_FIELD_TYPE_VEC4,
 		FD_SHADER_FIELD_TYPE_VEC3,
 		FD_SHADER_FIELD_TYPE_VEC2,
-		FD_SHADER_FIELD_TYPE_FLOAT };
+		FD_SHADER_FIELD_TYPE_FLOAT
+	};
 
-	uint_t end = structSource.Find("};", offset);
+	for (uint_t i = 0; i < 6; i++) {
+		if (get_field_type_as_string(types[i]) == typeName) {
+			ShaderStructFieldType ret;
 
-	String fields(*structSource + offset, end - offset);
+			ret.type = FD_STRUCT_FIELD_TYPE_PRIMITVE;
+			ret.size = get_field_type_size(types[i]);
+			return ret;
+		}
+	}
+
+	uint_t numStructs = 0;
+
+	if (type == FD_SHADER_TYPE_VERTEXSHADER) {
+		numStructs = vStructs.GetSize();
+
+		for (uint_t i = 0; i < numStructs; i++) {
+			StructDefinition* def = vStructs[i];
+
+			if (def->name == typeName) {
+				ShaderStructFieldType ret;
+				ret.type = FD_STRUCT_FIELD_TYPE_STRUCT;
+				ret.size = def->structSize;
+				ret.layout = def->layout;
+
+				return ret;
+			}
+		}
+	}
+
+	if (type == FD_SHADER_TYPE_PIXELSHADER) {
+		numStructs = pStructs.GetSize();
+
+		for (uint_t i = 0; i < numStructs; i++) {
+			StructDefinition* def = pStructs[i];
+
+			if (def->name == typeName) {
+				ShaderStructFieldType ret;
+				ret.type = FD_STRUCT_FIELD_TYPE_STRUCT;
+				ret.size = def->structSize;
+				ret.layout = def->layout;
+
+				return ret;
+			}
+		}
+	}
+
+	ShaderStructFieldType ret;
+	ret.type = FD_STRUCT_FIELD_TYPE_UNKNOWN;
+	ret.size = (uint32)-1;
+
+	return ret;
+}
+
+void Shader::CalcStructSize(String fields, uint32* size, BufferLayout* layout, FD_SHADER_TYPE shaderType) {
 
 	uint_t numFields = fields.Count(";");
 
 	uint_t currSemicolon = fields.Find(";");
 	uint_t fieldOffset = 0;
 
-	cbuffer->structSize = 0;
+	*size = 0;
 
 	for (uint_t num = 0; num < numFields; num++) {
-		for (uint_t i = 0; i < 6; i++) {
-			String fieldType = get_field_type_as_string(types[i]);
-			uint_t index = fields.Find(fieldType, fieldOffset);
+		String typeName = fields.SubString(fieldOffset, fields.Find(" ", fieldOffset)).RemoveBlankspace();
+		ShaderStructFieldType type = GetStructFieldType(typeName, shaderType);
 
-			if (index > currSemicolon || index == -1) continue;
-
-			uint32 fieldSize = get_field_type_size(types[i]);
-			cbuffer->structSize += fieldSize;
-
-			cbuffer->layout.PushElement(fields.SubString(index + fieldType.length, fields.Find(";", index + 1)).RemoveBlankspace(), fieldSize);
-
-			fieldOffset = currSemicolon;
-			currSemicolon = fields.Find(";", currSemicolon + 1);
-
-			break;
+		if (type.type == FD_STRUCT_FIELD_TYPE_UNKNOWN && type.size == (uint32)-1) {
+			FD_FATAL("[ShaderParser] Unknown type referenced, \"%s\"", *typeName);
+			return;
 		}
-	}
 
-	structSource.Remove(offset, end + 2);
+		String name = fields.SubString(fieldOffset + typeName.length, currSemicolon).RemoveBlankspace();
+
+		if (type.type == FD_STRUCT_FIELD_TYPE_PRIMITVE) {
+			layout->PushElement(name, type.size);
+			*size += type.size;
+		} else {
+			const List<BufferLayout::BufferLayoutAttrib*>& attribs = type.layout.GetElements();
+
+			for (uint_t i = 0; i < attribs.GetSize(); i++) {
+				layout->PushElement(name + "." + attribs.Get(i)->name, attribs.Get(i)->size);
+				*size += attribs.Get(i)->size;
+			}
+		}
+
+		fieldOffset = currSemicolon+1;
+		currSemicolon = fields.Find(";", currSemicolon + 1);	
+	}
 }
 
 void Shader::ParseTextures(String source) {
