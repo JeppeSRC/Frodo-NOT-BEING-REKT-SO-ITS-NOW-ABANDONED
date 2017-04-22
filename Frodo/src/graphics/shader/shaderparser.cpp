@@ -225,11 +225,14 @@ void Shader::CalcStructSize(String fields, uint32* size, BufferLayout* layout, F
 			layout->PushElement(name, type.size);
 			*size += type.size;
 		} else {
+			layout->PushElementAtOffset(name, type.size, *size);
+
+			*size += type.size;
+
 			const List<BufferLayout::BufferLayoutAttrib*>& attribs = type.layout.GetElements();
 
 			for (uint_t i = 0; i < attribs.GetSize(); i++) {
 				layout->PushElement(name + "." + attribs.Get(i)->name, attribs.Get(i)->size);
-				*size += attribs.Get(i)->size;
 			}
 		}
 

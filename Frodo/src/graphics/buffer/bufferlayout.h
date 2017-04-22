@@ -34,6 +34,7 @@ public:
 	void CreateInputLayout(Shader* shader);
 
 	void PushElement(const String& name, uint32 size);
+	void PushElementAtOffset(const String& name, uint32 size, uint32 offset);
 	uint32 GetElementOffset(const String& name);
 	uint32 GetElementOffset(uint32 index);
 	uint32 GetElementSize(const String& name);

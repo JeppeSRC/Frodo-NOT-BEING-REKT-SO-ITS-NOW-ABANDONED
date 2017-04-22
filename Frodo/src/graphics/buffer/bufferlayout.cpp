@@ -29,6 +29,10 @@ void BufferLayout::PushElement(const String& name, uint32 size) {
 	offset += size;
 }
 
+void BufferLayout::PushElementAtOffset(const String& name, uint32 size, uint32 offset) {
+	elements.Push_back(new BufferLayoutAttrib({ name, (DXGI_FORMAT)0, 0, size, offset }));
+}
+
 uint32 BufferLayout::GetElementOffset(const String& name) {
 	uint_t size = elements.GetSize();
 	for (uint_t i = 0; i < size; i++) {
