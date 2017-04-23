@@ -6,7 +6,7 @@ namespace FD {
 inline static DXGI_FORMAT get_buffer_format(FD_INDEXBUFFER_FORMAT format) {
 	switch (format) {
 		case FD_INDEXBUFFER_FORMAT_UNKNOWN:
-			FD_ASSERT(FD_INDEXBUFFER_FORMAT_UNKNOWN);
+			FD_ASSERT(format == FD_INDEXBUFFER_FORMAT_UNKNOWN);
 			break;
 		case FD_INDEXBUFFER_FORMAT_UINT32:
 			return DXGI_FORMAT_R32_UINT;
@@ -42,7 +42,7 @@ IndexBuffer::IndexBuffer(void* data, uint_t size, FD_INDEXBUFFER_FORMAT format) 
 	srd.SysMemSlicePitch = 0;
 
 	D3DContext::GetDevice()->CreateBuffer(&bd, &srd, &buffer);
-	FD_ASSERT(buffer);
+	FD_ASSERT(buffer == nullptr);
 }
 
 IndexBuffer::IndexBuffer(uint32* data, uint32 count) : IndexBuffer(data, count * sizeof(uint32), FD_INDEXBUFFER_FORMAT_UINT32) { this->count = count; }

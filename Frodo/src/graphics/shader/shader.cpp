@@ -82,7 +82,7 @@ void Shader::Compile(String vSource, String pSource) {
 	if (error) {
 		FD_FATAL("VertexShader ERROR: %s", error->GetBufferPointer());
 		DX_FREE(error);
-		FD_ASSERT(vByteCode && "VertexShader failed to compile");
+		FD_ASSERT_MSG(vByteCode == nullptr, "VertexShader failed to compile");
 	}
 
 	DX_FREE(error);
@@ -92,7 +92,7 @@ void Shader::Compile(String vSource, String pSource) {
 	if (error) {
 		FD_FATAL("PixelShader ERROR: %s", error->GetBufferPointer());
 		DX_FREE(error);
-		FD_ASSERT(pByteCode && "PixelShader failed to compile");
+		FD_ASSERT_MSG(pByteCode == nullptr, "PixelShader failed to compile");
 	}
 
 	DX_FREE(error);
@@ -100,11 +100,11 @@ void Shader::Compile(String vSource, String pSource) {
 
 	D3DContext::GetDevice()->CreateVertexShader(vByteCode->GetBufferPointer(), vByteCode->GetBufferSize(), 0, &vertexShader);
 
-	FD_ASSERT(vertexShader && "Failed to create vertexshader");
+	FD_ASSERT_MSG(vertexShader == nullptr, "Failed to create vertexshader");
 
 	D3DContext::GetDevice()->CreatePixelShader(pByteCode->GetBufferPointer(), pByteCode->GetBufferSize(), 0, &pixelShader);
 
-	FD_ASSERT(pixelShader && "Failed to create pixelshader");
+	FD_ASSERT_MSG(pixelShader == nullptr, "Failed to create pixelshader");
 
 	ParseStructs(vSource, FD_SHADER_TYPE_VERTEXSHADER);
 	ParseStructs(pSource, FD_SHADER_TYPE_PIXELSHADER);

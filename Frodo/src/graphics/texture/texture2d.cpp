@@ -39,11 +39,11 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 
 	D3DContext::GetDevice()->CreateTexture2D(&d, &r, &resource);
 
-	FD_ASSERT(resource);
+	FD_ASSERT(resource == nullptr);
 
 	D3DContext::GetDevice()->CreateShaderResourceView(resource, &s, &resourceView);
 
-	FD_ASSERT(resourceView);
+	FD_ASSERT(resourceView == nullptr);
 }
 
 Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT format) : Texture2D() {
@@ -64,7 +64,7 @@ Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT 
 
 	switch (format) {
 		case FD_TEXTURE_FORMAT_UNKNOWN:
-			FD_ASSERT(FD_TEXTURE_FORMAT_UNKNOWN);
+			FD_ASSERT(format == FD_TEXTURE_FORMAT_UNKNOWN);
 			break;
 		case FD_TEXTURE_FORMAT_UINT_8_8_8_8:
 			d.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -89,11 +89,11 @@ Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT 
 
 	D3DContext::GetDevice()->CreateTexture2D(&d, &s, &resource);
 
-	FD_ASSERT(resource);
+	FD_ASSERT(resource == nullptr);
 
 	D3DContext::GetDevice()->CreateShaderResourceView(resource, nullptr, &resourceView);
 
-	FD_ASSERT(resourceView);
+	FD_ASSERT(resourceView == nullptr);
 }
 
 Texture2D::~Texture2D() {

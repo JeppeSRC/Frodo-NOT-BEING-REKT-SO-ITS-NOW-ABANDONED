@@ -65,6 +65,9 @@
     <ClCompile Include="src\util\asset\package.cpp" />
     <ClCompile Include="src\core\input_event_handler.cpp" />
     <ClCompile Include="src\core\event\fd_key.cpp" />
+    <ClCompile Include="src\graphics\d3dadapter.cpp" />
+    <ClCompile Include="src\graphics\d3dfactory.cpp" />
+    <ClCompile Include="src\graphics\d3doutput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\frodo.cpp">
@@ -293,5 +296,8 @@
     <ClInclude Include="src\util\vfs\vfs.h" />
     <ClInclude Include="src\core\event\eventkeyboard.h" />
     <ClInclude Include="src\core\event\fd_key.h" />
+    <ClInclude Include="src\graphics\d3dadapter.h" />
+    <ClInclude Include="src\graphics\d3dfactory.h" />
+    <ClInclude Include="src\graphics\d3doutput.h" />
   </ItemGroup>
 </Project>

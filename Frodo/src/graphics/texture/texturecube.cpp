@@ -86,11 +86,11 @@ void TextureCube::LoadSingleFile(const String& filename) {
 
 	D3DContext::GetDevice()->CreateTexture2D(&d, r, &resource);
 
-	FD_ASSERT((resource != nullptr && "Resource null"));
+	FD_ASSERT(resource == nullptr);
 
 	D3DContext::GetDevice()->CreateShaderResourceView((ID3D11Resource*)resource, &s, &resourceView);
 
-	FD_ASSERT((resourceView != nullptr && "Resource view null"));
+	FD_ASSERT(resourceView == nullptr);
 
 	for (uint_t i = 0; i < 6; i++)
 		delete[] newData[i];
@@ -167,11 +167,11 @@ void TextureCube::LoadMultipleFiles(const String* filePaths) {
 
 	D3DContext::GetDevice()->CreateTexture2D(&d, r, &resource);
 
-	FD_ASSERT((resource != nullptr && "Resource null"));
+	FD_ASSERT(resource == nullptr);
 
 	D3DContext::GetDevice()->CreateShaderResourceView((ID3D11Resource*)resource, &s, &resourceView);
 
-	FD_ASSERT((resourceView != nullptr && "Resource view null"));
+	FD_ASSERT(resourceView == nullptr);
 
 	for (uint_t i = 0; i < 6; i++) {
 		delete[] files[i].data;

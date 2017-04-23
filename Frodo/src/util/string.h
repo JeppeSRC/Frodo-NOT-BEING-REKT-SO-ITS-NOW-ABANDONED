@@ -17,6 +17,7 @@ public:
 public:
 	String() { str = nullptr; length = 0; }
 	String(const char* string);
+	String(const wchar_t* string);
 	String(char* string, uint_t length, bool noCopy = false);
 	String(const String& string);
 	String(const String* string);

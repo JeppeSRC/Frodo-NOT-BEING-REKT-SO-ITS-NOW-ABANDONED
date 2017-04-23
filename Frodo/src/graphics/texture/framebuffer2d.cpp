@@ -20,7 +20,7 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 
 	switch (format) {
 		case FD_TEXTURE_FORMAT_UNKNOWN:
-			FD_ASSERT(FD_TEXTURE_FORMAT_UNKNOWN);
+			FD_ASSERT(format == FD_TEXTURE_FORMAT_UNKNOWN);
 		case FD_TEXTURE_FORMAT_FLOAT_D32:
 			td.Format = DXGI_FORMAT_D32_FLOAT;
 			break;
@@ -28,12 +28,12 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 			td.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 			break;
 		default:
-			FD_ASSERT(FD_TEXTURE_FORMAT_UNKNOWN);
+			FD_ASSERT(format == FD_TEXTURE_FORMAT_UNKNOWN);
 	}
 
 	D3DContext::GetDevice()->CreateTexture2D(&td, 0, &resource);
 
-	FD_ASSERT(resource);
+	FD_ASSERT(resource == nullptr);
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC vd;
 	ZeroMemory(&vd, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
@@ -44,7 +44,7 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 
 	D3DContext::GetDevice()->CreateShaderResourceView(resource, nullptr, &resourceView);
 
-	FD_ASSERT(resourceView);
+	FD_ASSERT(resourceView == nullptr);
 
 	D3D11_RENDER_TARGET_VIEW_DESC rd;
 	ZeroMemory(&rd, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
@@ -54,7 +54,7 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 
 	D3DContext::GetDevice()->CreateRenderTargetView(resource, &rd, &renderTargetView);
 
-	FD_ASSERT(renderTargetView);
+	FD_ASSERT(renderTargetView = nullptr);
 
 	depthStencilView = nullptr;
 
@@ -85,7 +85,7 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 
 	DX_FREE(tmp);
 
-	FD_ASSERT(depthStencilView);
+	FD_ASSERT(depthStencilView == nullptr);
 
 }
 

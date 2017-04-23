@@ -17,15 +17,24 @@ namespace FD {
 #if defined(_DEBUG) || defined(FD_LOG_DISPLAY_DEBUG)
 #define FD_DEBUG(msg, ...) FDLog(FD_LOG_LEVEL_DEBUG, msg, __VA_ARGS__)
 
-#define FD_ASSERT(x) \
-if (!x) { \
-	FD_FATAL("ASSERTION FAILED: File: \"%s\" Func: \"%s\" Line: %u \"%s\"", __FILE__, __FUNCSIG__, __LINE__, #x); \
+#define FD_ASSERT_MSG(statement, msg) \
+if (statement) { \
+	FD_FATAL("ASSERTION FAILED: File: \"%s\" Func: \"%s\" Line: %u \"%s\"", __FILE__, __FUNCSIG__, __LINE__, msg); \
 	int32* abcdefghijklmnopqrstuvwxyz123456789 = nullptr; \
 	*abcdefghijklmnopqrstuvwxyz123456789 = 1; \
 }
+
+#define FD_ASSERT(statement) \
+if (statement) { \
+	FD_FATAL("ASSERTION FAILED: File: \"%s\" Func: \"%s\" Line: %u \"%s\"", __FILE__, __FUNCSIG__, __LINE__, #statement); \
+	int32* abcdefghijklmnopqrstuvwxyz123456789 = nullptr; \
+	*abcdefghijklmnopqrstuvwxyz123456789 = 1; \
+}
+
 #else
 #define FD_DEBUG(msg, ...)
-#define FD_ASSERT(x)
+#define FD_ASSERT_MSG(statement, msg)
+#define FD_ASSERT(statement)
 #endif
 
 

@@ -14,7 +14,7 @@ VertexBuffer::VertexBuffer(uint32 structSize, uint32 num) {
 	bd.Usage = D3D11_USAGE_DYNAMIC;
 
 	D3DContext::GetDevice()->CreateBuffer(&bd, 0, &buffer);
-	FD_ASSERT(buffer);
+	FD_ASSERT(buffer == nullptr);
 }
 
 VertexBuffer::VertexBuffer(void* data, uint_t size, uint32 stride, bool dynamic) : Buffer(), stride(stride) {
@@ -37,7 +37,7 @@ VertexBuffer::VertexBuffer(void* data, uint_t size, uint32 stride, bool dynamic)
 	srd.SysMemSlicePitch = 0;
 
 	D3DContext::GetDevice()->CreateBuffer(&bd, &srd, &buffer);
-	FD_ASSERT(buffer);
+	FD_ASSERT(buffer == nullptr);
 }
 
 void* VertexBuffer::Map(FD_MAP_FLAG flag) {
@@ -46,7 +46,7 @@ void* VertexBuffer::Map(FD_MAP_FLAG flag) {
 
 	D3DContext::GetDeviceContext()->Map((ID3D11Resource*)buffer, 0, (D3D11_MAP)flag, 0, &map);
 
-	FD_ASSERT(map.pData);
+	FD_ASSERT(map.pData == nullptr);
 
 	return map.pData;
 }

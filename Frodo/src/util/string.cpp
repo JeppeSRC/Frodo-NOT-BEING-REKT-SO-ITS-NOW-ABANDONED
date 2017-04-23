@@ -19,6 +19,24 @@ String::String(const char* string) {
 	noDelete = false;
 }
 
+String::String(const wchar_t* string) {
+	if (!string) {
+		length = 0;
+		str = nullptr;
+		return;
+	}
+
+	length = wcslen(string);
+
+	str = new char[length + 1];
+
+	sprintf(str, "%S", string);
+
+	str[length] = '\0';
+
+	noDelete = false;
+}
+
 String::String(char* string, uint_t length, bool noCopy) {
 	if (!string) {
 		this->length = 0;

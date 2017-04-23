@@ -14,7 +14,7 @@ static uint32 get_size_from_format(DXGI_FORMAT format) {
 		case DXGI_FORMAT_R8G8B8A8_SINT:
 		case DXGI_FORMAT_R8G8B8A8_UNORM: return sizeof(int32);
 		default:
-			FD_ASSERT(false && "UNKNOWN FORMAT");
+			FD_ASSERT("UNKNOWN FORMAT");
 	}
 
 	return 0;
@@ -73,7 +73,7 @@ uint32 BufferLayout::GetElementSize(uint32 index) {
 
 void BufferLayout::Push(const String& name, DXGI_FORMAT format, uint32 slot) {
 	uint32 size = get_size_from_format(format);
-	FD_ASSERT(size);
+	FD_ASSERT(size == 0);
 	elements.Push_back(new BufferLayoutAttrib({name, format, slot, size, offset}));
 
 	offset += size;

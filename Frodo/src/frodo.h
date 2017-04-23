@@ -17,7 +17,12 @@
 
 #include <core/scene.h>
 
+
 #include <graphics/d3dcontext.h>
+#include <graphics/d3dadapter.h>
+#include <graphics/d3dfactory.h>
+#include <graphics/d3doutput.h>
+
 #include <graphics/buffer/bufferlayout.h>
 #include <graphics/buffer/vertexbuffer.h>
 #include <graphics/buffer/indexbuffer.h>
