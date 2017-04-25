@@ -2,8 +2,9 @@
 
 #include <frodo.h>
 
-class PBRTest : public FD::FDApplication {
+class PBRTest : public FD::Application {
 protected:
+	void OnCreateWindow() override;
 	void OnInit() override;
 	void OnTick() override;
 	void OnUpdate(float delta) override;
@@ -17,5 +18,5 @@ private:
 	FD::MaterialInstance* skyboxMaterial;
 
 public:
-	PBRTest() : FDApplication("PBR", 1000, 600) {}
+	PBRTest() : Application() {}
 };

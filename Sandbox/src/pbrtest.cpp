@@ -2,7 +2,17 @@
 
 using namespace FD;
 
+void PBRTest::OnCreateWindow() {
+	FD_WINDOW_PROPERTIES prop;
+
+	prop.width = 1280;
+	prop.height = 720;
+
+	window = new Window("PBR", prop, nullptr, nullptr);
+}
+
 void PBRTest::OnInit() {
+	
 	window->SetVSync(1);
 
 	camera = new UserCamera(vec3(0, 0, 0), vec3(0, 0, 0));
@@ -14,8 +24,6 @@ void PBRTest::OnInit() {
 	scene = new Scene(window);
 
 	scene->SetCamera(camera);
-
-	//#define USE_CBUFFER
 
 	Shader* shader = new Shader("/shaders/pbr_lighting_v.hlsl", "/shaders/pbr_lighting_p.hlsl");
 	shader->ShaderGenComplete();
@@ -63,7 +71,7 @@ void PBRTest::OnInit() {
 		float ambientOcclusionFactor = 0;
 		vec2 pad0;
 	} materialData;
-
+	
 	Material* material = new Material(shader);
 
 	material->SetPCBuffer("Material", (void*)&materialData);
@@ -86,9 +94,9 @@ void PBRTest::OnInit() {
 
 	MaterialInstance* mi = new MaterialInstance(material);
 
-	mi->SetPCBufferElement("m.AlbedoFactor", 1);
-	mi->SetPCBufferElement("m.MetallicFactor", 1);
-	mi->SetPCBufferElement("m.RoughnessFactor", 1);
+	mi->SetPCBufferElement("m.AlbedoFactor", 1.0f);
+	mi->SetPCBufferElement("m.MetallicFactor", 1.0f);
+	mi->SetPCBufferElement("m.RoughnessFactor", 1.0f);
 
 	mi->SetTexture("m_AlbedoMap", albedo);
 	mi->SetTexture("m_MetallicMap", metallic);

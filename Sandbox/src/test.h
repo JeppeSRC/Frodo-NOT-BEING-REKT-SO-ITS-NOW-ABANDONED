@@ -1,7 +1,7 @@
 #pragma once
 #include <frodo.h>
 
-class Test : public FD::FDApplication {
+class Test : public FD::Application {
 protected:
 
 	void OnInit() override;
@@ -25,7 +25,7 @@ public:
 
 	FD::Sprite* cursor;
 
-	Test() : FDApplication("Title", 1000, 600) {  }
+	Test() : Application() {  }
 
 
 
