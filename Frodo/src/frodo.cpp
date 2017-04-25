@@ -3,14 +3,11 @@
 
 namespace FD {
 
-FDApplication::FDApplication(const char* title, uint32 width, uint32 height) {
-	window = new Window(title, width, height);
-	SetUPS(60.0f);
+Application::Application() {
 
-	D3DContext::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-FDApplication::~FDApplication() {
+Application::~Application() {
 	OnExit();
 	delete window;
 
@@ -18,18 +15,19 @@ FDApplication::~FDApplication() {
 	TextureManager::Dispose();
 }
 
-void FDApplication::OnInit() {}
+void Application::OnInit() {}
 
-void FDApplication::OnTick() {}
+void Application::OnTick() {}
 
-void FDApplication::OnUpdate(float32 delta) {}
+void Application::OnUpdate(float32 delta) {}
 
-void FDApplication::OnRender() {}
+void Application::OnRender() {}
 
-void FDApplication::OnExit() {}
+void Application::OnExit() {}
 
-void FDApplication::Run() {
+void Application::Run() {
 	VFS::Init();
+	OnCreateWindow();
 	TextureManager::Init();
 	OnInit();
 	Window& w = *window;

@@ -17,16 +17,6 @@ enum FD_MONITOR_ROTATION {
 	FD_MONITOR_ROTATION_ROTATE270
 };
 
-struct FD_MONITOR_MODE {
-	uint32 width;
-	uint32 height;
-	float32 refreshRate;
-
-	DXGI_FORMAT format;
-	DXGI_MODE_SCANLINE_ORDER order;
-	DXGI_MODE_SCALING scaling;
-};
-
 class FDAPI D3DOutput {
 private:
 	IDXGIOutput* output;
@@ -38,7 +28,9 @@ private:
 	FD_MONITOR_ROTATION rotation;
 	HMONITOR monitorHandle;
 
-	List<FD_MONITOR_MODE> modes;
+	List<DXGI_MODE_DESC> modes;
+
+	DXGI_MODE_DESC currentMode;
 
 public:
 	D3DOutput(IDXGIOutput* output);
@@ -51,7 +43,11 @@ public:
 	inline FD_MONITOR_ROTATION GetRotation() const { return rotation; }
 	inline HMONITOR GetMonitorHandle() const { return monitorHandle; }
 
-	inline const List<FD_MONITOR_MODE>& GetModes() const { return modes; }
+	inline const List<DXGI_MODE_DESC>& GetModes() const { return modes; }
+	inline DXGI_MODE_DESC GetBestMode() const { return modes.Get(modes.GetSize() - 1); }
+
+	inline DXGI_MODE_DESC GetCurrentMode() const { return currentMode; }
+	inline void SetCurrentMode(DXGI_MODE_DESC desc) { this->currentMode = desc; }
 
 	inline IDXGIOutput* GetOutput() const { return output; }
 

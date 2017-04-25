@@ -10,6 +10,13 @@
 
 namespace FD {
 
+
+struct FD_WINDOW_PROPERTIES {
+	int32 width;
+	int32 height;
+	DXGI_SAMPLE_DESC msaa = { 1, 0 };
+};
+
 class FDAPI Window : public EventListener {
 private:
 	static Map<HWND, Window*> window_handels;
@@ -26,13 +33,12 @@ private:
 	HWND hwnd;
 
 	float32 clearColor[4];
-
 private:
 
 
 
 public:
-	Window(const String& title, int32 width, int32 height);
+	Window(const String& title, FD_WINDOW_PROPERTIES prop, D3DAdapter* adapter, D3DOutput* output);
 	~Window();
 
 	void SwapBuffers();
@@ -51,7 +57,7 @@ public:
 	inline const String& GetTitle() const { return title; }
 	inline bool IsVisible() const { return isVisible; }
 	inline HWND GetHWND() const { return hwnd; }
-	inline void SetVSync(uint32 status) { vSync = status; FD_DEBUG("Vsync set to: %u", vSync); }
+	inline void SetVSync(uint32 status) { vSync = status; FD_DEBUG("[Window] Vsync set to: %u", vSync); }
 
 public:
 	static ivec2 GetMonitorDpi();

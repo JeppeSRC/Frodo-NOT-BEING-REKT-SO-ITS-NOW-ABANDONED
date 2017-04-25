@@ -21,6 +21,7 @@ public:
 	static void Release();
 	
 	static List<D3DAdapter*> GetAdapters();
+	static D3DAdapter* GetFirstAdapter();
 
 	inline static IDXGIFactory* GetFactory() { return factory; }
 };

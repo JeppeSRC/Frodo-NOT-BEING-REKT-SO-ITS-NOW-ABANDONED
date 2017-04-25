@@ -44,4 +44,14 @@ List<D3DOutput*> D3DAdapter::GetOutputs() const {
 	return outputs;
 }
 
+D3DOutput* D3DAdapter::GetFirstOutput() const {
+	FD_ASSERT(adapter == nullptr);
+
+	IDXGIOutput* output = nullptr;
+
+	FD_ASSERT(adapter->EnumOutputs(0, &output) == DXGI_ERROR_NOT_FOUND);
+
+	return new D3DOutput(output);
+}
+
 }

@@ -74,7 +74,7 @@
 
 namespace FD {
 
-class FDAPI FDApplication {
+class FDAPI Application {
 private:
 	void Run();
 
@@ -83,20 +83,21 @@ private:
 protected:
 	Window* window;
 
+	virtual void OnCreateWindow() = 0;
 	virtual void OnInit();
 	virtual void OnTick();
 	virtual void OnUpdate(float32 delta);
 	virtual void OnRender();
 	virtual void OnExit();
 
+	Application();
 public:
-	FDApplication(const char* title, uint32 width, uint32 height);
-	virtual ~FDApplication();
+	virtual ~Application();
 
 
 	inline void Start() { Run(); }
 
-	inline void SetUPS(float32 timesPerSec) { this->ups = 1000.0f / timesPerSec; }
+	inline void SetUPS(float32 timesPerSec) { this->ups = timesPerSec == 0 ? 0.0f : 1000.0f / timesPerSec; }
 };
 
 }

@@ -34,6 +34,7 @@ public:
 	~D3DAdapter();
 
 	List<D3DOutput*> GetOutputs() const;
+	D3DOutput* GetFirstOutput() const;
 
 	inline IDXGIAdapter* GetAdapter() const { return adapter; }
 

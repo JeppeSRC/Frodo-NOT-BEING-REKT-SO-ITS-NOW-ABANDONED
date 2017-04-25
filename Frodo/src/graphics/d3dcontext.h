@@ -7,6 +7,10 @@
 
 #include <Windows.h>
 
+#include "d3dfactory.h"
+#include "d3dadapter.h"
+#include "d3doutput.h"
+
 #define DX_FREE(x) if (x != nullptr) { x->Release(); x = nullptr;}
 
 namespace FD {
@@ -28,14 +32,24 @@ private:
 	ID3D11DepthStencilView* depthStencilView;
 	IDXGISwapChain* swapChain;
 
+	DXGI_SAMPLE_DESC msaa;
+
 	Window* window;
+
+	D3DAdapter* adapter;
+	D3DOutput* monitor;
 
 	D3DContext();
 	~D3DContext();
 public:
+	static void SetFullscreen(bool state);
 
-	static void CreateContext(Window* window);
+	static void CreateDevice(D3DAdapter* adapter);
+	static void CreateSwapChain(Window* window, D3DOutput* output);
+	static void CreateContext(Window* window, D3DAdapter* adapter, D3DOutput* monitor);
 	static void Dispose();
+
+	static void SetMode(const DXGI_MODE_DESC mode);
 
 	static void Present(uint32 syncInterval, uint32 flags);
 	static void Clear(uint16 numRenderTargets = 1);
@@ -50,6 +64,8 @@ public:
 
 	inline static ID3D11DepthStencilView* GetDefaultDepthStencilView() { return D3DContext::GetContext()->depthStencilView; }
 	inline static ID3D11RenderTargetView* GetDefaultRenderTarget() { return D3DContext::GetContext()->renderTarget; }
+
+	inline static DXGI_SAMPLE_DESC GetMSAA() { return pContext->msaa; }
 
 	inline static Window* GetWindow() { return pContext->window; }
 

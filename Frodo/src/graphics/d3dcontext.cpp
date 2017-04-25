@@ -6,58 +6,85 @@ namespace FD {
 
 D3DContext* D3DContext::pContext = nullptr;
 
-D3DContext::D3DContext() {}
-
-D3DContext::~D3DContext() {
-	DX_FREE(depthStencilView)
-		DX_FREE(renderTarget)
-		DX_FREE(context)
-		DX_FREE(device)
-		DX_FREE(swapChain)
+D3DContext::D3DContext() {
+	device = nullptr;
+	context = nullptr;
+	activeContext = nullptr;
+	renderTarget = nullptr;
+	depthStencilView = nullptr;
+	swapChain = nullptr;
+	window = nullptr;
+	adapter = nullptr;
+	monitor = nullptr;
+	swapChain->
 }
 
+D3DContext::~D3DContext() {
+	DX_FREE(depthStencilView);
+	DX_FREE(renderTarget);
+	DX_FREE(context);
+	DX_FREE(device);
+	SetFullscreen(false);
+	DX_FREE(swapChain);
+}
 
+void D3DContext::SetFullscreen(bool state) {
+	pContext->swapChain->SetFullscreenState(state, state ? pContext->monitor->GetOutput() : nullptr);
+}
 
-void D3DContext::CreateContext(Window* window) {
-	if (pContext != nullptr) {
-		FD_DEBUG("Deleting previous context");
-		delete pContext;
+void D3DContext::CreateDevice(D3DAdapter* adapter) {
+
+	FD_ASSERT(adapter == nullptr);
+
+	if (pContext->device) {
+		DX_FREE(pContext->device);
+		delete pContext->adapter;
+		pContext->adapter = nullptr;
 	}
-	FD_DEBUG("Createing D3DContext");
-	pContext = new D3DContext;
 
-	DXGI_SWAP_CHAIN_DESC scd;
-	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+#ifndef _DEBUG
+	D3D11CreateDevice(adapter->GetAdapter(), D3D_DRIVER_TYPE_UNKNOWN, 0, 0, 0, 0, D3D11_SDK_VERSION, &pContext->device, 0, &pContext->context);
+#else
+	D3D11CreateDevice(adapter->GetAdapter(), D3D_DRIVER_TYPE_UNKNOWN, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, &pContext->device, 0, &pContext->context);
+#endif
 
-	scd.BufferCount = 1;
-	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	scd.BufferDesc.Width = window->GetWidth();
-	scd.BufferDesc.Height = window->GetHeight();
-	scd.BufferDesc.RefreshRate.Denominator = 144;
-	scd.BufferDesc.RefreshRate.Numerator = 1;
-	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-	scd.OutputWindow = window->GetHWND();
-	scd.SampleDesc.Count = 1;
-	scd.SampleDesc.Quality = 0;
-	scd.Windowed = true;
+	FD_ASSERT(pContext->device == nullptr);
 
-	#ifdef _DEBUG
-	D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_DEBUG, 0, 0, D3D11_SDK_VERSION, &scd, &pContext->swapChain, &pContext->device, 0, &pContext->context);
-	#else
-	D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, 0, 0, 0, D3D11_SDK_VERSION, &scd, &pContext->swapChain, &pContext->device, 0, &pContext->context);
-	#endif
+	FD_DEBUG("[D3DContext] Device created from adapter \"%s\"", *adapter->GetName());
 
 	pContext->activeContext = pContext->context;
+	pContext->adapter = adapter;
+}
+
+void D3DContext::CreateSwapChain(Window* window, D3DOutput* output) {
+
+	DXGI_SWAP_CHAIN_DESC scd = { 0 };
+	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+
+
+	scd.BufferCount = 1;
+	scd.BufferDesc = output->GetCurrentMode();
+	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	scd.Flags = 0;
+	scd.OutputWindow = window->GetHWND();
+	scd.SampleDesc.Count = 1;
+	scd.Windowed = true;
+
+	if (pContext->swapChain) {
+		SetFullscreen(false);
+		DX_FREE(pContext->swapChain);
+	}
+
+	D3DFactory::GetFactory()->CreateSwapChain(pContext->device, &scd, &pContext->swapChain);
 
 	ID3D11Texture2D* tmp = nullptr;
 	pContext->swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&tmp);
 
 	pContext->device->CreateRenderTargetView(tmp, 0, &pContext->renderTarget);
 
-	DX_FREE(tmp)
+	DX_FREE(tmp);
 
-		D3D11_TEXTURE2D_DESC td;
+	D3D11_TEXTURE2D_DESC td;
 	ZeroMemory(&td, sizeof(D3D11_TEXTURE2D_DESC));
 
 	td.ArraySize = 1;
@@ -80,16 +107,35 @@ void D3DContext::CreateContext(Window* window) {
 
 	DX_FREE(tmp)
 
-		SetRenderTargets(1, &pContext->renderTarget, pContext->depthStencilView);
+	SetRenderTargets(1, &pContext->renderTarget, pContext->depthStencilView);
 
 	SetViewPort(0.0f, 0.0f, (float32)window->GetWidth(), (float32)window->GetHeight());
 
 	pContext->window = window;
+	pContext->monitor = output;
+	pContext->context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void D3DContext::CreateContext(Window* window, D3DAdapter* adapter, D3DOutput* monitor) {
+	if (pContext != nullptr) {
+		FD_DEBUG("[D3DContext] Deleting previous context");
+		delete pContext;
+	}
+	FD_DEBUG("[D3DContext] Createing D3DContext");
+	pContext = new D3DContext;
+
+
+	CreateDevice(adapter);
+	CreateSwapChain(window, monitor);
 }
 
 void D3DContext::Dispose() {
-	FD_DEBUG("Deleting D3DContext");
+	FD_DEBUG("[D3DContext] Deleting D3DContext");
 	delete pContext;
+}
+
+void D3DContext::SetMode(const DXGI_MODE_DESC mode) {
+	pContext->swapChain->ResizeTarget(&mode);
 }
 
 void D3DContext::Present(uint32 syncInterval, uint32 flags) {

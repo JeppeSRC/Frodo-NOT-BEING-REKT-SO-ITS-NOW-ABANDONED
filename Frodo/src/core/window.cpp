@@ -112,7 +112,7 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 		case WM_SETFOCUS:
 			e = new EventWindowState(FD_FOCUS_GAINED);
 			EventDispatcher::DispatchEvent(e);
-			Input::AcquireMouse();
+			//Input::AcquireMouse();
 			Input::AcquireKeyboard();
 			break;
 		case WM_KILLFOCUS:
@@ -126,8 +126,46 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 	return DefWindowProc(hwnd, msg, w, l);
 }
 
-Window::Window(const String& title, int32 width, int32 height) : title(title), width(width), height(height) {
-	FD_DEBUG("Creating window Title<%s> Width<%d> Height<%d>!", *title, width, height);
+Window::Window(const String& title, FD_WINDOW_PROPERTIES prop, D3DAdapter* adapter, D3DOutput* output) : title(title) {
+	D3DFactory::CreateFactory();
+	if (adapter == nullptr) {
+		adapter = D3DFactory::GetFirstAdapter();
+	}
+
+	if (output == nullptr) {
+		output = adapter->GetFirstOutput();
+	}
+
+	if (prop.width == 0 || prop.height == 0) {
+		DXGI_MODE_DESC desc = output->GetBestMode();
+		output->SetCurrentMode(desc);
+
+		this->width = desc.Width;
+		this->height = desc.Height;
+	} else {
+		DXGI_MODE_DESC desc = { 0 }, bestMode = { 0 };
+
+		desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		desc.Width = prop.width;
+		desc.Height = prop.height;
+
+		output->GetOutput()->FindClosestMatchingMode(&desc, &bestMode, nullptr);
+
+		output->SetCurrentMode(bestMode);
+
+		this->width = bestMode.Width;
+		this->height = bestMode.Height;
+	}
+	
+	RECT monitorDesktopLocation = output->GetDesktopCoordinates();
+
+	int32 mWidth = monitorDesktopLocation.right - monitorDesktopLocation.left;
+	int32 mHeight = monitorDesktopLocation.bottom - monitorDesktopLocation.top;
+
+	int32 xLocation = monitorDesktopLocation.left + (mWidth >> 1) - (this->width >> 1);
+	int32 yLocation = monitorDesktopLocation.top + (mHeight >> 1) - (this->height >> 1);
+
+	FD_DEBUG("[Window] Creating window Title<%s> Width<%d> Height<%d>!", *title, this->width, this->height);
 
 	WNDCLASSEX ws;
 	
@@ -145,36 +183,37 @@ Window::Window(const String& title, int32 width, int32 height) : title(title), w
 	ws.style = CS_VREDRAW | CS_HREDRAW;
 
 	if (!RegisterClassEx(&ws)) {
-		FD_FATAL("Failed to register (WNDCLASSEX)");
+		FD_FATAL("[Window] Failed to register (WNDCLASSEX)");
 		return;
 	}
 
-	RECT r = { 0,0,width, height };
+	RECT r = { 0,0, this->width, this->height };
 
 	AdjustWindowRect(&r, WS_OVERLAPPEDWINDOW, FALSE);
 
-	if (!(hwnd = CreateWindow("Frodo Window", *title, WS_OVERLAPPEDWINDOW, (GetSystemMetrics(SM_CXSCREEN) >> 1) - (width >> 1), (GetSystemMetrics(SM_CYSCREEN) >> 1) - (height >> 1), r.right - r.left, r.bottom - r.top, 0, 0, 0, 0))) {
-		FD_FATAL("Failed to create window (HWND)");
+	if (!(hwnd = CreateWindow("Frodo Window", *title, WS_OVERLAPPEDWINDOW, xLocation, yLocation, r.right - r.left, r.bottom - r.top, 0, 0, 0, 0))) {
+		FD_FATAL("[Window] Failed to create window (HWND)");
 		return;
 	}
 
-	D3DContext::CreateContext(this);
+	D3DFactory::CreateFactory();
+	const List<D3DAdapter*>& adapters = D3DFactory::GetAdapters();
+	D3DContext::CreateContext(this, adapter, output, prop.msaa);
 	
 	isOpen = true;
 	SetVisible(true);
 	SetVSync(0);
 	Input::InitializeDirectInput(this);
-	Input::InitializeMouse("Mouse");
 	Input::InitializeKeyboard("Keyboard");
+	Input::InitializeMouse("Mouse");
 
 	window_handels.Add(hwnd, this);
 
 	clearColor[3] = 1;
 }
 
-
 Window::~Window() {
-	FD_DEBUG("Closing window");
+	FD_DEBUG("[Window] Closing window");
 	D3DContext::Dispose();
 }
 
@@ -200,7 +239,7 @@ void Window::SetVisible(bool visible) {
 	else
 		ShowWindow(hwnd, SW_HIDE);
 
-	FD_DEBUG("Window(%s) visibility set to %s", *title, isVisible ? "TRUE" : "FALSE");
+	FD_DEBUG("[Window] Window(%s) visibility set to %s", *title, isVisible ? "TRUE" : "FALSE");
 }
 
 

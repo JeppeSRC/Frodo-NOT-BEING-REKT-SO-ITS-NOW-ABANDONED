@@ -8,6 +8,7 @@ namespace FD {
 IDXGIFactory* D3DFactory::factory = nullptr;
 
 void D3DFactory::CreateFactory() {
+	if (factory) return;
 	if (CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory) != S_OK) {
 		FD_ASSERT("[D3DFactory] Failed to create factory");
 		return;
@@ -23,7 +24,7 @@ void D3DFactory::Release() {
 }
 
 List<D3DAdapter*> D3DFactory::GetAdapters() {
-	FD_ASSERT(factory == nullptr, "CreateFactory must be called first");
+	FD_ASSERT_MSG(factory == nullptr, "CreateFactory must be called first");
 
 	uint32 index = 0;
 
@@ -34,6 +35,15 @@ List<D3DAdapter*> D3DFactory::GetAdapters() {
 	}
 
 	return adapters;
+}
+
+D3DAdapter* D3DFactory::GetFirstAdapter() {
+
+	IDXGIAdapter* adapter = nullptr;
+
+	FD_ASSERT(factory->EnumAdapters(0, &adapter) == DXGI_ERROR_NOT_FOUND);
+
+	return new D3DAdapter(adapter);
 }
 
 }

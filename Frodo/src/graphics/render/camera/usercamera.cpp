@@ -24,36 +24,47 @@ void UserCamera::Update(float32 delta) {
 
 bool UserCamera::OnKeyboardActionKeyPressed(FD_KEY key) {
 
-	if (key == FD_KEY_W) {
-		dir += forward;
-	} else if (key == FD_KEY_S) {
-		dir += back;
-	}
+	if (Input::IsMouseAcquired()) {
+		if (key == FD_KEY_W) {
+			dir += forward;
+		} else if (key == FD_KEY_S) {
+			dir += back;
+		}
 
-	if (key == FD_KEY_A) {
-		dir += left;
-	} else if (key == FD_KEY_D) {
-		dir += right;
+		if (key == FD_KEY_A) {
+			dir += left;
+		} else if (key == FD_KEY_D) {
+			dir += right;
+		}
 	}
-
 	if (key == FD_KEY_Q)
 		Input::ToggleMouseAcquisition();
+
+	if (key == FD_KEY_TAB) {
+		D3DContext::SetFullscreen(true);
+	} else if (key == FD_KEY_ESCAPE) {
+		D3DContext::SetFullscreen(false);
+	}
+
 
 	return false;
 }
 
 bool UserCamera::OnKeyboardActionKeyReleased(FD_KEY key) {
 
-	if (key == FD_KEY_W) {
-		dir -= forward;
-	} else if (key == FD_KEY_S) {
-		dir -= back;
-	}
+	if (Input::IsMouseAcquired()) {
+		if (key == FD_KEY_W) {
+			dir -= forward;
+		} else if (key == FD_KEY_S) {
+			dir -= back;
+		}
 
-	if (key == FD_KEY_A) {
-		dir -= left;
-	} else if (key == FD_KEY_D) {
-		dir -= right;
+		if (key == FD_KEY_A) {
+			dir -= left;
+		} else if (key == FD_KEY_D) {
+			dir -= right;
+		}
+
 	}
 
 	return false;

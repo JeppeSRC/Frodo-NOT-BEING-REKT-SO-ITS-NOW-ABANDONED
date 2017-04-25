@@ -95,6 +95,9 @@ public:
 	static void UnacquireMouse();
 	static void UnacquireKeyboard();
 
+	static bool IsMouseAcquired() { return mouse.acquired; }
+	static bool IsKeyboardAcquired() { return keyboard.acquired; }
+
 	static void UpdateInputAndDispatchEvents();
 
 	inline static bool CheckKey(FD_KEY key) { return (keyboard.k[key] & 0x80) == 1; }

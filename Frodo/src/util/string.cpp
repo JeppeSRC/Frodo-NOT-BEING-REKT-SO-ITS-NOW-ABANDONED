@@ -179,7 +179,7 @@ String& String::Remove(const String& string) {
 
 String& String::Remove(uint_t start, uint_t end) {
 	uint_t len = end - start;
-	FD_ASSERT((bool)(length >= len));
+	FD_ASSERT(len >= length);
 	uint_t newlen = length - len;
 
 	char* tmp = str;
