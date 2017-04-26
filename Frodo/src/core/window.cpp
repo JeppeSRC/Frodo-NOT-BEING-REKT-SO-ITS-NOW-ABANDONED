@@ -198,7 +198,7 @@ Window::Window(const String& title, FD_WINDOW_PROPERTIES prop, D3DAdapter* adapt
 
 	D3DFactory::CreateFactory();
 	const List<D3DAdapter*>& adapters = D3DFactory::GetAdapters();
-	D3DContext::CreateContext(this, adapter, output, prop.msaa);
+	D3DContext::CreateContext(this, adapter, output);
 	
 	isOpen = true;
 	SetVisible(true);

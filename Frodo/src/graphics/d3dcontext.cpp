@@ -16,7 +16,6 @@ D3DContext::D3DContext() {
 	window = nullptr;
 	adapter = nullptr;
 	monitor = nullptr;
-	swapChain->
 }
 
 D3DContext::~D3DContext() {

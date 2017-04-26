@@ -14,7 +14,6 @@ namespace FD {
 struct FD_WINDOW_PROPERTIES {
 	int32 width;
 	int32 height;
-	DXGI_SAMPLE_DESC msaa = { 1, 0 };
 };
 
 class FDAPI Window : public EventListener {

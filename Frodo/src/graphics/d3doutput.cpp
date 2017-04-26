@@ -15,7 +15,7 @@ D3DOutput::D3DOutput(IDXGIOutput* output) {
 	name = String(desc.DeviceName);
 
 	desktopCoordinates = desc.DesktopCoordinates;
-	attachedToDesktop = desc.AttachedToDesktop;
+	attachedToDesktop = (bool)desc.AttachedToDesktop;
 	rotation = (FD_MONITOR_ROTATION)desc.Rotation;
 	monitorHandle = desc.Monitor;
 
