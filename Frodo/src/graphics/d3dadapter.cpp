@@ -49,7 +49,10 @@ D3DOutput* D3DAdapter::GetFirstOutput() const {
 
 	IDXGIOutput* output = nullptr;
 
-	FD_ASSERT(adapter->EnumOutputs(0, &output) == DXGI_ERROR_NOT_FOUND);
+	if (adapter->EnumOutputs(0, &output) == DXGI_ERROR_NOT_FOUND) {
+		FD_WARNING("[D3DAdapter] No outputs connected to \"%s\"", *name);
+		return nullptr;
+	}
 
 	return new D3DOutput(output);
 }

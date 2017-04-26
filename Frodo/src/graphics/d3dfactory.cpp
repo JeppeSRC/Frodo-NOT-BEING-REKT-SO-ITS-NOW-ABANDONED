@@ -34,6 +34,10 @@ List<D3DAdapter*> D3DFactory::GetAdapters() {
 		adapters.Push_back(new D3DAdapter(adapter));
 	}
 
+	if (index == 1) {
+		FD_FATAL("[D3DFactory] No adapter available");
+	}
+
 	return adapters;
 }
 
@@ -41,7 +45,10 @@ D3DAdapter* D3DFactory::GetFirstAdapter() {
 
 	IDXGIAdapter* adapter = nullptr;
 
-	FD_ASSERT(factory->EnumAdapters(0, &adapter) == DXGI_ERROR_NOT_FOUND);
+	if (factory->EnumAdapters(0, &adapter) == DXGI_ERROR_NOT_FOUND) {
+		FD_FATAL("[D3DFactory] No adapter available");
+		return nullptr;
+	}
 
 	return new D3DAdapter(adapter);
 }

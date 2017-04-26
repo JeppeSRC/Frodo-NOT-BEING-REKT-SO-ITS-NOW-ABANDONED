@@ -132,7 +132,13 @@ Window::Window(const String& title, FD_WINDOW_PROPERTIES prop, D3DAdapter* adapt
 	}
 
 	if (output == nullptr) {
-		output = adapter->GetFirstOutput();
+		if ((output = adapter->GetFirstOutput()) == nullptr) {
+			if ((output = D3DFactory::GetFirstAdapter()->GetFirstOutput()) == nullptr) {
+				FD_FATAL("[Window] No outputs available");
+				return;
+			}
+		}
+		
 	}
 
 	if (prop.width == 0 || prop.height == 0) {
