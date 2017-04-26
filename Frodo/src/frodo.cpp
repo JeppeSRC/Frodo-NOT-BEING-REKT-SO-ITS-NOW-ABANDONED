@@ -27,6 +27,7 @@ void Application::OnExit() {}
 
 void Application::Run() {
 	VFS::Init();
+	D3DFactory::CreateFactory();
 	OnCreateWindow();
 	TextureManager::Init();
 	OnInit();
@@ -60,5 +61,6 @@ void Application::Run() {
 	}
 
 	OnExit();
+	D3DFactory::Release();
 }
 }

@@ -127,7 +127,6 @@ LRESULT Window::WndProc(HWND hwnd, UINT msg, WPARAM w, LPARAM l) {
 }
 
 Window::Window(const String& title, FD_WINDOW_PROPERTIES prop, D3DAdapter* adapter, D3DOutput* output) : title(title) {
-	D3DFactory::CreateFactory();
 	if (adapter == nullptr) {
 		adapter = D3DFactory::GetFirstAdapter();
 	}
