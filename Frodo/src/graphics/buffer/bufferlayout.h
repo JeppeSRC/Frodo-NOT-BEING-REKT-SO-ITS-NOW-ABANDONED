@@ -35,10 +35,10 @@ public:
 
 	void PushElement(const String& name, uint32 size);
 	void PushElementAtOffset(const String& name, uint32 size, uint32 offset);
-	uint32 GetElementOffset(const String& name);
-	uint32 GetElementOffset(uint32 index);
-	uint32 GetElementSize(const String& name);
-	uint32 GetElementSize(uint32 index);
+	uint32 GetElementOffset(const String& name) const;
+	uint32 GetElementOffset(uint32 index) const;
+	uint32 GetElementSize(const String& name) const;
+	uint32 GetElementSize(uint32 index) const;
 	uint32 GetSize() const { return offset; }
 
 	inline const List<BufferLayoutAttrib*>& GetElements() const { return elements; }

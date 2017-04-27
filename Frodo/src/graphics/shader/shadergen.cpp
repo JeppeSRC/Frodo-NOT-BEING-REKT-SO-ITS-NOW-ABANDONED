@@ -84,7 +84,7 @@ static void InsertString(String& source, const String& code, uint_t offset) {
 	source.Append(afterBlock);
 }
 
-Shader::ShaderGenVariable* Shader::ShaderGenGetVariableInternal(const String& name, FD_SHADER_TYPE type) {
+Shader::ShaderGenVariable* Shader::ShaderGenGetVariableInternal(const String& name, FD_SHADER_TYPE type) const {
 	uint_t size = variables.GetSize();
 	for (uint_t i = 0; i < size; i++) {
 		ShaderGenVariable* variable = variables.Get(i);
@@ -638,14 +638,14 @@ void Shader::ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type) {
 	FD_DEBUG("[ShaderGen] Undefined variable \"%s\"", *name);
 }
 
-float32 Shader::ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type) {
+float32 Shader::ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type) const {
 	ShaderGenVariable* var = ShaderGenGetVariableInternal(name, type);
 	if (var != nullptr) return var->data;
 	FD_WARNING("[ShaderGen] Variable \"%s\" not found", *name);
 	return 0;
 }
 
-String Shader::ShaderGenGetBlock(const String& name, FD_SHADER_TYPE type) {
+String Shader::ShaderGenGetBlock(const String& name, FD_SHADER_TYPE type) const {
 	uint_t size = blocks.GetSize();
 	for (uint_t i = 0; i < size; i++) {
 		ShaderGenBlock* block = blocks.Get(i);

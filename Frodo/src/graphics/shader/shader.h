@@ -61,7 +61,7 @@ private:
 	List<ShaderGenVariable*> variables;
 	List<ShaderGenBlock*> blocks;
 
-	ShaderGenVariable* ShaderGenGetVariableInternal(const String& name, FD_SHADER_TYPE type);
+	ShaderGenVariable* ShaderGenGetVariableInternal(const String& name, FD_SHADER_TYPE type) const;
 	void ShaderGenParseDefinitions(String& source, FD_SHADER_TYPE type);
 	void ShaderGenProcessConditions(String& source, FD_SHADER_TYPE type);
 	void ShaderGenProcessGeneration(String& source, FD_SHADER_TYPE type);
@@ -91,8 +91,8 @@ public:
 
 		BufferLayout layout;
 
-		void SetElement(const String& name, void* data);
-		void SetElement(uint32 index, void* data);
+		void SetElement(const String& name, const void* data) const;
+		void SetElement(uint32 index, const void* data) const;
 	};
 
 	struct TextureSlot {
@@ -166,8 +166,8 @@ private:
 
 	ID3D11InputLayout* inputLayout;
 
-	void SetVSConstantBufferSlotInternal(uint32 slot, void* data);
-	void SetPSConstantBufferSlotInternal(uint32 slot, void* data);
+	void SetVSConstantBufferSlotInternal(uint32 slot, const void* data) const;
+	void SetPSConstantBufferSlotInternal(uint32 slot, const void* data) const;
 
 	void Compile(String vSource, String pSource);
 
@@ -177,34 +177,34 @@ public:
 
 	void Bind();
 
-	void SetVSConstantBuffer(const String& bufferName, void* data);
-	void SetPSConstantBuffer(const String& bufferName, void* data);
-	void SetVSConstantBuffer(uint32 slot, void* data);
-	void SetPSConstantBuffer(uint32 slot, void* data);
-	void SetVSConstantBuffer(ConstantBufferSlot vCBuffer);
-	void SetPSConstantBuffer(ConstantBufferSlot pCBuffer);
-	void SetTexture(uint32 slot, const Texture* tex);
+	void SetVSConstantBuffer(const String& bufferName, const void* data) const;
+	void SetPSConstantBuffer(const String& bufferName, const void* data) const;
+	void SetVSConstantBuffer(uint32 slot, const void* data) const;
+	void SetPSConstantBuffer(uint32 slot, const void* data) const;
+	void SetVSConstantBuffer(const ConstantBufferSlot vCBuffer) const;
+	void SetPSConstantBuffer(const ConstantBufferSlot pCBuffer) const;
+	void SetTexture(uint32 slot, const Texture* tex) const;
 
-	ConstantBufferSlot GetVSConstantBufferInfo(const String& name);
-	ConstantBufferSlot GetPSConstantBufferInfo(const String& name);
+	ConstantBufferSlot GetVSConstantBufferInfo(const String& name) const;
+	ConstantBufferSlot GetPSConstantBufferInfo(const String& name) const;
 
-	TextureSlot GetTextureInfo(const String& name);
+	TextureSlot GetTextureInfo(const String& name) const;
 
-	uint32 GetVSConstantBufferSlotByName(const String& bufferName);
-	uint32 GetPSConstantBufferSlotByName(const String& bufferName);
-	uint32 GetPSTextureSlotByName(const String& textureName);
+	uint32 GetVSConstantBufferSlotByName(const String& bufferName) const;
+	uint32 GetPSConstantBufferSlotByName(const String& bufferName) const;
+	uint32 GetPSTextureSlotByName(const String& textureName) const;
 
 	void ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, float32 data);
 	void ShaderGenUndefVariable(const String& name, FD_SHADER_TYPE type);
 
-	float32  ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type);
-	String ShaderGenGetBlock(const String& name, FD_SHADER_TYPE typ);
+	float32  ShaderGenGetVariable(const String& name, FD_SHADER_TYPE type) const;
+	String ShaderGenGetBlock(const String& name, FD_SHADER_TYPE typ) const;
 
 	void ShaderGenComplete();
 
 	inline const void* GetVSBufferPointer() const { return vByteCode->GetBufferPointer(); }
 	inline uint_t GetVSBufferSize() const { return vByteCode->GetBufferSize(); }
-	inline ID3D11InputLayout* GetInputLayout() { return inputLayout; }
+	inline ID3D11InputLayout* GetInputLayout() const { return inputLayout; }
 
 	inline void SetInputLayout(ID3D11InputLayout* layout) { DX_FREE(inputLayout); inputLayout = layout; }
 

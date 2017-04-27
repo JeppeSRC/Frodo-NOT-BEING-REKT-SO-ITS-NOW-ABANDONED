@@ -33,10 +33,10 @@ void BufferLayout::PushElementAtOffset(const String& name, uint32 size, uint32 o
 	elements.Push_back(new BufferLayoutAttrib({ name, (DXGI_FORMAT)0, 0, size, offset }));
 }
 
-uint32 BufferLayout::GetElementOffset(const String& name) {
+uint32 BufferLayout::GetElementOffset(const String& name) const {
 	uint_t size = elements.GetSize();
 	for (uint_t i = 0; i < size; i++) {
-		const BufferLayoutAttrib& attrib = *elements[i];
+		const BufferLayoutAttrib& attrib = *elements.Get(i);
 		if (attrib.name == name) return attrib.offset;
 	}
 
@@ -44,18 +44,18 @@ uint32 BufferLayout::GetElementOffset(const String& name) {
 	return -1;
 }
 
-uint32 BufferLayout::GetElementOffset(uint32 index) {
+uint32 BufferLayout::GetElementOffset(uint32 index) const {
 	if (index >= elements.GetSize()) {
 		FD_WARNING("[BufferLayout] Index out of bounds %u", index);
 	}
 
-	return elements[index]->offset;
+	return elements.Get(index)->offset;
 }
 
-uint32 BufferLayout::GetElementSize(const String& name) {
+uint32 BufferLayout::GetElementSize(const String& name) const {
 	uint_t size = elements.GetSize();
 	for (uint_t i = 0; i < size; i++) {
-		const BufferLayoutAttrib& attrib = *elements[i];
+		const BufferLayoutAttrib& attrib = *elements.Get(i);
 		if (attrib.name == name) return attrib.size;
 	}
 
@@ -63,12 +63,12 @@ uint32 BufferLayout::GetElementSize(const String& name) {
 	return -1;
 }
 
-uint32 BufferLayout::GetElementSize(uint32 index) {
+uint32 BufferLayout::GetElementSize(uint32 index) const {
 	if (index >= elements.GetSize()) {
 		FD_WARNING("[BufferLayout] Index out of bounds %u", index);
 	}
 
-	return elements[index]->size;
+	return elements.Get(index)->size;
 }
 
 void BufferLayout::Push(const String& name, DXGI_FORMAT format, uint32 slot) {

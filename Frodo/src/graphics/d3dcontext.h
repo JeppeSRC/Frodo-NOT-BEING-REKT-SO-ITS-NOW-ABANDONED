@@ -65,7 +65,9 @@ public:
 	inline static ID3D11DepthStencilView* GetDefaultDepthStencilView() { return D3DContext::GetContext()->depthStencilView; }
 	inline static ID3D11RenderTargetView* GetDefaultRenderTarget() { return D3DContext::GetContext()->renderTarget; }
 
-	inline static DXGI_SAMPLE_DESC GetMSAA() { return pContext->msaa; }
+	inline static ID3D11RenderTargetView* GetActiveRenderTarget() { return pContext->activeRenderTargets[0]; }
+
+	inline static Window* GetWindow() { return pContext->window; }
 
 	inline static Window* GetWindow() { return pContext->window; }
 

@@ -233,6 +233,7 @@
     <ClCompile Include="src\graphics\font\font.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrrenderer.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrstaticrenderer.cpp" />
+    <ClCompile Include="src\graphics\postfx\posteffect.cpp" />
     <ClCompile Include="src\graphics\render\material\materialinstance.cpp" />
     <ClCompile Include="src\graphics\render\mesh\mesh.cpp" />
     <ClCompile Include="src\graphics\render\renderer\batchrenderer.cpp" />
@@ -303,6 +304,7 @@
     <ClInclude Include="src\graphics\d3doutput.h" />
     <ClInclude Include="src\graphics\font\font.h" />
     <ClInclude Include="src\graphics\pbr\render\pbrrenderer.h" />
+    <ClInclude Include="src\graphics\postfx\posteffect.h" />
     <ClInclude Include="src\graphics\render\mesh\mesh.h" />
     <ClInclude Include="src\graphics\render\renderer\batchrenderer.h" />
     <ClInclude Include="src\graphics\render\camera\camera.h" />

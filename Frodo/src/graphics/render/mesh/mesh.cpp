@@ -3,7 +3,7 @@
 namespace FD {
 
 void Mesh::Render() {
-	material->Bind();
+	if (material) material->Bind();
 
 	vBuffer->Bind();
 	iBuffer->Bind();
