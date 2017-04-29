@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Frodo Utils\src\;src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
@@ -113,7 +113,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Frodo Utils\src\;src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>fd.h</PrecompiledHeaderFile>
@@ -138,7 +138,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Frodo Utils\src\;src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -172,7 +172,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Frodo Utils\src\;src;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\Include</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PreprocessorDefinitions>_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;FD_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -207,7 +207,6 @@
     <ClCompile Include="src\core\fdtypes.h" />
     <ClCompile Include="src\core\input.cpp" />
     <ClCompile Include="src\core\input_event_handler.cpp" />
-    <ClCompile Include="src\core\log.cpp" />
     <ClCompile Include="src\core\ui\uibutton.cpp" />
     <ClCompile Include="src\core\ui\uigroup.cpp" />
     <ClCompile Include="src\core\ui\uihandler.cpp" />
@@ -254,11 +253,6 @@
     <ClCompile Include="src\graphics\texture\texture2d.cpp" />
     <ClCompile Include="src\graphics\texture\texturecube.cpp" />
     <ClCompile Include="src\graphics\texture\texturemanager.cpp" />
-    <ClCompile Include="src\math\mat3.cpp" />
-    <ClCompile Include="src\math\mat4.cpp" />
-    <ClCompile Include="src\math\vec2.cpp" />
-    <ClCompile Include="src\math\vec3.cpp" />
-    <ClCompile Include="src\math\vec4.cpp" />
     <ClCompile Include="src\util\asset\asset.cpp" />
     <ClCompile Include="src\util\asset\assetmanager.cpp" />
     <ClCompile Include="src\util\asset\package.cpp" />
@@ -267,8 +261,6 @@
     <ClCompile Include="src\physics\ray.cpp" />
     <ClCompile Include="src\physics\sphere.cpp" />
     <ClCompile Include="src\physics\triangle.cpp" />
-    <ClCompile Include="src\util\fileutils.cpp" />
-    <ClCompile Include="src\util\string.cpp" />
     <ClCompile Include="src\util\vfs\vfs.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -280,7 +272,6 @@
     <ClInclude Include="src\core\event\eventwindow.h" />
     <ClInclude Include="src\core\event\fd_key.h" />
     <ClInclude Include="src\core\input.h" />
-    <ClInclude Include="src\core\log.h" />
     <ClInclude Include="src\core\ui\ui.h" />
     <ClInclude Include="src\core\ui\uibutton.h" />
     <ClInclude Include="src\core\ui\uigroup.h" />
@@ -323,14 +314,7 @@
     <ClInclude Include="src\graphics\texture\texture2d.h" />
     <ClInclude Include="src\graphics\texture\texturecube.h" />
     <ClInclude Include="src\graphics\texture\texturemanager.h" />
-    <ClInclude Include="src\math\mat3.h" />
-    <ClInclude Include="src\math\mat4.h" />
-    <ClInclude Include="src\math\math.h" />
-    <ClInclude Include="src\math\mathcommon.h" />
     <ClInclude Include="src\math\valueinterpolation.h" />
-    <ClInclude Include="src\math\vec2.h" />
-    <ClInclude Include="src\math\vec3.h" />
-    <ClInclude Include="src\math\vec4.h" />
     <ClInclude Include="src\util\asset\asset.h" />
     <ClInclude Include="src\util\asset\assetmanager.h" />
     <ClInclude Include="src\util\asset\package.h" />
@@ -340,15 +324,14 @@
     <ClInclude Include="src\physics\ray.h" />
     <ClInclude Include="src\physics\sphere.h" />
     <ClInclude Include="src\physics\triangle.h" />
-    <ClInclude Include="src\util\fileutils.h" />
-    <ClInclude Include="src\util\list.h" />
-    <ClInclude Include="src\util\map.h" />
-    <ClInclude Include="src\util\string.h" />
     <ClInclude Include="src\util\vfs\vfs.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dependencies\FreeType\FreeType.vcxproj">
       <Project>{567204d9-06c3-4d14-8722-759e9be9c88d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Frodo Utils\Frodo Utils.vcxproj">
+      <Project>{154c053f-b043-49b8-ba49-729fed267b75}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/log.h>
+#include <fdutils.h>
 #include <core/window.h>
 #include <core/input.h>
 
@@ -16,7 +16,6 @@
 #include <core/event/fd_key.h>
 
 #include <core/scene.h>
-
 
 #include <graphics/d3dcontext.h>
 #include <graphics/d3dadapter.h>

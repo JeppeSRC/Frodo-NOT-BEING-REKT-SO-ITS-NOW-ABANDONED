@@ -267,7 +267,7 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 
 	uint_t numLines = lines.GetSize();
 	FD_DEBUG("[MeshFactory] Parsing text");
-	#pragma omp for
+
 	for (int32 i = 0; i < numLines; i++) {
 		String line = lines[i];
 

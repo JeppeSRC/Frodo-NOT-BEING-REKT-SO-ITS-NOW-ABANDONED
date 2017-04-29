@@ -69,8 +69,6 @@ public:
 
 	inline static Window* GetWindow() { return pContext->window; }
 
-	inline static Window* GetWindow() { return pContext->window; }
-
 	__forceinline static D3DContext* GetContext() { return pContext; }
 	__forceinline static ID3D11Device* GetDevice() { return pContext->device; }
 	__forceinline static ID3D11DeviceContext* GetDeviceContext() { return pContext->activeContext; }

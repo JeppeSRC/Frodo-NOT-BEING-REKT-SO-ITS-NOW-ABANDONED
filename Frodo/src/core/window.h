@@ -4,7 +4,7 @@
 #include <util/string.h>
 #include <util/map.h>
 #include <core/event/eventlistener.h>
-#include "log.h"
+#include <core/log.h>
 
 #include <graphics/d3dcontext.h>
 

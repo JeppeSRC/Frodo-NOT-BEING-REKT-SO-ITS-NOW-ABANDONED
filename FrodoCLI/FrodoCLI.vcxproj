@@ -98,7 +98,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Frodo/src;src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Frodo\src;src;$(SolutionDir)Frodo Utils\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -110,7 +110,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Frodo/src;src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Frodo\src;src;$(SolutionDir)Frodo Utils\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -124,7 +124,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Frodo/src;src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Frodo\src;src;$(SolutionDir)Frodo Utils\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -139,7 +139,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../Frodo/src;src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Frodo\src;src;$(SolutionDir)Frodo Utils\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -162,6 +162,9 @@
     <ClInclude Include="src\util\asset\clipackage.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Frodo Utils\Frodo Utils.vcxproj">
+      <Project>{154c053f-b043-49b8-ba49-729fed267b75}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Frodo\Frodo.vcxproj">
       <Project>{08d9dce5-d732-43ba-aac0-e58595d81df2}</Project>
     </ProjectReference>
