@@ -298,6 +298,8 @@ void MeshFactory::ParseOBJ(const String obj, List<vec3>& vertices, List<vec2>& t
 
 	FD_DEBUG("[MeshFactory] Making faces");
 	MakeFacesOBJ(vertices, tmpVertices, texCoords, tmpTexCoords, normals, tmpNormals, indices, faces);
+
+	lines.Free();
 }
 
 void MeshFactory::MakeFacesOBJ(List<vec3>& vertices, List<vec3>& tmpVertices, List<vec2>& texCoords, List<vec2>& tmpTexCoords, List<vec3>& normals, List<vec3>& tmpNormals, List<uint32>& indices, List<Face<3>> faces) {
