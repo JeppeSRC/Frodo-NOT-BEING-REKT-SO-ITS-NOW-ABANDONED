@@ -61,6 +61,29 @@ byte* FDReadBinaryFile(const String& filename, uint_t* fileSize) {
 	return buff;
 }
 
+
+uint_t FDWriteFile(const String& file, const void* buffer, uint64 size) {
+	FILE* f = fopen(*file, "wb");
+	uint_t res = FDWriteFile(f, buffer, size);
+	fclose(f);
+	return res;
+}
+
+uint_t FDWriteFile(const String& file, const void* buffer, uint64 size, uint64 offset) {
+	FILE* f = fopen(*file, "wb");
+	uint_t res = FDWriteFile(f, buffer, size, offset);
+	fclose(f);
+	return res;
+}
+
+uint_t FDWriteFile(const String& file, const void* buffer, uint64 size, uint64* offset) {
+	FILE* f = fopen(*file, "wb");
+	uint_t res = FDWriteFile(f, buffer, size, offset);
+	fclose(f);
+	return res;
+}
+
+
 uint_t FDWriteFile(FILE* file, const void* buffer, uint64 size) {
 	return FWRITE(buffer, size, file);
 }
