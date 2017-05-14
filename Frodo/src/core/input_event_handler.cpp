@@ -255,7 +255,7 @@ void Input::HandleKeyboardEvents() {
 	}
 
 
-/*	for (uint_t i = 0; i < 256; i++)
+	/*for (uint_t i = 0; i < 256; i++)
 		if (k[i] & 0x80)
 			FD_DEBUG("Key: %u", i);*/
 }

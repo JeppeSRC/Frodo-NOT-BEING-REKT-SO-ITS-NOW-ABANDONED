@@ -66,6 +66,8 @@ private:
 	static void HandleKeyboardEvents();
 public:
 
+	static List<FD_DIRECTINPUT_DEVICE*> GetDevices() { return inputDevices; }
+
 	static String GetDeviceName(GUID guid);
 
 	static bool InitializeDirectInput(Window* window);
