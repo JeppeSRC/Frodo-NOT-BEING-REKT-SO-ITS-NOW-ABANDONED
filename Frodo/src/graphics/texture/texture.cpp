@@ -16,9 +16,9 @@ byte* Texture::Load(const String& filename, uint32* width, uint32* height, uint3
 
 	byte* rawData = VFS::Get()->ReadFile(filename, &size);
 
-	FIMEMORY* data = FreeImage_OpenMemory(rawData, size);
+	FIMEMORY* data = FreeImage_OpenMemory(rawData, (uint32)size);
 
-	FREE_IMAGE_FORMAT format = FreeImage_GetFileTypeFromMemory(data, size);
+	FREE_IMAGE_FORMAT format = FreeImage_GetFileTypeFromMemory(data, (int32)size);
 
 	FIBITMAP* dib = nullptr;
 	FIBITMAP* bitmap = nullptr;
@@ -84,9 +84,9 @@ byte* Texture::Load(void* memory, uint32* width, uint32* height, uint32* bits, b
 
 	uint_t size = 0;
 
-	FIMEMORY* data = FreeImage_OpenMemory((byte*)memory, size);
+	FIMEMORY* data = FreeImage_OpenMemory((byte*)memory, (uint32)size);
 
-	FREE_IMAGE_FORMAT format = FreeImage_GetFileTypeFromMemory(data, size);
+	FREE_IMAGE_FORMAT format = FreeImage_GetFileTypeFromMemory(data, (int32)size);
 
 	FIBITMAP* dib = nullptr;
 	FIBITMAP* bitmap = nullptr;

@@ -171,13 +171,13 @@ void Input::HandleMouseEvents() {
 	for (uint_t i = 0; i < 8; i++) {
 		if (m.rgbButtons[i] & 0x80) {
 			if (!buttons[i]) {
-				e = new EventMouseActionButton(FD_PRESSED, i);
+				e = new EventMouseActionButton(FD_PRESSED, (uint32)i);
 				buttons[i] = true;
 				EventDispatcher::DispatchEvent(e);
 			}
 		} else {
 			if (buttons[i]) {
-				e = new EventMouseActionButton(FD_RELEASED, i);
+				e = new EventMouseActionButton(FD_RELEASED, (uint32)i);
 				buttons[i] = false;
 				EventDispatcher::DispatchEvent(e);
 			}
@@ -229,10 +229,10 @@ void Input::HandleKeyboardEvents() {
 		ctrl = true;
 	}
 	if (k[FD_KEY_LMENU]) {
-		keyboard.modifiers |= FD_MODIFIER_LALT | FD_MODIFIER_ALT | ctrl ? FD_MODIFIER_ALTGR : 0;
+		keyboard.modifiers |= FD_MODIFIER_LALT | FD_MODIFIER_ALT | (ctrl ? FD_MODIFIER_ALTGR : 0);
 	}
 	if (k[FD_KEY_RMENU]) {
-		keyboard.modifiers |= FD_MODIFIER_RALT | FD_MODIFIER_ALT | ctrl ? FD_MODIFIER_ALTGR : 0;
+		keyboard.modifiers |= FD_MODIFIER_RALT | FD_MODIFIER_ALT | (ctrl ? FD_MODIFIER_ALTGR : 0);
 	}
 
 	Event* e = nullptr;

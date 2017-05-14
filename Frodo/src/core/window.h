@@ -12,8 +12,8 @@ namespace FD {
 
 
 struct FD_WINDOW_PROPERTIES {
-	int32 width;
-	int32 height;
+	uint32 width;
+	uint32 height;
 };
 
 class FDAPI Window : public EventListener {

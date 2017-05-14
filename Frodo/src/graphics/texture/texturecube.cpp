@@ -48,8 +48,8 @@ void TextureCube::LoadSingleFile(const String& filename) {
 
 	D3D11_TEXTURE2D_DESC d;
 
-	d.Width = faceWidth;
-	d.Height = faceHeight;
+	d.Width = (UINT)faceWidth;
+	d.Height = (UINT)faceHeight;
 	d.ArraySize = 6;
 	d.SampleDesc.Count = 1;
 	d.SampleDesc.Quality = 0;
@@ -75,7 +75,7 @@ void TextureCube::LoadSingleFile(const String& filename) {
 
 	for (uint_t i = 0; i < 6; i++) {
 		r[i].pSysMem = newData[order[i]];
-		r[i].SysMemPitch = faceWidth * stride;
+		r[i].SysMemPitch = (UINT)(faceWidth * stride);
 	}
 
 	D3DContext::GetDevice()->CreateTexture2D(&d, r, &resource);

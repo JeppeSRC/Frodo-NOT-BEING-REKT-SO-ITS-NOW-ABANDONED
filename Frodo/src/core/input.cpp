@@ -125,7 +125,7 @@ bool Input::EnumerateObjects(FD_INPUT_DEVICE* device) {
 
 	delete[] device->objects;
 
-	device->numObjects = objects.GetSize();
+	device->numObjects = (uint32)objects.GetSize();
 	device->objects = new DIDEVICEOBJECTINSTANCE[device->numObjects];
 	
 	memcpy(device->objects, objects.GetData(), device->numObjects * sizeof(DIDEVICEOBJECTINSTANCE));

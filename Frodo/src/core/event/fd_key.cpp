@@ -9,7 +9,7 @@ Map<byte, uint64> KeyMap::map(256);
 void KeyMap::InitializeUS() {
 	map.Clear();
 
-	map.Add(0xFFFFFFFF, 0);
+	map.Add(0xFF, 0);
 	map.Add(FD_KEY_0, MAKE_KEY(0, 0, ')', '0'));
 	map.Add(FD_KEY_1, MAKE_KEY(0, 0, '!', '1'));
 	map.Add(FD_KEY_2, MAKE_KEY(0, 0, '@', '2'));
@@ -64,7 +64,7 @@ void KeyMap::InitializeUS() {
 void KeyMap::InitializeSWE() {
 	map.Clear();
 
-	map.Add(0xFFFFFFFF, 0);
+	map.Add(0xFF, 0);
 	map.Add(FD_KEY_0, MAKE_KEY('}',	0, '=', '0'));
 	map.Add(FD_KEY_1, MAKE_KEY(0,	0, '!', '1'));
 	map.Add(FD_KEY_2, MAKE_KEY('@', 0, '"', '2'));
@@ -129,7 +129,7 @@ void KeyMap::Init(FD_KEYMAP_LAYOUT layout) {
 
 
 uint32 KeyMap::GetChar(FD_KEY key, uint32 modifiers) {
-	uint32 res = map.Retrieve(key);
+	uint32 res = (uint32)map.Retrieve(key);
 	
 	if (res == 0)
 		return (uint32)-1;

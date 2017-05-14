@@ -40,7 +40,7 @@ void UITextHorizontalScroll::UITextHorizontalScroll_Cursor::CalculateCursurPosit
 	} 
 
 	if (location >= text.text.length) {
-		location = text.text.length;
+		location = (uint32)text.text.length;
 		position.x = text.font->GetFontMetrics(text.text, text.scale).x + text.position.x;
 		return;
 	}

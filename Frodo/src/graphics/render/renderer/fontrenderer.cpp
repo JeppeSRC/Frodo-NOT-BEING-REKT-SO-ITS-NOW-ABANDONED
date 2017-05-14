@@ -143,9 +143,9 @@ void FontRenderer::SubmitTextAlignRight(const String& text, Font* font, vec2 pos
 	uint_t lastNewLine = lineLength+1;
 
 	if (lineLength == (uint_t)-1) {
-		lineLength = font->GetFontMetrics(text, scale).x;
+		lineLength = (uint_t)font->GetFontMetrics(text, scale).x;
 	} else {
-		lineLength = font->GetFontMetrics(text.SubString(0, lineLength + 1), scale).x;
+		lineLength = (uint_t)font->GetFontMetrics(text.SubString(0, lineLength + 1), scale).x;
 	}
 
 	float32 xPos = position.x - lineLength;
@@ -162,9 +162,9 @@ void FontRenderer::SubmitTextAlignRight(const String& text, Font* font, vec2 pos
 			lineLength = text.Find("\n", lastNewLine);
 
 			if (lineLength == (uint_t)-1) {
-				lineLength = font->GetFontMetrics(text.SubString(lastNewLine, textLength - lastNewLine), scale).x;
+				lineLength = (uint_t)font->GetFontMetrics(text.SubString(lastNewLine, textLength - lastNewLine), scale).x;
 			} else {
-				lineLength = font->GetFontMetrics(text.SubString(lastNewLine, lineLength + 1), scale).x;
+				lineLength = (uint_t)font->GetFontMetrics(text.SubString(lastNewLine, lineLength + 1), scale).x;
 			}
 
 			lastNewLine = lineLength + 1;
@@ -221,9 +221,9 @@ void FontRenderer::SubmitTextAlignCenter(const String& text, Font* font, vec2 po
 	uint_t lastNewLine = lineLength + 1;
 
 	if (lineLength == (uint_t)-1) {
-		lineLength = font->GetFontMetrics(text, scale).x;
+		lineLength = (uint_t)font->GetFontMetrics(text, scale).x;
 	} else {
-		lineLength = font->GetFontMetrics(text.SubString(0, lineLength + 1), scale).x;
+		lineLength = (uint_t)font->GetFontMetrics(text.SubString(0, lineLength + 1), scale).x;
 	}
 
 	float32 xPos = position.x - (lineLength >> 1);
@@ -240,9 +240,9 @@ void FontRenderer::SubmitTextAlignCenter(const String& text, Font* font, vec2 po
 			lineLength = text.Find("\n", lastNewLine);
 
 			if (lineLength == (uint_t)-1) {
-				lineLength = font->GetFontMetrics(text.SubString(lastNewLine, textLength - lastNewLine), scale).x;
+				lineLength = (uint_t)font->GetFontMetrics(text.SubString(lastNewLine, textLength - lastNewLine), scale).x;
 			} else {
-				lineLength = font->GetFontMetrics(text.SubString(lastNewLine, lineLength + 1), scale).x;
+				lineLength = (uint_t)font->GetFontMetrics(text.SubString(lastNewLine, lineLength + 1), scale).x;
 			}
 
 			lastNewLine = lineLength + 1;

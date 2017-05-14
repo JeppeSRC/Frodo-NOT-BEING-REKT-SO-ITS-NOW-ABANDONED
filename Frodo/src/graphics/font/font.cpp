@@ -247,7 +247,7 @@ vec2 Font::GetScaleFromSize(uint32 size) const {
 bool Font::IsCharLoaded(uint32 c) const {
 	for (uint_t i = 0; i < num_ranges; i++) {
 		FD_RANGE<> r = ranges[i];
-		if (c >= r.start && c <= r.end) return true;
+		if ((int32)c >= r.start && (int32)c <= r.end) return true;
 	}
 
 	return false;
