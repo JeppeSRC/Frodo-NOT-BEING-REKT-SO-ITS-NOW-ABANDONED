@@ -8,7 +8,7 @@ void PBRTest::OnCreateWindow() {
 	prop.width = 1280;
 	prop.height = 720;
 
-	window = new Window("PBR", prop, D3DFactory::GetAdapters().Get(0), nullptr);
+	window = new Window("PBR", prop, nullptr, nullptr);
 }
 
 void PBRTest::OnInit() {
@@ -109,7 +109,7 @@ void PBRTest::OnInit() {
 	Entity3D* sky = new Entity3D(vec3(0, 0, 0), vec3(0, 0, 0));
 	sky->SetMesh(MeshFactory::CreatePlane(2, 2, skyboxMaterial));
 	
-//	scene->Add(sky);
+	scene->Add(sky);
 	scene->Add(e);
 	scene->Add(e2);
 	scene->Add(e3);
