@@ -14,9 +14,8 @@ static vec3 forward(0, 0, SPEED);
 static vec3 back(0, 0, -SPEED);
 
 void UserCamera::Update(float32 delta) {
-
 	vec3 move(dir);
-
+	
 	position += move.RotateY(rotation.y) * delta;
 
 	UpdateViewMatrix();

@@ -17,18 +17,17 @@ void TextureCube::LoadSingleFile(const String& filename) {
 	uint_t faceWidth = width / 3;
 	uint_t faceHeight = height >> 2;
 	uint_t stride = bits >> 3;
+	uint_t faceSize = faceWidth * faceHeight * stride;
 
 	byte** newData = new byte*[6];
 	for (uint_t i = 0; i < 6; i++)
-		newData[i] = new byte[faceWidth * faceHeight * stride];
+		newData[i] = new byte[faceSize];
 
 	uint_t index = 0;
 
 	for (uint_t y = 0; y < 4; y++) {
 		for (uint_t x = 0; x < 3; x++) {
-			if (y == 0 || y == 2 || y == 3) {
-				if (x != 1) continue;
-			}
+			if ((y == 0 || y == 2 || y == 3) && x != 1) continue;
 
 			uint_t yOffset = faceHeight * y;
 			uint_t xOffset = faceWidth * x;
@@ -37,20 +36,15 @@ void TextureCube::LoadSingleFile(const String& filename) {
 				uint_t ya = yOffset + yy ;
 				for (uint_t xx = 0; xx < faceWidth ; xx++) {
 					uint_t xa = xOffset + xx;
-
-					newData[index][(xx + yy * faceWidth) * stride + 0] = data[(xa + ya * width) * stride + 0];
-					newData[index][(xx + yy * faceWidth) * stride + 1] = data[(xa + ya * width) * stride + 1];
-					newData[index][(xx + yy * faceWidth) * stride + 2] = data[(xa + ya * width) * stride + 2];
-
-					if (stride == 4)
-						newData[index][(xx + yy * faceWidth) * stride + 3] = data[(xa + ya * width) * stride + 3];
+					for (uint_t s = 0; s < stride; s++) {
+						newData[index][(xx + yy * faceWidth) * stride + s] = data[(xa + ya * width) * stride + s];
+					}
 				}
 			}
 
 			index++;
 		}
 	}
-
 
 	D3D11_TEXTURE2D_DESC d;
 
