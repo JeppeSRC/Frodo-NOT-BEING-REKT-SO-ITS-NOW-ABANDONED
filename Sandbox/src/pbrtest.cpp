@@ -8,7 +8,7 @@ void PBRTest::OnCreateWindow() {
 	prop.width = 1280;
 	prop.height = 720;
 
-	window = new Window("PBR", prop, nullptr, nullptr);
+	window = new Window("PBR", prop, D3DFactory::GetAdapters().Get(0), nullptr);
 }
 
 void PBRTest::OnInit() {
