@@ -6,6 +6,15 @@ float value = 0.5f;
 
 char* string;
 
+void Test::OnCreateWindow() {
+	FD_WINDOW_PROPERTIES prop;
+
+	prop.width = 1280;
+	prop.height = 720;
+
+	window = new Window("PBR", prop, nullptr, nullptr);
+}
+
 void Test::OnInit() {
 	window->SetVSync(0);
 
@@ -63,6 +72,8 @@ void Test::OnInit() {
 	handler->Add(button);
 
 	KeyMap::Init(FD_KEYMAP_LAYOUT_SWE);
+	Input::AcquireKeyboard();
+	Input::AcquireMouse();
 }
 
 void Test::OnUpdate(float delta) {
@@ -71,6 +82,7 @@ void Test::OnUpdate(float delta) {
 	cursor->SetPosition(vec3((float32)pos.x, (float32)pos.y, -0.1f));
 
 	if (Input::CheckKey(FD_KEY_ESCAPE)) {
+		FD_DEBUG("s");
 		Input::ToggleMouseAcquisition();
 	}
 }

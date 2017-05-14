@@ -4,6 +4,7 @@
 class Test : public FD::Application {
 protected:
 
+	void OnCreateWindow() override;
 	void OnInit() override;
 	void OnTick() override;
 	void OnUpdate(float delta) override;

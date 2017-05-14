@@ -18,6 +18,10 @@ void PBRTest::OnInit() {
 	camera = new UserCamera(vec3(0, 0, 0), vec3(0, 0, 0));
 	camera->SetProjection(mat4::Perspective(70.0f, window->GetAspectRatio(), 0.001f, 1000.0f));
 
+	AssetManager::LoadPackage("res/dank.fdpk");
+
+	Texture* t = AssetManager::GetAsset("p1")->GetTexture();
+
 	VFS::Get()->Mount("shaders", "res/pbr/shaders/");
 	VFS::Get()->Mount("models", "res/");
 
@@ -55,7 +59,7 @@ void PBRTest::OnInit() {
 
 	skyboxMaterial = new MaterialInstance(skybox);
 
-	Texture* albedo = new Texture2D("res/bricks.jpg");
+	Texture* albedo = t;// new Texture2D("res/bricks.jpg");
 	Texture* metallic = new Texture2D("res/metallic.png");
 	Texture* roughness = new Texture2D("res/roughness.png");
 	Texture* ao = new Texture2D("res/ao.png");
