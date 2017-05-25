@@ -114,9 +114,9 @@ bool Input::UpdateKeyboard() {
 bool Input::EnumerateObjects(FD_INPUT_DEVICE* device) {
 	IDirectInputDevice8* d = device->device;
 
-	auto callback = [](LPCDIDEVICEOBJECTINSTANCE obj, LPVOID param) -> BOOL { List<LPCDIDEVICEOBJECTINSTANCE>& list = *(List<LPCDIDEVICEOBJECTINSTANCE>*)param; list.Push_back(obj); return true; };
+	auto callback = [](LPCDIDEVICEOBJECTINSTANCE obj, LPVOID param) -> BOOL { List<DIDEVICEOBJECTINSTANCE>& list = *(List<DIDEVICEOBJECTINSTANCE>*)param; list.Push_back(*obj); return true; };
 
-	List<LPCDIDEVICEOBJECTINSTANCE> objects;
+	List<DIDEVICEOBJECTINSTANCE> objects;
 
 	if (d->EnumObjects(callback, (void*)&objects, DIDFT_ALL) != DI_OK) {
 		FD_WARNING("[DirectInput] Device \"%s\" object enumeration failed", *GetDeviceName(device->deviceGuid));

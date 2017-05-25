@@ -20,7 +20,7 @@ void UISlider::OnEntered() {
 }
 
 void UISlider::OnLeft() {
-	grabbed = -1.0f;
+	//grabbed = -1.0f;
 }
 
 void UISlider::OnPressed(vec2 position) {

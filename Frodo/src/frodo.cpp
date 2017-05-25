@@ -4,7 +4,7 @@
 namespace FD {
 
 Application::Application() {
-
+	SetUPS(0);
 }
 
 Application::~Application() {
@@ -43,6 +43,7 @@ void Application::Run() {
 
 		uint32 now = clock();
 
+			
 		if ((delta = float32(now - lastTime)) > ups) {
 			lastTime = now;
 			OnUpdate(delta / 1000.0f);
