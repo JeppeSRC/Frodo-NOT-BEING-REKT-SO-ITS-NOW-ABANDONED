@@ -102,7 +102,7 @@ public:
 
 	static void UpdateInputAndDispatchEvents();
 
-	inline static bool CheckKey(FD_KEY key) { return (keyboard.k[key] & 0x80) == 1; }
+	inline static bool CheckKey(FD_KEY key) { return (keyboard.k[key] & 0x80) == 0x80; }
 
 	inline static ivec2 GetMousePos() { return Input::mouse.position; }
 	inline static uint32 GetModifiers() { return keyboard.modifiers; }
