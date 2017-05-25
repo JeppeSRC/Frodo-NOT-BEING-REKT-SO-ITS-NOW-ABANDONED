@@ -34,7 +34,7 @@ int main() {
 
 	return 0;*/
 
-	Test test;
+	PBRTest test;
 	test.Start();
 
 	return 0;

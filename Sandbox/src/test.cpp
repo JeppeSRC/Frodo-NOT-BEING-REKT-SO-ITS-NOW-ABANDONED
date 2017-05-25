@@ -65,7 +65,6 @@ void Test::OnInit() {
 	cursor = new Sprite(vec3(0, 0, 0), vec2(10, 10), vec4(1, 0, 0, 1));
 
 	sprites.Push_back(sprite);
-	//sprites.Push_back(cursor);
 
 	handler->Add(textbox);
 	handler->Add(slider);
@@ -82,7 +81,6 @@ void Test::OnUpdate(float delta) {
 	cursor->SetPosition(vec3((float32)pos.x, (float32)pos.y, -0.1f));
 
 	if (Input::CheckKey(FD_KEY_ESCAPE)) {
-		FD_DEBUG("s");
 		Input::ToggleMouseAcquisition();
 	}
 }
