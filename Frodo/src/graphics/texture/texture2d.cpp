@@ -8,7 +8,7 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 
 	//TODO: only supports 32bit
 	uint32 bits = 0;
-	byte* data = Texture::Load(filename, &width, &height, &bits, true);
+	byte* data = Texture::Load(filename, &width, &height, &bits, false);
 
 	if (bits != 32) FD_WARNING("[Texture2D] Only supports 32 bit images atm!");
 
