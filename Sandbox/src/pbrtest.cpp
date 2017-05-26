@@ -1,4 +1,6 @@
+//#define GPU_REQUEST_HIGH_PERFORMANCE
 #include "pbrtest.h"
+
 
 using namespace FD;
 
@@ -8,7 +10,9 @@ void PBRTest::OnCreateWindow() {
 	prop.width = 1280;
 	prop.height = 720;
 
-	window = new Window("PBR", prop, nullptr, nullptr);
+	D3DOutput* mon = D3DFactory::GetFirstAdapter()->GetOutputs()[1];
+
+	window = new Window("PBR", prop, nullptr, mon);
 }
 
 void PBRTest::OnInit() {
@@ -22,8 +26,8 @@ void PBRTest::OnInit() {
 	VFS::Get()->Mount("models", "res/");
 
 	scene = new Scene(window);
-
 	scene->SetCamera(camera);
+
 
 	Shader* shader = new Shader("/shaders/pbr_lighting_v.hlsl", "/shaders/pbr_lighting_p.hlsl");
 	shader->ShaderGenComplete();

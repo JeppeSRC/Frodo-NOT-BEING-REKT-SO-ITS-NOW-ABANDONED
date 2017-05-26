@@ -87,21 +87,6 @@
     <ClCompile Include="src\graphics\shader\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\vec4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\vec3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\vec2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\mat4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\mat3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\buffer\bufferlayout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -249,14 +234,7 @@
     <ClInclude Include="src\graphics\texture\texture.h" />
     <ClInclude Include="src\graphics\texture\texture2d.h" />
     <ClInclude Include="src\graphics\texture\texturemanager.h" />
-    <ClInclude Include="src\math\mat3.h" />
-    <ClInclude Include="src\math\mat4.h" />
-    <ClInclude Include="src\math\math.h" />
-    <ClInclude Include="src\math\mathcommon.h" />
     <ClInclude Include="src\math\valueinterpolation.h" />
-    <ClInclude Include="src\math\vec2.h" />
-    <ClInclude Include="src\math\vec3.h" />
-    <ClInclude Include="src\math\vec4.h" />
     <ClInclude Include="src\util\asset\asset.h" />
     <ClInclude Include="src\util\asset\assetmanager.h" />
     <ClInclude Include="src\util\asset\package.h" />
