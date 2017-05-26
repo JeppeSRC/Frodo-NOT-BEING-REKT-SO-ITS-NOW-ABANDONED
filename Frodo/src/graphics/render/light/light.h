@@ -24,6 +24,7 @@ protected:
 	Light(const vec3& color) { this->color = color; lightType = FD_LIGHT_TYPE_NONE; }
 
 public:
+	inline void SetColor(vec3 color) { this->color = color; }
 
 	inline vec3& GetColor() { return color; }
 
@@ -40,6 +41,8 @@ public:
 
 	DirectionalLight(const vec3& color, const vec3& direction) : Light(color), direction(direction) { lightType = FD_LIGHT_TYPE_DIRECTIONAL; }
 
+	inline void SetDirection(vec3 direction) { this->direction = direction; }
+
 	inline vec3& GetDirection() { return direction; }
 };
 
@@ -54,6 +57,8 @@ protected:
 public:
 
 	PointLight(const vec3& position, const vec3& color, const vec3& attenuation) : Light(color), position(position), attenuation(attenuation) { lightType = FD_LIGHT_TYPE_POINT; }
+
+	inline void SetAttenuation(vec3 attenuation) { this->attenuation = attenuation; }
 
 	inline vec3& GetPosition() { return position; }
 	inline vec3& GetAttenuation() { return attenuation; }
@@ -73,7 +78,10 @@ public:
 		lightType = FD_LIGHT_TYPE_SPOT;
 	}
 
-	inline vec3& GetDirection() { return direction; }
+	inline void SetCutoffExponent(vec2 cutoffExponent) { this->cutoffExponent = cutoffExponent; }
+	inline void SetCutoff(float cutoff) { this->cutoffExponent.x = (float32)cosf(FD_TO_RADIANS_F(cutoff)); }
+	inline void SetExponent(float exponent) { this->cutoffExponent.y = exponent; }
+
 	inline vec2& GetCutoffExponent() { return cutoffExponent; }
 	inline float32& GetCutoff() { return cutoffExponent.x; }
 	inline float32& GetExponent() { return cutoffExponent.y; }

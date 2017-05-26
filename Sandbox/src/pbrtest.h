@@ -12,6 +12,7 @@ protected:
 	void OnExit() override;
 
 private:
+	FD::PointLight* light;
 	FD::Scene* scene;
 	FD::UserCamera* camera;
 	uint32 fps;

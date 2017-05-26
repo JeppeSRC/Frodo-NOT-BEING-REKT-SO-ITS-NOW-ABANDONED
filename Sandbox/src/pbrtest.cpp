@@ -10,9 +10,7 @@ void PBRTest::OnCreateWindow() {
 	prop.width = 1280;
 	prop.height = 720;
 
-	D3DOutput* mon = D3DFactory::GetFirstAdapter()->GetOutputs()[1];
-
-	window = new Window("PBR", prop, nullptr, mon);
+	window = new Window("PBR", prop, nullptr, nullptr);
 }
 
 void PBRTest::OnInit() {
@@ -71,7 +69,7 @@ void PBRTest::OnInit() {
 		float metallicFactor = 0;
 		float roughness = 0.521;
 		float roughnessFactor = 0.25;
-		float ambientOcclusion = 1;
+		float ambientOcclusion = 0.05f;
 		float ambientOcclusionFactor = 0;
 		vec2 pad0;
 	} materialData;
@@ -87,14 +85,17 @@ void PBRTest::OnInit() {
 
 	Mesh* sphere = MeshFactory::LoadFromFile("/models/sphere.obj", mat);
 
-	Entity3D* e = new Entity3D(vec3(0, 5, 0), vec3(0, 0, 0));
+	Entity3D* e = new Entity3D(vec3(0, 0, 0), vec3(0, 0, 0));
 	e->SetMesh(sphere);
+	e->SetScale(vec3(0.75f, 0.75f, 0.75f));
 
-	Entity3D* e2 = new Entity3D(vec3(3, 5, 0), vec3(0, 0, 0));
+	Entity3D* e2 = new Entity3D(vec3(2, 0, 0), vec3(0, 0, 0));
 	e2->SetMesh(sphere);
+	e2->SetScale(vec3(0.75f, 0.75f, 0.75f));
 
-	Entity3D* e3 = new Entity3D(vec3(-3, 5, 0), vec3(0, 0, 0));
+	Entity3D* e3 = new Entity3D(vec3(-2, 0, 0), vec3(0, 0, 0));
 	e3->SetMesh(sphere);
+	e3->SetScale(vec3(0.75f, 0.75f, 0.75f));
 
 	MaterialInstance* mi = new MaterialInstance(material);
 
@@ -113,20 +114,29 @@ void PBRTest::OnInit() {
 	Entity3D* sky = new Entity3D(vec3(0, 0, 0), vec3(0, 0, 0));
 	sky->SetMesh(MeshFactory::CreatePlane(2, 2, skyboxMaterial));
 	
-	scene->Add(sky);
+	//scene->Add(sky);
 	scene->Add(e);
 	scene->Add(e2);
 	scene->Add(e3);
 	scene->Add(floor);
 	
-	scene->Add(new PointLight(vec3(0, -0.25f, -0), vec3(1, 1, 1), vec3(0, 0, 0)));
+	light = new PointLight(vec3(0, 0.25f, -2), vec3(1, 1, 1), vec3(0, 0, 0));
+
+	scene->Add(light);
 
 	Input::AcquireKeyboard();
 }
 
+
+
 void PBRTest::OnUpdate(float delta) {
+	static float aa = 0.0f;
 	camera->Update(delta);
 	scene->Update(delta);
+
+	aa += 2.0f * delta;
+
+	
 
 	skyboxMaterial->SetVCBufferElement(0, (void*)mat4::Inverse(camera->GetViewMatrix()).GetData());
 }

@@ -1,0 +1,54 @@
+Asset:
+	Fields:
+		- AssetName
+		- Folder
+		- Size
+		- Type
+		- PackageName
+		- Data
+
+	Functions:
+		- GetString
+		- GetFont
+		- GetShader
+		- GetTexture (Creates a Texture2D or TextureCube depending on type)
+
+Package:
+	Fields:
+		- Name
+		- List<Asset>
+
+	Functions:
+		- AddAsset
+
+AssetManager:
+	Fields:
+		- List<Assets>
+
+	Functions:
+		- LoadPackage
+		- UnloadPackage
+		- GetAssetsByFolder
+		- GetAssetsByType
+		- GetAssetsByPackage
+		- GetAsset(Name)
+		- ExportPackage
+		- MakePackage
+
+
+Asset data structure:
+	String:
+		data = address of char sequense with null termination
+
+	Font:
+		data = address of data of the font file
+
+	Shader:
+		data = {
+			vertex data with null termination
+			pixel data with null termination
+		}
+
+	Texture:
+		data = address of data from the image file
+

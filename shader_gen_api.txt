@@ -1,0 +1,42 @@
+#shaderGen 												- base pre-processor
+#shaderGen define   <name> <data>						- defines a variable with data
+#shaderGen define_r <name>								- defines a variable that will be set during runtime 
+#shaderGen define_b <name>								- defines a block of code to generate during runtime
+#shaderGen endblock										- marks the end of a block
+#shaderGen if <function>								- conditional if statment
+			{
+			true										- true
+			false										- false
+			defined(<name>)								- check if a variable is defined
+			eq(<name>, <name:imm>)						- check if a variable is equal to another variable or immediate value(Immediate data type is assumed and needs to be the same as the variable)
+			neq(<name>, <name:imm>)						- same as eq but the result is flipped.
+			gr(<name>, <name:imm>)						- greater than
+			ls(<name>, <name:imm>)						- less than
+			ge(<name>, <name:imm>)						- greater than or equal
+			le(<name>, <name:imm>)						- less than or equal
+			}
+#shaderGen else											- conditional else statment
+#shaderGen elif <function>								- conditional else if statment (same functions as "if")
+#shaderGen endif										- ends if statment
+
+#shaderGen generate <function> <blockname>				- generates code from a code block
+			{
+			function:
+					single											- just adds the block
+					for(<variable>, <start>, <op>, <end>, <inc>)	- generates code using a for loop
+			}
+
+Arithmetic operations on variables in "generate":
+	sg_add(<name>, <name:imm>)
+	sg_sub(<name>, <name:imm>)
+	sg_mul(<name>, <name:imm>)
+	sg_div(<name>, <name:imm>)
+	
+
+Functions(operators(op)):
+	eq		-equal
+	neq		-not equal
+	gr		- greter than
+	ls		- less than
+	ge		- greater than or equal
+	le		- less than or equal

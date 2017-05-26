@@ -12,7 +12,7 @@ cbuffer Camera : register(b1) {
 	float4x4 c_ProjectionMatrix;
 };
 
-cbuffer Model : register(b2) {
+cbuffer Model : register(b5) {
 	float4x4 m_ModelMatrix;
 };
 
