@@ -59,6 +59,7 @@ public:
 	PointLight(const vec3& position, const vec3& color, const vec3& attenuation) : Light(color), position(position), attenuation(attenuation) { lightType = FD_LIGHT_TYPE_POINT; }
 
 	inline void SetAttenuation(vec3 attenuation) { this->attenuation = attenuation; }
+	inline void SetPosition(vec3 position) { this->position = position; }
 
 	inline vec3& GetPosition() { return position; }
 	inline vec3& GetAttenuation() { return attenuation; }
