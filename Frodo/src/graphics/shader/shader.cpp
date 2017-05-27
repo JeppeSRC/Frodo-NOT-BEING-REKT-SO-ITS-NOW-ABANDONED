@@ -75,6 +75,11 @@ void Shader::Compile(String vSource, String pSource) {
 	vertexShader = nullptr;
 	pixelShader = nullptr;
 
+	ParseStructs(vSource, FD_SHADER_TYPE_VERTEXSHADER);
+	ParseStructs(pSource, FD_SHADER_TYPE_PIXELSHADER);
+
+	ParseTextures(pSource);
+
 	ID3DBlob* error = nullptr;
 
 	D3DCompile(*vSource, vSource.length, 0, 0, 0, "vsMain", "vs_5_0", 0, 0, &vByteCode, &error);
@@ -105,11 +110,6 @@ void Shader::Compile(String vSource, String pSource) {
 	D3DContext::GetDevice()->CreatePixelShader(pByteCode->GetBufferPointer(), pByteCode->GetBufferSize(), 0, &pixelShader);
 
 	FD_ASSERT_MSG(pixelShader == nullptr, "Failed to create pixelshader");
-
-	ParseStructs(vSource, FD_SHADER_TYPE_VERTEXSHADER);
-	ParseStructs(pSource, FD_SHADER_TYPE_PIXELSHADER);
-
-	ParseTextures(pSource);
 
 	CreateBuffers();
 }
