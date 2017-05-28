@@ -75,6 +75,18 @@ vec4& vec4::Divide(float32 v) {
 	return *this;
 }
 
+vec4& vec4::Normalize() {
+	return Multiply(1.0f / LengthSqrt());
+}
+
+float32 vec4::Length() const {
+	return x * x + y * y + z * z + w * w;
+}
+
+float32 vec4::LengthSqrt() const {
+	return sqrtf(Length());
+}
+
 bool vec4::operator==(const vec4& v) const {
 	return FLOAT32_CMP(x, v.x) && FLOAT32_CMP(y, v.y) && FLOAT32_CMP(z, v.z) && FLOAT32_CMP(w, v.w);
 }

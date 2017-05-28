@@ -25,9 +25,14 @@ public:
 	vec3& Multiply(float32 v);
 	vec3& Divide(const vec3& v);
 	vec3& Divide(float32 v);
+	vec3& Normalize();
 
-	float32 Dot(const vec3& v);
-	vec3 Cross(const vec3& v);
+
+	float32 Length() const;
+	float32 LengthSqrt() const;
+
+	float32 Dot(const vec3& v) const;
+	vec3 Cross(const vec3& v) const;
 
 	vec3& RotateX(float32 angle);
 	vec3& RotateY(float32 angle);

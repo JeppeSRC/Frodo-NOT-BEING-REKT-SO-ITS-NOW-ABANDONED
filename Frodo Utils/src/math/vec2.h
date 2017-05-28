@@ -21,6 +21,10 @@ public:
 	vec2& Multiply(float32 v);
 	vec2& Divide(const vec2& v);
 	vec2& Divide(float32 v);
+	vec2& Normalize();
+
+	float32 Length() const;
+	float32 LengthSqrt() const;
 
 	__forceinline friend vec2 operator+(const vec2& l, const vec2& r) { return vec2(l).Add(r); }
 	__forceinline friend vec2 operator-(const vec2& l, const vec2& r) { return vec2(l).Subtract(r); }

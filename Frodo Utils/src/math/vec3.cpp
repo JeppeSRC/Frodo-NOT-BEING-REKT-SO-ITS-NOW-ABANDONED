@@ -65,6 +65,18 @@ vec3& vec3::Divide(const vec3& v) {
 	return *this;
 }
 
+vec3& vec3::Normalize() {
+	return Multiply(1.0f / LengthSqrt());
+}
+
+float32 vec3::Length() const {
+	return x * x + y * y + z * z;
+}
+
+float32 vec3::LengthSqrt() const {
+	return sqrtf(Length());
+}
+
 vec3& vec3::Divide(float32 v) {
 	__m128 xmm = _mm_set_ps(0, z, y, x);
 	xmm = _mm_div_ps(xmm, _mm_set_ps(1, v, v, v));
@@ -72,13 +84,13 @@ vec3& vec3::Divide(float32 v) {
 	return *this;
 }
 
-float32 vec3::Dot(const vec3& v) {
+float32 vec3::Dot(const vec3& v) const {
 	__m128 xmm = _mm_set_ps(0, z, y, x);
 	xmm = _mm_mul_ps(xmm, _mm_set_ps(0, v.z, v.y, v.x));
 	return xmm.m128_f32[0] + xmm.m128_f32[1] + xmm.m128_f32[2];
 }
 
-vec3 vec3::Cross(const vec3& v) {
+vec3 vec3::Cross(const vec3& v) const {
 
 	float32 _x = y * v.z - z * v.y;
 	float32 _y = z * v.x - x * v.z;

@@ -68,6 +68,18 @@ vec2& vec2::Divide(float32 v) {
 	return *this;
 }
 
+vec2& vec2::Normalize() {
+	return Multiply(1.0f / LengthSqrt());
+}
+
+float32 vec2::Length() const {
+	return x * x + y * y;
+}
+
+float32 vec2::LengthSqrt() const {
+	return sqrtf(Length());
+}
+
 bool vec2::operator==(const vec2& v) const {
 	return FLOAT32_CMP(x, v.x) && FLOAT32_CMP(y, v.y);
 }
