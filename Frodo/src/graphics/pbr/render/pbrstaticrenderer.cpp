@@ -12,7 +12,7 @@ struct Ca {
 };
 
 PBRStaticRenderer::PBRStaticRenderer(Window* window) : Renderer(window) {
-	light.semRegister = 0;
+	light.semRegister = 6;
 	light.structSize = sizeof(PointLight);
 	light.data = new byte[light.structSize];
 
@@ -61,7 +61,7 @@ void PBRStaticRenderer::Present() {
 	for (uint_t i = 0; i < size; i++) {
 		const RenderCommand& cmd = commandQueue[i];
 		cmd.shader->SetVSConstantBuffer(camera);
-		cmd.shader->SetPSConstantBuffer(light);
+		cmd.shader->SetVSConstantBuffer(light);
 		cmd.shader->SetVSConstantBuffer("Model", (void*)cmd.transform.GetData());
 		cmd.mesh->Render();
 	}

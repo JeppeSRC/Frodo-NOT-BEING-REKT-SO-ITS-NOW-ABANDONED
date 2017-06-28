@@ -34,6 +34,7 @@ void PBRTest::OnInit() {
 	l.Push<vec3>("POSITION");
 	l.Push<vec3>("NORMAL");
 	l.Push<vec2>("TEXCOORD");
+	l.Push<vec3>("TANGENT");
 
 	l.CreateInputLayout(shader);
 
@@ -67,9 +68,9 @@ void PBRTest::OnInit() {
 		float albedoFactor = 0;
 		float metallic = 1.0f;
 		float metallicFactor = 0;
-		float roughness = 0.521;
+		float roughness = 0.821;
 		float roughnessFactor = 0.25;
-		float ambientOcclusion = 0.05f;
+		float ambientOcclusion = 0.00f;
 		float ambientOcclusionFactor = 0;
 		vec2 pad0;
 	} materialData;
@@ -83,7 +84,11 @@ void PBRTest::OnInit() {
 
 	MaterialInstance* mat = new MaterialInstance(material);
 
-	Mesh* sphere = MeshFactory::LoadFromFile("/models/sphere.obj", mat);
+	mat->SetPCBufferElement("m.Roughness", 0.853f);
+	mat->SetPCBufferElement("m.Metallic", 0.2f);
+	mat->SetPCBufferElement("m.AmbientOcclusion", 1);
+
+	Mesh* sphere = MeshFactory::LoadFromFile("/models/sphere.obj", mat, false);
 
 	Entity3D* e = new Entity3D(vec3(0, 0, 0), vec3(0, 0, 0));
 	e->SetMesh(sphere);
@@ -100,8 +105,9 @@ void PBRTest::OnInit() {
 	MaterialInstance* mi = new MaterialInstance(material);
 
 	mi->SetPCBufferElement("m.AlbedoFactor", 1.0f);
-	mi->SetPCBufferElement("m.MetallicFactor", 1.0f);
-	mi->SetPCBufferElement("m.RoughnessFactor", 1.0f);
+	mi->SetPCBufferElement("m.MetallicFactor", 0.0f);
+	mi->SetPCBufferElement("m.RoughnessFactor", 0.0f);
+	mi->SetPCBufferElement("m.Roughness", 0.3f);
 
 	mi->SetTexture("m_AlbedoMap", albedo);
 	mi->SetTexture("m_MetallicMap", metallic);
@@ -113,14 +119,33 @@ void PBRTest::OnInit() {
 
 	Entity3D* sky = new Entity3D(vec3(0, 0, 0), vec3(0, 0, 0));
 	sky->SetMesh(MeshFactory::CreatePlane(2, 2, skyboxMaterial));
+
+	MaterialInstance* monkeyMat = new MaterialInstance(material);
+
+	monkeyMat->SetTexture("m_AlbedoMap", new Texture2D("res/monkey/albedo.png"));
+	monkeyMat->SetTexture("m_MetallicMap", metallic);
+	monkeyMat->SetTexture("m_RoughnessMap", new Texture2D("res/monkey/glossy.png"));
+	monkeyMat->SetTexture("m_AmbientOcclusionMap", new Texture2D("res/monkey/ao.png"));
+
+	monkeyMat->SetPCBufferElement("m.AlbedoFactor", 1.0f);
+	monkeyMat->SetPCBufferElement("m.MetallicFactor", 0.0f);
+	monkeyMat->SetPCBufferElement("m.Metallic", 0.0f);
+	monkeyMat->SetPCBufferElement("m.RoughnessFactor", 0.0f);
+	monkeyMat->SetPCBufferElement("m.Roughness", 0.25f);
+	monkeyMat->SetPCBufferElement("m.AmbientOcclusionFactor", 0.0f);
+	monkeyMat->SetPCBufferElement("m.AmbientOcclusion", 0.05f);
+
+	Entity3D* monkey = new Entity3D(vec3(0, 0, -4), vec3(0, 180, 0));
+	monkey->SetMesh(MeshFactory::LoadFromFile("res/monkey/monkey.obj", monkeyMat, true));
 	
 	//scene->Add(sky);
 	scene->Add(e);
 	scene->Add(e2);
 	scene->Add(e3);
-	scene->Add(floor);
+	//scene->Add(floor);
+	scene->Add(monkey);
 	
-	light = new PointLight(vec3(0, 0.25f, -2), vec3(1, 1, 1), vec3(0, 0, 0));
+	light = new PointLight(vec3(0, 0.25f, -2), vec3(0.525f, 0.525f, 0.525f), vec3(0, 0, 0));
 
 	scene->Add(light);
 
@@ -136,7 +161,7 @@ void PBRTest::OnUpdate(float delta) {
 
 	aa += 2.0f * delta;
 
-	
+	light->SetPosition(vec3(cosf(aa) * 2.5f, 0.25f, -2));
 
 	skyboxMaterial->SetVCBufferElement(0, (void*)mat4::Inverse(camera->GetViewMatrix()).GetData());
 }

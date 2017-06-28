@@ -7,13 +7,22 @@ SamplerState samp {
 };
 
 static const float PI = 3.14159265359;
-
+/*
 cbuffer Light : register(b0) {
 	float3 l_Color;
 	float l_pad0;
 	float3 l_Position;
 	float l_pad1;
 	float3 l_Attenuation;
+	float pad2;
+};*/
+
+struct Light {
+	float3 Color;
+	float pad0;
+	float3 Position;
+	float pad1;
+	float3 Attenuation;
 	float pad2;
 };
 
@@ -79,7 +88,7 @@ float3 FresnelSchlickRoughness(float cosTheta, float3 F0, float roughness) {
 	return F0 + (max(float3(oneMinusRough, oneMinusRough, oneMinusRough), F0) - F0) * pow(1 - cosTheta, 5);
 }
 
-float4 psMain(float4 pos : SV_POSITION, float3 position : POSITION, float3 normal : NORMAL, float2 texCoord : TEXCOORD, float3 camPos : CAMPOS) : SV_TARGET0 {
+float4 psMain(float4 pos : SV_POSITION, float3 position : POSITION, float3 normal : NORMAL, float2 texCoord : TEXCOORD, float3 camPos : CAMPOS, Light light : LIGHT) : SV_TARGET0 {
 
 	float3 albedo = lerp(m.Albedo, m_AlbedoMap.Sample(samp, texCoord).xyz, m.AlbedoFactor);
 	float metallic = lerp(m.Metallic, m_MetallicMap.Sample(samp, texCoord).x, m.MetallicFactor);
@@ -114,12 +123,12 @@ float4 psMain(float4 pos : SV_POSITION, float3 position : POSITION, float3 norma
 	float3 brdf;
 	float NdotL;
 
-	L = normalize(l_Position - position);
+	L = normalize(light.Position - position);
 	H = normalize(V + L);
 
-	distance = length(l_Position - position);
+	distance = length(light.Position - position);
 	attenuation = 1.0 / (distance * distance);
-	radiance = l_Color * attenuation;
+	radiance = light.Color * attenuation;
 
 	NDF = DistributionGGX(N, H, roughness);
 	G = GeometrySmith(N, V, L, roughness);

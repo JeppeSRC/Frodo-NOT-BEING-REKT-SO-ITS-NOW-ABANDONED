@@ -8,4 +8,6 @@
 
 #include <core/log.h>
 
-bool ConvertOBJToFDM(const FD::String& filename, const FD::String& newFilename);
+
+
+bool ConvertOBJToFDM(const FD::String& filename, const FD::String& newFilename, uint32 attributes);

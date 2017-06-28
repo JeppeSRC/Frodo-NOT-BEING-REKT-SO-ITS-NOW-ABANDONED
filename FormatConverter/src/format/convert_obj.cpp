@@ -41,7 +41,7 @@ void MakeFaces(List<Vertex>& data, List<vec3>& vertices, List<vec2>& texCoords, 
 }
 
 
-bool ConvertOBJToFDM(const String& filename, const String& newFilename) {
+bool ConvertOBJToFDM(const String& filename, const String& newFilename, uint32 attributes) {
 	
 	String data = FDReadTextFile(filename);
 
