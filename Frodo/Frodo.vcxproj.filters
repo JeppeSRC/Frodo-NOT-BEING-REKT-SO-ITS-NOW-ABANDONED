@@ -245,5 +245,6 @@
     <ClInclude Include="src\graphics\d3dfactory.h" />
     <ClInclude Include="src\graphics\d3doutput.h" />
     <ClInclude Include="src\graphics\postfx\posteffect.h" />
+    <ClInclude Include="src\audio\audio.h" />
   </ItemGroup>
 </Project>
