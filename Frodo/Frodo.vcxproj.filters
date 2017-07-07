@@ -62,7 +62,7 @@
     <ClCompile Include="src\graphics\d3doutput.cpp" />
     <ClCompile Include="src\graphics\postfx\posteffect.cpp" />
     <ClCompile Include="src\audio\xadevice.cpp" />
-    <ClCompile Include="src\audio\audio.cpp" />
+    <ClCompile Include="src\audio\audiomanager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\frodo.cpp">
@@ -247,7 +247,7 @@
     <ClInclude Include="src\graphics\d3dfactory.h" />
     <ClInclude Include="src\graphics\d3doutput.h" />
     <ClInclude Include="src\graphics\postfx\posteffect.h" />
-    <ClInclude Include="src\audio\audio.h" />
     <ClInclude Include="src\audio\xadevice.h" />
+    <ClInclude Include="src\audio\audiomanager.h" />
   </ItemGroup>
 </Project>
