@@ -9,7 +9,10 @@ AudioDevice::AudioDevice() {
 	
 	if (!res) {
 		FD_FATAL("No audio device available!");
+		return;
 	}
+
+	device->GetChannelMask(&channels);
 }
 
 AudioDevice::~AudioDevice() {
