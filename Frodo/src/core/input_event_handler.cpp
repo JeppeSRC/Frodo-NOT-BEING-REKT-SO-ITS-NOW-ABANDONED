@@ -243,8 +243,11 @@ void Input::HandleKeyboardEvents() {
 			if (!keys[i]) {
 				e = new EventKeyboardActionKey(FD_PRESSED, (FD_KEY)i);
 				keys[i] = true;
-				EventDispatcher::DispatchEvent(e);
+			} else {
+				e = new EventKeyboardActionKey(FD_HOLD, (FD_KEY)i);
 			}
+			
+			EventDispatcher::DispatchEvent(e);
 		} else {
 			if (keys[i]) {
 				e = new EventKeyboardActionKey(FD_RELEASED, (FD_KEY)i);
