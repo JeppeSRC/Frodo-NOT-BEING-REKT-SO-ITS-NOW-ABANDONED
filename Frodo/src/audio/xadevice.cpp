@@ -1,11 +1,11 @@
 #include "xadevice.h"
-#include "audio.h"
+#include "audiomanager.h"
 #include <core/log.h>
 
 namespace FD {
 
 AudioDevice::AudioDevice() {
-	HRESULT res = Audio::Get()->CreateMasteringVoice(&device);
+	HRESULT res = AudioManager::Get()->CreateMasteringVoice(&device);
 	
 	if (!res) {
 		FD_FATAL("No audio device available!");
