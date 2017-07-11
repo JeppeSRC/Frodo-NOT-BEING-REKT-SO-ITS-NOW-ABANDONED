@@ -1,6 +1,7 @@
 #include "usercamera.h"
 #include <core/input.h>
 #include <core/window.h>
+#include <audio/audiomanager.h>
 
 namespace FD {
 
@@ -14,11 +15,12 @@ static vec3 forward(0, 0, SPEED);
 static vec3 back(0, 0, -SPEED);
 
 void UserCamera::Update(float32 delta) {
-	vec3 move(dir);
+	velocity = dir;
 	
-	position += move.RotateY(rotation.y) * delta;
+	position += velocity.RotateY(rotation.y) * delta;
 
 	UpdateViewMatrix();
+	AudioManager::UpdateListener(this);
 }
 
 bool UserCamera::OnKeyboardActionKeyPressed(FD_KEY key) {
@@ -72,6 +74,14 @@ bool UserCamera::OnKeyboardActionKeyReleased(FD_KEY key) {
 bool UserCamera::OnMouseActionMoveRelative(ivec2 position) {
 	rotation.x -= (float32)position.y * SENSE;
 	rotation.y += (float32)position.x * SENSE;
+
+	return false;
+}
+
+bool UserCamera::OnWindowStateChanged(FD_EVENT_ACTION state) {
+	if (state == FD_FOCUS_LOST) {
+		dir *= 0.0f;
+	}
 
 	return false;
 }

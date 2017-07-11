@@ -1,5 +1,10 @@
 #pragma once
 
+#include <audio/audio.h>
+#include <audio/audiomanager.h>
+#include <audio/xadevice.h>
+#include <audio/audiomixer.h>
+
 #include <fdutils.h>
 #include <core/window.h>
 #include <core/input.h>

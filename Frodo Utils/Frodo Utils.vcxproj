@@ -158,6 +158,7 @@
     <ClCompile Include="src\math\vec4.cpp" />
     <ClCompile Include="src\util\fileutils.cpp" />
     <ClCompile Include="src\util\string.cpp" />
+    <ClCompile Include="src\util\wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\log.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="src\util\list.h" />
     <ClInclude Include="src\util\map.h" />
     <ClInclude Include="src\util\string.h" />
+    <ClInclude Include="src\util\wave.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

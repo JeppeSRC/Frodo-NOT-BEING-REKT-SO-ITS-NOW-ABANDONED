@@ -17,6 +17,8 @@ private:
 	FD::UserCamera* camera;
 	uint32 fps;
 	FD::MaterialInstance* skyboxMaterial;
+	FD::Audio* audio;
+	FD::AudioMixer* mainMixer;
 
 public:
 	PBRTest() : Application() {}
