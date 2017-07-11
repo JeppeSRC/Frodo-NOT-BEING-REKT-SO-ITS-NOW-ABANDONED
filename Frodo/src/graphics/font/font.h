@@ -51,6 +51,7 @@ public:
 	};
 
 private:
+	byte* data;
 	String name;
 	uint32 size;
 

@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    The FreeType glyph rasterizer interface (body).                      */
 /*                                                                         */
-/*  Copyright 1996-2016 by                                                 */
+/*  Copyright 1996-2017 by                                                 */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -88,7 +88,7 @@
                        FT_GlyphSlot  slot,
                        FT_BBox*      cbox )
   {
-    FT_MEM_ZERO( cbox, sizeof ( *cbox ) );
+    FT_ZERO( cbox );
 
     if ( slot->format == render->glyph_format )
       FT_Outline_Get_CBox( &slot->outline, cbox );

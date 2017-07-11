@@ -12,6 +12,8 @@ protected:
 	void OnExit() override;
 
 private:
+	FD::FontRenderer* fontRenderer;
+	FD::Font* font;
 	FD::PointLight* light;
 	FD::Scene* scene;
 	FD::UserCamera* camera;

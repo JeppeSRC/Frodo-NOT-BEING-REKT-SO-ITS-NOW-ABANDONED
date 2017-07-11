@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    The FreeType glyph rasterizer (body).                                */
 /*                                                                         */
-/*  Copyright 1996-2016 by                                                 */
+/*  Copyright 1996-2017 by                                                 */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -249,6 +249,10 @@
 
 #ifndef FT_MEM_ZERO
 #define FT_MEM_ZERO( dest, count )  FT_MEM_SET( dest, 0, count )
+#endif
+
+#ifndef FT_ZERO
+#define FT_ZERO( p )  FT_MEM_ZERO( p, sizeof ( *(p) ) )
 #endif
 
   /* FMulDiv means `Fast MulDiv'; it is used in case where `b' is       */
@@ -1516,8 +1520,9 @@
         state_bez = y1 < y3 ? Ascending_State : Descending_State;
         if ( ras.state != state_bez )
         {
-          Bool  o = state_bez == Ascending_State ? IS_BOTTOM_OVERSHOOT( y1 )
-                                                 : IS_TOP_OVERSHOOT( y1 );
+          Bool  o = ( state_bez == Ascending_State )
+                      ? IS_BOTTOM_OVERSHOOT( y1 )
+                      : IS_TOP_OVERSHOOT( y1 );
 
 
           /* finalize current profile if any */
@@ -1652,8 +1657,9 @@
         /* detect a change of direction */
         if ( ras.state != state_bez )
         {
-          Bool  o = state_bez == Ascending_State ? IS_BOTTOM_OVERSHOOT( y1 )
-                                                 : IS_TOP_OVERSHOOT( y1 );
+          Bool  o = ( state_bez == Ascending_State )
+                      ? IS_BOTTOM_OVERSHOOT( y1 )
+                      : IS_TOP_OVERSHOOT( y1 );
 
 
           /* finalize current profile if any */
@@ -2386,7 +2392,7 @@
           pxl = e2;
 
         /* check that the other pixel isn't set */
-        e1 = pxl == e1 ? e2 : e1;
+        e1 = ( pxl == e1 ) ? e2 : e1;
 
         e1 = TRUNC( e1 );
 
@@ -2587,7 +2593,7 @@
           pxl = e2;
 
         /* check that the other pixel isn't set */
-        e1 = pxl == e1 ? e2 : e1;
+        e1 = ( pxl == e1 ) ? e2 : e1;
 
         e1 = TRUNC( e1 );
 
@@ -3057,7 +3063,7 @@
 
 
      *araster = (FT_Raster)&the_raster;
-     FT_MEM_ZERO( &the_raster, sizeof ( the_raster ) );
+     FT_ZERO( &the_raster );
      ft_black_init( &the_raster );
 
      return 0;

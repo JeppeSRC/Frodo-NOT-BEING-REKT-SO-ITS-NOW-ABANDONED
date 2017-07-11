@@ -18,11 +18,11 @@ void PBRTest::OnInit() {
 	audio = new Audio("./res/tone.wav");
 	mainMixer = new AudioMixer;
 	
-	//audio->AddOutput(mainMixer);
+	audio->AddOutput(mainMixer);
 
-	mainMixer->SetVolume(0.50f);
+	mainMixer->SetVolume(0.050f);
 
-	audio->Play();
+	//audio->Play();
 
 
 	window->SetVSync(1);
@@ -59,6 +59,9 @@ void PBRTest::OnInit() {
 	r.end = 0x7E;
 
 	Font* s = new Font("res/arial.ttf", 50, Window::GetMonitorDpi(), &r, 1);
+	Font::SetDefaultFont(s);
+
+	ivec2 k = s->GetKerning('F', 'r');
 
 	Shader* skyboxShader = new Shader("/shaders/pbr_skybox_v.hlsl", "/shaders/pbr_skybox_p.hlsl");
 	skyboxShader->ShaderGenComplete();
@@ -164,6 +167,9 @@ void PBRTest::OnInit() {
 
 	scene->Add(light);
 
+	fontRenderer = new FontRenderer(window, 512);
+	
+
 	Input::AcquireKeyboard();
 }
 
@@ -194,6 +200,11 @@ void PBRTest::OnTick() {
 
 void PBRTest::OnRender() {
 	scene->Render();
+
+	fontRenderer->Begin(nullptr);
+	fontRenderer->SubmitTextAlignLeft("Dank Text From The Left", Font::GetDefaultFont(), vec2(10, 10), vec4(1, 1, 1, 1), vec2(1, 1));
+	fontRenderer->End();
+	fontRenderer->Present();
 	fps++;
 }
 

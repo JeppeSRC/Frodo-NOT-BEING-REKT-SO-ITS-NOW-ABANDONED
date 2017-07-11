@@ -51,7 +51,7 @@ Texture2D* GetCharFromFont(const String& fontName, uint32 character) {
 
 Font::Font(const String& fontFile, uint32 size, ivec2 dpi, FD_RANGE<>* range, uint32 num_ranges) {
 	uint_t memory_size = 0;
-	byte* data = VFS::Get()->ReadFile(fontFile, &memory_size);
+	data = VFS::Get()->ReadFile(fontFile, &memory_size);
 
 	this->num_ranges = num_ranges;
 
@@ -62,8 +62,6 @@ Font::Font(const String& fontFile, uint32 size, ivec2 dpi, FD_RANGE<>* range, ui
 	if (!(initialized = LoadFontFileInternal(data, (uint32)memory_size, size, dpi, range, num_ranges))) {
 		FD_WARNING("Failed to open font: \"%s\"", *fontFile);
 	}
-
-	delete[] data;
 }
 
 Font::Font(void* memory, uint32 memory_size, uint32 size, ivec2 dpi, FD_RANGE<>* range, uint32 num_ranges) {
@@ -71,14 +69,17 @@ Font::Font(void* memory, uint32 memory_size, uint32 size, ivec2 dpi, FD_RANGE<>*
 
 	ranges = new FD_RANGE<>[num_ranges];
 	memcpy(ranges, range, num_ranges * sizeof(FD_RANGE<>));
+	
+	data = new byte[memory_size];
+	memcpy(data, memory, memory_size);
 
-
-	if (!(initialized = LoadFontFileInternal((byte*)memory, memory_size, size, dpi, range, num_ranges))) {
+	if (!(initialized = LoadFontFileInternal(data, memory_size, size, dpi, range, num_ranges))) {
 		FD_WARNING("Failed to open font: \"%s\"", "nullptr(\"From memory\")");
 	}
 }
 
 Font::~Font() {
+	delete[] data;
 	delete texture;
 	delete[] ranges;
 	FT_Done_Face(face);
@@ -198,7 +199,10 @@ ivec2 Font::GetKerning(uint32 left, uint32 right) {
 	if (!left || !right) return ivec2(0, 0);
 	FT_Vector kerning;
 
-	FT_Get_Kerning(face, FT_Get_Char_Index(face, left), FT_Get_Char_Index(face, right), FT_KERNING_DEFAULT, &kerning);
+	uint32 lI = FT_Get_Char_Index(face, left);
+	uint32 rI = FT_Get_Char_Index(face, right);
+	uint32 kern = FT_HAS_KERNING(face);
+	FT_Get_Kerning(face, lI, rI, FT_KERNING_DEFAULT, &kerning);
 
 	return ivec2(kerning.x, kerning.y);
 }
