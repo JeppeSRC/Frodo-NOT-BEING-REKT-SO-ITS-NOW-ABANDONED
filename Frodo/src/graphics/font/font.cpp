@@ -154,6 +154,8 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 
 	float32 xStep = (float32)segmentWidth / (float32)bitmapWidth;
 	float32 yStep = (float32)segmentHeight / (float32)bitmapHeight;
+	float32 xOnePixelOffset = 1.0f / (float32)bitmapWidth;
+	float32 yOnePixelOffset = 1.0f / (float32)bitmapHeight;
 
 	uint32 currentGlyph = 0;
 
@@ -165,10 +167,10 @@ bool Font::LoadFontFileInternal(byte* memory, uint32 memory_size, uint32 size, i
 			int32 xStart = currentGlyph % bitmapSquareSize;
 			int32 yStart = currentGlyph / bitmapSquareSize;
 
-			glyph.u0 = (float32)xStart * xStep;
-			glyph.v0 = (float32)yStart * yStep;
-			glyph.u1 = glyph.u0 + xStep;
-			glyph.v1 = glyph.v0 + yStep;
+			glyph.u0 = (float32)xStart * xStep + xOnePixelOffset;
+			glyph.v0 = (float32)yStart * yStep + yOnePixelOffset;
+			glyph.u1 = glyph.u0 + xStep - xOnePixelOffset;
+			glyph.v1 = glyph.v0 + yStep - yOnePixelOffset;
 
 			uint32 yOffset = segmentHeight - glyph.bitmapSize.y;
 
