@@ -30,6 +30,7 @@ void Application::Run() {
 	D3DFactory::CreateFactory();
 	OnCreateWindow();
 	TextureManager::Init();
+	AudioManager::Init();
 	OnInit();
 	Window& w = *window;
 	uint32 lastTime = clock();
@@ -62,6 +63,7 @@ void Application::Run() {
 	}
 
 	OnExit();
+	AudioManager::Release();
 	D3DFactory::Release();
 }
 }

@@ -50,6 +50,8 @@ public:
 	bool operator!=(const vec2& v) const;
 
 	__forceinline vec2 operator-() { return vec2(-x, -y); }
+
+	__forceinline DirectX::XMFLOAT2 ToDX() const { return DirectX::XMFLOAT2(x, y); }
 };
 
 

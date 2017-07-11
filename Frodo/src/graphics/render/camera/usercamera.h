@@ -20,6 +20,7 @@ public:
 	bool OnKeyboardActionKeyPressed(FD_KEY key) override;
 	bool OnKeyboardActionKeyReleased(FD_KEY key) override;
 	bool OnMouseActionMoveRelative(ivec2 position) override;
+	bool OnWindowStateChanged(FD_EVENT_ACTION state) override;
 };
 
 }

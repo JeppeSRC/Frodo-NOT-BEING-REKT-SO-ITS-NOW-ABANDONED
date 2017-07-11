@@ -10,15 +10,30 @@ void PBRTest::OnCreateWindow() {
 	prop.width = 1280;
 	prop.height = 720;
 
-	window = new Window("PBR", prop, nullptr, nullptr);
+	window = new Window("COM.DANK.FUCK", prop, nullptr, nullptr);
 }
 
 void PBRTest::OnInit() {
+
+	audio = new Audio("./res/tone.wav");
+	mainMixer = new AudioMixer;
 	
+	//audio->AddOutput(mainMixer);
+
+	mainMixer->SetVolume(0.50f);
+
+	audio->Play();
+
+
 	window->SetVSync(1);
 
 	camera = new UserCamera(vec3(0, 0, 0), vec3(0, 0, 0));
 	camera->SetProjection(mat4::Perspective(70.0f, window->GetAspectRatio(), 0.001f, 1000.0f));
+
+	AudioManager::UpdateListener(camera);
+
+
+	audio->UpdatePosition(vec3(-0.001f, 0, 0), vec3(0, 0, 0));
 
 	VFS::Get()->Mount("shaders", "res/pbr/shaders/");
 	VFS::Get()->Mount("models", "res/");
@@ -88,7 +103,7 @@ void PBRTest::OnInit() {
 	mat->SetPCBufferElement("m.Metallic", 0.2f);
 	mat->SetPCBufferElement("m.AmbientOcclusion", 1);
 
-	Mesh* sphere = MeshFactory::LoadFromFile("/models/sphere.obj", mat, false);
+	Mesh* sphere = MeshFactory::LoadFromFile("/models/sphere.obj", mat, true);
 
 	Entity3D* e = new Entity3D(vec3(0, 0, 0), vec3(0, 0, 0));
 	e->SetMesh(sphere);
@@ -135,15 +150,15 @@ void PBRTest::OnInit() {
 	monkeyMat->SetPCBufferElement("m.AmbientOcclusionFactor", 0.0f);
 	monkeyMat->SetPCBufferElement("m.AmbientOcclusion", 0.05f);
 
-	Entity3D* monkey = new Entity3D(vec3(0, 0, -4), vec3(0, 180, 0));
-	monkey->SetMesh(MeshFactory::LoadFromFile("res/monkey/monkey.obj", monkeyMat, true));
+	/*Entity3D* monkey = new Entity3D(vec3(0, 0, -4), vec3(0, 180, 0));
+	monkey->SetMesh(MeshFactory::LoadFromFile("res/monkey/monkey.obj", monkeyMat, true));*/
 	
 	//scene->Add(sky);
 	scene->Add(e);
 	scene->Add(e2);
 	scene->Add(e3);
 	//scene->Add(floor);
-	scene->Add(monkey);
+//	scene->Add(monkey);
 	
 	light = new PointLight(vec3(0, 0.25f, -2), vec3(0.525f, 0.525f, 0.525f), vec3(0, 0, 0));
 
@@ -159,11 +174,17 @@ void PBRTest::OnUpdate(float delta) {
 	camera->Update(delta);
 	scene->Update(delta);
 
-	aa += 2.0f * delta;
+	aa += 0.5f * delta;
+
+
 
 	light->SetPosition(vec3(cosf(aa) * 2.5f, 0.25f, -2));
 
 	skyboxMaterial->SetVCBufferElement(0, (void*)mat4::Inverse(camera->GetViewMatrix()).GetData());
+
+	vec3 pos = vec3(cosf(aa) * 20.5f, 0.0f, 1);
+	//audio->UpdatePosition(pos, vec3(0, 0, 0));
+
 }
 
 void PBRTest::OnTick() {

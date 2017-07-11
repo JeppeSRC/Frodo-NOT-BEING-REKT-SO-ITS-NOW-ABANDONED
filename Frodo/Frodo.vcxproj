@@ -202,7 +202,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\audio\audio.cpp" />
     <ClCompile Include="src\audio\audiomanager.cpp" />
+    <ClCompile Include="src\audio\audiomixer.cpp" />
     <ClCompile Include="src\audio\xadevice.cpp" />
     <ClCompile Include="src\core\event\eventdispatcher.cpp" />
     <ClCompile Include="src\core\event\fd_key.cpp" />
@@ -266,7 +268,9 @@
     <ClCompile Include="src\util\vfs\vfs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\audio\audio.h" />
     <ClInclude Include="src\audio\audiomanager.h" />
+    <ClInclude Include="src\audio\audiomixer.h" />
     <ClInclude Include="src\audio\xadevice.h" />
     <ClInclude Include="src\core\event\event.h" />
     <ClInclude Include="src\core\event\eventdispatcher.h" />

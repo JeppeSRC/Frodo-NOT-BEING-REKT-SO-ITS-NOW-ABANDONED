@@ -62,6 +62,8 @@ public:
 	bool operator!=(const vec3& v) const;
 
 	__forceinline vec3 operator-() { return vec3(-x, -y, -z); }
+
+	__forceinline DirectX::XMFLOAT3 ToDX() const { return DirectX::XMFLOAT3(x, y, z); }
 };
 
 

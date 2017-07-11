@@ -2,6 +2,7 @@
 #include "test.h"
 #include "pbrtest.h"
 #include <core/log.h>
+#include <util/wave.h>
 #include <string>
 #include <util/vfs/vfs.h>
 

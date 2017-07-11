@@ -56,6 +56,8 @@ public:
 	bool operator!=(const vec4& v) const;
 
 	__forceinline vec4 operator-() { return vec4(-x, -y, -z, -w); }
+
+	__forceinline DirectX::XMFLOAT4 ToDX() const { return DirectX::XMFLOAT4(x, y, z, w); }
 };
 
 
