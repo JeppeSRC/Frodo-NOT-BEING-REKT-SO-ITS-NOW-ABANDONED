@@ -57,7 +57,7 @@ void BatchRenderer::CreateDepthStates() {
 	D3D11_DEPTH_STENCIL_DESC desc;
 	ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 
-	desc.DepthEnable = false;
+	desc.DepthEnable = true;
 	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
@@ -162,6 +162,9 @@ void BatchRenderer::Present() {
 	ibo->Bind();
 
 	D3DContext::GetDeviceContext()->DrawIndexed(indexCount, 0, 0);
+
+	SetBlendingInternal(false);
+	SetDepthInternal(true);
 }
 
 }

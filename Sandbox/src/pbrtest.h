@@ -21,6 +21,8 @@ private:
 	FD::MaterialInstance* skyboxMaterial;
 	FD::Audio* audio;
 	FD::AudioMixer* mainMixer;
+	FD::UIHandler* menu;
+	FD::MenuRenderer* menuRenderer;
 
 public:
 	PBRTest() : Application() {}

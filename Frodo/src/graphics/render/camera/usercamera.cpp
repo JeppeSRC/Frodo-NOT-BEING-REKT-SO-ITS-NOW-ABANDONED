@@ -41,7 +41,7 @@ bool UserCamera::OnKeyboardActionKeyPressed(FD_KEY key) {
 	if (key == FD_KEY_Q)
 		Input::ToggleMouseAcquisition();
 
-	if (key == FD_KEY_TAB) {
+	if (key == FD_KEY_CAPS) {
 		D3DContext::SetFullscreen(true);
 	} else if (key == FD_KEY_ESCAPE) {
 		D3DContext::SetFullscreen(false);

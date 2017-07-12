@@ -13,9 +13,10 @@ UIButton::UIButton(const String& name, vec2 position, vec2 size, const String& t
 	SetInteractable(true);
 	SetVisible(true);
 
-	UITextAutoResize* uitext = new UITextAutoResize("title", size * 0.5f, size, Font::GetDefaultFont(), text);
+	UITextAutoResize* uitext = new UITextAutoResize("title", size * 0.5f, size-10, Font::GetDefaultFont(), text);
 	uitext->SetParent(this);
 	uitext->SetTextAlignment(FD_TEXT_ALIGN_CENTER);
+	uitext->SetColor(vec4(0, 0, 1, 1));
 
 	texts.Push_back(uitext);
 }

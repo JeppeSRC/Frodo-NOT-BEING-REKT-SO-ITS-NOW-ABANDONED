@@ -156,7 +156,7 @@ void PBRTest::OnInit() {
 	/*Entity3D* monkey = new Entity3D(vec3(0, 0, -4), vec3(0, 180, 0));
 	monkey->SetMesh(MeshFactory::LoadFromFile("res/monkey/monkey.obj", monkeyMat, true));*/
 	
-	//scene->Add(sky);
+	scene->Add(sky);
 	scene->Add(e);
 	scene->Add(e2);
 	scene->Add(e3);
@@ -166,9 +166,13 @@ void PBRTest::OnInit() {
 	light = new PointLight(vec3(0, 0.25f, -2), vec3(0.525f, 0.525f, 0.525f), vec3(0, 0, 0));
 
 	scene->Add(light);
-
-	fontRenderer = new FontRenderer(window, 512);
 	
+	fontRenderer = new FontRenderer(window, 512);
+	menuRenderer = new MenuRenderer(window, 512);
+	
+	menu = new UIHandler;
+
+	menu->Add(new UIButton("button", vec2(100, 100), vec2(200, 50), "Dank Button"));
 
 	Input::AcquireKeyboard();
 }
@@ -179,6 +183,7 @@ void PBRTest::OnUpdate(float delta) {
 	static float aa = 0.0f;
 	camera->Update(delta);
 	scene->Update(delta);
+	//menu->Update(delta);
 
 	aa += 0.5f * delta;
 
@@ -200,11 +205,25 @@ void PBRTest::OnTick() {
 
 void PBRTest::OnRender() {
 	scene->Render();
+	Font::FD_RANGE<> r;
 
+	r.start = 0x20;
+	r.end = 0x7E;
+
+	Font* f = new Font("res/verdana.ttf", 50, Window::GetMonitorDpi(), &r, 1);
 	fontRenderer->Begin(nullptr);
-	fontRenderer->SubmitTextAlignLeft("Dank Text From The Left", Font::GetDefaultFont(), vec2(10, 10), vec4(1, 1, 1, 1), vec2(1, 1));
+	fontRenderer->SubmitTextAlignLeft("Dank Text From The Left", Font::GetDefaultFont(), vec2(10, 10), vec4(1, 1, 1, 1), vec2(0.5f, 0.5f));
+	fontRenderer->SubmitTextAlignRight("Dank Text From The Right", f, vec2(window->GetWidth()-10, 10), vec4(1, 1, 1, 1), vec2(0.5f, 0.5f));
 	fontRenderer->End();
 	fontRenderer->Present();
+
+	delete f;
+
+	menuRenderer->Begin(nullptr);
+	menuRenderer->Submit(menu);
+	menuRenderer->End();
+	menuRenderer->Present();
+	
 	fps++;
 }
 
