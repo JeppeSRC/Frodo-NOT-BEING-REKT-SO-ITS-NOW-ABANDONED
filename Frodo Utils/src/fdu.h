@@ -1,11 +1,9 @@
 #pragma once
 
-#ifdef FD_BUILD
-#define FD_EXTERN_TEMPLATE
-#define FDAPI __declspec(dllexport)
+#ifdef FDU_BUILD
+#define FDUAPI __declspec(dllexport)
 #else
-#define FD_EXTERN_TEMPLATE extern
-#define FDAPI __declspec(dllimport)
+#define FDUAPI __declspec(dllimport)
 #endif
 
 #ifndef FD_TYPES_DEFINED

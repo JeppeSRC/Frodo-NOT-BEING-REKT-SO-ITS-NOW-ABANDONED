@@ -4,7 +4,7 @@
 
 namespace FD {
 
-class FDAPI String {
+class FDUAPI String {
 private:
 	template<typename T>
 	friend class List;

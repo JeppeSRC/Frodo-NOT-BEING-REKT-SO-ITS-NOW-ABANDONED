@@ -9,7 +9,7 @@ Scene::Scene(Window* window) : window(window) {
 }
 
 Scene::~Scene() {
-
+	delete renderer;
 }
 
 void Scene::Add(Entity3D* entity) {

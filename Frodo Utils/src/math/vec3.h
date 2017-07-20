@@ -3,7 +3,7 @@
 
 namespace FD {
 
-class FDAPI vec3 {
+class FDUAPI vec3 {
 private:
 	friend class vec2;
 public:
@@ -67,7 +67,7 @@ public:
 };
 
 
-class FDAPI ivec3 {
+class FDUAPI ivec3 {
 private:
 	friend class ivec2;
 public:

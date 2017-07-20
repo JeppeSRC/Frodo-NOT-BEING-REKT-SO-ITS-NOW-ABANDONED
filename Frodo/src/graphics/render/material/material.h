@@ -19,6 +19,8 @@ protected:
 	Map<uint32, Texture*> textures;
 public:
 	Material(Shader* shader);
+	Material(const Material* mat);
+	Material(const Material& mat);
 	virtual ~Material();
 
 	virtual void Bind();

@@ -1,7 +1,9 @@
 #pragma once
 
+#pragma warning(disable : 4251)
+
 #include <Windows.h>
-#include <fd.h>
+#include <fdu.h>
 #include <util/string.h>
 #include <util/list.h>
 #include <util/map.h>
@@ -10,7 +12,7 @@
 
 namespace FD {
 
-class FDAPI VFS {
+class FDUAPI VFS {
 private:
 	static VFS* instance;
 
@@ -24,7 +26,6 @@ public:
 private:
 	Map<String, String> mountPoints;
 
-	String ResolvePath(const String& vpath);
 
 public:
 	VFS();
@@ -35,6 +36,7 @@ public:
 	byte* ReadFile(const String& filename, uint_t* fileSize = nullptr);
 	String ReadTextFile(const String& filename);
 
+	String ResolvePath(const String& vpath);
 
 };
 

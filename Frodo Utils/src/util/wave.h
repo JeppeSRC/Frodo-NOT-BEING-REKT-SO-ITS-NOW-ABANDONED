@@ -37,7 +37,7 @@ struct WAVE {
 };
 
 
-FDAPI WAVE* FDReadWaveFile(const String& filename);
+FDUAPI WAVE* FDReadWaveFile(const String& filename);
 
 
 

@@ -8,10 +8,25 @@
 namespace FD {
 
 
-struct RenderCommand {
+class RenderCommand {
+private:
+	struct CBUFFER_DATA {
+		uint32 slot;
+		void* data;
+	};
+
+	byte numVCBuffers = 0;
+	byte numPCBuffers = 0;
+	
+	CBUFFER_DATA* vCBuffers = nullptr;
+	CBUFFER_DATA* pCBuffers = nullptr;
+	
+public:
 	Mesh* mesh;
 	mat4 transform;
 	Shader* shader;
+
+//	void AddVCBuffer();
 };
 
 class FDAPI Renderer : public EventListener {
@@ -28,6 +43,7 @@ public:
 
 	virtual void Begin(Camera* camera) = 0;
 	virtual void Submit(const LightStack& lights) = 0;
+	virtual void Submit(Light* light) = 0;
 	virtual void Submit(const RenderCommand& cmd);
 
 	virtual void Submit(Entity3D* e);

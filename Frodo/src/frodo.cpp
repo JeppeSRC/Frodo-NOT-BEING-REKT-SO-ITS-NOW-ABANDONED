@@ -15,7 +15,7 @@ Application::~Application() {
 	TextureManager::Dispose();
 }
 
-void Application::OnInit() {}
+//void Application::OnInit() {}
 
 void Application::OnTick() {}
 

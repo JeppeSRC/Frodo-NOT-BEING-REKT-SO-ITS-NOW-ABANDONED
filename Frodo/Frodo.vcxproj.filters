@@ -32,7 +32,6 @@
     <ClCompile Include="src\graphics\texture\texture2d.cpp" />
     <ClCompile Include="src\graphics\texture\texturecube.cpp" />
     <ClCompile Include="src\graphics\texture\texturemanager.cpp" />
-    <ClCompile Include="src\util\vfs\vfs.cpp" />
     <ClCompile Include="src\core\scene.cpp" />
     <ClCompile Include="src\physics\aabb.cpp" />
     <ClCompile Include="src\physics\triangle.cpp" />
@@ -65,6 +64,7 @@
     <ClCompile Include="src\audio\audiomanager.cpp" />
     <ClCompile Include="src\audio\audio.cpp" />
     <ClCompile Include="src\audio\audiomixer.cpp" />
+    <ClCompile Include="src\graphics\render\renderer\simplerenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\frodo.cpp">
@@ -189,7 +189,6 @@
     <ClInclude Include="src\graphics\texture\texture2d.h" />
     <ClInclude Include="src\graphics\texture\texturecube.h" />
     <ClInclude Include="src\graphics\texture\texturemanager.h" />
-    <ClInclude Include="src\util\vfs\vfs.h" />
     <ClInclude Include="src\core\scene.h" />
     <ClInclude Include="src\physics\aabb.h" />
     <ClInclude Include="src\physics\triangle.h" />
@@ -253,5 +252,6 @@
     <ClInclude Include="src\audio\audiomanager.h" />
     <ClInclude Include="src\audio\audio.h" />
     <ClInclude Include="src\audio\audiomixer.h" />
+    <ClInclude Include="src\graphics\render\renderer\simplerenderer.h" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #include "wave.h"
 #include "fileutils.h"
 #include "fdutils.h"
+#include "vfs/vfs.h"
 #include <core/log.h>
 
 #define CHUNK_RIFF_ID ((uint32)('R' | (uint32)'I' << 8 | (uint32)'F' << 16 | (uint32)'F' << 24))
@@ -38,7 +39,7 @@ WAVE* FDReadWaveFile(const String& filename) {
 
 	uint_t waveSize;
 
-	byte* waveFile = FDReadBinaryFile(filename, &waveSize);
+	byte* waveFile = VFS::Get()->ReadFile(filename, &waveSize);
 
 	WAVE* wave = new WAVE;
 

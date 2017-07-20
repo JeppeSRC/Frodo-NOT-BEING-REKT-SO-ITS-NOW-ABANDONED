@@ -3,7 +3,7 @@
 
 namespace FD {
 
-class FDAPI vec2 {
+class FDUAPI vec2 {
 public:
 	float32 x;
 	float32 y;
@@ -56,7 +56,7 @@ public:
 
 
 
-class FDAPI ivec2 {
+class FDUAPI ivec2 {
 public:
 	int32 x;
 	int32 y;

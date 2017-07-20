@@ -3,7 +3,7 @@
 
 namespace FD {
 
-class FDAPI mat3 {
+class FDUAPI mat3 {
 private:
 	friend class vec3;
 private:

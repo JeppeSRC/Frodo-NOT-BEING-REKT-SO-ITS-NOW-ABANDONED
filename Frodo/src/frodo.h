@@ -88,7 +88,7 @@ protected:
 	Window* window;
 
 	virtual void OnCreateWindow() = 0;
-	virtual void OnInit();
+	virtual void OnInit() = 0;
 	virtual void OnTick();
 	virtual void OnUpdate(float32 delta);
 	virtual void OnRender();

@@ -41,6 +41,6 @@ if (statement) { \
 
 
 
-void FDAPI FDLog(byte level, const char* message...);
+void FDUAPI FDLog(byte level, const char* message...);
 
 }

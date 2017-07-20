@@ -8,6 +8,22 @@ Material::Material(Shader* shader) : shader(shader) {
 	pCBuffer.data = nullptr;
 }
 
+Material::Material(const Material* mat) {
+	shader = mat->shader;
+
+	vCBuffer.data = nullptr;
+	pCBuffer.data = nullptr;
+
+}
+
+Material::Material(const Material& mat) {
+	shader = mat.shader;
+
+	vCBuffer.data = nullptr;
+	pCBuffer.data = nullptr;
+
+}
+
 Material::~Material() {
 	delete vCBuffer.data;
 	delete pCBuffer.data;
