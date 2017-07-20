@@ -23,7 +23,7 @@ public:
 	virtual void Present() override;
 
 	void Begin(Camera* cam) override;
-	void Submit(const LightStack& lights) override;
+	void Submit(const List<Light*>& lights) override;
 	void End() override;
 };
 }

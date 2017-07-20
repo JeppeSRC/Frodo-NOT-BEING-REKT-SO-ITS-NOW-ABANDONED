@@ -41,8 +41,8 @@ void PBRStaticRenderer::Begin(Camera* cam) {
 	camera.SetElement("c_ProjectionMatrix", (void*)cam->GetProjectionMatrix().GetData());
 }
 
-void PBRStaticRenderer::Submit(const LightStack& lights) {
-	Light* l = lights.GetLights()[0];
+void PBRStaticRenderer::Submit(const List<Light*>& lights) {
+	Light* l = lights.Get(0);
 	if (l->GetLightType() != FD_LIGHT_TYPE_POINT) {
 		FD_WARNING("PBR only supports point lights!");
 		return;

@@ -57,7 +57,7 @@ public:
 	virtual ~BatchRenderer();
 
 	void Begin(Camera* camera) override;
-	virtual void Submit(const LightStack& lights) {}
+	virtual void Submit(const List<Light*>& lights) {}
 	void End() override;
 
 

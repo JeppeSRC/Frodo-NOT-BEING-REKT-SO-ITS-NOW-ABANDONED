@@ -65,7 +65,8 @@ void Material::SetVCBuffer(const String& name, void* data) {
 		}
 	}
 
-	memcpy(vCBuffer.data, data, toCopy);
+	if (data) memcpy(vCBuffer.data, data, toCopy);
+	else memset(vCBuffer.data, 0, toCopy);
 }
 
 void Material::SetPCBuffer(const String& name, void* data) {
@@ -86,7 +87,8 @@ void Material::SetPCBuffer(const String& name, void* data) {
 		}
 	}
 
-	memcpy(pCBuffer.data, data, toCopy);
+	if (data) memcpy(pCBuffer.data, data, toCopy);
+	else memset(pCBuffer.data, 0, toCopy);
 }
 
 void Material::SetVCBufferElement(const String& name, void* data) {

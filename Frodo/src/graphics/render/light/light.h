@@ -89,19 +89,4 @@ public:
 
 };
 
-class FDAPI LightStack {
-private:
-	List<Light*> lights;
-
-public:
-	LightStack() {}
-	~LightStack() { }
-
-	void Add(Light* light) { lights.Push_back(light); }
-	void Remove(Light* light) { lights.Remove(light); }
-
-	inline List<Light*> GetLights() const { return lights; }
-
-};
-
 }

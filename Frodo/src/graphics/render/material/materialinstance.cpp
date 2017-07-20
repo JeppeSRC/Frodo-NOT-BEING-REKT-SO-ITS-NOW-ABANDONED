@@ -17,6 +17,19 @@ MaterialInstance::MaterialInstance(Material* material) : parent(material) {
 	shader = material->GetShader();
 }
 
+MaterialInstance::MaterialInstance(const Material& material) : parent(nullptr) {
+	vCBuffer = material.GetVCBuffer();
+	vCBuffer.data = vCBuffer.structSize == 0 ? nullptr : new byte[vCBuffer.structSize];
+	memcpy(vCBuffer.data, material.GetVCBuffer().data, vCBuffer.structSize);
+
+	pCBuffer = material.GetPCBuffer();
+	pCBuffer.data = pCBuffer.structSize == 0 ? nullptr : new byte[pCBuffer.structSize];
+	memcpy(pCBuffer.data, material.GetPCBuffer().data, pCBuffer.structSize);
+
+	textures = material.GetTextures();
+	shader = material.GetShader();
+}
+
 MaterialInstance::~MaterialInstance() {
 	delete vCBuffer.data;
 	delete pCBuffer.data;
@@ -58,7 +71,8 @@ void MaterialInstance::SetVCBuffer(const String& name, void* data) {
 		}
 	}
 
-	memcpy(vCBuffer.data, data, toCopy);
+	if (data) memcpy(vCBuffer.data, data, toCopy);
+	else memset(vCBuffer.data, 0, toCopy);
 }
 
 void MaterialInstance::SetPCBuffer(const String& name, void* data) {
@@ -79,7 +93,8 @@ void MaterialInstance::SetPCBuffer(const String& name, void* data) {
 		}
 	}
 
-	memcpy(pCBuffer.data, data, toCopy);
+	if (data) memcpy(pCBuffer.data, data, toCopy);
+	else memset(pCBuffer.data, 0, toCopy);
 }
 
 

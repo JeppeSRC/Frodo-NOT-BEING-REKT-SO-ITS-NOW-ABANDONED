@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "test.h"
 #include "pbrtest.h"
+#include "rTest.h"
 #include <core/log.h>
 #include <util/wave.h>
 #include <string>
@@ -35,7 +36,7 @@ int main() {
 
 	return 0;*/
 
-	PBRTest test;
+	RTest test;
 	test.Start();
 
 	return 0;

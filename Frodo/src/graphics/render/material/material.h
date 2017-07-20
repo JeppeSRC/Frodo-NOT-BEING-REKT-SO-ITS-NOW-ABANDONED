@@ -60,7 +60,7 @@ public:
 	inline Shader::ConstantBufferSlot GetVCBuffer() const { return vCBuffer; }
 	inline Shader::ConstantBufferSlot GetPCBuffer() const { return pCBuffer; }
 
-	inline Shader* GetShader() { return shader; }
+	inline Shader* GetShader() const { return shader; }
 
 	inline const Map<uint32, Texture*>& GetTextures() const { return textures; }
 };
@@ -77,6 +77,7 @@ protected:
 	Map<uint32, Texture* > textures;
 public:
 	MaterialInstance(Material* material);
+	MaterialInstance(const Material& mat);
 	virtual ~MaterialInstance();
 
 	virtual void Bind();

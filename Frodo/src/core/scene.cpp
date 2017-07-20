@@ -25,8 +25,8 @@ void Scene::Update(float delta) {
 }
 
 void Scene::Render() {
-	LightStack stack;
-	stack.Add(lights[0]);
+	List<Light*> stack;
+	stack.Push_back(lights[0]);
 
 	renderer->Begin(camera);
 	renderer->Submit(stack);

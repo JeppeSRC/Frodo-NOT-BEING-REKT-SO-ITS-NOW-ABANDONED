@@ -5,6 +5,17 @@ struct Out {
 	float3 texCoord : TEXCOORD;
 };
 
+cbuffer Light : register(b6) {
+	float3 l_Direction;
+	float l_pad2;
+	float3 l_Color;
+	float l_pad0;
+	float3 l_Position;
+	float l_pad1;
+	float3 l_Attenuation;
+	float pad2;
+};
+
 cbuffer Camera : register(b1) {
 	float3 c_Position;
 	float c_Pad0;

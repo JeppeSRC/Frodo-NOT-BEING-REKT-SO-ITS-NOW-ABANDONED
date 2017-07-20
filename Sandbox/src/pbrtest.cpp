@@ -15,7 +15,7 @@ void PBRTest::OnCreateWindow() {
 
 void PBRTest::OnInit() {
 
-	audio = new Audio("./res/tone.wav");
+	audio = new Audio("res/tone.wav");
 	mainMixer = new AudioMixer;
 	
 	audio->AddOutput(mainMixer);
@@ -160,7 +160,7 @@ void PBRTest::OnInit() {
 	scene->Add(e);
 	scene->Add(e2);
 	scene->Add(e3);
-	//scene->Add(floor);
+	scene->Add(floor);
 //	scene->Add(monkey);
 	
 	light = new PointLight(vec3(0, 0.25f, -2), vec3(0.525f, 0.525f, 0.525f), vec3(0, 0, 0));
@@ -174,6 +174,8 @@ void PBRTest::OnInit() {
 
 	menu->Add(new UIButton("button", vec2(100, 100), vec2(200, 50), "Dank Button"));
 
+	f = new Font("res/verdana.ttf", 50, Window::GetMonitorDpi(), &r, 1);
+
 	Input::AcquireKeyboard();
 }
 
@@ -185,17 +187,16 @@ void PBRTest::OnUpdate(float delta) {
 	scene->Update(delta);
 	//menu->Update(delta);
 
-	aa += 0.5f * delta;
+	aa += 1.5f * delta;
 
 
 
 	light->SetPosition(vec3(cosf(aa) * 2.5f, 0.25f, -2));
-
+	
 	skyboxMaterial->SetVCBufferElement(0, (void*)mat4::Inverse(camera->GetViewMatrix()).GetData());
 
 	vec3 pos = vec3(cosf(aa) * 20.5f, 0.0f, 1);
 	//audio->UpdatePosition(pos, vec3(0, 0, 0));
-
 }
 
 void PBRTest::OnTick() {
@@ -203,21 +204,16 @@ void PBRTest::OnTick() {
 	fps = 0;
 }
 
+
 void PBRTest::OnRender() {
 	scene->Render();
-	Font::FD_RANGE<> r;
-
-	r.start = 0x20;
-	r.end = 0x7E;
-
-	Font* f = new Font("res/verdana.ttf", 50, Window::GetMonitorDpi(), &r, 1);
+	
 	fontRenderer->Begin(nullptr);
-	fontRenderer->SubmitTextAlignLeft("Dank Text From The Left", Font::GetDefaultFont(), vec2(10, 10), vec4(1, 1, 1, 1), vec2(0.5f, 0.5f));
-	fontRenderer->SubmitTextAlignRight("Dank Text From The Right", f, vec2(window->GetWidth()-10, 10), vec4(1, 1, 1, 1), vec2(0.5f, 0.5f));
+	fontRenderer->SubmitTextAlignLeft("Dank L", Font::GetDefaultFont(), vec2(10, 10), vec4(1, 1, 1, 1), vec2(1.0f, 1.0f));
+	fontRenderer->SubmitTextAlignRight("Dank R", f, vec2(window->GetWidth()-10, 10), vec4(1, 1, 1, 1), vec2(1.0f, 1.0f));
+	fontRenderer->SubmitTextAlignCenter("Dank C", f, vec2(window->GetWidth() >> 1, 10), vec4(1, 1, 1, 1), vec2(1.0f, 1.0f));
 	fontRenderer->End();
 	fontRenderer->Present();
-
-	delete f;
 
 	menuRenderer->Begin(nullptr);
 	menuRenderer->Submit(menu);

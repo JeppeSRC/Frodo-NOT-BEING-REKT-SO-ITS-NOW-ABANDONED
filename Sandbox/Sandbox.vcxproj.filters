@@ -24,12 +24,18 @@
     <ClCompile Include="src\pbrtest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\rTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\pbrtest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,7 +3,7 @@
 #include <frodo.h>
 
 class PBRTest : public FD::Application {
-protected:
+private:
 	void OnCreateWindow() override;
 	void OnInit() override;
 	void OnTick() override;
@@ -23,6 +23,7 @@ private:
 	FD::AudioMixer* mainMixer;
 	FD::UIHandler* menu;
 	FD::MenuRenderer* menuRenderer;
+	FD::Font* f;
 
 public:
 	PBRTest() : Application() {}

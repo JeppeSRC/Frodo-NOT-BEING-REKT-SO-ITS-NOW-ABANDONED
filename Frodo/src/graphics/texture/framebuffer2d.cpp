@@ -54,7 +54,7 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 
 	D3DContext::GetDevice()->CreateRenderTargetView(resource, &rd, &renderTargetView);
 
-	FD_ASSERT(renderTargetView = nullptr);
+	FD_ASSERT(renderTargetView == nullptr);
 
 	depthStencilView = nullptr;
 

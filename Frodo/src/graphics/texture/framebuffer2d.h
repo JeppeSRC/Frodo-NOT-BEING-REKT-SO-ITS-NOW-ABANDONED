@@ -5,7 +5,7 @@
 
 namespace FD {
 
-class FDAPI Framebuffer2D : Texture {
+class FDAPI Framebuffer2D : public Texture {
 private:
 	ID3D11Texture2D* resource;
 	ID3D11RenderTargetView* renderTargetView;

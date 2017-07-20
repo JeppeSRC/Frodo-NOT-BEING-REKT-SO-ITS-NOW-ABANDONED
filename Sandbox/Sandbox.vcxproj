@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\pbrtest.cpp" />
+    <ClCompile Include="src\rTest.cpp" />
     <ClCompile Include="src\test.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -175,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pbrtest.h" />
+    <ClInclude Include="src\rTest.h" />
     <ClInclude Include="src\test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

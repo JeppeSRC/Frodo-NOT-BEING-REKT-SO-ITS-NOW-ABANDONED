@@ -44,6 +44,7 @@
 #include <graphics/pbr/render/pbrrenderer.h>
 /*#include <graphics/render/deferredrenderer.h>
 #include <graphics/render/forwardrenderer.h>*/
+#include <graphics/render/renderer/simplerenderer.h>
 #include <graphics/render/renderer/fontrenderer.h>
 #include <graphics/render/renderer/batchrenderer.h>
 #include <graphics/render/renderer/renderer.h>
