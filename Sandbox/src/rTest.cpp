@@ -20,16 +20,16 @@ void RTest::OnInit() {
 	Material mat(renderer->GetGeometryShader());
 
 	cube = new Entity3D(vec3(0, 0, 0), vec3(0, 45, 0));
-	cube->SetMesh(MeshFactory::CreateCube(1.5f, 1.5f, 1.5f, new MaterialInstance(mat)));
+	cube->SetMesh(MeshFactory::CreateCube(1.5f, 1.5f, 1.5f, new Material(mat)));
 
 	floor = new Entity3D(vec3(0, -1.5f, 0), vec3(90, 0, 0));
-	floor->SetMesh(MeshFactory::CreatePlane(100, 100, new MaterialInstance(mat)));
+	floor->SetMesh(MeshFactory::CreatePlane(100, 100, new Material(mat)));
 
 	renderer->Submit(new PointLight(vec3(0, 0, -3), vec3(1, 1, 1), vec3(0.5f, 0.8f, 0)));
 	renderer->Submit(new PointLight(vec3(0, 0, 3), vec3(1, 1, 1), vec3(0.5f, 0.8f, 0)));
-	renderer->Submit(new PointLight(vec3(0, 3, 0), vec3(1, 1, 1), vec3(0.5f, 0.8f, 0)));
-	renderer->Submit(new PointLight(vec3(3, 0, 0), vec3(1, 1, 1), vec3(0.5f, 0.8f, 0)));
-	renderer->Submit(new PointLight(vec3(-3, 0, 0), vec3(1, 1, 1), vec3(0.5f, 0.8f, 0)));
+//	renderer->Submit(new PointLight(vec3(0, 3, 0), vec3(1, 1, 1), vec3(0.5f, 0.8f, 0)));
+//	renderer->Submit(new PointLight(vec3(3, 0, 0), vec3(1, 1, 1), vec3(0.5f, 0.8f, 0)));
+//	renderer->Submit(new PointLight(vec3(-3, 0, 0), vec3(1, 1, 1), vec3(0.5f, 0.8f, 0)));
 }
 
 void RTest::OnTick() {

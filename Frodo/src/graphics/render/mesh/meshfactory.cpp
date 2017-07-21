@@ -19,7 +19,7 @@ struct VertexT {
 	vec3 tangent;
 };
 
-Mesh* MeshFactory::CreatePlane(float32 width, float32 height, MaterialInstance* material) {
+Mesh* MeshFactory::CreatePlane(float32 width, float32 height, Material* material) {
 
 
 
@@ -68,7 +68,7 @@ Mesh* MeshFactory::CreatePlane(float32 width, float32 height, MaterialInstance* 
 	return mesh;
 }
 
-Mesh* MeshFactory::CreateCube(float32 width, float32 height, float32 depth, MaterialInstance* material) {
+Mesh* MeshFactory::CreateCube(float32 width, float32 height, float32 depth, Material* material) {
 
 	float32 w = width / 2.0f;
 	float32 h = height / 2.0f;
@@ -223,7 +223,7 @@ Mesh* MeshFactory::CreateCube(float32 width, float32 height, float32 depth, Mate
 	return mesh;
 }
 
-Mesh* MeshFactory::LoadFromFile(const String& filename, MaterialInstance* material, bool generateTangents) {
+Mesh* MeshFactory::LoadFromFile(const String& filename, Material* material, bool generateTangents) {
 
 	if (filename.EndsWith(".obj")) {
 		List<vec3> vertices, normals, tangents;

@@ -12,17 +12,17 @@ protected:
 	VertexBuffer* vBuffer;
 	IndexBuffer* iBuffer;
 
-	MaterialInstance* material;
+	Material* material;
 
 public:
-	Mesh(VertexBuffer* vBuffer, IndexBuffer* iBuffer, MaterialInstance* material) : vBuffer(vBuffer), iBuffer(iBuffer), material(material) {}
+	Mesh(VertexBuffer* vBuffer, IndexBuffer* iBuffer, Material* material) : vBuffer(vBuffer), iBuffer(iBuffer), material(material) {}
 	~Mesh() { delete material, vBuffer, iBuffer; }
 
 	void Render();
 
 	inline VertexBuffer* GetVertexBuffer() { return vBuffer; }
 	inline IndexBuffer* GetIndexBuffer() { return iBuffer; }
-	inline MaterialInstance* GetMaterial() { return material; }
+	inline Material* GetMaterial() { return material; }
 };
 
 }

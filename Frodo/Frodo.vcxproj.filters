@@ -14,7 +14,6 @@
     <ClCompile Include="src\graphics\font\font.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrrenderer.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrstaticrenderer.cpp" />
-    <ClCompile Include="src\graphics\render\material\materialinstance.cpp" />
     <ClCompile Include="src\graphics\render\mesh\mesh.cpp" />
     <ClCompile Include="src\graphics\render\renderer\batchrenderer.cpp" />
     <ClCompile Include="src\graphics\render\camera\camera.cpp" />
@@ -98,9 +97,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\vfs\vfs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\texture\texturemanager.cpp">
@@ -241,7 +237,6 @@
     <ClInclude Include="src\util\asset\asset.h" />
     <ClInclude Include="src\util\asset\assetmanager.h" />
     <ClInclude Include="src\util\asset\package.h" />
-    <ClInclude Include="src\util\vfs\vfs.h" />
     <ClInclude Include="src\core\event\eventkeyboard.h" />
     <ClInclude Include="src\core\event\fd_key.h" />
     <ClInclude Include="src\graphics\d3dadapter.h" />

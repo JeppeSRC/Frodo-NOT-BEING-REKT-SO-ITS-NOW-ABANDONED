@@ -18,7 +18,7 @@ private:
 	FD::Scene* scene;
 	FD::UserCamera* camera;
 	uint32 fps;
-	FD::MaterialInstance* skyboxMaterial;
+	FD::Material* skyboxMaterial;
 	FD::Audio* audio;
 	FD::AudioMixer* mainMixer;
 	FD::UIHandler* menu;

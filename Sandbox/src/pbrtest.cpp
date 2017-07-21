@@ -74,7 +74,7 @@ void PBRTest::OnInit() {
 	skybox->SetTexture("m_EnvironmentMap", cubeMap);
 	skybox->SetVCBuffer("InverseViewMatrix", (void*)mat4::Inverse(camera->GetViewMatrix()).GetData());
 
-	skyboxMaterial = new MaterialInstance(skybox);
+	skyboxMaterial = new Material(skybox);
 
 	Texture* albedo = new Texture2D("res/bricks.jpg");
 	Texture* metallic = new Texture2D("res/metallic.png");
@@ -100,7 +100,7 @@ void PBRTest::OnInit() {
 	material->SetTexture("m_AlbedoMap", albedo);
 	material->SetTexture("m_EnvironmentMap", cubeMap);
 
-	MaterialInstance* mat = new MaterialInstance(material);
+	Material* mat = new Material(material);
 
 	mat->SetPCBufferElement("m.Roughness", 0.853f);
 	mat->SetPCBufferElement("m.Metallic", 0.2f);
@@ -120,7 +120,7 @@ void PBRTest::OnInit() {
 	e3->SetMesh(sphere);
 	e3->SetScale(vec3(0.75f, 0.75f, 0.75f));
 
-	MaterialInstance* mi = new MaterialInstance(material);
+	Material* mi = new Material(material);
 
 	mi->SetPCBufferElement("m.AlbedoFactor", 1.0f);
 	mi->SetPCBufferElement("m.MetallicFactor", 0.0f);
@@ -138,7 +138,7 @@ void PBRTest::OnInit() {
 	Entity3D* sky = new Entity3D(vec3(0, 0, 0), vec3(0, 0, 0));
 	sky->SetMesh(MeshFactory::CreatePlane(2, 2, skyboxMaterial));
 
-	MaterialInstance* monkeyMat = new MaterialInstance(material);
+	Material* monkeyMat = new Material(material);
 
 	monkeyMat->SetTexture("m_AlbedoMap", new Texture2D("res/monkey/albedo.png"));
 	monkeyMat->SetTexture("m_MetallicMap", metallic);

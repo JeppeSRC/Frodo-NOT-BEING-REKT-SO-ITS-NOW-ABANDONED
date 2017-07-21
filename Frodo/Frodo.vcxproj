@@ -237,7 +237,6 @@
     <ClCompile Include="src\graphics\pbr\render\pbrrenderer.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrstaticrenderer.cpp" />
     <ClCompile Include="src\graphics\postfx\posteffect.cpp" />
-    <ClCompile Include="src\graphics\render\material\materialinstance.cpp" />
     <ClCompile Include="src\graphics\render\mesh\mesh.cpp" />
     <ClCompile Include="src\graphics\render\renderer\batchrenderer.cpp" />
     <ClCompile Include="src\graphics\render\camera\camera.cpp" />

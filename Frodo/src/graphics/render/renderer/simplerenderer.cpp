@@ -99,7 +99,7 @@ SimpleRenderer::SimpleRenderer(Window* window) : Renderer(window) {
 
 	renderTarget.Init(window->GetWidth(), window->GetHeight(), FD_TEXTURE_FORMAT_FLOAT_32_32_32_32);
 
-	MaterialInstance* matInst = new MaterialInstance(pointShader);
+	Material* matInst = new Material(pointShader);
 
 	matInst->SetTexture("positions", renderTarget[0]);
 	matInst->SetTexture("diffuse", renderTarget[1]);
@@ -163,7 +163,7 @@ void SimpleRenderer::Present() {
 
 	D3DContext::SetRenderTarget(nullptr);
 
-	MaterialInstance* mat = plane->GetMaterial();
+	Material* mat = plane->GetMaterial();
 	mat->SetPCBufferElement("light", (void*)lights[0]);
 	
 	plane->Render();

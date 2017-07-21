@@ -6,23 +6,24 @@ namespace FD {
 Material::Material(Shader* shader) : shader(shader) {
 	vCBuffer.data = nullptr;
 	pCBuffer.data = nullptr;
+
+	parent = nullptr;
 }
 
-Material::Material(const Material* mat) {
+Material::Material(Material* mat) {
 	shader = mat->shader;
 
-	vCBuffer.data = nullptr;
-	pCBuffer.data = nullptr;
+	vCBuffer = mat->GetVCBuffer();
+	vCBuffer.data = vCBuffer.structSize == 0 ? nullptr : new byte[vCBuffer.structSize];
+	memcpy(vCBuffer.data, mat->GetVCBuffer().data, vCBuffer.structSize);
 
+	pCBuffer = mat->GetPCBuffer();
+	pCBuffer.data = pCBuffer.structSize == 0 ? nullptr : new byte[pCBuffer.structSize];
+	memcpy(pCBuffer.data, mat->GetPCBuffer().data, pCBuffer.structSize);
+
+	parent = (Material*)mat;
 }
 
-Material::Material(const Material& mat) {
-	shader = mat.shader;
-
-	vCBuffer.data = nullptr;
-	pCBuffer.data = nullptr;
-
-}
 
 Material::~Material() {
 	delete vCBuffer.data;
@@ -30,8 +31,8 @@ Material::~Material() {
 }
 
 void Material::Bind() {
-	shader->SetVSConstantBuffer(vCBuffer);
-	shader->SetPSConstantBuffer(pCBuffer);
+	if (vCBuffer.data) shader->SetVSConstantBuffer(vCBuffer);
+	if (pCBuffer.data) shader->SetPSConstantBuffer(pCBuffer);
 
 	uint_t size = textures.GetKeyList().GetSize();
 
