@@ -13,6 +13,11 @@ static vec3 left(-SPEED, 0, 0);
 static vec3 right(SPEED, 0, 0);
 static vec3 forward(0, 0, SPEED);
 static vec3 back(0, 0, -SPEED);
+static vec3 up(0, SPEED, 0);
+static vec3 down(0, -SPEED, 0);
+
+
+
 
 void UserCamera::Update(float32 delta) {
 	velocity = dir;
@@ -36,6 +41,12 @@ bool UserCamera::OnKeyboardActionKeyPressed(FD_KEY key) {
 			dir += left;
 		} else if (key == FD_KEY_D) {
 			dir += right;
+		}
+
+		if (key == FD_KEY_SPACE) {
+			dir += up;
+		} else if (key == FD_KEY_LSHIFT) {
+			dir += down;
 		}
 	}
 	if (key == FD_KEY_Q)
@@ -66,6 +77,11 @@ bool UserCamera::OnKeyboardActionKeyReleased(FD_KEY key) {
 			dir -= right;
 		}
 
+		if (key == FD_KEY_SPACE) {
+			dir -= up;
+		} else if (key == FD_KEY_LSHIFT) {
+			dir -= down;
+		}
 	}
 
 	return false;

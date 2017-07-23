@@ -37,6 +37,7 @@
 #include <graphics/texture/texture2d.h>
 #include <graphics/texture/texturecube.h>
 #include <graphics/texture/framebuffer2d.h>
+#include <graphics/texture/shadowmap2d.h>
 #include <graphics/texture/texturemanager.h>
 
 #include <graphics/font/font.h>

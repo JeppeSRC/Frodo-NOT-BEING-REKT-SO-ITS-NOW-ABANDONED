@@ -32,7 +32,7 @@ float4 psMain(float4 position : SV_POSITION, float3 normal : NORMAL, float2 texC
 	float dist = length(dir);
 	dir = normalize(dir);
 	float attenuation = 1.0f / (light.attenuation.x + light.attenuation.y * dist + light.attenuation.z * dist * dist + 0.000001);
-	float brightness = max(dot(normalize(norm), dir), 0.03) * attenuation;
+	float brightness = max(dot(norm, dir), 0.03) * attenuation;
 
 	return float4(col * brightness, 1);
 }

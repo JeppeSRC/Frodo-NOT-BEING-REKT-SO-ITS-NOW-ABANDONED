@@ -36,19 +36,19 @@ static const char* deferred_spot_light_p =
 ;
 
 static const char* forward_lightingpass_v =
-#include "shaders/forward/forward_lightingpass_v.hlsl"
+#include "shaders/forward/old_forward_lightingpass_v.hlsl"
 ;
 
 static const char* forward_directional_light_p =
-#include "shaders/forward/forward_directional_light_p.hlsl"
+#include "shaders/forward/old_forward_directional_light_p.hlsl"
 ;
 
 static const char* forward_point_light_p =
-#include "shaders/forward/forward_point_light_p.hlsl"
+#include "shaders/forward/old_forward_point_light_p.hlsl"
 ;
 
 static const char* forward_spot_light_p =
-#include "shaders/forward/forward_spot_light_p.hlsl"
+#include "shaders/forward/old_forward_spot_light_p.hlsl"
 ;
 
 static const char* font_default_v =

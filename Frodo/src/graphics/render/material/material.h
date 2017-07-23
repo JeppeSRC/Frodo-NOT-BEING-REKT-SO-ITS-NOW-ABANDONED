@@ -21,13 +21,16 @@ protected:
 public:
 	Material(Shader* shader);
 	Material(Material* mat);
+	Material(const Material& mat);
 	virtual ~Material();
 
-	virtual void Bind();
+	void Bind();
+	void Bind(Shader* shader);
+	void UnBindTextures();
 
 	virtual void SetTexture(const String& name, Texture* texture);
-	virtual void SetVCBuffer(const String& name, void* data);
-	virtual void SetPCBuffer(const String& name, void* data);
+	void SetVCBuffer(const String& name, void* data);
+	void SetPCBuffer(const String& name, void* data);
 
 	void SetVCBufferElement(const String& name, void* data);
 	void SetPCBufferElement(const String& name, void* data);

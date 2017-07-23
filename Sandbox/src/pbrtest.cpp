@@ -22,10 +22,10 @@ void PBRTest::OnInit() {
 
 	mainMixer->SetVolume(0.050f);
 
-	//audio->Play();
+//	audio->Play();
 
 
-	window->SetVSync(1);
+	window->SetVSync(0);
 
 	camera = new UserCamera(vec3(0, 0, 0), vec3(0, 0, 0));
 	camera->SetProjection(mat4::Perspective(70.0f, window->GetAspectRatio(), 0.001f, 1000.0f));
@@ -153,15 +153,15 @@ void PBRTest::OnInit() {
 	monkeyMat->SetPCBufferElement("m.AmbientOcclusionFactor", 0.0f);
 	monkeyMat->SetPCBufferElement("m.AmbientOcclusion", 0.05f);
 
-	/*Entity3D* monkey = new Entity3D(vec3(0, 0, -4), vec3(0, 180, 0));
-	monkey->SetMesh(MeshFactory::LoadFromFile("res/monkey/monkey.obj", monkeyMat, true));*/
+	Entity3D* monkey = new Entity3D(vec3(0, 0, -4), vec3(0, 180, 0));
+	monkey->SetMesh(MeshFactory::LoadFromFile("res/monkey/monkey.obj", monkeyMat, true));
 	
-	scene->Add(sky);
+	//scene->Add(sky);
 	scene->Add(e);
 	scene->Add(e2);
 	scene->Add(e3);
 	scene->Add(floor);
-//	scene->Add(monkey);
+	scene->Add(monkey);
 	
 	light = new PointLight(vec3(0, 0.25f, -2), vec3(0.525f, 0.525f, 0.525f), vec3(0, 0, 0));
 
@@ -172,7 +172,7 @@ void PBRTest::OnInit() {
 	
 	menu = new UIHandler;
 
-	menu->Add(new UIButton("button", vec2(100, 100), vec2(200, 50), "Dank Button"));
+//	menu->Add(new UIButton("button", vec2(100, 100), vec2(200, 50), "Dank Button"));
 
 	f = new Font("res/verdana.ttf", 50, Window::GetMonitorDpi(), &r, 1);
 
@@ -209,9 +209,9 @@ void PBRTest::OnRender() {
 	scene->Render();
 	
 	fontRenderer->Begin(nullptr);
-	fontRenderer->SubmitTextAlignLeft("Dank L", Font::GetDefaultFont(), vec2(10, 10), vec4(1, 1, 1, 1), vec2(1.0f, 1.0f));
+	/*fontRenderer->SubmitTextAlignLeft("Dank L", Font::GetDefaultFont(), vec2(10, 10), vec4(1, 1, 1, 1), vec2(1.0f, 1.0f));
 	fontRenderer->SubmitTextAlignRight("Dank R", f, vec2(window->GetWidth()-10, 10), vec4(1, 1, 1, 1), vec2(1.0f, 1.0f));
-	fontRenderer->SubmitTextAlignCenter("Dank C", f, vec2(window->GetWidth() >> 1, 10), vec4(1, 1, 1, 1), vec2(1.0f, 1.0f));
+	fontRenderer->SubmitTextAlignCenter("Dank C", f, vec2(window->GetWidth() >> 1, 10), vec4(1, 1, 1, 1), vec2(1.0f, 1.0f));*/
 	fontRenderer->End();
 	fontRenderer->Present();
 

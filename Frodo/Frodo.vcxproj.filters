@@ -64,6 +64,8 @@
     <ClCompile Include="src\audio\audio.cpp" />
     <ClCompile Include="src\audio\audiomixer.cpp" />
     <ClCompile Include="src\graphics\render\renderer\simplerenderer.cpp" />
+    <ClCompile Include="src\graphics\texture\shadowmap2d.cpp" />
+    <ClCompile Include="src\graphics\debug\debug.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\frodo.cpp">
@@ -139,9 +141,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\render\mesh\meshfactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\render\material\materialinstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\render\mesh\mesh.cpp">
@@ -248,5 +247,7 @@
     <ClInclude Include="src\audio\audio.h" />
     <ClInclude Include="src\audio\audiomixer.h" />
     <ClInclude Include="src\graphics\render\renderer\simplerenderer.h" />
+    <ClInclude Include="src\graphics\texture\shadowmap2d.h" />
+    <ClInclude Include="src\graphics\debug\debug.h" />
   </ItemGroup>
 </Project>

@@ -19,6 +19,8 @@ public:
 	~Mesh() { delete material, vBuffer, iBuffer; }
 
 	void Render();
+	void Render(Shader* shader);
+	void RenderWithoutMaterial();
 
 	inline VertexBuffer* GetVertexBuffer() { return vBuffer; }
 	inline IndexBuffer* GetIndexBuffer() { return iBuffer; }

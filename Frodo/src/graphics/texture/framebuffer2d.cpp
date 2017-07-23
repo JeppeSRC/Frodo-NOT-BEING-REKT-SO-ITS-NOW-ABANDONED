@@ -22,7 +22,7 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 		case FD_TEXTURE_FORMAT_UNKNOWN:
 			FD_ASSERT(format == FD_TEXTURE_FORMAT_UNKNOWN);
 		case FD_TEXTURE_FORMAT_FLOAT_D32:
-			td.Format = DXGI_FORMAT_D32_FLOAT;
+			td.Format = DXGI_FORMAT_R32_FLOAT;
 			break;
 		case FD_TEXTURE_FORMAT_FLOAT_32_32_32_32:
 			td.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;

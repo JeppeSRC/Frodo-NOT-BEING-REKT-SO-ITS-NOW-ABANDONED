@@ -174,6 +174,7 @@ String& String::RemoveChars(const String& chars, bool iterate) {
 
 String& String::Remove(const String& string) {
 	uint_t index = Find(string);
+	if (index == (uint_t)-1) return *this;
 	return Remove(index, index + string.length);
 }
 

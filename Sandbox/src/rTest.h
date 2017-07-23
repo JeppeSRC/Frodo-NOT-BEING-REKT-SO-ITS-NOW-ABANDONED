@@ -2,13 +2,17 @@
 
 #include <frodo.h>
 
-class RTest : public FD::Application {
+
+
+class RTest : public FD::Application, public FD::EventListener {
 private:
 	void OnCreateWindow() override;
 	void OnInit() override;
 	void OnRender() override;
 	void OnUpdate(float delta) override;
 	void OnTick() override;
+
+	bool OnKeyboardActionKeyPressed(FD::FD_KEY key) override;
 private:
 	FD::SimpleRenderer* renderer;
 	FD::UserCamera* camera;

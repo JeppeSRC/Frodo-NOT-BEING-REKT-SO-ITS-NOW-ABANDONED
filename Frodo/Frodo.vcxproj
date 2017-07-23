@@ -233,6 +233,7 @@
     <ClCompile Include="src\graphics\d3dcontext.cpp" />
     <ClCompile Include="src\graphics\d3dfactory.cpp" />
     <ClCompile Include="src\graphics\d3doutput.cpp" />
+    <ClCompile Include="src\graphics\debug\debug.cpp" />
     <ClCompile Include="src\graphics\font\font.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrrenderer.cpp" />
     <ClCompile Include="src\graphics\pbr\render\pbrstaticrenderer.cpp" />
@@ -253,6 +254,7 @@
     <ClCompile Include="src\graphics\shader\shadergen.cpp" />
     <ClCompile Include="src\graphics\shader\shaderparser.cpp" />
     <ClCompile Include="src\graphics\texture\framebuffer2d.cpp" />
+    <ClCompile Include="src\graphics\texture\shadowmap2d.cpp" />
     <ClCompile Include="src\graphics\texture\texture.cpp" />
     <ClCompile Include="src\graphics\texture\texture2d.cpp" />
     <ClCompile Include="src\graphics\texture\texturecube.cpp" />
@@ -300,6 +302,7 @@
     <ClInclude Include="src\graphics\d3dcontext.h" />
     <ClInclude Include="src\graphics\d3dfactory.h" />
     <ClInclude Include="src\graphics\d3doutput.h" />
+    <ClInclude Include="src\graphics\debug\debug.h" />
     <ClInclude Include="src\graphics\font\font.h" />
     <ClInclude Include="src\graphics\pbr\render\pbrrenderer.h" />
     <ClInclude Include="src\graphics\postfx\posteffect.h" />
@@ -318,6 +321,7 @@
     <ClInclude Include="src\graphics\shader\shader.h" />
     <ClInclude Include="src\graphics\shader\shaderfactory.h" />
     <ClInclude Include="src\graphics\texture\framebuffer2d.h" />
+    <ClInclude Include="src\graphics\texture\shadowmap2d.h" />
     <ClInclude Include="src\graphics\texture\texture.h" />
     <ClInclude Include="src\graphics\texture\texture2d.h" />
     <ClInclude Include="src\graphics\texture\texturecube.h" />

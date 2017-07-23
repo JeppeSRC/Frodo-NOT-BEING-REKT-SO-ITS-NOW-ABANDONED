@@ -21,7 +21,25 @@ Material::Material(Material* mat) {
 	pCBuffer.data = pCBuffer.structSize == 0 ? nullptr : new byte[pCBuffer.structSize];
 	memcpy(pCBuffer.data, mat->GetPCBuffer().data, pCBuffer.structSize);
 
+	textures = mat->textures;
+
 	parent = (Material*)mat;
+}
+
+Material::Material(const Material& mat) {
+	shader = mat.shader;
+
+	vCBuffer = mat.GetVCBuffer();
+	vCBuffer.data = vCBuffer.structSize == 0 ? nullptr : new byte[vCBuffer.structSize];
+	memcpy(vCBuffer.data, mat.GetVCBuffer().data, vCBuffer.structSize);
+
+	pCBuffer = mat.GetPCBuffer();
+	pCBuffer.data = pCBuffer.structSize == 0 ? nullptr : new byte[pCBuffer.structSize];
+	memcpy(pCBuffer.data, mat.GetPCBuffer().data, pCBuffer.structSize);
+
+	textures = mat.textures;
+
+	parent = nullptr;
 }
 
 
@@ -31,6 +49,10 @@ Material::~Material() {
 }
 
 void Material::Bind() {
+	Bind(shader);
+}
+
+void Material::Bind(Shader* shader) {
 	if (vCBuffer.data) shader->SetVSConstantBuffer(vCBuffer);
 	if (pCBuffer.data) shader->SetPSConstantBuffer(pCBuffer);
 
@@ -42,6 +64,12 @@ void Material::Bind() {
 	}
 
 	shader->Bind();
+}
+
+ID3D11ShaderResourceView* views[128];
+
+void Material::UnBindTextures() {
+	D3DContext::GetDeviceContext()->PSSetShaderResources(0, textures.GetItems(), views);
 }
 
 void Material::SetTexture(const String& name, Texture* texture) {

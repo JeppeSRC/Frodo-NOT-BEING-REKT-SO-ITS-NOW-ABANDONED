@@ -221,9 +221,13 @@ mat4 mat4::Orthographic(float32 left, float32 right, float32 top, float32 bottom
 
 	float32* m = r.m;
 
-	m[0 + 0 * 4] = 2.0f / (right - left);
-	m[1 + 1 * 4] = 2.0f / (top - bottom);
-	m[2 + 2 * 4] = -2.0f / (zFar - zNear);
+	float w = 1.0f / (right - left);
+	float h = 1.0f / (top - bottom);
+	float z = 1.0f / (zFar - zNear);
+
+	m[0 + 0 * 4] = w;
+	m[1 + 1 * 4] = h;
+	m[2 + 2 * 4] = z;
 
 	m[0 + 3 * 4] = -((right + left) / (right - left));
 	m[1 + 3 * 4] = -((top + bottom) / (top - bottom));
@@ -231,6 +235,35 @@ mat4 mat4::Orthographic(float32 left, float32 right, float32 top, float32 bottom
 	m[3 + 3 * 4] = 1;
 
 	return r;
+}
+
+mat4 mat4::LookAt(vec3 position, vec3 target, vec3 up) {
+	vec3 z = (target - position).Normalize();
+	vec3 x = (up.Cross(z)).Normalize();
+	vec3 y = z.Cross(x);
+
+	mat4 m;
+
+	m.m[0 + 0 * 4] = x.x;	m.m[0 + 1 * 4] = x.y;	m.m[0 + 2 * 4] = x.z;	m.m[0 + 3 * 4] = -(x.Dot(position));
+	m.m[1 + 0 * 4] = y.x;	m.m[1 + 1 * 4] = y.y;	m.m[1 + 2 * 4] = y.z;	m.m[1 + 3 * 4] = -(y.Dot(position));
+	m.m[2 + 0 * 4] = z.x;	m.m[2 + 1 * 4] = z.y;	m.m[2 + 2 * 4] = z.z;	m.m[2 + 3 * 4] = -(z.Dot(position));
+
+	m.m[3 + 0 * 4] = 0;	m.m[3 + 1 * 4] = 0; m.m[3 + 2 * 4] = 0; m.m[3 + 3 * 4] = 1;
+
+	return m;
+}
+
+mat4 mat4::Transpose(mat4 m) {
+	float tmp[16];
+	memcpy(tmp, m.m, sizeof(m));
+
+	for (uint32 y = 0; y < 4; y++) {
+		for (uint32 x = 0; x < 4; x++) {
+			m.m[y + x * 4] = tmp[x + y * 4];
+		}
+	}
+
+	return m;
 }
 
 mat4 mat4::operator*(const mat4& r) {

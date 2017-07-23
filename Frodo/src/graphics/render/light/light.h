@@ -8,9 +8,11 @@ namespace FD {
 
 enum FD_LIGHT_TYPE {
 	FD_LIGHT_TYPE_NONE,
-	FD_LIGHT_TYPE_DIRECTIONAL,
-	FD_LIGHT_TYPE_POINT,
-	FD_LIGHT_TYPE_SPOT,
+	FD_LIGHT_TYPE_DIRECTIONAL = 0x1,
+	FD_LIGHT_TYPE_POINT = 0x2,
+	FD_LIGHT_TYPE_SPOT = 0x4,
+
+	FD_LIGHT_CAST_SHADOW = 0x8,
 };
 
 
@@ -18,7 +20,7 @@ class FDAPI Light {
 protected:
 
 	vec3 color;
-	FD_LIGHT_TYPE lightType;
+	uint32 lightType;
 
 protected:
 	Light(const vec3& color) { this->color = color; lightType = FD_LIGHT_TYPE_NONE; }
@@ -39,7 +41,7 @@ private:
 
 public:
 
-	DirectionalLight(const vec3& color, const vec3& direction) : Light(color), direction(direction) { lightType = FD_LIGHT_TYPE_DIRECTIONAL; }
+	DirectionalLight(const vec3& color, const vec3& direction, bool castShadow) : Light(color), direction(direction) { lightType = FD_LIGHT_TYPE_DIRECTIONAL | (castShadow ? FD_LIGHT_CAST_SHADOW : 0); }
 
 	inline void SetDirection(vec3 direction) { this->direction = direction; }
 

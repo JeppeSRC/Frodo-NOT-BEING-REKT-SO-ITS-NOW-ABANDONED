@@ -202,7 +202,8 @@ Shader::ShaderStructFieldType Shader::GetStructFieldType(const String& typeName,
 }
 
 void Shader::CalcStructSize(String fields, uint32* size, BufferLayout* layout, FD_SHADER_TYPE shaderType) {
-
+	fields.Remove("row_major ");
+	fields.Remove("column_major ");
 	uint_t numFields = fields.Count(";");
 
 	uint_t currSemicolon = fields.Find(";");

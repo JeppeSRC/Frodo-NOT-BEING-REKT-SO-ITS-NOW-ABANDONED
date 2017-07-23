@@ -2,6 +2,7 @@
 
 #include "renderer.h"
 #include <graphics/texture/framebuffer2d.h>
+#include <graphics/texture/shadowmap2d.h>
 
 namespace FD {
 
@@ -18,37 +19,53 @@ private:
 		FD_RENDERER_BLEND_ENABLED,
 		FD_RENDERER_BLEND_NUM_STATES
 	};
-private:
-	Mesh* plane;
-	FramebufferMRT<3> renderTarget;
 
-	Shader* geometryShader;
+	struct SR_Light {
+		Light* light;
+		Shader* shader;
+		mat4 projection;
+	};
+private:
+	Camera* camera;
+
+	Shader* shadowShader;
 	Shader* pointShader;
+	Shader* directionalShader;
+
+	Framebuffer2D* shadowMap;
+
+	Material* baseMaterial;
 	
-	Shader::ConstantBufferSlot camera;
+	Shader::ConstantBufferSlot cameraBuffer;
 
 	ID3D11DepthStencilState* depthState[2];
 	ID3D11BlendState* blendState[2];
 
-	List<PointLight*> lights;
-
+	List<SR_Light> lights;
+	List<Entity3D*> entities;
 private:
 	void CreateDepthAndBlendStates();
 	void InitializeShaders();
 
 	void SetDepth(FD_RENDERER_DEPTH_STATE state);
 	void SetBlend(FD_RENDERER_BLEND_STATE state);
+
 public:
 	SimpleRenderer(Window* window);
 	~SimpleRenderer();
 
 	void Begin(Camera* camera) override;
 	void Submit(Light* light) override;
-	using Renderer::Submit;
-	void End() override;
+	void Submit(Entity3D* entity) override;
+	void Remove(Light* light);
+	void Remove(Entity3D* entity);
 	void Present() override;
 
-	inline Shader* GetGeometryShader() const { return geometryShader; }
+	inline Material* GetBaseMaterial() const { return baseMaterial; }
+
+	inline List<Entity3D*>& GetEntities() { return entities; }
+	inline List<SR_Light>& GetLights() { return lights; }
+
 };
 
 }
