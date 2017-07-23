@@ -17,6 +17,7 @@ ShadowMapCube::ShadowMapCube(uint32 w, uint32 h) {
 	t2d.Height = h;
 	t2d.MipLevels = 1;
 	t2d.SampleDesc.Count = 1;
+	t2d.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
 	t2d.Usage = D3D11_USAGE_DEFAULT;
 
 	D3DContext::GetDevice()->CreateTexture2D(&t2d, 0, (ID3D11Texture2D**)&resource);
@@ -27,9 +28,8 @@ ShadowMapCube::ShadowMapCube(uint32 w, uint32 h) {
 	ZeroMemory(&srv, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 
 	srv.Format = DXGI_FORMAT_R32_FLOAT;
-	srv.Texture2DArray.ArraySize = 6;
-	srv.Texture2DArray.MipLevels = 1;
-	srv.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+	srv.TextureCube.MipLevels = 1;
+	srv.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
 
 	D3DContext::GetDevice()->CreateShaderResourceView(resource, &srv, &resourceView);
 
