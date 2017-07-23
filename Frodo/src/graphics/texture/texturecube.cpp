@@ -82,7 +82,7 @@ void TextureCube::LoadSingleFile(const String& filename) {
 
 	FD_ASSERT(resource == nullptr);
 
-	D3DContext::GetDevice()->CreateShaderResourceView((ID3D11Resource*)resource, &s, &resourceView);
+	D3DContext::GetDevice()->CreateShaderResourceView(resource, &s, &resourceView);
 
 	FD_ASSERT(resourceView == nullptr);
 

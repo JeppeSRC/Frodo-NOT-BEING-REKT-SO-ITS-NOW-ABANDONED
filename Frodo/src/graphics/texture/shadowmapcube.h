@@ -4,10 +4,10 @@
 
 namespace FD {
 
-class FDAPI ShadowMap2D : public Framebuffer {
+class FDAPI ShadowMapCube : public Framebuffer {
 public:
-	ShadowMap2D(uint32 width, uint32 height);
-	~ShadowMap2D();
+	ShadowMapCube(uint32 w, uint32 h);
+	~ShadowMapCube();
 
 	void BindAsRenderTarget() override;
 };

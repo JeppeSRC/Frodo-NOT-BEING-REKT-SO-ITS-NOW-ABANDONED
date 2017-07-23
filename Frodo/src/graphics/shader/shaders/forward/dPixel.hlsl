@@ -32,11 +32,13 @@ Texture2D shadowMap : register(t1);
 float SampleShadowMap(float4 vertPos) {
 	float3 coord = vertPos.xyz;
 
+	if (coord.z > 1.0) return 1.0;
+
 	coord.xy = coord.xy * -0.5 + 0.5;
 
 	float depth = shadowMap.Sample(samp, coord.xy).r;
 
-	return depth + 0.01 > coord.z ? 1 : 0;
+	return depth + 0.001 > coord.z ? 1 : 0;
 }
 
 float4 psMain(float4 position : SV_POSITION, float3 pos : POSITION, float3 normal : NORMAL, float2 texCoord : TEXCOORD, float4 posLightSpace : LIGHTPOS) : SV_TARGET0 {
@@ -45,15 +47,7 @@ float4 psMain(float4 position : SV_POSITION, float3 pos : POSITION, float3 norma
 
 	float3 finalColor = diffuse.Sample(samp, texCoord).xyz;
 
-	float3 d = posLightSpace.xyz/posLightSpace.w;
-
-	d = d * 0.5 + 0.5;
-
-	//if (d.x < 0.0)
-	//	return float4(d.x, d.y, 0, 1);
-
 	float depth = SampleShadowMap(posLightSpace);
-
 
 	return float4(finalColor * material.color * light.color * brightness * depth, 1);
 }

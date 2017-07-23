@@ -32,9 +32,9 @@ public:
 
 	static mat4 LookAt(vec3 position, vec3 target, vec3 up);
 
-	mat4 operator*(const mat4& m);
-	vec4 operator*(const vec4& v);
-	vec3 operator*(const vec3& v);
+	mat4 operator*(const mat4& m) const;
+	vec4 operator*(const vec4& v) const;
+	vec3 operator*(const vec3& v) const;
 
 	__forceinline const float32* GetData() const { return m; }
 };

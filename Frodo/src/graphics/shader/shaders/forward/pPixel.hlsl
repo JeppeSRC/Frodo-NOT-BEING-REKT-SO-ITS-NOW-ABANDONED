@@ -29,6 +29,7 @@ cbuffer Material : register(b1) {
 };
 
 Texture2D diffuse : register(t0);
+Texture2D shadowMap : register(t1);
 
 float4 psMain(float4 position : SV_POSITION, float3 pos : POSITION, float3 normal : NORMAL, float2 texCoord : TEXCOORD, float4 posLightSpace : LIGHTPOS) : SV_TARGET0 {
 
@@ -37,7 +38,7 @@ float4 psMain(float4 position : SV_POSITION, float3 pos : POSITION, float3 norma
 	dir = normalize(dir);
 
 	float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * dist + light.attenuation.z * dist * dist + 0.0000001);
-	float brightness = max(dot(normal, dir) * attenuation, 0.01);
+	float brightness = dot(normal, dir) * attenuation;
 
 	float3 finalColor = diffuse.Sample(samp, texCoord).xyz;
 

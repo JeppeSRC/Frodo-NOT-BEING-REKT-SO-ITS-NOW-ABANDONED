@@ -3,6 +3,7 @@
 #include "renderer.h"
 #include <graphics/texture/framebuffer2d.h>
 #include <graphics/texture/shadowmap2d.h>
+#include <graphics/texture/shadowmapcube.h>
 
 namespace FD {
 
@@ -20,11 +21,27 @@ private:
 		FD_RENDERER_BLEND_NUM_STATES
 	};
 
-	struct SR_Light {
+	class SR_Light {
+	public:
 		Light* light;
 		Shader* shader;
+		Framebuffer* shadowMap;
+		
 		mat4 projection;
+
+		virtual mat4 GetLightMatrix() const = 0;
 	};
+
+	class SR_DirectionalLight : public SR_Light {
+	public:
+		mat4 GetLightMatrix() const;
+	};
+
+	class SR_PointLight : public SR_Light {
+	public:
+		mat4 GetLightMatrix() const;
+	};
+
 private:
 	Camera* camera;
 
@@ -32,7 +49,8 @@ private:
 	Shader* pointShader;
 	Shader* directionalShader;
 
-	Framebuffer2D* shadowMap;
+	Framebuffer* shadowMap2D;
+	Framebuffer* shadowMapCube;
 
 	Material* baseMaterial;
 	
@@ -41,7 +59,7 @@ private:
 	ID3D11DepthStencilState* depthState[2];
 	ID3D11BlendState* blendState[2];
 
-	List<SR_Light> lights;
+	List<SR_Light*> lights;
 	List<Entity3D*> entities;
 private:
 	void CreateDepthAndBlendStates();
@@ -64,7 +82,7 @@ public:
 	inline Material* GetBaseMaterial() const { return baseMaterial; }
 
 	inline List<Entity3D*>& GetEntities() { return entities; }
-	inline List<SR_Light>& GetLights() { return lights; }
+	inline List<SR_Light*>& GetLights() { return lights; }
 
 };
 

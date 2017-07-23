@@ -1,27 +1,16 @@
 #pragma once
-#include <graphics/d3dcontext.h>
-#include <graphics/texture/texture.h>
-#include <fd.h>
+
+#include "framebuffer.h"
 
 namespace FD {
 
-class FDAPI Framebuffer2D : public Texture {
-private:
-	ID3D11Texture2D* resource;
-	ID3D11RenderTargetView* renderTargetView;
-	ID3D11DepthStencilView* depthStencilView;
-
+class FDAPI Framebuffer2D : public Framebuffer {
 public:
 
 	Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT format, bool createDepthStencil = true);
 	~Framebuffer2D();
 
-	void Bind(uint32 slot = 0) override;
-	void BindAsRenderTarget();
-
-	inline ID3D11Texture2D* GetResource() const { return  resource; }
-	inline ID3D11RenderTargetView* GetRenderTargetView() const { return renderTargetView; }
-	inline ID3D11DepthStencilView* GetDepthView() const { return depthStencilView; }
+	void BindAsRenderTarget() override;
 };
 
 

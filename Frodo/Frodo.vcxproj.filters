@@ -66,6 +66,8 @@
     <ClCompile Include="src\graphics\render\renderer\simplerenderer.cpp" />
     <ClCompile Include="src\graphics\texture\shadowmap2d.cpp" />
     <ClCompile Include="src\graphics\debug\debug.cpp" />
+    <ClCompile Include="src\graphics\texture\shadowmapcube.cpp" />
+    <ClCompile Include="src\graphics\texture\framebuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\frodo.cpp">
@@ -249,5 +251,7 @@
     <ClInclude Include="src\graphics\render\renderer\simplerenderer.h" />
     <ClInclude Include="src\graphics\texture\shadowmap2d.h" />
     <ClInclude Include="src\graphics\debug\debug.h" />
+    <ClInclude Include="src\graphics\texture\shadowmapcube.h" />
+    <ClInclude Include="src\graphics\texture\framebuffer.h" />
   </ItemGroup>
 </Project>

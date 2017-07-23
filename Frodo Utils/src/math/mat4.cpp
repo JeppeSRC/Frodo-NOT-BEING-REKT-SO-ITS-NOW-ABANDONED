@@ -266,7 +266,7 @@ mat4 mat4::Transpose(mat4 m) {
 	return m;
 }
 
-mat4 mat4::operator*(const mat4& r) {
+mat4 mat4::operator*(const mat4& r) const {
 	mat4 tmp;
 	__m128 col[4];
 	__m128 rows[4];
@@ -285,7 +285,7 @@ mat4 mat4::operator*(const mat4& r) {
 	return tmp;
 }
 
-vec4 mat4::operator*(const vec4& v) {
+vec4 mat4::operator*(const vec4& v) const {
 	__m128 vec[4];
 	__m128 col[4];
 
@@ -304,7 +304,7 @@ vec4 mat4::operator*(const vec4& v) {
 	return vec4(res.m128_f32[0], res.m128_f32[1], res.m128_f32[2], res.m128_f32[3]);
 }
 
-vec3 mat4::operator*(const vec3& v) {
+vec3 mat4::operator*(const vec3& v) const {
 	__m128 vec[4];
 	__m128 col[4];
 

@@ -37,13 +37,13 @@ void RTest::OnInit() {
 	renderer->Submit(floor);
 	renderer->Submit(cube);
 
-/*	renderer->Submit(new PointLight(vec3(0, 0, -4), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
 	renderer->Submit(new PointLight(vec3(0, 0, 4), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
-	renderer->Submit(new PointLight(vec3(0, 4, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
+//	renderer->Submit(new PointLight(vec3(0, 0, -4), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
+//	renderer->Submit(new PointLight(vec3(0, 4, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
 	renderer->Submit(new PointLight(vec3(4, 0, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
-	renderer->Submit(new PointLight(vec3(-4, 0, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
-	*/
-	renderer->Submit(new DirectionalLight(vec3(0.2, 0.2, 0.2), vec3(1, -0.5, 0), true));
+//	renderer->Submit(new PointLight(vec3(-4, 0, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
+
+	renderer->Submit(new DirectionalLight(vec3(0.2, 0.2, 0.2), vec3(1, -0.5, 1), true));
 }
 
 void RTest::OnTick() {
@@ -63,6 +63,6 @@ void RTest::OnRender() {
 }
 
 bool RTest::OnKeyboardActionKeyPressed(FD_KEY key) {
-	if (key == FD_KEY_R) renderer->Remove(renderer->GetLights()[0].light);
+	if (key == FD_KEY_R) renderer->Remove(renderer->GetLights()[0]->light);
 	return false;
 }

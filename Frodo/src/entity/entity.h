@@ -7,10 +7,15 @@
 
 namespace FD {
 
+enum FD_ENTITY_FLAGS {
+	
+};
+
 class FDAPI Entity {
 protected:
 	vec3 position;
 
+	uint32 flags;
 public:
 	Entity() { }
 	Entity(const vec3& position) : position(position){ }
@@ -19,9 +24,10 @@ public:
 	virtual void Update() {}
 
 	inline void SetPosition(const vec3& position) { this->position = position; }
+	inline void SetFlag(FD_ENTITY_FLAGS flag) { flags |= flag; }
 
 	inline const vec3& GetPosition() const { return position; }
-
+	inline uint32 GetFlags() const { return flags; }
 };
 
 class FDAPI Entity3D : public Entity {

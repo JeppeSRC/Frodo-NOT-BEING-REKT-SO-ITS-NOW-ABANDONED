@@ -31,7 +31,7 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 			FD_ASSERT(format == FD_TEXTURE_FORMAT_UNKNOWN);
 	}
 
-	D3DContext::GetDevice()->CreateTexture2D(&td, 0, &resource);
+	D3DContext::GetDevice()->CreateTexture2D(&td, 0, (ID3D11Texture2D**)&resource);
 
 	FD_ASSERT(resource == nullptr);
 
@@ -52,11 +52,11 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 	rd.Format = td.Format;
 	rd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 
-	D3DContext::GetDevice()->CreateRenderTargetView(resource, &rd, &renderTargetView);
+	D3DContext::GetDevice()->CreateRenderTargetView(resource, &rd, &targetView);
 
-	FD_ASSERT(renderTargetView == nullptr);
+	FD_ASSERT(targetView == nullptr);
 
-	depthStencilView = nullptr;
+	depthView = nullptr;
 
 	if (!createDepthStencil) return;
 
@@ -81,26 +81,20 @@ Framebuffer2D::Framebuffer2D(uint32 width, uint32 height, FD_TEXTURE_FORMAT form
 	dd.Format = td.Format;
 	dd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
-	D3DContext::GetDevice()->CreateDepthStencilView(tmp, &dd, &depthStencilView);
+	D3DContext::GetDevice()->CreateDepthStencilView(tmp, &dd, &depthView);
 
 	DX_FREE(tmp);
 
-	FD_ASSERT(depthStencilView == nullptr);
+	FD_ASSERT(depthView == nullptr);
 
 }
 
 Framebuffer2D::~Framebuffer2D() {
-	DX_FREE(resource);
-	DX_FREE(renderTargetView);
-	DX_FREE(depthStencilView);
-}
 
-void Framebuffer2D::Bind(uint32 slot) {
-	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &resourceView);
 }
 
 void Framebuffer2D::BindAsRenderTarget() {
-	D3DContext::SetRenderTargets(1, &renderTargetView, depthStencilView);
+	D3DContext::SetRenderTargets(1, &targetView, depthView);
 	D3DContext::SetViewPort(0, 0, (float32)width, (float32)height);
 }
 
