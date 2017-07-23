@@ -68,13 +68,13 @@ void SimpleRenderer::CreateDepthAndBlendStates() {
 }
 
 void SimpleRenderer::InitializeShaders() {
-	pointShader = new Shader(lVertexShader, pPixelShader, true);
+	pointShader = new Shader(lVertexShader, pPixelShader, "", true);
 	pointShader->ShaderGenComplete();
 
-	directionalShader = new Shader(lVertexShader, dPixelShader, true);
+	directionalShader = new Shader(lVertexShader, dPixelShader, "", true);
 	directionalShader->ShaderGenComplete();
 
-	shadowShader = new Shader(shadowMapVertex, shadowMapPixel, true);
+	shadowShader = new Shader(shadowMapVertex, shadowMapPixel, "", true);
 	shadowShader->ShaderGenComplete();
 
 	BufferLayout layout;

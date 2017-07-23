@@ -146,21 +146,26 @@ private:
 private:
 	String vSourceOriginal;
 	String pSourceOriginal;
+	String gSourceOriginal;
 
 	String vSource;
 	String pSource;
-
+	String gSource;
 
 	ID3DBlob* vByteCode;
 	ID3DBlob* pByteCode;
+	ID3DBlob* gByteCode;
 	ID3D11VertexShader* vertexShader;
 	ID3D11PixelShader* pixelShader;
+	ID3D11GeometryShader* geometryShader;
 
 	List<StructDefinition*> vStructs;
 	List<StructDefinition*> pStructs;
+	List<StructDefinition*> gStructs;
 
 	List<ShaderStructInfo*> vCBuffers;
 	List<ShaderStructInfo*> pCBuffers;
+	List<ShaderStructInfo*> gCBuffers;
 
 	List<ShaderTextureInfo*> pTextures;
 
@@ -168,30 +173,36 @@ private:
 
 	void SetVSConstantBufferSlotInternal(uint32 slot, const void* data) const;
 	void SetPSConstantBufferSlotInternal(uint32 slot, const void* data) const;
+	void SetGSConstantBufferSlotInternal(uint32 slot, const void* data) const;
 
-	void Compile(String vSource, String pSource);
+	void Compile(String vSource, String pSource, String gSource, bool geometry);
 
 public:
-	Shader(const String& vertexFilename, const String& pixelFilename, bool src = false);
+	Shader(const String& vertexFilename, const String& pixelFilename, const String& geometryFilename, bool src = false);
 	~Shader();
 
 	void Bind();
 
 	void SetVSConstantBuffer(const String& bufferName, const void* data) const;
 	void SetPSConstantBuffer(const String& bufferName, const void* data) const;
+	void SetGSConstantBuffer(const String& bufferName, const void* data) const;
 	void SetVSConstantBuffer(uint32 slot, const void* data) const;
 	void SetPSConstantBuffer(uint32 slot, const void* data) const;
+	void SetGSConstantBuffer(uint32 slot, const void* data) const;
 	void SetVSConstantBuffer(const ConstantBufferSlot vCBuffer) const;
 	void SetPSConstantBuffer(const ConstantBufferSlot pCBuffer) const;
+	void SetGSConstantBuffer(const ConstantBufferSlot pCBuffer) const;
 	void SetTexture(uint32 slot, const Texture* tex) const;
 
 	ConstantBufferSlot GetVSConstantBufferInfo(const String& name) const;
 	ConstantBufferSlot GetPSConstantBufferInfo(const String& name) const;
+	ConstantBufferSlot GetGSConstantBufferInfo(const String& name) const;
 
 	TextureSlot GetTextureInfo(const String& name) const;
 
 	uint32 GetVSConstantBufferSlotByName(const String& bufferName) const;
 	uint32 GetPSConstantBufferSlotByName(const String& bufferName) const;
+	uint32 GetGSConstantBufferSlotByName(const String& bufferName) const;
 	uint32 GetPSTextureSlotByName(const String& textureName) const;
 
 	void ShaderGenSetVariable(const String& name, FD_SHADER_TYPE type, float32 data);

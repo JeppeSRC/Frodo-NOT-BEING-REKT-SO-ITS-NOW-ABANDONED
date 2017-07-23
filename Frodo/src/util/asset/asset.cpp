@@ -45,7 +45,7 @@ Shader* Asset::GetShader() const {
 
 	String p(b);
 
-	return new Shader(v, p, true);
+	return new Shader(v, p, "", true);
 }
 
 Texture* Asset::GetTexture() const {

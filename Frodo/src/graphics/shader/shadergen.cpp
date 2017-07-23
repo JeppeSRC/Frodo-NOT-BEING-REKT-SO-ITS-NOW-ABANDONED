@@ -659,12 +659,14 @@ String Shader::ShaderGenGetBlock(const String& name, FD_SHADER_TYPE type) const 
 void Shader::ShaderGenComplete() {
 	ShaderGenProcessConditions(vSource, FD_SHADER_TYPE_VERTEXSHADER);
 	ShaderGenProcessConditions(pSource, FD_SHADER_TYPE_PIXELSHADER);
+	ShaderGenProcessConditions(gSource, FD_SHADER_TYPE_GEOMETRYSHADER);
 
 	ShaderGenProcessGeneration(vSource, FD_SHADER_TYPE_VERTEXSHADER);
 	ShaderGenProcessGeneration(pSource, FD_SHADER_TYPE_PIXELSHADER);
+	ShaderGenProcessGeneration(gSource, FD_SHADER_TYPE_GEOMETRYSHADER);
 
 	FD_DEBUG("[ShaderGen] Shader generation completed, compiling...");
-	Compile(vSource, pSource);
+	Compile(vSource, pSource, gSource, gSource.length > 1);
 }
 
 }

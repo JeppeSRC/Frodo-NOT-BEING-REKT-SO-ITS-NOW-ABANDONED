@@ -42,7 +42,7 @@ void PBRTest::OnInit() {
 	scene->SetCamera(camera);
 
 
-	Shader* shader = new Shader("/shaders/pbr_lighting_v.hlsl", "/shaders/pbr_lighting_p.hlsl");
+	Shader* shader = new Shader("/shaders/pbr_lighting_v.hlsl", "/shaders/pbr_lighting_p.hlsl", "");
 	shader->ShaderGenComplete();
 
 	BufferLayout l;
@@ -63,7 +63,7 @@ void PBRTest::OnInit() {
 
 	ivec2 k = s->GetKerning('F', 'r');
 
-	Shader* skyboxShader = new Shader("/shaders/pbr_skybox_v.hlsl", "/shaders/pbr_skybox_p.hlsl");
+	Shader* skyboxShader = new Shader("/shaders/pbr_skybox_v.hlsl", "/shaders/pbr_skybox_p.hlsl", "");
 	skyboxShader->ShaderGenComplete();
 
 	l.CreateInputLayout(skyboxShader);

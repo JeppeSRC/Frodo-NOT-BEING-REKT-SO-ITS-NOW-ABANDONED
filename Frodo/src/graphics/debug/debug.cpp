@@ -14,7 +14,7 @@ const char* showTexPixel =
 namespace FD {
 
 void Debug::ShowTexture(Texture* tex) {
-	Shader* shader = new Shader(showTexVertex, showTexPixel, true);
+	Shader* shader = new Shader(showTexVertex, showTexPixel, "", true);
 	shader->ShaderGenComplete();
 
 	BufferLayout layout;
