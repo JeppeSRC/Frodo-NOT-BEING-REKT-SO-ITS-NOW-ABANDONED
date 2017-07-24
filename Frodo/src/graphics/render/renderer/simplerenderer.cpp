@@ -180,9 +180,13 @@ void SimpleRenderer::Present() {
 	if (light->light->GetLightType() & FD_LIGHT_CAST_SHADOW) {
 		shadowShader->Bind();
 		light->shadowMap->BindAsRenderTarget();
-		D3DContext::Clear();
+		D3DContext::Clear(0);
 
 		mat4 lightMatrix = light->GetLightMatrix();
+
+		/*cameraBuffer.SetElement("c_ViewMatrix", lightMatrix.GetData());
+		cameraBuffer.SetElement("c_ProjectionMatrix", mat4::Identity().GetData());
+		directionalShader->SetVSConstantBuffer(cameraBuffer);*/
 
 		for (uint_t i = 0; i < numEntities; i++) {
 			Entity3D* entity = entities[i];
@@ -213,19 +217,21 @@ void SimpleRenderer::Present() {
 		}
 	}
 
-	//Debug::ShowTexture(shadowMap);
+	//Debug::ShowTexture(light->shadowMap);
 
 	for (uint_t i = 1; i < numLights; i++) {
-		SR_Light* light = lights[i];
+		light = lights[i];
 
 		if (light->light->GetLightType() & FD_LIGHT_CAST_SHADOW) {
-			SetDepth(FD_RENDERER_DEPTH_DEFAULT);
-			SetBlend(FD_RENDERER_BLEND_DEFAULT);
 			shadowShader->Bind();
 			light->shadowMap->BindAsRenderTarget();
-			D3DContext::Clear();
+			D3DContext::Clear(0);
+
+			SetDepth(FD_RENDERER_DEPTH_DEFAULT);
+			SetBlend(FD_RENDERER_BLEND_DEFAULT);
 
 			mat4 lightMatrix = light->GetLightMatrix();
+
 			for (uint_t i = 0; i < numEntities; i++) {
 				Entity3D* entity = entities[i];
 				shadowShader->SetVSConstantBuffer("MVP", (lightMatrix * entity->GetTransform()).GetData());
@@ -269,7 +275,7 @@ void SimpleRenderer::Present() {
 mat4 SimpleRenderer::SR_DirectionalLight::GetLightMatrix() const {
 	DirectionalLight* l = (DirectionalLight*)light;
 
-	return projection * mat4::LookAt(-l->GetDirection(), vec3(0, 0, 0), vec3(0, 1, 0));
+	return projection * mat4::LookAt(-l->GetDirection() * 10, vec3(0, 0, 0), vec3(0, 1, 0));
 }
 
 mat4 SimpleRenderer::SR_PointLight::GetLightMatrix() const {

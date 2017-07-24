@@ -8,13 +8,13 @@ void RTest::OnCreateWindow() {
 	prop.width = 1280;
 	prop.height = 720;
 
-	window = new Window("LeL", prop, nullptr, nullptr);
+	window = new Window("LeL", prop, D3DFactory::GetAdapters()[0], nullptr);
 	window->SetVSync(1);
 }
 
 void RTest::OnInit() {
 	camera = new UserCamera(vec3(0, 0, -4), vec3(0, 0, 0));
-	camera->SetProjection(mat4::Perspective(70.0f, 16.0f / 9.0f, 0.001f, 1000));
+	camera->SetProjection(mat4::Perspective(60.0f, 16.0f / 9.0f, 0.001f, 1000));
 	renderer = new SimpleRenderer(window);
 
 	Material mat(renderer->GetBaseMaterial());
@@ -43,7 +43,7 @@ void RTest::OnInit() {
 	renderer->Submit(new PointLight(vec3(4, 0, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
 //	renderer->Submit(new PointLight(vec3(-4, 0, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
 
-	renderer->Submit(new DirectionalLight(vec3(0.2, 0.2, 0.2), vec3(1, -0.5, 1), true));
+	renderer->Submit(dLight = new DirectionalLight(vec3(0.2, 0.2, 0.2), vec3(1, -0.8, 1), true));
 }
 
 void RTest::OnTick() {
@@ -53,6 +53,8 @@ void RTest::OnTick() {
 
 void RTest::OnUpdate(float delta) {
 	camera->Update(delta);
+
+	dLight->GetDirection().RotateY(10 * delta);
 }
 
 void RTest::OnRender() {

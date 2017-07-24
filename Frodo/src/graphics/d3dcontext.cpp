@@ -163,8 +163,14 @@ void D3DContext::SetRenderTarget(ID3D11RenderTargetView* target) {
 
 void D3DContext::SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetView** target, ID3D11DepthStencilView* depthView) {
 	GetDeviceContext()->OMSetRenderTargets(numRenderTargets, target, depthView);
+
+	ID3D11RenderTargetView** activeTargets = GetContext()->activeRenderTargets;
+
+	for (uint16 i = 0; i < 8; i++)
+		activeTargets[i] = nullptr;
+
 	for (uint16 i = 0; i < numRenderTargets; i++)
-		GetContext()->activeRenderTargets[i] = target[i];
+		activeTargets[i] = target[i];
 
 	GetContext()->activeDepthStencilView = depthView;
 }

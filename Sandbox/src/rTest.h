@@ -18,6 +18,7 @@ private:
 	FD::UserCamera* camera;
 	FD::Entity3D* cube;
 	FD::Entity3D* floor;
+	FD::DirectionalLight* dLight;
 
 	uint32 fps;
 public:
