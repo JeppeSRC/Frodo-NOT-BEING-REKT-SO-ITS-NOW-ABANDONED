@@ -195,6 +195,7 @@ void Shader::Bind() {
 
 	D3DContext::GetDeviceContext()->VSSetShader(vertexShader, 0, 0);
 	D3DContext::GetDeviceContext()->PSSetShader(pixelShader, 0, 0);
+	D3DContext::GetDeviceContext()->GSSetShader(geometryShader, 0, 0);
 
 
 	for (uint_t i = 0; i < vCBuffers.GetSize(); i++) {
@@ -205,6 +206,11 @@ void Shader::Bind() {
 	for (uint_t i = 0; i < pCBuffers.GetSize(); i++) {
 		ShaderStructInfo& cb = *pCBuffers[i];
 		D3DContext::GetDeviceContext()->PSSetConstantBuffers(cb.semRegister, 1, &cb.buffer);
+	}
+
+	for (uint_t i = 0; i < gCBuffers.GetSize(); i++) {
+		ShaderStructInfo& cb = *gCBuffers[i];
+		D3DContext::GetDeviceContext()->GSSetConstantBuffers(cb.semRegister, 1, &cb.buffer);
 	}
 }
 

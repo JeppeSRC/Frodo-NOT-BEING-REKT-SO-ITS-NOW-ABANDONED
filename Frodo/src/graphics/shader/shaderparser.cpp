@@ -11,7 +11,9 @@ enum FD_SHADER_FIELD_TYPE {
 	FD_SHADER_FIELD_TYPE_VEC4,
 	FD_SHADER_FIELD_TYPE_VEC3,
 	FD_SHADER_FIELD_TYPE_VEC2,
-	FD_SHADER_FIELD_TYPE_FLOAT
+	FD_SHADER_FIELD_TYPE_FLOAT,
+	FD_SHADER_FIELD_TYPE_UINT,
+	FD_SHADER_FIELD_NUM_TYPES
 };
 
 
@@ -24,6 +26,7 @@ inline static String get_field_type_as_string(FD_SHADER_FIELD_TYPE type) {
 		case FD_SHADER_FIELD_TYPE_VEC3: return ("float3");
 		case FD_SHADER_FIELD_TYPE_VEC2: return ("float2");
 		case FD_SHADER_FIELD_TYPE_FLOAT: return ("float");
+		case FD_SHADER_FIELD_TYPE_UINT: return ("uint");
 	}
 	return ("ERROR");
 }
@@ -37,6 +40,7 @@ inline static uint32 get_field_type_size(FD_SHADER_FIELD_TYPE type) {
 		case FD_SHADER_FIELD_TYPE_VEC3: return sizeof(vec3);
 		case FD_SHADER_FIELD_TYPE_VEC2: return sizeof(vec2);
 		case FD_SHADER_FIELD_TYPE_FLOAT: return sizeof(float32);
+		case FD_SHADER_FIELD_TYPE_UINT: return sizeof(uint32);
 	}
 
 	return 0;
@@ -98,6 +102,10 @@ void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 			pStructs.Push_back(def);
 			FD_DEBUG("[ShaderParser] Found pStruct <NAME: %s> <SIZE: %u>", *name, def->structSize);
 			break;
+		case FD_SHADER_TYPE_GEOMETRYSHADER:
+			gStructs.Push_back(def);
+			FD_DEBUG("[ShaderParser] Found gStruct <NAME: %s> <SIZE: %u>", *name, def->structSize);
+			break;
 		}
 	}
 
@@ -134,21 +142,26 @@ void Shader::ParseStructs(String source, FD_SHADER_TYPE type) {
 				pCBuffers.Push_back(cbuffer);
 				FD_DEBUG("[ShaderParser] Found pCBuffer <NAME: %s> <SIZE: %u> <SLOT: %u>", *cbuffer->name, cbuffer->structSize, cbuffer->semRegister);
 				break;
+			case FD_SHADER_TYPE_GEOMETRYSHADER:
+				gCBuffers.Push_back(cbuffer);
+				FD_DEBUG("[ShaderParser] Found gCBuffer <NAME: %s> <SIZE: %u> <SLOT: %u>", *cbuffer->name, cbuffer->structSize, cbuffer->semRegister);
+				break;
 		}
 	}
 }
 
 Shader::ShaderStructFieldType Shader::GetStructFieldType(const String& typeName, FD_SHADER_TYPE type) {
-	static FD_SHADER_FIELD_TYPE types[6]{
+	static FD_SHADER_FIELD_TYPE types[FD_SHADER_FIELD_NUM_TYPES]{
 		FD_SHADER_FIELD_TYPE_MAT4,
 		FD_SHADER_FIELD_TYPE_MAT3,
 		FD_SHADER_FIELD_TYPE_VEC4,
 		FD_SHADER_FIELD_TYPE_VEC3,
 		FD_SHADER_FIELD_TYPE_VEC2,
-		FD_SHADER_FIELD_TYPE_FLOAT
+		FD_SHADER_FIELD_TYPE_FLOAT,
+		FD_SHADER_FIELD_TYPE_UINT
 	};
 
-	for (uint_t i = 0; i < 6; i++) {
+	for (uint_t i = 0; i < FD_SHADER_FIELD_NUM_TYPES; i++) {
 		if (get_field_type_as_string(types[i]) == typeName) {
 			ShaderStructFieldType ret;
 
@@ -194,6 +207,24 @@ Shader::ShaderStructFieldType Shader::GetStructFieldType(const String& typeName,
 		}
 	}
 
+	if (type == FD_SHADER_TYPE_GEOMETRYSHADER) {
+		numStructs = gStructs.GetSize();
+
+		for (uint_t i = 0; i < numStructs; i++) {
+			StructDefinition* def = gStructs[i];
+
+			if (def->name == typeName) {
+				ShaderStructFieldType ret;
+				ret.type = FD_STRUCT_FIELD_TYPE_STRUCT;
+				ret.size = def->structSize;
+				ret.layout = def->layout;
+
+				return ret;
+			}
+		}
+	}
+
+
 	ShaderStructFieldType ret;
 	ret.type = FD_STRUCT_FIELD_TYPE_UNKNOWN;
 	ret.size = (uint32)-1;
@@ -222,20 +253,57 @@ void Shader::CalcStructSize(String fields, uint32* size, BufferLayout* layout, F
 
 		String name = fields.SubString(fieldOffset + typeName.length, currSemicolon).RemoveBlankspace();
 
-		if (type.type == FD_STRUCT_FIELD_TYPE_PRIMITVE) {
-			layout->PushElement(name, type.size);
-			*size += type.size;
-		} else {
-			layout->PushElementAtOffset(name, type.size, *size);
+		uint_t bracketStart = name.Find('[');
+		
+		//Not and array
+		if (bracketStart == (uint_t)-1) {
+			if (type.type == FD_STRUCT_FIELD_TYPE_PRIMITVE) {
+				layout->PushElement(name, type.size);
+				*size += type.size;
+			} else {
+				layout->PushElementAtOffset(name, type.size, *size);
+				*size += type.size;
+				
+				const List<BufferLayout::BufferLayoutAttrib*>& attribs = type.layout.GetElements();
 
-			*size += type.size;
+				for (uint_t i = 0; i < attribs.GetSize(); i++) {
+					layout->PushElement(name + "." + attribs.Get(i)->name, attribs.Get(i)->size);
+				}
+			}
+		} else { //Array
+			uint_t bracketEnd = name.length - 1;
+			uint32 numElements = (uint32)atoi(name.str + bracketStart + 1);
 
-			const List<BufferLayout::BufferLayoutAttrib*>& attribs = type.layout.GetElements();
+			name.Remove(bracketStart, bracketEnd+1);
 
-			for (uint_t i = 0; i < attribs.GetSize(); i++) {
-				layout->PushElement(name + "." + attribs.Get(i)->name, attribs.Get(i)->size);
+			char buf[10];
+
+			if (type.type == FD_STRUCT_FIELD_TYPE_PRIMITVE) {
+				layout->PushElementAtOffset(name, type.size * numElements, *size);
+				*size += type.size * numElements;
+
+				for (uint_t i = 0; i < numElements; i++) {
+					layout->PushElement(name + "[" + _itoa(i, buf, 10) + "]", type.size);
+				}
+			} else {
+				layout->PushElementAtOffset(name, type.size * numElements, *size);
+
+				const List<BufferLayout::BufferLayoutAttrib*>& attribs = type.layout.GetElements();
+				
+				for (uint_t i = 0; i < numElements; i++) {
+					String n = name + "[" + _itoa(i, buf, 10) + "]";
+
+					layout->PushElementAtOffset(n, type.size, *size);
+					*size += type.size;
+
+					for (uint_t j = 0; j < attribs.GetSize(); j++) {
+						layout->PushElement(n + "." + attribs.Get(j)->name, attribs.Get(j)->size);
+					}
+				}
+
 			}
 		}
+		
 
 		fieldOffset = currSemicolon+1;
 		currSemicolon = fields.Find(";", currSemicolon + 1);	

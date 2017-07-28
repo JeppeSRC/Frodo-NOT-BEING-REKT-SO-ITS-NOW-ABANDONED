@@ -4,6 +4,7 @@
 #include <graphics/texture/framebuffer2d.h>
 #include <graphics/texture/shadowmap2d.h>
 #include <graphics/texture/shadowmapcube.h>
+#include <graphics/texture/framebuffercube.h>
 
 namespace FD {
 
@@ -25,27 +26,36 @@ private:
 	public:
 		Light* light;
 		Shader* shader;
+		Shader* shadowShader;
 		Framebuffer* shadowMap;
 		
 		mat4 projection;
 
-		virtual mat4 GetLightMatrix() const = 0;
+		virtual void SetupShadowShader(Entity3D* e) const = 0;
+		virtual void SetupShader(Entity3D* e) const = 0;
 	};
 
 	class SR_DirectionalLight : public SR_Light {
+	private:
+		mutable mat4 lightMatrix;
 	public:
-		mat4 GetLightMatrix() const;
+		void SetupShadowShader(Entity3D* e) const override;
+		void SetupShader(Entity3D* e) const override;
 	};
 
 	class SR_PointLight : public SR_Light {
 	public:
-		mat4 GetLightMatrix() const;
+		float maxDepth;
+
+		void SetupShadowShader(Entity3D* e) const override;
+		void SetupShader(Entity3D* e) const override;
 	};
 
 private:
 	Camera* camera;
 
-	Shader* shadowShader;
+	Shader* shadowShader2D;
+	Shader* shadowShaderCube;
 	Shader* pointShader;
 	Shader* directionalShader;
 

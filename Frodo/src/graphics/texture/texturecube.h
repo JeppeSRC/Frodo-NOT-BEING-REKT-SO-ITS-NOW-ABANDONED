@@ -14,6 +14,7 @@ private:
 	void LoadMultipleFiles(const String* files);
 
 public:
+	//ORDER: X+ X- Y+ Y- Z+ Z-
 	TextureCube(const String* files);
 	~TextureCube();
 

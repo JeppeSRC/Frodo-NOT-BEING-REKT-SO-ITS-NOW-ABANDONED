@@ -163,7 +163,7 @@ void PBRTest::OnInit() {
 	scene->Add(floor);
 	scene->Add(monkey);
 	
-	light = new PointLight(vec3(0, 0.25f, -2), vec3(0.525f, 0.525f, 0.525f), vec3(0, 0, 0));
+	light = new PointLight(vec3(0, 0.25f, -2), vec3(0.525f, 0.525f, 0.525f), vec3(0, 0, 0), false);
 
 	scene->Add(light);
 	

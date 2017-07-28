@@ -58,7 +58,7 @@ protected:
 
 public:
 
-	PointLight(const vec3& position, const vec3& color, const vec3& attenuation) : Light(color), position(position), attenuation(attenuation) { lightType = FD_LIGHT_TYPE_POINT; }
+	PointLight(const vec3& position, const vec3& color, const vec3& attenuation, bool castShadow) : Light(color), position(position), attenuation(attenuation) { lightType = FD_LIGHT_TYPE_POINT | (castShadow ? FD_LIGHT_CAST_SHADOW : 0); }
 
 	inline void SetAttenuation(vec3 attenuation) { this->attenuation = attenuation; }
 	inline void SetPosition(vec3 position) { this->position = position; }
@@ -75,7 +75,7 @@ protected:
 	vec2 pad4;
 
 public:
-	SpotLight(const vec3& position, const vec3& color, const vec3& direction, const vec3& attenuation, vec2 cutoffExponent) : PointLight(position, color, attenuation), direction(direction) {
+	SpotLight(const vec3& position, const vec3& color, const vec3& direction, const vec3& attenuation, vec2 cutoffExponent) : PointLight(position, color, attenuation, false), direction(direction) {
 		this->cutoffExponent.x = (float32)cosf(FD_TO_RADIANS_F(cutoffExponent.x));
 		this->cutoffExponent.y = cutoffExponent.y;
 		lightType = FD_LIGHT_TYPE_SPOT;

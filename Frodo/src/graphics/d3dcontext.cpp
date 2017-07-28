@@ -166,7 +166,7 @@ void D3DContext::SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetVie
 
 	ID3D11RenderTargetView** activeTargets = GetContext()->activeRenderTargets;
 
-	for (uint16 i = 0; i < 8; i++)
+	for (uint16 i = numRenderTargets; i < 8; i++)
 		activeTargets[i] = nullptr;
 
 	for (uint16 i = 0; i < numRenderTargets; i++)
