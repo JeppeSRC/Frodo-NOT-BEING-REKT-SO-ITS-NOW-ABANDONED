@@ -184,7 +184,9 @@ Shader::~Shader() {
 
 	vCBuffers.Free();
 	pCBuffers.Free();
+
 	pTextures.Free();
+	pSamplers.Free();
 
 	variables.Free();
 	blocks.Free();
@@ -333,6 +335,10 @@ void Shader::SetTexture(uint32 slot, const Texture* tex) const {
 	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &view);
 }
 
+void Shader::SetSampler(uint32 slot, const Sampler* sampler) const {
+	sampler->Bind(slot);
+}
+
 Shader::ConstantBufferSlot Shader::GetVSConstantBufferInfo(const String& name) const {
 	uint_t size = vCBuffers.GetSize();
 	for (uint_t i = 0; i < size; i++) {
@@ -375,6 +381,17 @@ Shader::TextureSlot Shader::GetTextureInfo(const String& name) const {
 
 	FD_FATAL("[Shader] No texture named \"%s\"", *name);
 	return TextureSlot(-1, -1);
+}
+
+Shader::SamplerSlot Shader::GetSamplerInfo(const String& name) const {
+	uint_t size = pSamplers.GetSize();
+	for (uint_t i = 0; i < size; i++) {
+		ShaderSamplerInfo* info = pSamplers.Get(i);
+		if (info->name == name) return SamplerSlot(info->semRegister, info->numTextures);
+	}
+
+	FD_FATAL("[Shader] No texture named \"%s\"", *name);
+	return SamplerSlot(-1, -1);
 }
 
 uint32 Shader::GetVSConstantBufferSlotByName(const String& bufferName) const {

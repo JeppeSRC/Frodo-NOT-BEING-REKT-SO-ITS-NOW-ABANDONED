@@ -69,6 +69,7 @@
     <ClCompile Include="src\graphics\texture\shadowmapcube.cpp" />
     <ClCompile Include="src\graphics\texture\framebuffer.cpp" />
     <ClCompile Include="src\graphics\texture\framebuffercube.cpp" />
+    <ClCompile Include="src\graphics\texture\sampler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\frodo.cpp">
@@ -255,5 +256,6 @@
     <ClInclude Include="src\graphics\texture\shadowmapcube.h" />
     <ClInclude Include="src\graphics\texture\framebuffer.h" />
     <ClInclude Include="src\graphics\texture\framebuffercube.h" />
+    <ClInclude Include="src\graphics\texture\sampler.h" />
   </ItemGroup>
 </Project>

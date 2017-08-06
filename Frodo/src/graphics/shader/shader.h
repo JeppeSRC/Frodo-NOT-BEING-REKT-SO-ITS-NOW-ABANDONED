@@ -2,6 +2,7 @@
 #include <fd.h>
 #include <graphics/d3dcontext.h>
 #include <graphics/texture/texture.h>
+#include <graphics/texture/sampler.h>
 #include <util/string.h>
 #include <util/list.h>
 #include <graphics/buffer/bufferlayout.h>
@@ -101,6 +102,8 @@ public:
 		uint32 numTextures;
 	};
 
+	typedef TextureSlot SamplerSlot;
+
 private:
 	struct ShaderStructInfo {
 		String name;
@@ -120,6 +123,8 @@ private:
 		uint32 numTextures;
 		FD_SHADER_TEXTURE_TYPE type;
 	};
+
+	typedef ShaderTextureInfo ShaderSamplerInfo;
 
 	enum FD_STRUCT_FIELD_TYPE {
 		FD_STRUCT_FIELD_TYPE_UNKNOWN,
@@ -168,6 +173,7 @@ private:
 	List<ShaderStructInfo*> gCBuffers;
 
 	List<ShaderTextureInfo*> pTextures;
+	List<ShaderSamplerInfo*> pSamplers;
 
 	ID3D11InputLayout* inputLayout;
 
@@ -193,12 +199,14 @@ public:
 	void SetPSConstantBuffer(const ConstantBufferSlot pCBuffer) const;
 	void SetGSConstantBuffer(const ConstantBufferSlot pCBuffer) const;
 	void SetTexture(uint32 slot, const Texture* tex) const;
+	void SetSampler(uint32 slot, const Sampler* sampler) const;
 
 	ConstantBufferSlot GetVSConstantBufferInfo(const String& name) const;
 	ConstantBufferSlot GetPSConstantBufferInfo(const String& name) const;
 	ConstantBufferSlot GetGSConstantBufferInfo(const String& name) const;
 
 	TextureSlot GetTextureInfo(const String& name) const;
+	SamplerSlot GetSamplerInfo(const String& name) const;
 
 	uint32 GetVSConstantBufferSlotByName(const String& bufferName) const;
 	uint32 GetPSConstantBufferSlotByName(const String& bufferName) const;

@@ -367,6 +367,45 @@ void Shader::ParseTextures(String source) {
 		pTextures.Push_back(tex);
 	}
 
+	while (true) {
+		uint_t samplerStart = source.Find("SamplerState");
+
+		if (samplerStart == (uint_t)-1) break;
+
+		uint_t nameStart = source.Find(" ", samplerStart);
+		uint_t nameEnd = source.Find(":", nameStart);
+		uint_t bracket = source.Find("{", samplerStart);
+		uint_t end = source.Find(";", samplerStart);
+
+		if (bracket < end) {
+			source.Remove(samplerStart, source.Find("};", bracket) + 2);
+			continue;
+		}
+
+		ShaderSamplerInfo* tex = new ShaderSamplerInfo;
+		tex->numTextures = 1;
+		tex->name = source.SubString(nameStart, nameEnd).RemoveBlankspace();
+
+		uint_t regStart = source.Find("register(s", nameEnd) + 10;
+
+		if (regStart < 10) {
+			FD_WARNING("[ShaderParser] Sampler \"%s\" has not been registered to a sampler slot", *tex->name);
+		}
+
+		String sem = source.SubString(regStart, end);
+
+		tex->semRegister = atoi(*sem);
+
+		uint_t subCompStart = sem.Find("[");
+		if (subCompStart != (uint_t)-1) {
+			tex->numTextures = atoi(*sem + subCompStart + 1);
+		}
+
+		source.Remove(samplerStart, end + 1);
+
+		pTextures.Push_back(tex);
+	}
+
 }
 
 }

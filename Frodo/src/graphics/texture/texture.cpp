@@ -6,6 +6,10 @@
 
 namespace FD {
 
+Texture::Texture() {
+	resource = nullptr;
+	resourceView = nullptr;
+}
 
 byte* Texture::Load(const String& filename, uint32* width, uint32* height, uint32* bits, bool flipY) {
 	FD_ASSERT_MSG(width == nullptr,"width parameter nullptr");

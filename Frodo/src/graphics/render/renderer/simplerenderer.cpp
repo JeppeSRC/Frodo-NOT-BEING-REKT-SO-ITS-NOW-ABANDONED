@@ -126,7 +126,7 @@ SimpleRenderer::SimpleRenderer(Window* window) : Renderer(window) {
 	cameraBuffer = pointShader->GetVSConstantBufferInfo("Camera");
 	cameraBuffer.data = new byte[cameraBuffer.structSize];
 	
-	shadowMap2D = new Framebuffer2D(4096, 4096, FD_TEXTURE_FORMAT_FLOAT_D32);
+	shadowMap2D = new Framebuffer2D(1024, 1024, FD_TEXTURE_FORMAT_FLOAT_D32);
 //	shadowMap2D = new ShadowMap2D(4096, 4096);
 //	shadowMapCube = new ShadowMapCube(2048, 2048);
 	shadowMapCube = new FramebufferCube(2048, 2048, FD_TEXTURE_FORMAT_FLOAT_D32);
@@ -162,9 +162,9 @@ void SimpleRenderer::Submit(Light* light) {
 		l->shadowMap = shadowMapCube;
 		l->maxDepth = 100.0f;
 		l->projection = mat4::Perspective(90.0f, (float)shadowMapCube->GetWidth() / shadowMapCube->GetHeight(), 0.001f, l->maxDepth);
-		DirectX::XMMATRIX mat = DirectX::XMMatrixPerspectiveFovLH(90, 1, 0.0001f, 100);
+		DirectX::XMMATRIX mat = DirectX::XMMatrixPerspectiveFovLH(FD_TO_RADIANS_F(90), 1, 0.0001f, 100);
 
-		memcpy(&l->projection, &mat, sizeof(mat4));
+	//	memcpy(&l->projection, &mat, sizeof(mat4));
 
 		lights.Push_back(l);
 	} else if (light->GetLightType() & FD_LIGHT_TYPE_DIRECTIONAL) {
@@ -207,7 +207,7 @@ void SimpleRenderer::Present() {
 	if (light->light->GetLightType() & FD_LIGHT_CAST_SHADOW) {
 		light->shadowShader->Bind();
 		light->shadowMap->BindAsRenderTarget();
-		D3DContext::Clear(0);
+		D3DContext::Clear(1);
 
 		for (uint_t i = 0; i < numEntities; i++) {
 			Entity3D* entity = entities[i];
@@ -244,7 +244,7 @@ void SimpleRenderer::Present() {
 		if (light->light->GetLightType() & FD_LIGHT_CAST_SHADOW) {
 			light->shadowShader->Bind();
 			light->shadowMap->BindAsRenderTarget();
-			D3DContext::Clear(0);
+			D3DContext::Clear(1);
 
 			SetDepth(FD_RENDERER_DEPTH_DEFAULT);
 			SetBlend(FD_RENDERER_BLEND_DEFAULT);
@@ -304,13 +304,22 @@ void SimpleRenderer::SR_PointLight::SetupShadowShader(Entity3D* e) const {
 	shadowShader->SetPSConstantBuffer("LightPosition", &lightPos);
 
 	mat4 views[6]{
-		projection * mat4::LookAt(lightPos, lightPos + vec3(1, 0, 0), vec3(0, -1, 0)),
-		projection * mat4::LookAt(lightPos, lightPos + vec3(-1, 0, 0), vec3(0, -1, 0)),
-		projection * mat4::LookAt(lightPos, lightPos + vec3(0, 1, 0), vec3(0, 0, 1)),
-		projection * mat4::LookAt(lightPos, lightPos + vec3(0, -1, 0), vec3(0, 0, 1)),
-		projection * mat4::LookAt(lightPos, lightPos + vec3(0, 0, 1), vec3(0, -1, 0)),
-		projection * mat4::LookAt(lightPos, lightPos + vec3(0, 0, -1), vec3(0, -1, 0)),
+		projection * mat4::LookAt(lightPos, lightPos + vec3(1, 0, 0),  vec3( 0,  1,  0)),
+		projection * mat4::LookAt(lightPos, lightPos + vec3(-1, 0, 0), vec3( 0,  1,  0)),
+		projection * mat4::LookAt(lightPos, lightPos + vec3(0, 1, 0),  vec3( 0,  0,  1)),
+		projection * mat4::LookAt(lightPos, lightPos + vec3(0, -1, 0), vec3( 0,  0,  1)),
+		projection * mat4::LookAt(lightPos, lightPos + vec3(0, 0, 1),  vec3( 0,  1,  0)),
+		projection * mat4::LookAt(lightPos, lightPos + vec3(0, 0, -1), vec3( 0,  1,  0)),
 	};
+
+	/*
+	views[0] = projection * mat4::Rotate(vec3(  0,  90, 0)) * mat4::Translate(-lightPos);
+	views[1] = projection * mat4::Rotate(vec3(  0, -90, 0)) * mat4::Translate(-lightPos);
+	views[2] = projection * mat4::Rotate(vec3( 90,   0, 0)) * mat4::Translate(-lightPos);
+	views[3] = projection * mat4::Rotate(vec3(-90,   0, 0)) * mat4::Translate(-lightPos);
+	views[4] = projection * mat4::Rotate(vec3(  0,   0, 0)) * mat4::Translate(-lightPos);
+	views[5] = projection * mat4::Rotate(vec3(  0, 180, 0)) * mat4::Translate(-lightPos);
+	*/
 
 	shadowShader->SetGSConstantBuffer("LightMatrix", views);
 }

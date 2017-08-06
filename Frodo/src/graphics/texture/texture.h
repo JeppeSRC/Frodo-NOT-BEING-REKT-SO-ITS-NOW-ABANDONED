@@ -25,8 +25,8 @@ protected:
 	ID3D11Resource* resource;
 	ID3D11ShaderResourceView* resourceView = nullptr;
 
+	Texture();
 public:
-	Texture() { resourceView = nullptr; }
 	virtual ~Texture() { DX_FREE(resourceView); DX_FREE(resource); }
 
 	virtual void Bind(uint32 slot = 0) = 0;
@@ -34,8 +34,9 @@ public:
 	inline uint32 GetWidth() const { return width; }
 	inline uint32 GetHeight() const { return height; }
 
-	inline ID3D11ShaderResourceView* GetResourceView() const { return resourceView; }
 	inline ID3D11Resource* GetResource() const { return resource; }
+	inline ID3D11ShaderResourceView* GetResourceView() const { return resourceView; }
+	
 
 	static byte* Load(const String& filename, uint32* width, uint32* height, uint32* bits, bool flipY = false);
 	static byte* Load(void* memory, uint32* width, uint32* height, uint32* bits, bool flipY = false);

@@ -4,7 +4,7 @@
 
 namespace FD {
 
-Texture2D::Texture2D(const String& filename) : Texture2D() {
+Texture2D::Texture2D(const String& filename)  {
 
 	//TODO: only supports 32bit
 	uint32 bits = 0;
@@ -37,7 +37,7 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 	r.SysMemPitch = width * (bits / 8);
 	r.SysMemSlicePitch = 0;
 
-	D3DContext::GetDevice()->CreateTexture2D(&d, &r, &resource);
+	D3DContext::GetDevice()->CreateTexture2D(&d, &r, (ID3D11Texture2D**)&resource);
 
 	FD_ASSERT(resource == nullptr);
 
@@ -46,7 +46,7 @@ Texture2D::Texture2D(const String& filename) : Texture2D() {
 	FD_ASSERT(resourceView == nullptr);
 }
 
-Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT format) : Texture2D() {
+Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT format) {
 	this->width = width;
 	this->height = height;
 	D3D11_TEXTURE2D_DESC d;
@@ -87,7 +87,7 @@ Texture2D::Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT 
 	s.pSysMem = data;
 	s.SysMemPitch = width * size;
 
-	D3DContext::GetDevice()->CreateTexture2D(&d, &s, &resource);
+	D3DContext::GetDevice()->CreateTexture2D(&d, &s, (ID3D11Texture2D**)&resource);
 
 	FD_ASSERT(resource == nullptr);
 

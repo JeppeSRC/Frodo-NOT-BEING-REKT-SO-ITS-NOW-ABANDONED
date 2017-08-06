@@ -9,7 +9,7 @@ void RTest::OnCreateWindow() {
 	prop.height = 720;
 
 	window = new Window("LeL", prop, D3DFactory::GetAdapters()[0], nullptr);
-	window->SetVSync(0);
+	window->SetVSync(1);
 }
 
 void RTest::OnInit() {
@@ -40,10 +40,10 @@ void RTest::OnInit() {
 	//renderer->Submit(new PointLight(vec3(0, 0, 4), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
 //	renderer->Submit(new PointLight(vec3(0, 0, -4), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
 //	renderer->Submit(new PointLight(vec3(0, 4, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
-	renderer->Submit(pLight = new PointLight(vec3(-2, 3, 0), vec3(1, 1, 1), vec3(0.5f, 1.8f, 0), true));
+	//renderer->Submit(pLight = new PointLight(vec3(2, 2, 0), vec3(1, 1, 1), vec3(0.5f, 1.8f, 0), true));
 //	renderer->Submit(new PointLight(vec3(-4, 0, 0), vec3(1, 1, 1), vec3(0.8f, 1.8f, 0)));
 
-	//renderer->Submit(dLight = new DirectionalLight(vec3(0.2, 0.2, 0.2), vec3(1, -0.8, 1), true));
+	renderer->Submit(dLight = new DirectionalLight(vec3(0.2, 0.2, 0.2), vec3(1, -0.8, 1), true));
 }
 
 void RTest::OnTick() {
@@ -54,8 +54,8 @@ void RTest::OnTick() {
 void RTest::OnUpdate(float delta) {
 	camera->Update(delta);
 
-	//dLight->GetDirection().RotateY(10 * delta);
-	pLight->GetPosition().RotateY(15 * delta);
+	dLight->GetDirection().RotateY(10 * delta);
+	//pLight->GetPosition().RotateY(20 * delta);
 }
 
 void RTest::OnRender() {
