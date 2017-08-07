@@ -315,7 +315,7 @@ void Shader::ParseTextures(String source) {
 	while (true) {
 		uint_t textureStart = source.Find("Texture");
 
-		if (textureStart < (uint_t)0) break;
+		if (textureStart == (uint_t)-1) break;
 
 		ShaderTextureInfo* tex = new ShaderTextureInfo;
 		tex->numTextures = 1;
@@ -368,7 +368,7 @@ void Shader::ParseTextures(String source) {
 	}
 
 	while (true) {
-		uint_t samplerStart = source.Find("SamplerState");
+		uint_t samplerStart = source.Find("SamplerState ");
 
 		if (samplerStart == (uint_t)-1) break;
 
@@ -403,7 +403,7 @@ void Shader::ParseTextures(String source) {
 
 		source.Remove(samplerStart, end + 1);
 
-		pTextures.Push_back(tex);
+		pSamplers.Push_back(tex);
 	}
 
 }

@@ -10,7 +10,7 @@ public:
 	Texture2D(void* data, uint32 width, uint32 height, FD_TEXTURE_FORMAT format);
 	~Texture2D();
 
-	void Bind(uint32 slot = 0) override;
+	void Bind(uint32 slot = 0) const override;
 };
 
 }

@@ -104,7 +104,7 @@ void SimpleRenderer::InitializeShaders() {
 	layout.CreateInputLayout(shadowShader2D);
 	layout.CreateInputLayout(shadowShaderCube);
 
-	baseMaterial = new Material(pointShader);
+	baseMaterial = new Material(directionalShader);
 }
 
 void SimpleRenderer::SetDepth(FD_RENDERER_DEPTH_STATE state) {

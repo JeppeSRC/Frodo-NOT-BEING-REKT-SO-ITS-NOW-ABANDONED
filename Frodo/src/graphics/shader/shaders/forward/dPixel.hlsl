@@ -1,10 +1,6 @@
 R"(
 
-SamplerState samp {
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;
-};
+SamplerState samp : register(s0);
 
 struct Light {
 	float3 color;

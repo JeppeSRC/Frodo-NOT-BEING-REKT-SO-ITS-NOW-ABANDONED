@@ -28,8 +28,6 @@ cbuffer Material : register(b1) {
 	Material material;
 };
 
-Texture2D bruh : register(t2);
-
 Texture2D diffuse : register(t0);
 TextureCube shadowMap : register(t1);
 

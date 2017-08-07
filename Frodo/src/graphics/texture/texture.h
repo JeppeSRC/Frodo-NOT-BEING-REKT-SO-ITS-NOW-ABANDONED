@@ -29,7 +29,7 @@ protected:
 public:
 	virtual ~Texture() { DX_FREE(resourceView); DX_FREE(resource); }
 
-	virtual void Bind(uint32 slot = 0) = 0;
+	virtual void Bind(uint32 slot = 0) const = 0;
 
 	inline uint32 GetWidth() const { return width; }
 	inline uint32 GetHeight() const { return height; }

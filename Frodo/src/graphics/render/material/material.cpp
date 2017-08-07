@@ -22,6 +22,7 @@ Material::Material(Material* mat) {
 	memcpy(pCBuffer.data, mat->GetPCBuffer().data, pCBuffer.structSize);
 
 	textures = mat->textures;
+	samplers = mat->samplers;
 
 	parent = (Material*)mat;
 }
@@ -38,6 +39,7 @@ Material::Material(const Material& mat) {
 	memcpy(pCBuffer.data, mat.GetPCBuffer().data, pCBuffer.structSize);
 
 	textures = mat.textures;
+	samplers = mat.samplers;
 
 	parent = nullptr;
 }
@@ -59,8 +61,15 @@ void Material::Bind(Shader* shader) {
 	uint_t size = textures.GetKeyList().GetSize();
 
 	for (uint_t i = 0; i < size; i++) {
-		FD_MAP_PAIR<uint32, Texture*> pair = textures.GetPair(i);
-		shader->SetTexture(pair.key, pair.data);
+		FD_MAP_PAIR<uint32, const Texture*> pair = textures.GetPair(i);
+		pair.data->Bind(pair.key);
+	}
+
+	size = samplers.GetKeyList().GetSize();
+
+	for (uint_t i = 0; i < size; i++) {
+		FD_MAP_PAIR<uint32, const Sampler*> pair = samplers.GetPair(i);
+		pair.data->Bind(pair.key);
 	}
 
 	shader->Bind();
@@ -72,11 +81,15 @@ void Material::UnBindTextures() {
 	D3DContext::GetDeviceContext()->PSSetShaderResources(0, textures.GetItems(), views);
 }
 
-void Material::SetTexture(const String& name, Texture* texture) {
+void Material::SetTexture(const String& name, const Texture* texture) {
 	textures[shader->GetTextureInfo(name).semRegister] = texture;
 }
 
-void Material::SetVCBuffer(const String& name, void* data) {
+void Material::SetSampler(const String& name, const Sampler* sampler) {
+	samplers[shader->GetSamplerInfo(name).semRegister] = sampler;
+}
+
+void Material::SetVCBuffer(const String& name, const void* data) {
 	delete[] vCBuffer.data;
 	vCBuffer = shader->GetVSConstantBufferInfo(name);
 
@@ -98,7 +111,7 @@ void Material::SetVCBuffer(const String& name, void* data) {
 	else memset(vCBuffer.data, 0, toCopy);
 }
 
-void Material::SetPCBuffer(const String& name, void* data) {
+void Material::SetPCBuffer(const String& name, const void* data) {
 	delete[] vCBuffer.data;
 	pCBuffer = shader->GetPSConstantBufferInfo(name);
 

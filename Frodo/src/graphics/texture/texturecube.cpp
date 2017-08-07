@@ -78,7 +78,7 @@ void TextureCube::LoadSingleFile(const String& filename) {
 		r[i].SysMemPitch = (UINT)(faceWidth * stride);
 	}
 
-	D3DContext::GetDevice()->CreateTexture2D(&d, r, &resource);
+	D3DContext::GetDevice()->CreateTexture2D(&d, r, (ID3D11Texture2D**)&resource);
 
 	FD_ASSERT(resource == nullptr);
 
@@ -159,11 +159,11 @@ void TextureCube::LoadMultipleFiles(const String* filePaths) {
 		r[i].SysMemPitch = files[0].width * (files[0].bits / 8);
 	}
 
-	D3DContext::GetDevice()->CreateTexture2D(&d, r, &resource);
+	D3DContext::GetDevice()->CreateTexture2D(&d, r, (ID3D11Texture2D**)&resource);
 
 	FD_ASSERT(resource == nullptr);
 
-	D3DContext::GetDevice()->CreateShaderResourceView((ID3D11Resource*)resource, &s, &resourceView);
+	D3DContext::GetDevice()->CreateShaderResourceView(resource, &s, &resourceView);
 
 	FD_ASSERT(resourceView == nullptr);
 
@@ -185,7 +185,7 @@ TextureCube::~TextureCube() {
 	DX_FREE(resource);
 }
 
-void TextureCube::Bind(unsigned int slot) {
+void TextureCube::Bind(uint32 slot) const {
 	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &resourceView);
 }
 

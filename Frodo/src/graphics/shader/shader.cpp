@@ -390,7 +390,7 @@ Shader::SamplerSlot Shader::GetSamplerInfo(const String& name) const {
 		if (info->name == name) return SamplerSlot(info->semRegister, info->numTextures);
 	}
 
-	FD_FATAL("[Shader] No texture named \"%s\"", *name);
+	FD_FATAL("[Shader] No sampler named \"%s\"", *name);
 	return SamplerSlot(-1, -1);
 }
 

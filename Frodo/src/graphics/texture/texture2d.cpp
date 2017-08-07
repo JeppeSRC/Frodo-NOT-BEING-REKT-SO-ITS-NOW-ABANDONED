@@ -100,7 +100,7 @@ Texture2D::~Texture2D() {
 	DX_FREE(resource);
 }
 
-void Texture2D::Bind(uint32 slot) {
+void Texture2D::Bind(uint32 slot) const {
 	D3DContext::GetDeviceContext()->PSSetShaderResources(slot, 1, &resourceView);
 }
 

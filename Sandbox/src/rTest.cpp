@@ -19,6 +19,15 @@ void RTest::OnInit() {
 
 	Material mat(renderer->GetBaseMaterial());
 
+	D3D11_SAMPLER_DESC d = Sampler::GetDefaultDesc();
+
+	d.Filter = D3D11_FILTER_ANISOTROPIC;
+	d.MaxAnisotropy = 16;
+
+	Sampler* samp = new Sampler(d);
+
+	mat.SetSampler("samp", samp);
+
 	mat.SetPCBuffer("Material", nullptr);
 	mat.SetPCBufferElement("material.color", vec3(1, 1, 1));
 

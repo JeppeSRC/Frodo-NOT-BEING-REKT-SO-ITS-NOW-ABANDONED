@@ -2,6 +2,7 @@
 
 #include <fd.h>
 #include <graphics/texture/texture.h>
+#include <graphics/texture/sampler.h>
 #include <math/math.h>
 #include <util/map.h>
 #include <graphics/shader/shader.h>
@@ -17,7 +18,8 @@ protected:
 	Shader::ConstantBufferSlot vCBuffer;
 	Shader::ConstantBufferSlot pCBuffer;
 
-	Map<uint32, Texture*> textures;
+	Map<uint32, const Texture*> textures;
+	Map<uint32, const Sampler*> samplers;
 public:
 	Material(Shader* shader);
 	Material(Material* mat);
@@ -28,9 +30,10 @@ public:
 	void Bind(Shader* shader);
 	void UnBindTextures();
 
-	virtual void SetTexture(const String& name, Texture* texture);
-	void SetVCBuffer(const String& name, void* data);
-	void SetPCBuffer(const String& name, void* data);
+	void SetTexture(const String& name, const Texture* texture);
+	void SetSampler(const String& name, const Sampler* sampler);
+	void SetVCBuffer(const String& name, const void* data);
+	void SetPCBuffer(const String& name, const void* data);
 
 	void SetVCBufferElement(const String& name, void* data);
 	void SetPCBufferElement(const String& name, void* data);
@@ -67,6 +70,6 @@ public:
 
 	inline Material* GetParent() const { return parent; }
 
-	inline const Map<uint32, Texture*>& GetTextures() const { return textures; }
+	inline const Map<uint32, const Texture*>& GetTextures() const { return textures; }
 };
 }

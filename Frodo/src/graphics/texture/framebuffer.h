@@ -14,7 +14,7 @@ public:
 	~Framebuffer() { DX_FREE(targetView); DX_FREE(depthView); }
 
 
-	void Bind(uint32 slot = 0);
+	void Bind(uint32 slot = 0) const override;
 	virtual void BindAsRenderTarget() = 0;
 
 	inline ID3D11DepthStencilView* GetDepthView() const { return depthView; }
