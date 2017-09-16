@@ -221,18 +221,18 @@ mat4 mat4::Orthographic(float32 left, float32 right, float32 top, float32 bottom
 
 	float32* m = r.m;
 
-	float w = 1.0f / (right - left);
-	float h = 1.0f / (top - bottom);
+	float w = 2.0f / (right - left);
+	float h = 2.0f / (top - bottom);
 	float z = 1.0f / (zFar - zNear);
 
 	m[0 + 0 * 4] = w;
 	m[1 + 1 * 4] = h;
 	m[2 + 2 * 4] = z;
 
-	m[0 + 3 * 4] = -((right + left) / (right - left));
-	m[1 + 3 * 4] = -((top + bottom) / (top - bottom));
-	m[2 + 3 * 4] = -((zFar + zNear) / (zNear - zFar));
-	m[3 + 3 * 4] = 1;
+	m[0 + 3 * 4] = 0;
+	m[1 + 3 * 4] = 0;
+	m[2 + 3 * 4] = -z * zNear;
+	m[3 + 3 * 4] = 1.0f;
 
 	return r;
 }
