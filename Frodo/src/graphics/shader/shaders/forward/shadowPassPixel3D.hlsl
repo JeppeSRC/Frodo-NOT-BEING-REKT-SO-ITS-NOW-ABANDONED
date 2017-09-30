@@ -11,7 +11,7 @@ cbuffer LightPosition : register(b1) {
 };
 
 float psMain(float4 position : SV_POSITION, float3 pos : POSITION, uint index : SV_RenderTargetArrayIndex) : SV_Target {
-	float dist = length(l_Position - pos);
+	float dist = length(l_Position - pos) / 100;
 
 	return dist;
 }

@@ -16,6 +16,7 @@ void gsMain(triangle float4 position[3] : SV_Position, inout TriangleStream<GSOu
 	GSOut o;
 
 	for (uint index = 0; index < 6; index++) {
+		if (!(index == 3)) continue;
 		for (uint i = 0; i < 3; i++) {
 			o.position = mul(l_LightMatrix[index], position[i]);
 			o.pos = o.position.xyz;

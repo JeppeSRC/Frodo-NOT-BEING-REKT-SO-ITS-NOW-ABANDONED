@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Frodo", "Frodo\Frodo.vcxproj", "{08D9DCE5-D732-43BA-AAC0-E58595D81DF2}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -62,5 +62,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{567204D9-06C3-4D14-8722-759E9BE9C88D} = {A81A7A4F-D4F5-46E0-8E7F-71A16C6B0905}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D00683B3-969C-4029-9B36-F3157378F8E5}
 	EndGlobalSection
 EndGlobal

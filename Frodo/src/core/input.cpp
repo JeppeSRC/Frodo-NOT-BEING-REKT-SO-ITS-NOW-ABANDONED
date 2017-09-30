@@ -168,7 +168,7 @@ bool Input::InitializeMouse(GUID guid) {
 	bool result = UpdateMouse();
 
 	if (result) FD_DEBUG("[DirecInput] Mouse \"%s\" initailized", *deviceName);
-	else FD_FATAL("[DirectInput] Mouse \"%s\" initialization failed", *deviceName);
+//	else FD_FATAL("[DirectInput] Mouse \"%s\" initialization failed", *deviceName);
 
 	mouse.position = ivec2(window->GetWidth() >> 1, window->GetHeight() >> 1);
 
@@ -211,7 +211,7 @@ bool Input::InitializeKeyboard(GUID guid) {
 	bool result = UpdateKeyboard();
 
 	if (result) FD_DEBUG("[DirecInput] Keyboard \"%s\" initailized", *deviceName);
-	else FD_DEBUG("[DirecInput] Keyboard \"%s\" initailization failed", *deviceName);
+	//else FD_DEBUG("[DirecInput] Keyboard \"%s\" initailization failed", *deviceName);
 
 	return result;
 }

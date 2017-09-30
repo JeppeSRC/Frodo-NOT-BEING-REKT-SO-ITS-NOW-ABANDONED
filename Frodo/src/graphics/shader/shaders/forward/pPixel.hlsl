@@ -1,10 +1,7 @@
 R"(
 
-SamplerState samp {
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;
-};
+SamplerState samp : register(s0);
+SamplerState shadowSamp : register(s1);
 
 struct Light {
 	float3 color;
@@ -31,14 +28,17 @@ cbuffer Material : register(b1) {
 Texture2D diffuse : register(t0);
 TextureCube shadowMap : register(t1);
 
-float SampleShadow(float3 vertPos) {
+float SampleShadow(float3 vertPos, float bias) {
 	float3 toLight = vertPos - light.position;
 
 	float currentDepth = length(toLight);
-	float depth = shadowMap.Sample(samp, normalize(toLight)).r;
+
+	if (currentDepth > 100) return 1;
+
+	float depth = shadowMap.Sample(samp, normalize(toLight)).r * 100;
 
 	return depth / 100;
-	return depth  > currentDepth ? 1 : 0;
+	return currentDepth - bias > depth ? 0 : 1;
 }
 
 float4 psMain(float4 position : SV_POSITION, float3 pos : POSITION, float3 normal : NORMAL, float2 texCoord : TEXCOORD, float4 posLightSpace : LIGHTPOS) : SV_TARGET0 {
@@ -52,11 +52,18 @@ float4 psMain(float4 position : SV_POSITION, float3 pos : POSITION, float3 norma
 
 	float3 finalColor = diffuse.Sample(samp, texCoord).xyz;
 
-	float depth = SampleShadow(pos); 
+#shaderGen if defined(SHADOW)
+	float depth = SampleShadow(pos, 0.0); 
 	
-	return float4(depth, depth, depth, 1);
+	return float4(depth, depth, depth, 0.0);
 
 	return float4(finalColor * material.color * light.color * brightness * depth, 1);
+
+#shaderGen else
+
+	return float4(finalColor * material.color * light.color * brightness, 1);
+
+#shaderGen endif
 }
 
 )"

@@ -141,9 +141,9 @@ void D3DContext::Present(uint32 syncInterval, uint32 flags) {
 	GetSwapChain()->Present(syncInterval, flags);
 }
 
-float32 col[4]{ 0, 0, 0, 1 };
 
-void D3DContext::Clear(uint16 numRenderTargets) {
+void D3DContext::Clear(uint16 numRenderTargets, float shade) {
+	float32 col[4]{ shade, shade, shade, 1 };
 	for (uint16 i = 0; i < numRenderTargets; i++)
 		GetDeviceContext()->ClearRenderTargetView(GetContext()->activeRenderTargets[i], col);
 

@@ -1,6 +1,7 @@
 R"(
 
 SamplerState samp : register(s0);
+SamplerState shadowSamp : register(s1);
 
 struct Light {
 	float3 color;
@@ -28,11 +29,19 @@ Texture2D shadowMap : register(t1);
 float SampleShadowMap(float4 vertPos, float bias) {
 	float3 coord = vertPos.xyz;
 
-	if (coord.z > 1.0) return 1.0;
+	if (coord.z > 20) return 1.0;
 
 	coord.xy = coord.xy * -0.5 + 0.5;
 
-	float depth = shadowMap.Sample(samp, coord.xy).r;
+	float depth = 0;//shadowMap.Sample(shadowSamp, float2(1 - coord.x, coord.y)).r;
+
+	for (int y = -1; y <= 1; y++) {
+		for (int x = -1; x <= 1; x++) {
+			depth += shadowMap.Sample(shadowSamp, float2(1 - (coord.x + x * 0.00048828125), coord.y + y * 0.00048828125)).r;
+		}
+	}
+
+	depth /= 9;
 
 	return depth + bias > coord.z ? 1 : 0;
 }
@@ -43,11 +52,16 @@ float4 psMain(float4 position : SV_POSITION, float3 pos : POSITION, float3 norma
 
 	float3 finalColor = diffuse.Sample(samp, texCoord).xyz;
 
-	float depth = SampleShadowMap(posLightSpace, max(0.058 * (1.0 - brightness), 0.0098));
+#shaderGen if defined(SHADOW)
+	float depth = SampleShadowMap(posLightSpace, max(0.01 * (1 - brightness), 0.001));
 
 //	return float4(depth, depth, depth, 1);
 
 	return float4(finalColor * material.color * light.color * brightness * depth, 1);
+
+#shaderGen else
+	return float4(finalColor * material.color * light.color * brightness, 1);
+#shaderGen endif
 }
 
 

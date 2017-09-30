@@ -8,7 +8,7 @@
 namespace FD {
 
 enum FD_ENTITY_FLAGS {
-	
+	FD_ENTITY_CAST_SHADOW = 0x01
 };
 
 class FDAPI Entity {
@@ -18,13 +18,14 @@ protected:
 	uint32 flags;
 public:
 	Entity() { }
-	Entity(const vec3& position) : position(position){ }
+	Entity(const vec3& position) : position(position), flags(0) { }
 	virtual ~Entity() {}
 
 	virtual void Update() {}
 
 	inline void SetPosition(const vec3& position) { this->position = position; }
 	inline void SetFlag(FD_ENTITY_FLAGS flag) { flags |= flag; }
+	inline void RemoveFlag(FD_ENTITY_FLAGS flag) { flags ^= flag; }
 
 	inline const vec3& GetPosition() const { return position; }
 	inline uint32 GetFlags() const { return flags; }

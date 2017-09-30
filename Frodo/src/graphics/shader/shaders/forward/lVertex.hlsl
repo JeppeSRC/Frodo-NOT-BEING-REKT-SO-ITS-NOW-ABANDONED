@@ -30,7 +30,7 @@ Out vsMain(float3 positions : POSITION, float3 normals : NORMAL, float2 texCoord
 
 	o.position = mul(c_ProjectionMatrix, mul(c_ViewMatrix, pos));
 	o.pos = pos.xyz;
-	o.normal = mul(m_ModelMatrix, float4(normals, 0)).xyz;
+	o.normal = normalize(mul(m_ModelMatrix, float4(normals, 0)).xyz);
 	o.texCoord = texCoords;
 	o.posLightSpace = mul(l_LightMatrix, pos);
 

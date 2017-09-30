@@ -31,24 +31,24 @@ private:
 		
 		mat4 projection;
 
-		virtual void SetupShadowShader(Entity3D* e) const = 0;
-		virtual void SetupShader(Entity3D* e) const = 0;
+		virtual void SetupShadowShader(Entity3D* e, Camera* camera) const = 0;
+		virtual void SetupShader(Entity3D* e, Camera* camera) const = 0;
 	};
 
 	class SR_DirectionalLight : public SR_Light {
 	private:
 		mutable mat4 lightMatrix;
 	public:
-		void SetupShadowShader(Entity3D* e) const override;
-		void SetupShader(Entity3D* e) const override;
+		void SetupShadowShader(Entity3D* e, Camera* camera) const override;
+		void SetupShader(Entity3D* e, Camera* camera) const override;
 	};
 
 	class SR_PointLight : public SR_Light {
 	public:
 		float maxDepth;
 
-		void SetupShadowShader(Entity3D* e) const override;
-		void SetupShader(Entity3D* e) const override;
+		void SetupShadowShader(Entity3D* e, Camera* camera) const override;
+		void SetupShader(Entity3D* e, Camera* camera) const override;
 	};
 
 private:
@@ -57,7 +57,9 @@ private:
 	Shader* shadowShader2D;
 	Shader* shadowShaderCube;
 	Shader* pointShader;
+	Shader* pointShaderShadow;
 	Shader* directionalShader;
+	Shader* directionalShaderShadow;
 
 	Framebuffer* shadowMap2D;
 	Framebuffer* shadowMapCube;

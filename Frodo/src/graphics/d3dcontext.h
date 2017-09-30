@@ -52,7 +52,8 @@ public:
 	static void SetMode(const DXGI_MODE_DESC mode);
 
 	static void Present(uint32 syncInterval, uint32 flags);
-	static void Clear(uint16 numRenderTargets = 1);
+	static void Clear(uint16 numRenderTargets = 1, float shade = 0.0f);
+	
 
 	static void SetRenderTarget(ID3D11RenderTargetView* target);
 	static void SetRenderTargets(uint16 numRenderTargets, ID3D11RenderTargetView** target, ID3D11DepthStencilView* depthView);
